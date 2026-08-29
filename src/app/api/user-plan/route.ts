@@ -2,8 +2,22 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { Redis } from '@upstash/redis';
 
-// Global in-memory cache for serverless environments
+// Initialize Upstash Redis if environment variables are present
+let redisClient: Redis | null = null;
+try {
+  if (
+    (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) ||
+    (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
+  ) {
+    redisClient = Redis.fromEnv();
+  }
+} catch (e) {
+  console.warn('Redis client initialization note (falling back to memory):', e);
+}
+
+// Global in-memory fallback for local development
 declare global {
   var __userPlansMemoryCache: Record<string, any> | undefined;
 }
@@ -13,7 +27,6 @@ if (!globalThis.__userPlansMemoryCache) {
 }
 
 function getStorageFilePath(): string {
-  // If in Vercel or read-only lambda, write to /tmp
   if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
     return path.join(os.tmpdir(), 'user_plans.json');
   }
@@ -21,7 +34,7 @@ function getStorageFilePath(): string {
   return path.join(localDataDir, 'user_plans.json');
 }
 
-function readUserPlans(): Record<string, any> {
+function readLocalUserPlans(): Record<string, any> {
   const filePath = getStorageFilePath();
   try {
     if (fs.existsSync(filePath)) {
@@ -31,12 +44,12 @@ function readUserPlans(): Record<string, any> {
       return globalThis.__userPlansMemoryCache!;
     }
   } catch (err) {
-    console.warn('Filesystem read warning, using memory cache:', err);
+    console.warn('Local read warning:', err);
   }
   return globalThis.__userPlansMemoryCache || {};
 }
 
-function writeUserPlans(plans: Record<string, any>) {
+function writeLocalUserPlans(plans: Record<string, any>) {
   globalThis.__userPlansMemoryCache = plans;
   const filePath = getStorageFilePath();
   try {
@@ -46,49 +59,8 @@ function writeUserPlans(plans: Record<string, any>) {
     }
     fs.writeFileSync(filePath, JSON.stringify(plans, null, 2), 'utf-8');
   } catch (err) {
-    console.warn('Filesystem write warning (in-memory cached):', err);
+    console.warn('Local write warning:', err);
   }
-}
-
-// Optional Upstash / Vercel KV cloud persistence if configured
-async function saveToKvIfConfigured(pin: string, data: any) {
-  const kvUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const kvToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!kvUrl || !kvToken) return;
-
-  try {
-    await fetch(`${kvUrl}/set/fpl_pin_${pin}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${kvToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-  } catch (e) {
-    console.warn('KV save warning:', e);
-  }
-}
-
-async function getFromKvIfConfigured(pin: string): Promise<any | null> {
-  const kvUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const kvToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!kvUrl || !kvToken) return null;
-
-  try {
-    const res = await fetch(`${kvUrl}/get/fpl_pin_${pin}`, {
-      headers: { Authorization: `Bearer ${kvToken}` },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.result) {
-        return typeof data.result === 'string' ? JSON.parse(data.result) : data.result;
-      }
-    }
-  } catch (e) {
-    console.warn('KV get warning:', e);
-  }
-  return null;
 }
 
 export async function GET(req: NextRequest) {
@@ -101,14 +73,23 @@ export async function GET(req: NextRequest) {
 
   const cleanPin = pin.trim();
 
-  // 1. Try Cloud KV if configured
-  const kvPlan = await getFromKvIfConfigured(cleanPin);
-  if (kvPlan) {
-    return NextResponse.json({ exists: true, plan: kvPlan });
+  // 1. Try Upstash Redis first
+  if (redisClient) {
+    try {
+      const redisPlan = await redisClient.get(`fpl_pin_${cleanPin}`);
+      if (redisPlan) {
+        const parsed = typeof redisPlan === 'string' ? JSON.parse(redisPlan) : redisPlan;
+        return NextResponse.json({ exists: true, plan: parsed });
+      } else {
+        return NextResponse.json({ exists: false, message: 'New PIN workspace' }, { status: 200 });
+      }
+    } catch (redisErr) {
+      console.warn('Redis read failed, trying local fallback:', redisErr);
+    }
   }
 
-  // 2. Read from memory / temp storage
-  const allPlans = readUserPlans();
+  // 2. Fallback to local memory / temp storage
+  const allPlans = readLocalUserPlans();
   const userPlan = allPlans[cleanPin];
 
   if (!userPlan) {
@@ -140,8 +121,6 @@ export async function POST(req: NextRequest) {
     }
 
     const cleanPin = String(pin).trim();
-    const allPlans = readUserPlans();
-
     const planData = {
       pin: cleanPin,
       updatedAt: new Date().toISOString(),
@@ -157,11 +136,19 @@ export async function POST(req: NextRequest) {
       gameweekPlans: gameweekPlans || {},
     };
 
-    allPlans[cleanPin] = planData;
-    writeUserPlans(allPlans);
+    // 1. Save to Upstash Redis if available
+    if (redisClient) {
+      try {
+        await redisClient.set(`fpl_pin_${cleanPin}`, JSON.stringify(planData));
+      } catch (redisErr) {
+        console.warn('Redis write failed:', redisErr);
+      }
+    }
 
-    // Also persist to KV in background if configured
-    saveToKvIfConfigured(cleanPin, planData).catch(() => {});
+    // 2. Also save to local memory / temp storage
+    const allPlans = readLocalUserPlans();
+    allPlans[cleanPin] = planData;
+    writeLocalUserPlans(allPlans);
 
     return NextResponse.json({ success: true, updatedAt: planData.updatedAt });
   } catch (error: any) {
