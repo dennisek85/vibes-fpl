@@ -17,6 +17,7 @@ import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
 import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
 import { logoutPin, isPinVerified } from '@/lib/auth';
 import { formatMoney } from '@/lib/fpl-rules';
+import { calculateSquadRating } from '@/utils/aiSquadRating';
 import { 
   Trophy, 
   Search, 
@@ -31,27 +32,30 @@ import {
   TableProperties,
   Sparkles,
   Zap,
-  TrendingUp
+  TrendingUp,
+  Gauge
 } from 'lucide-react';
 
 export default function PlannerPage() {
   const { 
     initFPLData, 
     teamSummary, 
-    players, 
-    playerMap,
-    openTransferDrawer, 
-    activePin, 
-    isSaving, 
-    selectedGameweek, 
+    isLoading, 
+    error,
+    selectedGameweek,
     selectGameweek,
-    gameweekPlans,
     isGameweekLocked,
+    gameweekPlans,
+    players,
+    playerMap,
     currentView,
     setCurrentView,
     getPlayerGameweekXp,
     showAiPredictions,
     toggleAiPredictions,
+    openTransferDrawer, 
+    activePin, 
+    isSaving, 
     fixtureHorizon,
     setFixtureHorizon
   } = usePlannerStore();
@@ -101,18 +105,42 @@ export default function PlannerPage() {
     currentPlan.squad.forEach(pick => {
       const isStarting = pick.position <= 11;
       const pl = playerMap.get(pick.element);
-      if (isStarting || isBenchBoost) {
-        const xp = getPlayerGameweekXp(pick.element, selectedGameweek);
+      const xp = getPlayerGameweekXp(pick.element, selectedGameweek);
+
+      if (isStarting) {
         let mult = 1;
         if (pick.is_captain) {
           mult = isTripleCaptain ? 3 : 2;
         }
         totalProjectedXp += xp * mult;
         if (pl) squadFormSum += parseFloat(pl.form) || 0;
+      } else if (isBenchBoost) {
+        // Full bench boost: all 4 subs count 100%
+        totalProjectedXp += xp;
+      } else {
+        // Auto-sub expected value (contingency if starter rests)
+        const subWeight = pick.position === 12 ? 0.03 : pick.position === 13 ? 0.12 : pick.position === 14 ? 0.06 : 0.02;
+        totalProjectedXp += xp * subWeight;
       }
     });
   }
   totalProjectedXp = Math.round((totalProjectedXp - hits) * 10) / 10;
+
+  const squadRating = React.useMemo(() => {
+    if (!showAiPredictions || !currentPlan?.squad || currentPlan.squad.length === 0) return null;
+    const currentVal = currentPlan.squad.reduce((s, p) => s + (playerMap.get(p.element)?.now_cost || 0), 0);
+    const totalBudg = currentVal + (currentPlan.calculatedBank || 0);
+
+    return calculateSquadRating(
+      currentPlan.squad,
+      players,
+      playerMap,
+      selectedGameweek,
+      getPlayerGameweekXp,
+      fixtureHorizon,
+      totalBudg
+    );
+  }, [showAiPredictions, currentPlan?.squad, currentPlan?.calculatedBank, players, playerMap, selectedGameweek, getPlayerGameweekXp, fixtureHorizon]);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col items-center">
@@ -302,15 +330,29 @@ export default function PlannerPage() {
                 <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm sm:text-base">💰</div>
               </div>
 
-              {/* Forecast xP */}
+              {/* Forecast xP & Rating */}
               <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">
-                    {showAiPredictions ? 'GW Projected xP' : 'Projected Form'}
-                  </span>
-                  <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-cyan-400 font-mono">
-                    {showAiPredictions ? `${totalProjectedXp} pts` : `${squadFormSum.toFixed(1)} avg`}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">
+                      {showAiPredictions ? 'GW Projected xP' : 'Projected Form'}
+                    </span>
+                    {showAiPredictions && squadRating && (
+                      <span className="text-[10px] xl:text-[11px] font-black text-emerald-300 bg-emerald-950/80 px-1.5 py-0.2 rounded-md border border-emerald-500/40 font-mono">
+                        {squadRating.overallPercentage}% Rating
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-cyan-400 font-mono">
+                      {showAiPredictions ? `${totalProjectedXp} pts` : `${squadFormSum.toFixed(1)} avg`}
+                    </span>
+                    {showAiPredictions && squadRating && (
+                      <span className="text-[10px] text-slate-400 font-mono hidden 2xl:inline">
+                        (D:{squadRating.defensePercentage}% M:{squadRating.midfieldPercentage}% F:{squadRating.forwardPercentage}%)
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 text-sm sm:text-base">📈</div>
               </div>

@@ -34,9 +34,16 @@ export interface FPLPlayer {
   threat?: string;
   creativity?: string;
   influence?: string;
+  ict_index?: string;
   bps?: number;
   goals_conceded?: number;
   photo?: string;
+  transfers_in_event?: number;
+  transfers_out_event?: number;
+  transfers_in?: number;
+  transfers_out?: number;
+  cost_change_event?: number;
+  cost_change_start?: number;
 }
 
 export interface FPLTeam {

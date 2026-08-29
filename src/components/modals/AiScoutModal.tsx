@@ -11,6 +11,8 @@ import {
   DreamTargetPick,
   DoubleTransferHitCombo
 } from '@/utils/aiTransferScout';
+import { solveOptimalSquad, OptimalSquadResult } from '@/utils/aiOptimalSquadSolver';
+import { KitIcon } from '@/components/ui/KitIcon';
 import { 
   X, 
   Sparkles, 
@@ -20,7 +22,11 @@ import {
   Award, 
   Target, 
   Flame, 
-  ShieldAlert 
+  ShieldAlert,
+  Wand2,
+  TrendingUp,
+  Layers,
+  Crown
 } from 'lucide-react';
 import { formatMoney } from '@/lib/fpl-rules';
 
@@ -36,10 +42,12 @@ export const AiScoutModal: React.FC = () => {
     getPlayerGameweekXp,
     getPlayerUpcomingFixtures,
     isGameweekLocked,
-    executeDirectTransfer
+    executeDirectTransfer,
+    applyOptimalSquad,
+    scoutInitialTab
   } = usePlannerStore();
 
-  const [activeTab, setActiveTab] = useState<'transfers' | 'targets' | 'hits' | 'chips'>('transfers');
+  const [activeTab, setActiveTab] = useState<'transfers' | 'targets' | 'hits' | 'chips' | 'optimal_squad'>('transfers');
   const [horizon, setHorizon] = useState<'1gw' | '3gw' | '5gw'>('3gw');
   const [targetPosition, setTargetPosition] = useState<number | 'value'>(3); // Default MID
   const [appliedTransferMsg, setAppliedTransferMsg] = useState<string | null>(null);
@@ -99,6 +107,32 @@ export const AiScoutModal: React.FC = () => {
     return getChipRadarRecommendations(squad, players, selectedGameweek, getPlayerGameweekXp);
   }, [isScoutModalOpen, squad, players, selectedGameweek, getPlayerGameweekXp]);
 
+  // 5. Strongest 15-Man Squad Generator (Budget Solver)
+  const squadValue = useMemo(() => {
+    return squad.reduce((sum, p) => sum + (playerMap.get(p.element)?.now_cost || 0), 0);
+  }, [squad, playerMap]);
+
+  const totalAvailableBudget = squadValue + (currentPlan?.calculatedBank || 0);
+
+  const optimalSquad: OptimalSquadResult | null = useMemo(() => {
+    if (!isScoutModalOpen) return null;
+    return solveOptimalSquad(
+      players,
+      playerMap,
+      totalAvailableBudget,
+      selectedGameweek,
+      getPlayerGameweekXp,
+      squad,
+      horizon === '1gw' ? 1 : horizon === '3gw' ? 3 : 5
+    );
+  }, [isScoutModalOpen, players, playerMap, totalAvailableBudget, selectedGameweek, getPlayerGameweekXp, squad, horizon]);
+
+  React.useEffect(() => {
+    if (scoutInitialTab) {
+      setActiveTab(scoutInitialTab);
+    }
+  }, [scoutInitialTab]);
+
   React.useEffect(() => {
     if (!isScoutModalOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -125,6 +159,13 @@ export const AiScoutModal: React.FC = () => {
       setAppliedTransferMsg(`Applied Double Move (-4 hit): +${combo.netProfitAfterHit} net pts profit!`);
       setTimeout(() => setAppliedTransferMsg(null), 3500);
     }, 100);
+  };
+
+  const handleApplyOptimalSquad = () => {
+    if (isLocked || !optimalSquad) return;
+    applyOptimalSquad(optimalSquad.squad, selectedGameweek);
+    setAppliedTransferMsg(`✨ Applied Strongest 15-Man Squad (${optimalSquad.formation}) · ${optimalSquad.captain.web_name} (C) · ${optimalSquad.totalProjectedPoints} xP!`);
+    setTimeout(() => setAppliedTransferMsg(null), 4500);
   };
 
   return (
@@ -172,10 +213,23 @@ export const AiScoutModal: React.FC = () => {
         )}
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 px-4 sm:px-6 py-3 border-b border-white/10 bg-slate-950/70 select-none overflow-hidden flex-wrap sm:flex-nowrap">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 px-4 sm:px-6 py-3 border-b border-white/10 bg-slate-950/70 select-none overflow-x-auto flex-nowrap">
+          <button
+            onClick={() => setActiveTab('optimal_squad')}
+            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-xl transition-all border shrink-0 ${
+              activeTab === 'optimal_squad'
+                ? 'bg-gradient-to-r from-teal-500 via-emerald-600 to-teal-500 text-white border-emerald-400 shadow-lg scale-102'
+                : 'bg-slate-900/90 text-emerald-400 hover:text-white border-emerald-500/30 hover:border-emerald-400'
+            }`}
+          >
+            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+            <span>Strongest Team Solver</span>
+            <span className="text-[9px] bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded-full font-black">AI Best</span>
+          </button>
+
           <button
             onClick={() => setActiveTab('transfers')}
-            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-lg transition-all border ${
+            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-xl transition-all border shrink-0 ${
               activeTab === 'transfers'
                 ? 'bg-emerald-600 text-white border-emerald-500 shadow-md'
                 : 'bg-slate-900/90 text-slate-400 hover:text-white border-white/10 hover:border-white/20'
@@ -187,7 +241,7 @@ export const AiScoutModal: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('targets')}
-            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-lg transition-all border ${
+            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-xl transition-all border shrink-0 ${
               activeTab === 'targets'
                 ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md'
                 : 'bg-slate-900/90 text-slate-400 hover:text-white border-white/10 hover:border-white/20'
@@ -199,7 +253,7 @@ export const AiScoutModal: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('hits')}
-            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-lg transition-all border ${
+            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-xl transition-all border shrink-0 ${
               activeTab === 'hits'
                 ? 'bg-rose-600 text-white border-rose-500 shadow-md'
                 : 'bg-slate-900/90 text-slate-400 hover:text-white border-white/10 hover:border-white/20'
@@ -211,7 +265,7 @@ export const AiScoutModal: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('chips')}
-            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-lg transition-all border ${
+            className={`px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black flex items-center gap-2 rounded-xl transition-all border shrink-0 ${
               activeTab === 'chips'
                 ? 'bg-purple-600 text-white border-purple-500 shadow-md'
                 : 'bg-slate-900/90 text-slate-400 hover:text-white border-white/10 hover:border-white/20'
@@ -597,6 +651,205 @@ export const AiScoutModal: React.FC = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* TAB 5: STRONGEST SQUAD (BUDGET SOLVER) */}
+          {activeTab === 'optimal_squad' && (
+            <div className="space-y-4">
+              {/* Header Stats Bar */}
+              <div className="p-4 rounded-3xl bg-gradient-to-r from-teal-950 via-slate-900 to-emerald-950 border border-emerald-500/40 shadow-2xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="p-3 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-lg shadow-emerald-950/60 shrink-0">
+                    <Wand2 className="w-6 h-6 animate-pulse" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base sm:text-lg font-black text-white">
+                        Strongest Possible 15-Man Squad
+                      </h3>
+                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/40">
+                        {optimalSquad?.formation || 'Optimal'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 mt-0.5">
+                      Maximized expected points within your exact budget of <strong className="text-emerald-400 font-mono">{formatMoney(totalAvailableBudget, true)}</strong>.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Horizon Switcher */}
+                <div className="flex items-center gap-2 bg-slate-950/80 p-1.5 rounded-2xl border border-white/10 shrink-0 self-start md:self-auto">
+                  <span className="text-xs text-slate-400 font-bold px-2 flex items-center gap-1">
+                    <Layers className="w-3.5 h-3.5 text-cyan-400" />
+                    Target:
+                  </span>
+                  {(['1gw', '3gw', '5gw'] as const).map(hz => (
+                    <button
+                      key={hz}
+                      onClick={() => setHorizon(hz)}
+                      className={`px-3 py-1 text-xs font-black rounded-xl transition-all ${
+                        horizon === hz
+                          ? 'bg-emerald-600 text-white shadow-md'
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {hz === '1gw' ? '1 GW' : hz === '3gw' ? '3 GWs' : '5 GWs'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Metrics Grid */}
+              {optimalSquad && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
+                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">Total Cost / Bank</span>
+                    <span className="text-sm sm:text-base font-black text-white font-mono">
+                      {formatMoney(optimalSquad.totalCost, true)} <span className="text-xs text-slate-400">({formatMoney(optimalSquad.remainingBank, true)} ITB)</span>
+                    </span>
+                  </div>
+
+                  <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
+                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">Projected Score</span>
+                    <span className="text-sm sm:text-base font-black text-emerald-400 font-mono">
+                      {optimalSquad.totalProjectedPoints} pts
+                    </span>
+                  </div>
+
+                  <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
+                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">Expected Gain</span>
+                    <span className="text-sm sm:text-base font-black text-cyan-400 font-mono flex items-center justify-center gap-1">
+                      <TrendingUp className="w-3.5 h-3.5" />
+                      +{optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} pts
+                    </span>
+                  </div>
+
+                  <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
+                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">Transfers from Current</span>
+                    <span className="text-sm sm:text-base font-black text-amber-400 font-mono">
+                      {optimalSquad.transfersCount} / 15 players
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Apply Button */}
+              {optimalSquad && !isLocked && (
+                <button
+                  onClick={handleApplyOptimalSquad}
+                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:brightness-110 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl shadow-emerald-950/60 transition active:scale-98 border border-emerald-400/40"
+                >
+                  <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
+                  <span>⚡ Apply Strongest 15-Man Team to GW {selectedGameweek}</span>
+                  <span className="text-xs bg-emerald-950/80 px-2 py-0.5 rounded-lg border border-emerald-400/30">
+                    +{optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} xP
+                  </span>
+                </button>
+              )}
+
+              {/* Lineup Visual Grid */}
+              {optimalSquad && (
+                <div className="space-y-3 pt-2">
+                  {/* Starters Section */}
+                  <div className="p-4 rounded-3xl bg-slate-950/70 border border-white/10">
+                    <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/10">
+                      <span className="text-xs sm:text-sm font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                        <Crown className="w-4 h-4 text-amber-400" />
+                        Starting XI ({optimalSquad.formation}) · {optimalSquad.captain.web_name} (C) · {optimalSquad.viceCaptain.web_name} (V)
+                      </span>
+                      <span className="text-xs text-emerald-400 font-mono font-bold">11 Starters</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                      {optimalSquad.starters.map(({ player, xp, isCaptain, isViceCaptain }) => {
+                        const team = teamMap.get(player.team);
+                        const isGK = player.element_type === 1;
+
+                        return (
+                          <div
+                            key={player.id}
+                            className="relative p-2.5 rounded-2xl bg-slate-900 border border-white/10 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center group"
+                          >
+                            {/* Captain / Vice Captain Badge */}
+                            {(isCaptain || isViceCaptain) && (
+                              <div className={`absolute top-1.5 left-1.5 w-5 h-5 rounded-full flex items-center justify-center font-black text-[10px] shadow border ${
+                                isCaptain 
+                                  ? 'bg-black text-amber-300 border-amber-300' 
+                                  : 'bg-black text-white border-slate-300'
+                              }`}>
+                                {isCaptain ? 'C' : 'V'}
+                              </div>
+                            )}
+
+                            {/* Kit Icon */}
+                            <KitIcon
+                              teamCode={team?.code}
+                              teamShortName={team?.short_name}
+                              isGoalkeeper={isGK}
+                              className="w-12 h-12 mb-1 group-hover:scale-105 transition-transform"
+                            />
+
+                            <span className="text-xs font-black text-white truncate max-w-full block leading-tight">
+                              {player.web_name}
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono">
+                              {team?.short_name} · {formatMoney(player.now_cost, true)}
+                            </span>
+
+                            <div className="mt-1.5 px-2 py-0.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-[10.5px] font-black text-emerald-300 font-mono">
+                              {isCaptain ? `${(xp * 2).toFixed(1)} xP (2x)` : `${xp.toFixed(1)} xP`}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Bench Section */}
+                  <div className="p-4 rounded-3xl bg-slate-950/70 border border-white/10">
+                    <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/10">
+                      <span className="text-xs sm:text-sm font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <ShieldAlert className="w-4 h-4 text-emerald-400" />
+                        Substitutes Bench
+                      </span>
+                      <span className="text-xs text-slate-400 font-mono font-bold">4 Bench</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {optimalSquad.bench.map(({ player, xp }, idx) => {
+                        const team = teamMap.get(player.team);
+                        const isGK = player.element_type === 1;
+                        const label = idx === 0 ? 'GK' : `Bench ${idx}`;
+
+                        return (
+                          <div
+                            key={player.id}
+                            className="p-2.5 rounded-2xl bg-slate-900/80 border border-white/10 flex flex-col items-center text-center"
+                          >
+                            <span className="text-[10px] font-bold text-slate-400 uppercase mb-0.5">{label}</span>
+                            <KitIcon
+                              teamCode={team?.code}
+                              teamShortName={team?.short_name}
+                              isGoalkeeper={isGK}
+                              className="w-10 h-10 mb-1"
+                            />
+                            <span className="text-xs font-black text-white truncate max-w-full block leading-tight">
+                              {player.web_name}
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono">
+                              {team?.short_name} · {formatMoney(player.now_cost, true)}
+                            </span>
+                            <div className="mt-1 px-2 py-0.5 rounded-lg bg-slate-950 border border-white/10 text-[10px] font-bold text-slate-300 font-mono">
+                              {xp.toFixed(1)} xP
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

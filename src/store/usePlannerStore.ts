@@ -12,7 +12,8 @@ import {
 } from '@/types/fpl';
 import { calculateGameweekFinancials, canSwapSquadSlots, validateClubLimit } from '@/lib/fpl-rules';
 import { saveActivePin, getActivePin } from '@/lib/auth';
-import { optimizeLineup, OptimizationResult } from '@/utils/aiOptimizer';
+import { optimizeLineup, autoOrderBench, OptimizationResult } from '@/utils/aiOptimizer';
+import { calculatePlayerOddsXp } from '@/utils/aiOddsEngine';
 
 export interface PlayedChipInfo {
   name: string;
@@ -60,6 +61,8 @@ currentView: 'pitch' | 'matrix';
   matrixPer90: boolean;
   matrixSortBy: string;
   matrixSortDirection: 'asc' | 'desc';
+  matrixViewTab: 'stats' | 'price_radar';
+  matrixPriceFilter: 'all' | 'rising' | 'approaching' | 'falling' | 'squad';
   setMatrixSearch: (query: string) => void;
   setMatrixPosition: (pos: number | null) => void;
   setMatrixTeamId: (teamId: number | null) => void;
@@ -67,10 +70,13 @@ currentView: 'pitch' | 'matrix';
   setMatrixHorizon: (h: 1 | 3 | 5) => void;
   setMatrixPer90: (val: boolean) => void;
   setMatrixSort: (column: string) => void;
+  setMatrixViewTab: (tab: 'stats' | 'price_radar') => void;
+  setMatrixPriceFilter: (filter: 'all' | 'rising' | 'approaching' | 'falling' | 'squad') => void;
   getPlayerHorizonXp: (playerId: number, count: number) => number;
   showAiPredictions: boolean;
   toggleAiPredictions: () => void;
   autoOptimizeStartingXI: () => void;
+  autoOrderBenchLineup: (targetGw?: number) => boolean;
 
   activePin: string | null;
   teamSummary: EntrySummary | null;
@@ -94,7 +100,8 @@ currentView: 'pitch' | 'matrix';
   scoutPlayerOut: FPLPlayer | null;
   scoutPlayerIn: FPLPlayer | null;
   scoutGain: number;
-  openScoutModal: (pOut?: FPLPlayer | null, pIn?: FPLPlayer | null, gain?: number) => void;
+  scoutInitialTab: 'transfers' | 'targets' | 'hits' | 'chips' | 'optimal_squad' | null;
+  openScoutModal: (pOut?: FPLPlayer | null, pIn?: FPLPlayer | null, gain?: number, initialTab?: 'transfers' | 'targets' | 'hits' | 'chips' | 'optimal_squad') => void;
   closeScoutModal: () => void;
   executeDirectTransfer: (playerOutId: number, playerInId: number) => boolean;
 
@@ -120,6 +127,7 @@ currentView: 'pitch' | 'matrix';
   setCaptain: (elementId: number) => void;
   setViceCaptain: (elementId: number) => void;
   optimizeSquadLineup: (gw?: number) => OptimizationResult | null;
+  applyOptimalSquad: (newSquad: SquadPick[], targetGw?: number) => void;
 
   openTransferDrawer: (playerOutId?: number | null) => void;
   closeTransferDrawer: () => void;
@@ -173,6 +181,8 @@ currentView: 'pitch',
   matrixPer90: false,
   matrixSortBy: 'xP',
   matrixSortDirection: 'desc',
+  matrixViewTab: 'stats',
+  matrixPriceFilter: 'all',
 
   setMatrixSearch: (query) => set({ matrixSearch: query }),
   setMatrixPosition: (pos) => set({ matrixPosition: pos }),
@@ -180,6 +190,8 @@ currentView: 'pitch',
   setMatrixPriceRange: (min, max) => set({ matrixMinPrice: min, matrixMaxPrice: max }),
   setMatrixHorizon: (h) => set({ matrixHorizon: h }),
   setMatrixPer90: (val) => set({ matrixPer90: val }),
+  setMatrixViewTab: (tab) => set({ matrixViewTab: tab }),
+  setMatrixPriceFilter: (filter) => set({ matrixPriceFilter: filter }),
   setMatrixSort: (col) => {
     const current = get().matrixSortBy;
     const currentDir = get().matrixSortDirection;
@@ -223,8 +235,9 @@ currentView: 'pitch',
   scoutPlayerOut: null,
   scoutPlayerIn: null,
   scoutGain: 0,
-  openScoutModal: (pOut, pIn, gain) => set({ isScoutModalOpen: true, scoutPlayerOut: pOut, scoutPlayerIn: pIn, scoutGain: gain }),
-  closeScoutModal: () => set({ isScoutModalOpen: false, scoutPlayerOut: null, scoutPlayerIn: null }),
+  scoutInitialTab: null,
+  openScoutModal: (pOut, pIn, gain, initialTab) => set({ isScoutModalOpen: true, scoutPlayerOut: pOut || null, scoutPlayerIn: pIn || null, scoutGain: gain || 0, scoutInitialTab: initialTab || null }),
+  closeScoutModal: () => set({ isScoutModalOpen: false, scoutPlayerOut: null, scoutPlayerIn: null, scoutInitialTab: null }),
 
   marketSearch: '',
   marketPosition: null,
@@ -843,11 +856,60 @@ currentView: 'pitch',
       return;
     }
 
+    const pickA = currentPlan.squad.find(p => p.position === selectedSlotForSwap);
+    const pickB = currentPlan.squad.find(p => p.position === slot);
+    if (!pickA || !pickB) return;
+
+    const isStarterA = selectedSlotForSwap <= 11;
+    const isStarterB = slot <= 11;
+    const isTripleCaptain = currentPlan.chip === '3xc';
+
     const newSquad = currentPlan.squad.map(p => {
-      if (p.position === selectedSlotForSwap) return { ...p, position: slot };
-      if (p.position === slot) return { ...p, position: selectedSlotForSwap };
+      if (p.position === selectedSlotForSwap) {
+        // Player A moves to slot B
+        const goingToBench = isStarterA && !isStarterB;
+        return {
+          ...p,
+          position: slot,
+          is_captain: goingToBench ? false : p.is_captain,
+          is_vice_captain: goingToBench ? false : p.is_vice_captain,
+          multiplier: goingToBench ? 0 : p.multiplier
+        };
+      }
+      if (p.position === slot) {
+        // Player B moves to slot A
+        const comingOnFromBench = !isStarterB && isStarterA;
+        const inheritsCaptain = comingOnFromBench && pickA.is_captain;
+        const inheritsVice = comingOnFromBench && pickA.is_vice_captain;
+        const goingToBench = isStarterB && !isStarterA;
+
+        return {
+          ...p,
+          position: selectedSlotForSwap,
+          is_captain: inheritsCaptain ? true : goingToBench ? false : p.is_captain,
+          is_vice_captain: inheritsVice ? true : goingToBench ? false : p.is_vice_captain,
+          multiplier: inheritsCaptain ? (isTripleCaptain ? 3 : 2) : goingToBench ? 0 : p.multiplier
+        };
+      }
       return p;
     });
+
+    // Handle reciprocal when Player A is coming on from bench (selectedSlotForSwap > 11 && slot <= 11)
+    if (!isStarterA && isStarterB) {
+      const inheritsCaptain = pickB.is_captain;
+      const inheritsVice = pickB.is_vice_captain;
+      newSquad.forEach(p => {
+        if (p.element === pickA.element) {
+          if (inheritsCaptain) {
+            p.is_captain = true;
+            p.multiplier = isTripleCaptain ? 3 : 2;
+          } else if (inheritsVice) {
+            p.is_vice_captain = true;
+            p.multiplier = 1;
+          }
+        }
+      });
+    }
 
     const updatedPlans = { ...gameweekPlans };
     updatedPlans[selectedGameweek] = {
@@ -867,12 +929,30 @@ currentView: 'pitch',
     const currentPlan = gameweekPlans[selectedGameweek];
     if (!currentPlan) return;
 
+    const targetPick = currentPlan.squad.find(p => p.element === elementId);
+    if (!targetPick) return;
+
+    // Check if target player was already vice-captain
+    const wasTargetViceCaptain = targetPick.is_vice_captain;
+    const isTripleCaptain = currentPlan.chip === '3xc';
+
     const newSquad = currentPlan.squad.map(p => {
       if (p.element === elementId) {
-        return { ...p, is_captain: true, is_vice_captain: false, multiplier: 2 };
+        return { 
+          ...p, 
+          is_captain: true, 
+          is_vice_captain: false, 
+          multiplier: isTripleCaptain ? 3 : 2 
+        };
       }
       if (p.is_captain) {
-        return { ...p, is_captain: false, multiplier: 1 };
+        // If target was vice-captain, previous captain automatically becomes vice-captain (roles swapped!)
+        return { 
+          ...p, 
+          is_captain: false, 
+          is_vice_captain: wasTargetViceCaptain ? true : p.is_vice_captain, 
+          multiplier: 1 
+        };
       }
       return p;
     });
@@ -890,12 +970,30 @@ currentView: 'pitch',
     const currentPlan = gameweekPlans[selectedGameweek];
     if (!currentPlan) return;
 
+    const targetPick = currentPlan.squad.find(p => p.element === elementId);
+    if (!targetPick) return;
+
+    // Check if target player was already captain
+    const wasTargetCaptain = targetPick.is_captain;
+    const isTripleCaptain = currentPlan.chip === '3xc';
+
     const newSquad = currentPlan.squad.map(p => {
       if (p.element === elementId) {
-        return { ...p, is_vice_captain: true, is_captain: false };
+        return { 
+          ...p, 
+          is_vice_captain: true, 
+          is_captain: false, 
+          multiplier: 1 
+        };
       }
       if (p.is_vice_captain) {
-        return { ...p, is_vice_captain: false };
+        // If target was captain, previous vice-captain automatically becomes captain (roles swapped!)
+        return { 
+          ...p, 
+          is_vice_captain: false, 
+          is_captain: wasTargetCaptain ? true : p.is_captain, 
+          multiplier: wasTargetCaptain ? (isTripleCaptain ? 3 : 2) : p.multiplier 
+        };
       }
       return p;
     });
@@ -927,6 +1025,46 @@ currentView: 'pitch',
     recalculateMultiGameweekPlans(get, set);
     get().saveCurrentPlanToServer();
     return result;
+  },
+
+  autoOrderBenchLineup: (targetGw?: number) => {
+    const { selectedGameweek, gameweekPlans, playerMap, getPlayerGameweekXp, isGameweekLocked } = get();
+    const gw = targetGw ?? selectedGameweek;
+    if (isGameweekLocked(gw)) return false;
+
+    const currentPlan = gameweekPlans[gw];
+    if (!currentPlan || !currentPlan.squad || currentPlan.squad.length !== 15) return false;
+
+    const newSquad = autoOrderBench(currentPlan.squad, playerMap, gw, getPlayerGameweekXp);
+    const updatedPlans = { ...gameweekPlans };
+    updatedPlans[gw] = {
+      ...currentPlan,
+      squad: newSquad,
+    };
+
+    set({ gameweekPlans: updatedPlans, selectedSlotForSwap: null });
+    recalculateMultiGameweekPlans(get, set);
+    get().saveCurrentPlanToServer();
+    return true;
+  },
+
+  applyOptimalSquad: (newSquad: SquadPick[], targetGw?: number) => {
+    const { selectedGameweek, gameweekPlans, isGameweekLocked } = get();
+    const gw = targetGw ?? selectedGameweek;
+    if (isGameweekLocked(gw)) return;
+
+    const currentPlan = gameweekPlans[gw];
+    if (!currentPlan) return;
+
+    const updatedPlans = { ...gameweekPlans };
+    updatedPlans[gw] = {
+      ...currentPlan,
+      squad: newSquad,
+    };
+
+    set({ gameweekPlans: updatedPlans, selectedSlotForSwap: null });
+    recalculateMultiGameweekPlans(get, set);
+    get().saveCurrentPlanToServer();
   },
 
   openTransferDrawer: (playerOutId?: number | null) => {
@@ -1228,13 +1366,8 @@ currentView: 'pitch',
         let xP = aiProjectionsMap.get(openFplKey);
 
         if (xP === undefined) {
-          const fdrMultiplier = difficulty === 1 ? 1.20 : difficulty === 2 ? 1.10 : difficulty === 4 ? 0.85 : difficulty === 5 ? 0.70 : 1.00;
-          const homeMultiplier = isHome ? 1.08 : 0.92;
-          xP = epBase * fdrMultiplier * homeMultiplier;
-          if (player.chance_of_playing_next_round !== null && player.chance_of_playing_next_round < 100) {
-            xP = xP * (player.chance_of_playing_next_round / 100);
-          }
-          xP = Math.max(0.5, Math.round(xP * 10) / 10);
+          const playerTeam = teamMap.get(playerTeamId);
+          xP = calculatePlayerOddsXp(player, isHome, playerTeam, oppTeam, epBase);
         }
 
         upcoming.push({
@@ -1254,15 +1387,64 @@ currentView: 'pitch',
   },
 
   getPlayerGameweekXp: (playerId: number, gameweek: number): number => {
-    const { aiProjectionsMap } = get();
-    const openFplDirect = aiProjectionsMap.get(`${playerId}_${gameweek}`);
-    if (openFplDirect !== undefined) return openFplDirect;
+    const { aiProjectionsMap, playerMap } = get();
+    const p = playerMap.get(playerId);
 
-    const fixtures = get().getPlayerUpcomingFixtures(playerId, 10);
-    const match = fixtures.find(f => f.event === gameweek);
-    if (match && match.xP !== undefined) return match.xP;
-    const p = get().playerMap.get(playerId);
-    return p ? Math.round((parseFloat(p.form) || 3.0) * 10) / 10 : 3.0;
+    // 1. Availability probability factor from official FPL injury/fitness telemetry
+    let availabilityFactor = 1.0;
+    if (p) {
+      if (p.status === 'i' || p.status === 's' || p.status === 'u') {
+        availabilityFactor = 0.0;
+      } else if (p.chance_of_playing_next_round !== null && p.chance_of_playing_next_round !== undefined) {
+        availabilityFactor = p.chance_of_playing_next_round / 100.0;
+      } else if (p.status === 'd') {
+        availabilityFactor = 0.5;
+      }
+    }
+
+    if (availabilityFactor === 0) return 0.0;
+
+    // 2. Base Expected Points from Machine Learning model or Form
+    let rawXp = 3.0;
+    const openFplDirect = aiProjectionsMap.get(`${playerId}_${gameweek}`);
+    if (openFplDirect !== undefined) {
+      rawXp = openFplDirect;
+    } else {
+      const fixtures = get().getPlayerUpcomingFixtures(playerId, 10);
+      const match = fixtures.find(f => f.event === gameweek);
+      if (match && match.xP !== undefined) {
+        rawXp = match.xP;
+      } else if (p) {
+        rawXp = parseFloat(p.form) || 3.0;
+      }
+    }
+
+    // 3. Expected Minutes Damping (accounts for historical minutes per appearance)
+    let minutesFactor = 1.0;
+    if (p && p.minutes && p.starts) {
+      const minsPerStart = p.starts > 0 ? (p.minutes / p.starts) : 90;
+      if (minsPerStart < 60) {
+        minutesFactor = Math.max(0.4, minsPerStart / 90.0);
+      }
+    }
+
+    // 4. Set-Piece & Goalkeeper Save Floor Buffers
+    let setPieceBonus = 0;
+    let gkSaveFloor = 0;
+    if (p) {
+      // Goalkeeper save floor in tough fixtures
+      if (p.element_type === 1) {
+        gkSaveFloor = 2.8;
+      }
+      // Threat & Creativity set-piece bonus for elite creators/finishers
+      const ict = parseFloat(p.ict_index || '0');
+      if (ict > 20) {
+        setPieceBonus = Math.min(0.8, ict * 0.015);
+      }
+    }
+
+    const calculated = (rawXp + setPieceBonus) * availabilityFactor * minutesFactor;
+    return Math.max(p?.element_type === 1 ? gkSaveFloor * availabilityFactor : 0.0, Math.round(calculated * 10) / 10);
   },
 
   getPlayerGameweekActualPoints: (playerId: number, gameweek: number): number | null => {

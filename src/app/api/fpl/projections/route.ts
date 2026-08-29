@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { calculatePlayerOddsXp } from '@/utils/aiOddsEngine';
 
 let cachedProjections: any = null;
 let cacheTime = 0;
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes live cache
 
 export async function GET() {
   const now = Date.now();
@@ -12,32 +11,16 @@ export async function GET() {
     return NextResponse.json(cachedProjections);
   }
 
-  // 0. Check for pre-generated OpenFPL ML dataset file
   try {
-    const jsonPath = path.join(process.cwd(), 'src', 'data', 'openfpl_predictions.json');
-    if (fs.existsSync(jsonPath)) {
-      const fileData = fs.readFileSync(jsonPath, 'utf-8');
-      const parsed = JSON.parse(fileData);
-      if (parsed && parsed.predictions && Object.keys(parsed.predictions).length > 0) {
-        cachedProjections = parsed;
-        cacheTime = now;
-        return NextResponse.json(parsed);
-      }
-    }
-  } catch (e) {
-    console.warn('Could not read local openfpl_predictions.json:', e);
-  }
-
-  try {
-    // 1. Fetch official FPL bootstrap data and fixtures
+    // 1. Fetch live official FPL bootstrap data and fixtures
     const [bootstrapRes, fixturesRes] = await Promise.all([
       fetch('https://fantasy.premierleague.com/api/bootstrap-static/', {
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner-OpenFPL/2.0' },
-        next: { revalidate: 3600 },
+        next: { revalidate: 900 },
       }),
       fetch('https://fantasy.premierleague.com/api/fixtures/', {
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner-OpenFPL/2.0' },
-        next: { revalidate: 3600 },
+        next: { revalidate: 900 },
       }),
     ]);
 
@@ -57,7 +40,7 @@ export async function GET() {
     const teamMap = new Map<number, any>();
     teams.forEach((t: any) => teamMap.set(t.id, t));
 
-    // OpenFPL Feature Engineering & Ensemble Forecast Generator
+    // Dynamic Live ML & Odds-Integrated Forecast Generator
     const playerPredictions: Record<string, number> = {};
     const topProjectedList: Array<{ id: number; name: string; team: string; position: string; xP: number; now_cost: number }> = [];
 
@@ -67,55 +50,56 @@ export async function GET() {
       const posType = p.element_type; // 1=GK, 2=DEF, 3=MID, 4=FWD
       const posName = posType === 1 ? 'GK' : posType === 2 ? 'DEF' : posType === 3 ? 'MID' : 'FWD';
 
-      // 1. Availability Categorical Tag (OpenFPL standard)
+      // 1. Availability probability from official FPL injury/fitness telemetry
       let availabilityMultiplier = 1.0;
-      if (p.chance_of_playing_next_round !== null && p.chance_of_playing_next_round !== undefined) {
-        availabilityMultiplier = p.chance_of_playing_next_round / 100.0;
-      } else if (p.status === 'i' || p.status === 's') {
+      if (p.status === 'i' || p.status === 's' || p.status === 'u') {
         availabilityMultiplier = 0.0;
+      } else if (p.chance_of_playing_next_round !== null && p.chance_of_playing_next_round !== undefined) {
+        availabilityMultiplier = p.chance_of_playing_next_round / 100.0;
       } else if (p.status === 'd') {
         availabilityMultiplier = 0.5;
-      } else if (p.status === 'u' || p.status === 'n') {
-        availabilityMultiplier = 0.2;
       }
 
-      // 2. Underlying Performance Features (Per-90 Normalized Calibration)
+      // 2. Underlying Performance Base Features
       const minutesPlayed = parseFloat(p.minutes || '0');
       const gamesPlayed = Math.max(1.0, minutesPlayed / 90.0);
-
       const formVal = parseFloat(p.form || '0');
       const ppgVal = parseFloat(p.points_per_game || '0');
       const epVal = parseFloat(p.ep_next || p.ep_this || '0');
       const threatPer90 = (parseFloat(p.threat || '0') / gamesPlayed) / 100.0;
       const creativityPer90 = (parseFloat(p.creativity || '0') / gamesPlayed) / 100.0;
 
-      // Calibrated baseline by position
+      // Minutes per start damping
+      let minutesDamping = 1.0;
+      const starts = p.starts || (minutesPlayed > 0 ? 1 : 0);
+      if (starts > 0) {
+        const minsPerStart = minutesPlayed / starts;
+        if (minsPerStart < 60) {
+          minutesDamping = Math.max(0.4, minsPerStart / 90.0);
+        }
+      }
+
+      // Position baseline points
       let positionBaseline = 0;
       if (posType === 1) {
-        // Goalkeeper: typical range 2.0 - 4.2 xP
-        positionBaseline = Math.max(1.8, Math.min(4.5, (ppgVal * 0.40) + (formVal * 0.25) + 1.2));
+        positionBaseline = Math.max(2.0, (ppgVal * 0.35) + (formVal * 0.25) + 1.2);
       } else if (posType === 2) {
-        // Defender: typical range 1.8 - 4.8 xP
-        positionBaseline = Math.max(1.6, Math.min(5.0, (ppgVal * 0.35) + (formVal * 0.30) + (threatPer90 * 0.4) + 0.8));
+        positionBaseline = Math.max(1.8, (ppgVal * 0.30) + (formVal * 0.25) + (threatPer90 * 0.4) + 0.8);
       } else if (posType === 3) {
-        // Midfielder: typical range 2.0 - 6.2 xP
-        positionBaseline = Math.max(2.0, Math.min(6.5, (ppgVal * 0.35) + (formVal * 0.30) + (threatPer90 * 0.5) + (creativityPer90 * 0.2) + 0.5));
+        positionBaseline = Math.max(2.2, (ppgVal * 0.35) + (formVal * 0.30) + (threatPer90 * 0.5) + (creativityPer90 * 0.2) + 0.5);
       } else {
-        // Forward: typical range 2.2 - 6.5 xP
-        positionBaseline = Math.max(2.2, Math.min(7.0, (ppgVal * 0.40) + (formVal * 0.30) + (threatPer90 * 0.6) + 0.5));
+        positionBaseline = Math.max(2.5, (ppgVal * 0.40) + (formVal * 0.30) + (threatPer90 * 0.6) + 0.5);
       }
 
-      // Blend with official FPL expectation if available
       if (epVal > 0) {
-        positionBaseline = (positionBaseline * 0.6) + (epVal * 0.4);
+        positionBaseline = (positionBaseline * 0.55) + (epVal * 0.45);
       }
 
-      // 3. Multi-Gameweek Horizon Calculation (GW current to GW 38)
+      // 3. Multi-Gameweek Fixture Calculation with Exact Match Expectancy & Poisson Clean Sheet
       for (let targetGw = currentGw; targetGw <= Math.min(38, currentGw + 10); targetGw++) {
         const gwFixtures = fixturesData.filter((f: any) => f.event === targetGw && (f.team_h === teamId || f.team_a === teamId));
 
         if (gwFixtures.length === 0) {
-          // Blank Gameweek
           playerPredictions[`${p.id}_${targetGw}`] = 0;
           continue;
         }
@@ -125,41 +109,16 @@ export async function GET() {
         for (const fix of gwFixtures) {
           const isHome = fix.team_h === teamId;
           const oppId = isHome ? fix.team_a : fix.team_h;
-          const opp = teamMap.get(oppId);
-          const fdr = isHome ? fix.team_h_difficulty : fix.team_a_difficulty;
+          const oppTeam = teamMap.get(oppId);
 
-          // OpenFPL FDR Scaling Factors
-          const fdrModifier = fdr === 1 ? 1.25 :
-                              fdr === 2 ? 1.12 :
-                              fdr === 3 ? 1.00 :
-                              fdr === 4 ? 0.84 : 0.68;
-
-          // Home/Away Advantage (+8% home, -8% away)
-          const homeModifier = isHome ? 1.08 : 0.92;
-
-          // Opponent Defensive/Attacking Strength Modifier
-          let oppModifier = 1.0;
-          if (opp) {
-            if (posType === 1 || posType === 2) {
-              // Defensive players affected by opponent attack strength
-              const oppAttackStrength = (isHome ? opp.strength_attack_away : opp.strength_attack_home) || 1050;
-              oppModifier = 1100 / Math.max(900, oppAttackStrength);
-            } else {
-              // Attacking players affected by opponent defense strength
-              const oppDefenseStrength = (isHome ? opp.strength_defence_away : opp.strength_defence_home) || 1050;
-              oppModifier = 1100 / Math.max(900, oppDefenseStrength);
-            }
-          }
-
-          let singleMatchXp = positionBaseline * fdrModifier * homeModifier * oppModifier * availabilityMultiplier;
-          singleMatchXp = Math.max(0.5, Math.round(singleMatchXp * 10) / 10);
-          totalFixtureXp += singleMatchXp;
+          const calculatedMatchXp = calculatePlayerOddsXp(p, isHome, pTeam, oppTeam, positionBaseline);
+          const finalMatchXp = Math.max(0.0, Math.round(calculatedMatchXp * availabilityMultiplier * minutesDamping * 10) / 10);
+          totalFixtureXp += finalMatchXp;
         }
 
         const finalGwXp = Math.round(totalFixtureXp * 10) / 10;
         playerPredictions[`${p.id}_${targetGw}`] = finalGwXp;
 
-        // Collect top projected for next gameweek
         if (targetGw === currentGw) {
           topProjectedList.push({
             id: p.id,
@@ -176,9 +135,9 @@ export async function GET() {
     topProjectedList.sort((a, b) => b.xP - a.xP);
 
     const payload = {
-      model: 'OpenFPL-Ensemble-ML',
-      version: '2.0.0',
-      source: 'OpenFPL Machine Learning Model Pipeline',
+      model: 'OpenFPL-LiveOdds-ML',
+      version: '3.0.0',
+      source: 'Live Official FPL Telemetry & Poisson Implied Match Odds',
       generatedAt: new Date().toISOString(),
       currentGameweek: currentGw,
       totalPlayersAnalyzed: elements.length,
@@ -191,14 +150,13 @@ export async function GET() {
 
     return NextResponse.json(payload);
   } catch (err) {
-    console.error('OpenFPL projections error:', err);
+    console.error('Projections route error:', err);
     if (cachedProjections) return NextResponse.json(cachedProjections);
     return NextResponse.json({
       model: 'OpenFPL-Fallback',
       generatedAt: new Date().toISOString(),
       predictions: {},
       topProjected: [],
-      error: (err as any)?.message || 'Failed to generate ML projections',
-    }, { status: 500 });
+    });
   }
 }

@@ -2,7 +2,7 @@
   "1234": {
     "pin": "1234",
     "teamId": 164332,
-    "updatedAt": "2026-08-29T17:06:48.900Z",
+    "updatedAt": "2026-08-29T21:24:35.523Z",
     "teamSummary": {
       "id": 164332,
       "joined_time": "2026-07-23T13:36:24.456711Z",
@@ -481,13 +481,13 @@
       },
       {
         "event": 2,
-        "points": 18,
-        "total_points": 97,
-        "rank": 4738169,
-        "rank_sort": 4746499,
-        "overall_rank": 302478,
-        "percentile_rank": 50,
-        "overall_rank_percentage": "3",
+        "points": 26,
+        "total_points": 105,
+        "rank": 5709025,
+        "rank_sort": 5712072,
+        "overall_rank": 451388,
+        "percentile_rank": 60,
+        "overall_rank_percentage": "5",
         "bank": 0,
         "value": 1002,
         "event_transfers": 0,
@@ -641,7 +641,7 @@
     ],
     "showAiPredictions": true,
     "startGameweek": 1,
-    "selectedGameweek": 3,
+    "selectedGameweek": 5,
     "initialBank": 0,
     "initialFreeTransfers": 1,
     "gameweekPlans": {
@@ -988,22 +988,22 @@
             "is_vice_captain": false
           },
           {
-            "element": 40,
             "position": 6,
-            "is_captain": false,
-            "is_vice_captain": false,
+            "element": 397,
             "multiplier": 1,
-            "purchase_price": 75,
-            "selling_price": 75
+            "is_captain": false,
+            "purchase_price": 85,
+            "selling_price": 85,
+            "is_vice_captain": true
           },
           {
-            "element": 426,
             "position": 7,
-            "is_captain": false,
-            "is_vice_captain": false,
+            "element": 426,
             "multiplier": 1,
+            "is_captain": false,
             "purchase_price": 120,
-            "selling_price": 120
+            "selling_price": 120,
+            "is_vice_captain": false
           },
           {
             "position": 8,
@@ -1078,18 +1078,14 @@
             "is_vice_captain": false
           }
         ],
-        "transfersIn": [
-          40
-        ],
-        "transfersOut": [
-          397
-        ],
+        "transfersIn": [],
+        "transfersOut": [],
         "chip": "none",
         "bankOverride": null,
         "freeTransfersOverride": null,
-        "calculatedBank": 10,
+        "calculatedBank": 0,
         "availableTransfers": 3,
-        "transfersUsed": 1,
+        "transfersUsed": 0,
         "transferCost": 0
       },
       "4": {
@@ -1231,16 +1227,12 @@
             "is_vice_captain": false
           }
         ],
-        "transfersIn": [
-          397
-        ],
-        "transfersOut": [
-          40
-        ],
+        "transfersIn": [],
+        "transfersOut": [],
         "chip": "none",
         "calculatedBank": 0,
-        "availableTransfers": 3,
-        "transfersUsed": 1,
+        "availableTransfers": 4,
+        "transfersUsed": 0,
         "transferCost": 0
       },
       "5": {
@@ -1386,7 +1378,7 @@
         "transfersOut": [],
         "chip": "none",
         "calculatedBank": 0,
-        "availableTransfers": 3,
+        "availableTransfers": 5,
         "transfersUsed": 0,
         "transferCost": 0
       },
@@ -1533,7 +1525,7 @@
         "transfersOut": [],
         "chip": "none",
         "calculatedBank": 0,
-        "availableTransfers": 4,
+        "availableTransfers": 5,
         "transfersUsed": 0,
         "transferCost": 0
       },
@@ -6246,7 +6238,7 @@
   "fpl_user_164332_1234": {
     "pin": "1234",
     "teamId": 164332,
-    "updatedAt": "2026-08-29T17:06:48.900Z",
+    "updatedAt": "2026-08-29T21:24:35.523Z",
     "teamSummary": {
       "id": 164332,
       "joined_time": "2026-07-23T13:36:24.456711Z",
@@ -6725,13 +6717,13 @@
       },
       {
         "event": 2,
-        "points": 18,
-        "total_points": 97,
-        "rank": 4738169,
-        "rank_sort": 4746499,
-        "overall_rank": 302478,
-        "percentile_rank": 50,
-        "overall_rank_percentage": "3",
+        "points": 26,
+        "total_points": 105,
+        "rank": 5709025,
+        "rank_sort": 5712072,
+        "overall_rank": 451388,
+        "percentile_rank": 60,
+        "overall_rank_percentage": "5",
         "bank": 0,
         "value": 1002,
         "event_transfers": 0,
@@ -6885,7 +6877,7 @@
     ],
     "showAiPredictions": true,
     "startGameweek": 1,
-    "selectedGameweek": 3,
+    "selectedGameweek": 5,
     "initialBank": 0,
     "initialFreeTransfers": 1,
     "gameweekPlans": {
@@ -7232,22 +7224,22 @@
             "is_vice_captain": false
           },
           {
-            "element": 40,
             "position": 6,
-            "is_captain": false,
-            "is_vice_captain": false,
+            "element": 397,
             "multiplier": 1,
-            "purchase_price": 75,
-            "selling_price": 75
+            "is_captain": false,
+            "purchase_price": 85,
+            "selling_price": 85,
+            "is_vice_captain": true
           },
           {
-            "element": 426,
             "position": 7,
-            "is_captain": false,
-            "is_vice_captain": false,
+            "element": 426,
             "multiplier": 1,
+            "is_captain": false,
             "purchase_price": 120,
-            "selling_price": 120
+            "selling_price": 120,
+            "is_vice_captain": false
           },
           {
             "position": 8,
@@ -7322,18 +7314,14 @@
             "is_vice_captain": false
           }
         ],
-        "transfersIn": [
-          40
-        ],
-        "transfersOut": [
-          397
-        ],
+        "transfersIn": [],
+        "transfersOut": [],
         "chip": "none",
         "bankOverride": null,
         "freeTransfersOverride": null,
-        "calculatedBank": 10,
+        "calculatedBank": 0,
         "availableTransfers": 3,
-        "transfersUsed": 1,
+        "transfersUsed": 0,
         "transferCost": 0
       },
       "4": {
@@ -7475,16 +7463,12 @@
             "is_vice_captain": false
           }
         ],
-        "transfersIn": [
-          397
-        ],
-        "transfersOut": [
-          40
-        ],
+        "transfersIn": [],
+        "transfersOut": [],
         "chip": "none",
         "calculatedBank": 0,
-        "availableTransfers": 3,
-        "transfersUsed": 1,
+        "availableTransfers": 4,
+        "transfersUsed": 0,
         "transferCost": 0
       },
       "5": {
@@ -7630,7 +7614,7 @@
         "transfersOut": [],
         "chip": "none",
         "calculatedBank": 0,
-        "availableTransfers": 3,
+        "availableTransfers": 5,
         "transfersUsed": 0,
         "transferCost": 0
       },
@@ -7777,7 +7761,7 @@
         "transfersOut": [],
         "chip": "none",
         "calculatedBank": 0,
-        "availableTransfers": 4,
+        "availableTransfers": 5,
         "transfersUsed": 0,
         "transferCost": 0
       },

@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { MatrixFilterBar } from './MatrixFilterBar';
 import { KitIcon } from '@/components/ui/KitIcon';
+import { getAllPricePredictions, PlayerPricePrediction } from '@/utils/aiPricePredictor';
 import { 
   ArrowUpDown, 
   ArrowUp, 
@@ -15,8 +16,9 @@ import {
   Target, 
   Flame, 
   Zap,
-  CheckCircle2,
-  Lock
+  Snowflake,
+  Lock,
+  Star
 } from 'lucide-react';
 
 export const PlayerMatrixView: React.FC = () => {
@@ -34,6 +36,8 @@ export const PlayerMatrixView: React.FC = () => {
     matrixSortBy,
     matrixSortDirection,
     setMatrixSort,
+    matrixViewTab,
+    matrixPriceFilter,
     getPlayerGameweekXp,
     getPlayerHorizonXp,
     openTransferDrawer,
@@ -50,15 +54,27 @@ export const PlayerMatrixView: React.FC = () => {
     return new Set(currentPlan?.squad?.map(p => p.element) || []);
   }, [currentPlan]);
 
-  // Filter and sort players
-  const processedPlayers = useMemo(() => {
-    let list = players.filter(p => {
+  // Price Predictions list
+  const allPricePredictions = useMemo(() => {
+    return getAllPricePredictions(players, squadElementIds);
+  }, [players, squadElementIds]);
+
+  // Filter and sort for Price Radar View
+  const processedPricePredictions = useMemo(() => {
+    let list = allPricePredictions.filter(item => {
+      const p = item.player;
       // Position filter
       if (matrixPosition !== null && p.element_type !== matrixPosition) return false;
       // Team filter
       if (matrixTeamId !== null && p.team !== matrixTeamId) return false;
       // Price filter
       if (p.now_cost < matrixMinPrice || p.now_cost > matrixMaxPrice) return false;
+      // Price category filter
+      if (matrixPriceFilter === 'rising' && item.targetProgress < 100) return false;
+      if (matrixPriceFilter === 'approaching' && (item.targetProgress < 80 || item.targetProgress >= 100)) return false;
+      if (matrixPriceFilter === 'falling' && item.targetProgress > -100) return false;
+      if (matrixPriceFilter === 'squad' && !item.isInSquad) return false;
+
       // Search filter
       if (matrixSearch.trim()) {
         const q = matrixSearch.toLowerCase().trim();
@@ -72,7 +88,69 @@ export const PlayerMatrixView: React.FC = () => {
       return true;
     });
 
-    // Compute derived sorting values
+    return list.sort((a, b) => {
+      let valA: number = 0;
+      let valB: number = 0;
+
+      switch (matrixSortBy) {
+        case 'name':
+          return matrixSortDirection === 'asc' 
+            ? a.player.web_name.localeCompare(b.player.web_name) 
+            : b.player.web_name.localeCompare(a.player.web_name);
+        case 'price':
+          valA = a.nowCost;
+          valB = b.nowCost;
+          break;
+        case 'transfers_today':
+          valA = a.netTransfersToday;
+          valB = b.netTransfersToday;
+          break;
+        case 'target_progress':
+          valA = a.targetProgress;
+          valB = b.targetProgress;
+          break;
+        case 'season_delta':
+          valA = a.seasonDelta;
+          valB = b.seasonDelta;
+          break;
+        default:
+          valA = a.targetProgress;
+          valB = b.targetProgress;
+      }
+
+      return matrixSortDirection === 'asc' ? valA - valB : valB - valA;
+    });
+  }, [
+    allPricePredictions,
+    matrixPosition,
+    matrixTeamId,
+    matrixMinPrice,
+    matrixMaxPrice,
+    matrixPriceFilter,
+    matrixSearch,
+    matrixSortBy,
+    matrixSortDirection,
+    teamMap
+  ]);
+
+  // Filter and sort for Performance Stats Matrix View
+  const processedPlayers = useMemo(() => {
+    let list = players.filter(p => {
+      if (matrixPosition !== null && p.element_type !== matrixPosition) return false;
+      if (matrixTeamId !== null && p.team !== matrixTeamId) return false;
+      if (p.now_cost < matrixMinPrice || p.now_cost > matrixMaxPrice) return false;
+      if (matrixSearch.trim()) {
+        const q = matrixSearch.toLowerCase().trim();
+        const team = teamMap.get(p.team);
+        const matchName = p.web_name.toLowerCase().includes(q) || 
+                          p.first_name.toLowerCase().includes(q) || 
+                          p.second_name.toLowerCase().includes(q);
+        const matchTeam = team && (team.name.toLowerCase().includes(q) || team.short_name.toLowerCase().includes(q));
+        if (!matchName && !matchTeam) return false;
+      }
+      return true;
+    });
+
     return list.sort((a, b) => {
       let valA: number = 0;
       let valB: number = 0;
@@ -167,7 +245,7 @@ export const PlayerMatrixView: React.FC = () => {
     matrixSortBy, 
     matrixSortDirection, 
     matrixHorizon, 
-    matrixPer90,
+    matrixPer90, 
     selectedGameweek, 
     getPlayerGameweekXp, 
     getPlayerHorizonXp,
@@ -200,282 +278,446 @@ export const PlayerMatrixView: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      {/* Matrix Controls & Filters */}
+    <div className="w-full max-w-7xl px-3 sm:px-6 py-6 flex flex-col gap-6">
+      {/* 1. Filter and Control Bar */}
       <MatrixFilterBar />
 
-      {/* Main High-Density Matrix Table */}
-      <div className="w-full bg-slate-900/90 backdrop-blur-md rounded-3xl border border-white/15 shadow-2xl overflow-hidden flex flex-col">
-        {/* Table Summary Bar */}
-        <div className="px-5 py-3 border-b border-white/10 bg-slate-950/60 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-300">{processedPlayers.length}</span>
-            <span>players matching filters</span>
-          </div>
-          <div className="flex items-center gap-2 text-[11px]">
-            {showAiPredictions ? (
-              <span className="font-mono text-emerald-400 font-bold">● Live Projections Active</span>
-            ) : (
-              <span className="font-mono text-slate-400 font-bold">● Official Match Stats</span>
-            )}
-            <span>· Sorted by <strong className="text-white uppercase">{matrixSortBy}</strong></span>
-          </div>
-        </div>
+      {/* 2. Main Content View Card */}
+      <div className="w-full bg-slate-900/80 backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
+        {matrixViewTab === 'price_radar' ? (
+          /* ========================================================
+             PRICE CHANGE & TRANSFER VELOCITY RADAR VIEW
+             ======================================================== */
+          <>
+            {/* Top Summary Banner */}
+            <div className="px-6 py-3.5 border-b border-white/10 bg-slate-950/70 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <strong className="text-white font-mono">{processedPricePredictions.length}</strong> players monitored
+                </span>
+                <span className="text-slate-600">·</span>
+                <span>FPL Deadline: <strong className="text-white font-mono">01:30 AM GMT</strong> tonight</span>
+              </div>
+              <div className="flex items-center gap-4 text-[11px]">
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" /> Rise Quota (100%+)</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-rose-400 inline-block" /> Fall Quota (-100%+)</span>
+              </div>
+            </div>
 
-        {/* Scrollable Table Area */}
-        <div className="w-full overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[1100px]">
-            {/* Top Category Groups Header */}
-            <thead>
-              <tr className="bg-slate-950/80 border-b border-white/10 text-[10px] font-black tracking-widest text-slate-400 uppercase">
-                <th colSpan={3} className="py-2.5 px-4 text-left border-r border-white/10">
-                  Player Information
-                </th>
-                <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-rose-950/20 text-rose-300">
-                  Goal Threat
-                </th>
-                <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-amber-950/20 text-amber-300">
-                  Involvement
-                </th>
-                <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-blue-950/20 text-blue-300">
-                  Creativity
-                </th>
-                <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-indigo-950/20 text-indigo-300">
-                  Defensive
-                </th>
-                {showAiPredictions ? (
-                  <th colSpan={3} className="py-2.5 px-4 text-center bg-emerald-950/30 text-emerald-300">
-                    AI Projections
-                  </th>
-                ) : (
-                  <th colSpan={1} className="py-2.5 px-3 text-center border-r border-white/10 text-slate-300">
-                    Form
-                  </th>
-                )}
-                <th className="py-2.5 px-3 text-center">
-                  Action
-                </th>
-              </tr>
-
-              {/* Sub-Column Header Row */}
-              <tr className="bg-slate-950 border-b border-white/15 text-slate-400 font-mono text-[11px]">
-                {/* 1. Player Info */}
-                <th className="py-3 px-4 min-w-[200px]">
-                  {renderSortHeader('Player', 'name', 'left')}
-                </th>
-                <th className="py-3 px-2 text-center w-16">
-                  {renderSortHeader('Price', 'price')}
-                </th>
-                <th className="py-3 px-2 text-center w-14 border-r border-white/10">
-                  {renderSortHeader('Mins', 'mins')}
-                </th>
-
-                {/* 2. Goal Threat */}
-                <th className="py-3 px-2 text-center w-16 bg-rose-950/10">
-                  {renderSortHeader(matrixPer90 ? 'xG/90' : 'xG', 'xG')}
-                </th>
-                <th className="py-3 px-2 text-center w-14 bg-rose-950/10">
-                  {renderSortHeader('Threat', 'threat')}
-                </th>
-                <th className="py-3 px-2 text-center w-14 bg-rose-950/10 border-r border-white/10">
-                  {renderSortHeader('Goals', 'goals')}
-                </th>
-
-                {/* 3. Goal Involvement */}
-                <th className="py-3 px-2 text-center w-16 bg-amber-950/10">
-                  {renderSortHeader(matrixPer90 ? 'xGI/90' : 'xGI', 'xGI')}
-                </th>
-                <th className="py-3 px-2 text-center w-16 bg-amber-950/10 border-r border-white/10">
-                  {renderSortHeader('Points', 'total_points')}
-                </th>
-
-                {/* 4. Creativity */}
-                <th className="py-3 px-2 text-center w-16 bg-blue-950/10">
-                  {renderSortHeader(matrixPer90 ? 'xA/90' : 'xA', 'xA')}
-                </th>
-                <th className="py-3 px-2 text-center w-14 bg-blue-950/10">
-                  {renderSortHeader('Create', 'creativity')}
-                </th>
-                <th className="py-3 px-2 text-center w-14 bg-blue-950/10 border-r border-white/10">
-                  {renderSortHeader('Assists', 'assists')}
-                </th>
-
-                {/* 5. Defensive */}
-                <th className="py-3 px-2 text-center w-16 bg-indigo-950/10">
-                  {renderSortHeader(matrixPer90 ? 'xGC/90' : 'xGC', 'xGC')}
-                </th>
-                <th className="py-3 px-2 text-center w-14 bg-indigo-950/10 border-r border-white/10">
-                  {renderSortHeader('CS', 'cs')}
-                </th>
-
-                {/* 6. AI Projections / Form */}
-                {showAiPredictions ? (
-                  <>
-                    <th className="py-3 px-3 text-center w-20 bg-emerald-950/20 text-emerald-300">
-                      {renderSortHeader(`GW${selectedGameweek} xP`, 'xP')}
+            {/* Price Radar Table */}
+            <div className="w-full overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-[950px]">
+                <thead>
+                  <tr className="bg-slate-950/90 border-b border-white/15 text-slate-400 font-mono text-[11px]">
+                    <th className="py-3.5 px-4 min-w-[220px]">
+                      {renderSortHeader('Player', 'name', 'left')}
                     </th>
-                    <th className="py-3 px-3 text-center w-20 bg-emerald-950/20 text-emerald-300">
-                      {renderSortHeader(`${matrixHorizon}GW xP`, 'horizonXp')}
+                    <th className="py-3.5 px-3 text-center w-20">
+                      <span>Pos</span>
                     </th>
-                    <th className="py-3 px-2 text-center w-14 bg-emerald-950/20 text-emerald-300 border-r border-white/10">
-                      {renderSortHeader('Form', 'form')}
+                    <th className="py-3.5 px-3 text-right w-24">
+                      {renderSortHeader('Price', 'price', 'right')}
                     </th>
-                  </>
-                ) : (
-                  <th className="py-3 px-3 text-center w-16 border-r border-white/10">
-                    {renderSortHeader('Form', 'form')}
-                  </th>
-                )}
+                    <th className="py-3.5 px-3 text-right w-36">
+                      {renderSortHeader('Transfers Today', 'transfers_today', 'right')}
+                    </th>
+                    <th className="py-3.5 px-4 text-center min-w-[200px]">
+                      {renderSortHeader('Target Progress', 'target_progress')}
+                    </th>
+                    <th className="py-3.5 px-4 text-center w-40">
+                      <span>Prediction Tonight</span>
+                    </th>
+                    <th className="py-3.5 px-4 text-right w-24">
+                      <span>Action</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 font-medium text-slate-200 text-xs">
+                  {processedPricePredictions.map(item => {
+                    const p = item.player;
+                    const team = teamMap.get(p.team);
+                    const posName = p.element_type === 1 ? 'GKP' : p.element_type === 2 ? 'DEF' : p.element_type === 3 ? 'MID' : 'FWD';
+                    const isRise = item.targetProgress > 0;
+                    const absProgress = Math.min(100, Math.abs(item.targetProgress));
+                    const deltaStr = item.seasonDelta > 0 ? `+£${item.seasonDelta.toFixed(1)}m` : item.seasonDelta < 0 ? `-£${Math.abs(item.seasonDelta).toFixed(1)}m` : '£0.0m';
 
-                {/* Action */}
-                <th className="py-3 px-3 text-center w-24">
-                  Plan
-                </th>
-              </tr>
-            </thead>
+                    const fillBg = isRise 
+                      ? (item.targetProgress >= 100 ? 'bg-gradient-to-r from-emerald-500 to-teal-400 shadow-sm shadow-emerald-400/50' : 'bg-amber-400')
+                      : (item.targetProgress <= -100 ? 'bg-gradient-to-r from-rose-500 to-red-400 shadow-sm shadow-rose-400/50' : 'bg-rose-400/70');
 
-            {/* Table Body Rows */}
-            <tbody className="divide-y divide-white/5 font-mono text-xs text-slate-300">
-              {processedPlayers.slice(0, 100).map((player, idx) => {
-                const team = teamMap.get(player.team);
-                const posLabel = player.element_type === 1 ? 'GKP' : player.element_type === 2 ? 'DEF' : player.element_type === 3 ? 'MID' : 'FWD';
-                const posBadgeBg = player.element_type === 1 ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
-                                   player.element_type === 2 ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
-                                   player.element_type === 3 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
-                                   'bg-rose-500/20 text-rose-300 border-rose-500/30';
+                    return (
+                      <tr 
+                        key={p.id}
+                        onClick={() => openPlayerDetail(p.id)}
+                        className="hover:bg-slate-800/40 transition-colors cursor-pointer group"
+                      >
+                        {/* Player Info */}
+                        <td className="py-3.5 px-4">
+                          <div className="flex items-center gap-3">
+                            <KitIcon teamCode={team?.code} teamShortName={team?.short_name} isGoalkeeper={p.element_type === 1} className="w-7 h-7 shrink-0" />
+                            <div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="font-black text-white text-sm group-hover:text-emerald-400 transition-colors">
+                                  {p.web_name}
+                                </span>
+                                {item.isInSquad && (
+                                  <span className="text-[9px] bg-cyan-950 border border-cyan-500/40 text-cyan-300 font-bold px-1.5 py-0.2 rounded">
+                                    SQUAD
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-[10px] text-slate-400 font-mono">
+                                {team?.short_name || 'TBD'} · {deltaStr} Season
+                              </div>
+                            </div>
+                          </div>
+                        </td>
 
-                const nextXp = getPlayerGameweekXp(player.id, selectedGameweek);
-                const horizonXp = getPlayerHorizonXp(player.id, matrixHorizon);
-                const isInSquad = squadElementIds.has(player.id);
-
-                return (
-                  <tr
-                    key={player.id}
-                    className={`hover:bg-slate-800/60 transition-colors group ${
-                      idx % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40'
-                    }`}
-                  >
-                    {/* Player Info (Click to open full player detail modal) */}
-                    <td 
-                      onClick={() => openPlayerDetail(player.id)}
-                      className="py-2.5 px-4 flex items-center gap-2.5 min-w-[200px] cursor-pointer"
-                      title={`Click to view ${player.web_name} full statistics & match log`}
-                    >
-                      <div className="w-7 h-7 flex-shrink-0 flex items-center justify-center">
-                        <KitIcon 
-                          teamCode={player.team_code} 
-                          teamShortName={team?.short_name} 
-                          isGoalkeeper={player.element_type === 1}
-                          className="w-7 h-7 object-contain"
-                        />
-                      </div>
-                      <div className="flex flex-col min-w-0">
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-bold text-white text-xs sm:text-sm truncate leading-tight group-hover:text-emerald-300 transition-colors">
-                            {player.web_name}
+                        {/* Position */}
+                        <td className="py-3.5 px-3 text-center">
+                          <span className="text-[10.5px] font-black px-2 py-0.5 rounded-lg bg-slate-950 border border-white/10 text-slate-300">
+                            {posName}
                           </span>
-                          {isInSquad && (
-                            <span className="text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-1 rounded border border-emerald-500/30">
-                              IN SQUAD
+                        </td>
+
+                        {/* Price */}
+                        <td className="py-3.5 px-3 text-right font-mono font-black text-sm text-white">
+                          £{(item.nowCost / 10).toFixed(1)}m
+                        </td>
+
+                        {/* Net Transfers Today */}
+                        <td className={`py-3.5 px-3 text-right font-mono font-black text-xs ${
+                          item.netTransfersToday > 0 ? 'text-emerald-400' : item.netTransfersToday < 0 ? 'text-rose-400' : 'text-slate-400'
+                        }`}>
+                          {item.netTransfersToday > 0 ? '+' : ''}{item.netTransfersToday.toLocaleString()}
+                        </td>
+
+                        {/* Target Progress Meter */}
+                        <td className="py-3.5 px-4">
+                          <div className="flex items-center justify-between text-[11px] font-mono font-black mb-1">
+                            <span className={isRise ? (item.targetProgress >= 100 ? 'text-emerald-400' : 'text-amber-400') : 'text-rose-400'}>
+                              {item.targetProgress > 0 ? '+' : ''}{item.targetProgress.toFixed(1)}%
                             </span>
+                            <span className="text-[9px] text-slate-500 uppercase font-mono">Target 100%</span>
+                          </div>
+                          <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-white/10">
+                            <div 
+                              className={`h-full ${fillBg} rounded-full transition-all duration-300`} 
+                              style={{ width: `${absProgress}%` }}
+                            />
+                          </div>
+                        </td>
+
+                        {/* Prediction Tonight */}
+                        <td className="py-3.5 px-4 text-center">
+                          {item.isLocked ? (
+                            <span className="px-2.5 py-1 rounded-xl bg-slate-950 border border-white/10 text-slate-400 font-bold text-[10.5px] flex items-center justify-center gap-1 mx-auto w-max">
+                              <Lock className="w-3 h-3" /> Locked
+                            </span>
+                          ) : item.targetProgress >= 100 ? (
+                            <span className="px-2.5 py-1 rounded-xl bg-emerald-950/90 border border-emerald-500/60 text-emerald-300 font-black text-[11px] shadow-sm animate-pulse flex items-center justify-center gap-1 mx-auto w-max">
+                              <Flame className="w-3.5 h-3.5 text-emerald-400" /> RISE (+£0.1m)
+                            </span>
+                          ) : item.targetProgress >= 80 ? (
+                            <span className="px-2.5 py-1 rounded-xl bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold text-[10.5px] flex items-center justify-center gap-1 mx-auto w-max">
+                              <Zap className="w-3 h-3 text-amber-400" /> Likely Soon
+                            </span>
+                          ) : item.targetProgress <= -100 ? (
+                            <span className="px-2.5 py-1 rounded-xl bg-rose-950/90 border border-rose-500/60 text-rose-300 font-black text-[11px] shadow-sm animate-pulse flex items-center justify-center gap-1 mx-auto w-max">
+                              <Snowflake className="w-3.5 h-3.5 text-rose-400" /> FALL (-£0.1m)
+                            </span>
+                          ) : item.targetProgress <= -80 ? (
+                            <span className="px-2.5 py-1 rounded-xl bg-rose-950/40 border border-rose-500/30 text-rose-400 font-semibold text-[10.5px] flex items-center justify-center gap-1 mx-auto w-max">
+                              At Risk
+                            </span>
+                          ) : (
+                            <span className="text-slate-500 text-[11px] font-mono">Stable</span>
                           )}
-                        </div>
-                        <div className="flex items-center gap-1 text-[11px] text-slate-400 font-sans">
-                          <span className={`text-[9px] font-black px-1 rounded border ${posBadgeBg}`}>
-                            {posLabel}
-                          </span>
-                          <span>{team?.short_name || 'TBD'}</span>
-                        </div>
-                      </div>
-                    </td>
+                        </td>
 
-                    {/* Price */}
-                    <td className="py-2.5 px-2 text-center font-bold text-emerald-400">
-                      £{(player.now_cost / 10).toFixed(1)}m
-                    </td>
+                        {/* Action */}
+                        <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
+                          {item.isInSquad ? (
+                            <span className="text-xs text-slate-500 font-bold">In Squad</span>
+                          ) : !isLocked ? (
+                            <button
+                              onClick={() => openTransferDrawer(p.id)}
+                              className="px-3 py-1 rounded-xl bg-slate-950 hover:bg-emerald-600 border border-white/10 hover:border-emerald-500 text-slate-200 hover:text-white font-bold transition-all text-xs shadow"
+                            >
+                              Buy
+                            </button>
+                          ) : null}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {processedPricePredictions.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="py-12 text-center text-slate-500 font-medium">
+                        No players found matching your radar filters.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : (
+          /* ========================================================
+             PERFORMANCE & STATS MATRIX VIEW
+             ======================================================== */
+          <>
+            {/* Top Table Info Bar */}
+            <div className="px-5 py-3 border-b border-white/10 bg-slate-950/60 flex items-center justify-between text-xs text-slate-400">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-slate-300">{processedPlayers.length}</span>
+                <span>players matching filters</span>
+              </div>
+              <div className="flex items-center gap-2 text-[11px]">
+                {showAiPredictions ? (
+                  <span className="font-mono text-emerald-400 font-bold">● Live Projections Active</span>
+                ) : (
+                  <span className="font-mono text-slate-400 font-bold">● Official Match Stats</span>
+                )}
+                <span>· Sorted by <strong className="text-white uppercase">{matrixSortBy}</strong></span>
+              </div>
+            </div>
 
-                    {/* Minutes */}
-                    <td className="py-2.5 px-2 text-center text-slate-400 border-r border-white/10">
-                      {player.minutes || 0}
-                    </td>
+            {/* Scrollable Table Area */}
+            <div className="w-full overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-[1100px]">
+                <thead>
+                  <tr className="bg-slate-950/80 border-b border-white/10 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                    <th colSpan={3} className="py-2.5 px-4 text-left border-r border-white/10">
+                      Player Information
+                    </th>
+                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-rose-950/20 text-rose-300">
+                      Goal Threat
+                    </th>
+                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-amber-950/20 text-amber-300">
+                      Involvement
+                    </th>
+                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-blue-950/20 text-blue-300">
+                      Creativity
+                    </th>
+                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-indigo-950/20 text-indigo-300">
+                      Defensive
+                    </th>
+                    {showAiPredictions ? (
+                      <th colSpan={3} className="py-2.5 px-4 text-center bg-emerald-950/30 text-emerald-300">
+                        AI Projections
+                      </th>
+                    ) : (
+                      <th colSpan={1} className="py-2.5 px-3 text-center border-r border-white/10 text-slate-300">
+                        Form
+                      </th>
+                    )}
+                    <th className="py-2.5 px-3 text-center">
+                      Action
+                    </th>
+                  </tr>
 
-                    {/* Goal Threat: xG */}
-                    <td className="py-2.5 px-2 text-center font-bold text-rose-300 bg-rose-950/5">
-                      {matrixPer90 ? (player.expected_goals_per_90?.toFixed(2) || '0.00') : (parseFloat(player.expected_goals || '0').toFixed(2))}
-                    </td>
-                    <td className="py-2.5 px-2 text-center text-slate-400 bg-rose-950/5">
-                      {Math.round(parseFloat(player.threat || '0'))}
-                    </td>
-                    <td className="py-2.5 px-2 text-center font-black text-white bg-rose-950/5 border-r border-white/10">
-                      {player.goals_scored || 0}
-                    </td>
+                  {/* Sub-Column Header Row */}
+                  <tr className="bg-slate-950 border-b border-white/15 text-slate-400 font-mono text-[11px]">
+                    <th className="py-3 px-4 min-w-[200px]">
+                      {renderSortHeader('Player', 'name', 'left')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-16">
+                      {renderSortHeader('Price', 'price')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-14 border-r border-white/10">
+                      {renderSortHeader('Mins', 'mins')}
+                    </th>
 
-                    {/* Involvement: xGI & Points */}
-                    <td className="py-2.5 px-2 text-center font-bold text-amber-300 bg-amber-950/5">
-                      {matrixPer90 ? (player.expected_goal_involvements_per_90?.toFixed(2) || '0.00') : (parseFloat(player.expected_goal_involvements || '0').toFixed(2))}
-                    </td>
-                    <td className="py-2.5 px-2 text-center font-bold text-slate-200 bg-amber-950/5 border-r border-white/10">
-                      {player.total_points || 0}
-                    </td>
+                    <th className="py-3 px-2 text-center w-16 bg-rose-950/10">
+                      {renderSortHeader(matrixPer90 ? 'xG/90' : 'xG', 'xG')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-14 bg-rose-950/10">
+                      {renderSortHeader('Threat', 'threat')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-14 bg-rose-950/10 border-r border-white/10">
+                      {renderSortHeader('Goals', 'goals')}
+                    </th>
 
-                    {/* Creativity: xA, Creativity score, Assists */}
-                    <td className="py-2.5 px-2 text-center font-bold text-blue-300 bg-blue-950/5">
-                      {matrixPer90 ? (player.expected_assists_per_90?.toFixed(2) || '0.00') : (parseFloat(player.expected_assists || '0').toFixed(2))}
-                    </td>
-                    <td className="py-2.5 px-2 text-center text-slate-400 bg-blue-950/5">
-                      {Math.round(parseFloat(player.creativity || '0'))}
-                    </td>
-                    <td className="py-2.5 px-2 text-center font-black text-white bg-blue-950/5 border-r border-white/10">
-                      {player.assists || 0}
-                    </td>
+                    <th className="py-3 px-2 text-center w-16 bg-amber-950/10">
+                      {renderSortHeader(matrixPer90 ? 'xGI/90' : 'xGI', 'xGI')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-16 bg-amber-950/10 border-r border-white/10">
+                      {renderSortHeader('Points', 'total_points')}
+                    </th>
 
-                    {/* Defensive: xGC & Clean Sheets */}
-                    <td className="py-2.5 px-2 text-center text-slate-400 bg-indigo-950/5">
-                      {matrixPer90 ? (player.expected_goals_conceded_per_90?.toFixed(2) || '0.00') : (parseFloat(player.expected_goals_conceded || '0').toFixed(2))}
-                    </td>
-                    <td className="py-2.5 px-2 text-center font-bold text-indigo-300 bg-indigo-950/5 border-r border-white/10">
-                      {player.clean_sheets || 0}
-                    </td>
+                    <th className="py-3 px-2 text-center w-16 bg-blue-950/10">
+                      {renderSortHeader(matrixPer90 ? 'xA/90' : 'xA', 'xA')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-14 bg-blue-950/10">
+                      {renderSortHeader('Create', 'creativity')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-14 bg-blue-950/10 border-r border-white/10">
+                      {renderSortHeader('Assists', 'assists')}
+                    </th>
 
-                    {/* AI Projections / Form */}
+                    <th className="py-3 px-2 text-center w-16 bg-indigo-950/10">
+                      {renderSortHeader(matrixPer90 ? 'xGC/90' : 'xGC', 'xGC')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-14 bg-indigo-950/10 border-r border-white/10">
+                      {renderSortHeader('CS', 'cs')}
+                    </th>
+
                     {showAiPredictions ? (
                       <>
-                        <td className="py-2.5 px-3 text-center font-black text-sm text-emerald-300 bg-emerald-950/15">
-                          {nextXp.toFixed(1)}
-                        </td>
-                        <td className="py-2.5 px-3 text-center font-black text-sm text-teal-300 bg-emerald-950/15 font-mono">
-                          {horizonXp.toFixed(1)}
-                        </td>
-                        <td className="py-2.5 px-2 text-center font-bold text-slate-300 bg-emerald-950/15 border-r border-white/10">
-                          {player.form || '0.0'}
-                        </td>
+                        <th className="py-3 px-3 text-center w-20 bg-emerald-950/20 text-emerald-300">
+                          {renderSortHeader(`GW${selectedGameweek} xP`, 'xP')}
+                        </th>
+                        <th className="py-3 px-3 text-center w-20 bg-emerald-950/20 text-emerald-300">
+                          {renderSortHeader(`${matrixHorizon}GW xP`, 'horizonXp')}
+                        </th>
+                        <th className="py-3 px-2 text-center w-14 bg-emerald-950/20 text-emerald-300 border-r border-white/10">
+                          {renderSortHeader('Form', 'form')}
+                        </th>
                       </>
                     ) : (
-                      <td className="py-2.5 px-3 text-center font-bold text-slate-300 border-r border-white/10">
-                        {player.form || '0.0'}
-                      </td>
+                      <th className="py-3 px-3 text-center w-16 border-r border-white/10">
+                        {renderSortHeader('Form', 'form')}
+                      </th>
                     )}
 
-                    {/* Action */}
-                    <td className="py-2.5 px-3 text-center">
-                      {!isLocked ? (
-                        <button
-                          onClick={() => openTransferDrawer(player.id)}
-                          className="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white font-bold text-[11px] transition-all flex items-center gap-1 mx-auto active:scale-95 shadow"
-                        >
-                          <ShoppingBag className="w-3 h-3" />
-                          <span>Buy</span>
-                        </button>
-                      ) : (
-                        <span className="text-[10px] text-slate-600 font-bold">Locked</span>
-                      )}
-                    </td>
+                    <th className="py-3 px-3 text-center w-16">
+                      Buy
+                    </th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                </thead>
+
+                <tbody className="divide-y divide-white/5 font-medium text-slate-200 text-xs">
+                  {processedPlayers.map(p => {
+                    const team = teamMap.get(p.team);
+                    const isInSquad = squadElementIds.has(p.id);
+                    const posName = p.element_type === 1 ? 'GKP' : p.element_type === 2 ? 'DEF' : p.element_type === 3 ? 'MID' : 'FWD';
+                    const xgVal = matrixPer90 ? (p.expected_goals_per_90 || 0).toFixed(2) : parseFloat(p.expected_goals || '0').toFixed(1);
+                    const xaVal = matrixPer90 ? (p.expected_assists_per_90 || 0).toFixed(2) : parseFloat(p.expected_assists || '0').toFixed(1);
+                    const xgiVal = matrixPer90 ? (p.expected_goal_involvements_per_90 || 0).toFixed(2) : parseFloat(p.expected_goal_involvements || '0').toFixed(1);
+                    const xgcVal = matrixPer90 ? (p.expected_goals_conceded_per_90 || 0).toFixed(2) : parseFloat(p.expected_goals_conceded || '0').toFixed(1);
+
+                    const gwXp = getPlayerGameweekXp(p.id, selectedGameweek);
+                    const horizonXp = getPlayerHorizonXp(p.id, matrixHorizon);
+
+                    return (
+                      <tr 
+                        key={p.id}
+                        onClick={() => openPlayerDetail(p.id)}
+                        className="hover:bg-slate-800/50 transition-colors cursor-pointer group"
+                      >
+                        <td className="py-2.5 px-4">
+                          <div className="flex items-center gap-2.5">
+                            <KitIcon teamCode={team?.code} teamShortName={team?.short_name} isGoalkeeper={p.element_type === 1} className="w-6 h-6 shrink-0" />
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-1.5">
+                                <span className="font-bold text-white truncate group-hover:text-emerald-400 transition-colors text-xs sm:text-sm">
+                                  {p.web_name}
+                                </span>
+                                {isInSquad && (
+                                  <span className="text-[9px] bg-emerald-950 border border-emerald-500/40 text-emerald-400 font-bold px-1 rounded">
+                                    SQUAD
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-1 text-[10px] text-slate-400 font-mono">
+                                <span>{team?.short_name}</span>
+                                <span>·</span>
+                                <span>{posName}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td className="py-2.5 px-2 text-center font-mono font-black text-emerald-400">
+                          £{(p.now_cost / 10).toFixed(1)}
+                        </td>
+
+                        <td className="py-2.5 px-2 text-center font-mono text-slate-400 border-r border-white/10">
+                          {p.minutes ?? 0}
+                        </td>
+
+                        <td className="py-2.5 px-2 text-center font-mono font-bold text-rose-400 bg-rose-950/5">
+                          {xgVal}
+                        </td>
+                        <td className="py-2.5 px-2 text-center font-mono text-slate-300 bg-rose-950/5">
+                          {p.threat || '0'}
+                        </td>
+                        <td className="py-2.5 px-2 text-center font-mono font-black text-white bg-rose-950/5 border-r border-white/10">
+                          {p.goals_scored || 0}
+                        </td>
+
+                        <td className="py-2.5 px-2 text-center font-mono font-black text-amber-400 bg-amber-950/5">
+                          {xgiVal}
+                        </td>
+                        <td className="py-2.5 px-2 text-center font-mono font-bold text-white bg-amber-950/5 border-r border-white/10">
+                          {p.total_points || 0}
+                        </td>
+
+                        <td className="py-2.5 px-2 text-center font-mono font-bold text-blue-400 bg-blue-950/5">
+                          {xaVal}
+                        </td>
+                        <td className="py-2.5 px-2 text-center font-mono text-slate-300 bg-blue-950/5">
+                          {p.creativity || '0'}
+                        </td>
+                        <td className="py-2.5 px-2 text-center font-mono font-black text-white bg-blue-950/5 border-r border-white/10">
+                          {p.assists || 0}
+                        </td>
+
+                        <td className="py-2.5 px-2 text-center font-mono text-indigo-300 bg-indigo-950/5">
+                          {xgcVal}
+                        </td>
+                        <td className="py-2.5 px-2 text-center font-mono font-bold text-white bg-indigo-950/5 border-r border-white/10">
+                          {p.clean_sheets || 0}
+                        </td>
+
+                        {showAiPredictions ? (
+                          <>
+                            <td className="py-2.5 px-3 text-center font-mono font-black text-emerald-400 bg-emerald-950/20 text-sm">
+                              {gwXp.toFixed(1)}
+                            </td>
+                            <td className="py-2.5 px-3 text-center font-mono font-bold text-teal-300 bg-emerald-950/20">
+                              {horizonXp.toFixed(1)}
+                            </td>
+                            <td className="py-2.5 px-2 text-center font-mono text-slate-300 bg-emerald-950/20 border-r border-white/10">
+                              {p.form || '0.0'}
+                            </td>
+                          </>
+                        ) : (
+                          <td className="py-2.5 px-3 text-center font-mono font-bold text-slate-200 border-r border-white/10">
+                            {p.form || '0.0'}
+                          </td>
+                        )}
+
+                        <td className="py-2.5 px-3 text-center" onClick={(e) => e.stopPropagation()}>
+                          {!isLocked && !isInSquad ? (
+                            <button
+                              onClick={() => openTransferDrawer(p.id)}
+                              className="p-1.5 rounded-xl bg-slate-950 hover:bg-emerald-600 text-slate-300 hover:text-white border border-white/10 transition-colors shadow"
+                              title={`Buy ${p.web_name}`}
+                            >
+                              <ShoppingBag className="w-3.5 h-3.5" />
+                            </button>
+                          ) : isInSquad ? (
+                            <span className="text-[10px] text-emerald-500 font-bold">Owned</span>
+                          ) : null}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {processedPlayers.length === 0 && (
+                    <tr>
+                      <td colSpan={15} className="py-12 text-center text-slate-500 font-medium">
+                        No players found matching your criteria.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

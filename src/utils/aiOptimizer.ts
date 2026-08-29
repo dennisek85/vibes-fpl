@@ -14,7 +14,7 @@ export interface OptimizationResult {
   };
 }
 
-const LEGAL_FORMATIONS = [
+export const LEGAL_FORMATIONS = [
   { def: 3, mid: 5, fwd: 2 },
   { def: 3, mid: 4, fwd: 3 },
   { def: 4, mid: 4, fwd: 2 },
@@ -164,5 +164,48 @@ export function optimizeLineup(
       fwd: bestFormation.fwd
     }
   };
+}
+
+/**
+ * Automatically sorts only the bench slots (12 to 15) in exact order of expected points,
+ * ensuring the highest-scoring outfield player is at Bench 1 (slot 13) for optimal auto-sub activation.
+ */
+export function autoOrderBench(
+  squad: SquadPick[],
+  playerMap: Map<number, FPLPlayer>,
+  gameweek: number,
+  getXp: (playerId: number, gw: number) => number
+): SquadPick[] {
+  if (!squad || squad.length !== 15) return squad;
+
+  const starters = squad.filter(p => p.position <= 11);
+  const bench = squad.filter(p => p.position > 11);
+
+  const benchGk = bench.find(p => playerMap.get(p.element)?.element_type === 1);
+  const benchOutfield = bench.filter(p => playerMap.get(p.element)?.element_type !== 1);
+
+  const sortedOutfield = [...benchOutfield].sort((a, b) => {
+    const xpA = getXp(a.element, gameweek);
+    const xpB = getXp(b.element, gameweek);
+    return xpB - xpA;
+  });
+
+  const newSquad: SquadPick[] = [...starters];
+
+  if (benchGk) {
+    newSquad.push({ ...benchGk, position: 12, multiplier: 0, is_captain: false, is_vice_captain: false });
+  }
+
+  sortedOutfield.forEach((pick, idx) => {
+    newSquad.push({
+      ...pick,
+      position: 13 + idx,
+      multiplier: 0,
+      is_captain: false,
+      is_vice_captain: false
+    });
+  });
+
+  return newSquad;
 }
 

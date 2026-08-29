@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { ChipType } from '@/types/fpl';
 import { 
@@ -12,8 +12,10 @@ import {
   Wand2,
   Edit3,
   Trash2,
-  AlertCircle
+  AlertCircle,
+  Gauge
 } from 'lucide-react';
+import { calculateSquadRating } from '@/utils/aiSquadRating';
 
 const CHIPS: Array<{ id: ChipType; label: string; color: string; desc: string }> = [
   { id: 'wildcard', label: 'WC', color: 'text-purple-300 border-purple-500/30', desc: 'Wildcard' },
@@ -40,15 +42,36 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
     showAiPredictions,
     toggleAiPredictions,
     optimizeSquadLineup,
-    openScoutModal
+    autoOrderBenchLineup,
+    openScoutModal,
+    players,
+    playerMap,
+    getPlayerGameweekXp
   } = usePlannerStore();
 
   const [optResult, setOptResult] = useState<any | null>(null);
+  const [benchOrderedMsg, setBenchOrderedMsg] = useState(false);
   const [showResetAllConfirm, setShowResetAllConfirm] = useState(false);
 
   const isLocked = isGameweekLocked(selectedGameweek);
   const activePlan = gameweekPlans[selectedGameweek];
   const activeChip = activePlan?.chip || 'none';
+
+  const squadRating = useMemo(() => {
+    if (!showAiPredictions || !activePlan?.squad) return null;
+    const currentVal = activePlan.squad.reduce((s, p) => s + (playerMap.get(p.element)?.now_cost || 0), 0);
+    const budget = currentVal + (activePlan.calculatedBank || 0);
+
+    return calculateSquadRating(
+      activePlan.squad,
+      players,
+      playerMap,
+      selectedGameweek,
+      getPlayerGameweekXp,
+      fixtureHorizon,
+      budget
+    );
+  }, [showAiPredictions, activePlan?.squad, activePlan?.calculatedBank, players, playerMap, selectedGameweek, getPlayerGameweekXp, fixtureHorizon]);
 
   const getChipPlannedGw = (chipId: ChipType): number | null => {
     for (const [gwStr, plan] of Object.entries(gameweekPlans)) {
@@ -151,6 +174,47 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
           </button>
         </div>
 
+        {/* AI-Only: Squad Power Rating (0-100% vs Dream XI) */}
+        {showAiPredictions && squadRating && (
+          <div className="p-2.5 rounded-2xl bg-slate-950/90 border border-white/10 flex flex-col gap-2 shadow-inner animate-in fade-in">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Gauge className="w-3.5 h-3.5 text-emerald-400" />
+                Team Rating
+              </span>
+              <span className={`text-base font-black font-mono px-2 py-0.5 rounded-lg border ${
+                squadRating.overallPercentage >= 85 
+                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' 
+                  : squadRating.overallPercentage >= 75 
+                  ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40' 
+                  : 'bg-amber-950/80 text-amber-300 border-amber-500/40'
+              }`}>
+                {squadRating.overallPercentage}%
+              </span>
+            </div>
+
+            {/* Clean Sub-percentages */}
+            <div className="grid grid-cols-4 gap-1 text-center font-mono">
+              <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
+                <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">DEF</span>
+                <span className="text-xs font-black text-slate-200">{squadRating.defensePercentage}%</span>
+              </div>
+              <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
+                <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">MID</span>
+                <span className="text-xs font-black text-slate-200">{squadRating.midfieldPercentage}%</span>
+              </div>
+              <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
+                <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">FWD</span>
+                <span className="text-xs font-black text-slate-200">{squadRating.forwardPercentage}%</span>
+              </div>
+              <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
+                <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">CAP</span>
+                <span className="text-xs font-black text-amber-300">{squadRating.captainPercentage}%</span>
+              </div>
+            </div>
+          </div>
+        )}
+
         <button
           onClick={() => openScoutModal()}
           className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-600 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 transition active:scale-98"
@@ -158,6 +222,18 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
           <Lightbulb className="w-4 h-4 text-amber-300" />
           Open AI Transfer Radar
         </button>
+
+        {/* AI-Only: Strongest Team Solver Button */}
+        {showAiPredictions && (
+          <button
+            onClick={() => openScoutModal(undefined, undefined, undefined, 'optimal_squad')}
+            className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-950/80 transition active:scale-98 border border-emerald-400/40 animate-in fade-in"
+            title="Compute the mathematically strongest 15-man squad within your exact budget"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+            <span>🔮 Strongest Team Solver</span>
+          </button>
+        )}
 
         {/* Fixture Horizon */}
         <div className="flex items-center justify-between pt-1 border-t border-white/10">
@@ -200,6 +276,28 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
           <Wand2 className="w-4 h-4 text-amber-400" />
           ⚡ Auto-Optimize Lineup
         </button>
+
+        {showAiPredictions && (
+          <button
+            onClick={() => {
+              const res = autoOrderBenchLineup();
+              if (res) {
+                setBenchOrderedMsg(true);
+                setTimeout(() => setBenchOrderedMsg(false), 3000);
+              }
+            }}
+            className="w-full py-2 px-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-white/10 text-cyan-300 hover:text-white font-bold text-xs flex items-center justify-center gap-2 transition active:scale-98"
+            title="Automatically sort bench slots (12-15) so the highest-scoring sub comes on first"
+          >
+            <span>🔄 Smart Auto-Order Bench</span>
+          </button>
+        )}
+
+        {benchOrderedMsg && (
+          <p className="text-[11px] text-cyan-300 font-bold text-center animate-in fade-in">
+            ✓ Bench ordered by highest expected points!
+          </p>
+        )}
 
         {optResult && (
           <p className="text-xs text-emerald-400 font-black text-center py-0.5 animate-in fade-in leading-tight">

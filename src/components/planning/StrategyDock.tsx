@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { ChipType } from '@/types/fpl';
 import { 
@@ -13,8 +13,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  EyeOff
+  EyeOff,
+  Gauge
 } from 'lucide-react';
+import { calculateSquadRating } from '@/utils/aiSquadRating';
 
 const CHIPS: Array<{ id: ChipType; label: string; icon: any; color: string; desc: string }> = [
   { id: 'wildcard', label: 'WC', icon: Sparkles, color: 'text-purple-300 border-purple-500/30 hover:bg-purple-950/40', desc: 'Wildcard' },
@@ -41,7 +43,10 @@ export const StrategyDock: React.FC<StrategyDockProps> = ({ onOpenOverrides }) =
     showAiPredictions,
     toggleAiPredictions,
     optimizeSquadLineup,
-    openScoutModal
+    openScoutModal,
+    players,
+    playerMap,
+    getPlayerGameweekXp
   } = usePlannerStore();
 
   const [activeSlide, setActiveSlide] = useState(0);
@@ -50,6 +55,22 @@ export const StrategyDock: React.FC<StrategyDockProps> = ({ onOpenOverrides }) =
   const isLocked = isGameweekLocked(selectedGameweek);
   const activePlan = gameweekPlans[selectedGameweek];
   const activeChip = activePlan?.chip || 'none';
+
+  const squadRating = useMemo(() => {
+    if (!showAiPredictions || !activePlan?.squad) return null;
+    const currentVal = activePlan.squad.reduce((s, p) => s + (playerMap.get(p.element)?.now_cost || 0), 0);
+    const budget = currentVal + (activePlan.calculatedBank || 0);
+
+    return calculateSquadRating(
+      activePlan.squad,
+      players,
+      playerMap,
+      selectedGameweek,
+      getPlayerGameweekXp,
+      fixtureHorizon,
+      budget
+    );
+  }, [showAiPredictions, activePlan?.squad, activePlan?.calculatedBank, players, playerMap, selectedGameweek, getPlayerGameweekXp, fixtureHorizon]);
 
   const getChipPlannedGw = (chipId: ChipType): number | null => {
     for (const [gwStr, plan] of Object.entries(gameweekPlans)) {
@@ -182,13 +203,66 @@ export const StrategyDock: React.FC<StrategyDockProps> = ({ onOpenOverrides }) =
               </button>
             </div>
 
-            <button
-              onClick={() => openScoutModal()}
-              className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-600 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 transition active:scale-98 mb-3"
-            >
-              <Lightbulb className="w-4 h-4 text-amber-300" />
-              Open AI Transfer Radar (+xP)
-            </button>
+            {/* AI-Only: Squad Power Rating (0-100% vs Dream XI) */}
+            {showAiPredictions && squadRating && (
+              <div className="p-2.5 rounded-2xl bg-slate-950/90 border border-white/10 flex flex-col gap-1.5 shadow-inner mb-3 animate-in fade-in">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <Gauge className="w-3.5 h-3.5 text-emerald-400" />
+                    Team Rating
+                  </span>
+                  <span className={`text-sm font-black font-mono px-2 py-0.5 rounded-lg border ${
+                    squadRating.overallPercentage >= 85 
+                      ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' 
+                      : squadRating.overallPercentage >= 75 
+                      ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40' 
+                      : 'bg-amber-950/80 text-amber-300 border-amber-500/40'
+                  }`}>
+                    {squadRating.overallPercentage}%
+                  </span>
+                </div>
+
+                {/* Sub-percentages row */}
+                <div className="grid grid-cols-4 gap-1 text-center font-mono">
+                  <div className="bg-slate-900/90 py-1 rounded-lg border border-white/5">
+                    <span className="text-[8.5px] font-bold text-slate-400 uppercase block font-sans">DEF</span>
+                    <span className="text-[11px] font-black text-slate-200">{squadRating.defensePercentage}%</span>
+                  </div>
+                  <div className="bg-slate-900/90 py-1 rounded-lg border border-white/5">
+                    <span className="text-[8.5px] font-bold text-slate-400 uppercase block font-sans">MID</span>
+                    <span className="text-[11px] font-black text-slate-200">{squadRating.midfieldPercentage}%</span>
+                  </div>
+                  <div className="bg-slate-900/90 py-1 rounded-lg border border-white/5">
+                    <span className="text-[8.5px] font-bold text-slate-400 uppercase block font-sans">FWD</span>
+                    <span className="text-[11px] font-black text-slate-200">{squadRating.forwardPercentage}%</span>
+                  </div>
+                  <div className="bg-slate-900/90 py-1 rounded-lg border border-white/5">
+                    <span className="text-[8.5px] font-bold text-slate-400 uppercase block font-sans">CAP</span>
+                    <span className="text-[11px] font-black text-amber-300">{squadRating.captainPercentage}%</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2 mb-3">
+              <button
+                onClick={() => openScoutModal()}
+                className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-600 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 transition active:scale-98"
+              >
+                <Lightbulb className="w-4 h-4 text-amber-300" />
+                Open AI Transfer Radar (+xP)
+              </button>
+
+              {showAiPredictions && (
+                <button
+                  onClick={() => openScoutModal(undefined, undefined, undefined, 'optimal_squad')}
+                  className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-950/80 transition active:scale-98 border border-emerald-400/40 animate-in fade-in"
+                >
+                  <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+                  🔮 Strongest Team Solver
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Fixture Horizon Selector */}
