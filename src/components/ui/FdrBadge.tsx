@@ -25,21 +25,21 @@ export const FdrFixtureCell: React.FC<FdrFixtureCellProps> = ({ fixture, totalCo
   }
 
   // Adaptive font and spacing classes based on number of columns
-  const heightClass = totalCount <= 1 ? 'py-1.5' : totalCount <= 3 ? 'py-1' : 'py-1';
+  const heightClass = totalCount <= 1 ? 'py-2' : totalCount <= 3 ? 'py-1.5' : 'py-1 sm:py-1.5';
   
   const oppText = totalCount === 5 ? `${opp}${loc}` : `${opp} ${loc}`;
 
   const oppFontClass = totalCount === 1 
-    ? 'text-[13px] sm:text-[15px] md:text-[16.5px] tracking-tight'
+    ? 'text-[14px] sm:text-[16px] md:text-[17px] lg:text-[18.5px] tracking-tight'
     : totalCount <= 3 
-    ? 'text-[11.5px] sm:text-[13px] md:text-[14.5px] tracking-tight'
-    : 'text-[9.5px] sm:text-[10.5px] md:text-[11.5px] lg:text-[12.5px] tracking-tighter';
+    ? 'text-[12px] sm:text-[13.5px] md:text-[14.5px] lg:text-[15.5px] tracking-tight'
+    : 'text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] tracking-tighter';
 
   const xpFontClass = totalCount === 1 
-    ? 'text-[12px] sm:text-[13.5px] md:text-[15px]'
+    ? 'text-[13px] sm:text-[14.5px] md:text-[15.5px] lg:text-[17px]'
     : totalCount <= 3 
-    ? 'text-[10.5px] sm:text-[12px] md:text-[13.5px]'
-    : 'text-[8.5px] sm:text-[9.5px] md:text-[10.5px] lg:text-[11.5px] tracking-tighter';
+    ? 'text-[11px] sm:text-[12.5px] md:text-[13.5px] lg:text-[14.5px]'
+    : 'text-[9px] sm:text-[10px] md:text-[11px] lg:text-[12px] tracking-tighter';
 
   return (
     <div

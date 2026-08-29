@@ -283,47 +283,47 @@ export default function PlannerPage() {
             {/* Top Telemetry Row */}
             <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-2 flex-shrink-0">
               {/* Free Transfers */}
-              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center justify-between shadow-lg">
+              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Free Transfers</span>
-                  <span className="text-sm sm:text-base font-black text-emerald-400 font-mono">
+                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">Free Transfers</span>
+                  <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-emerald-400 font-mono">
                     {Math.max(0, availableFT - currentTransfers)} / {availableFT}
                   </span>
                 </div>
-                <div className="p-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 text-xs">🔄</div>
+                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm sm:text-base">🔄</div>
               </div>
 
               {/* Bank */}
-              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center justify-between shadow-lg">
+              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">In The Bank</span>
-                  <span className="text-sm sm:text-base font-black text-white font-mono">{formatMoney(bank)}</span>
+                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">In The Bank</span>
+                  <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-white font-mono">{formatMoney(bank)}</span>
                 </div>
-                <div className="p-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 text-xs">💰</div>
+                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm sm:text-base">💰</div>
               </div>
 
               {/* Forecast xP */}
-              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center justify-between shadow-lg">
+              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">
                     {showAiPredictions ? 'GW Projected xP' : 'Projected Form'}
                   </span>
-                  <span className="text-sm sm:text-base font-black text-cyan-400 font-mono">
+                  <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-cyan-400 font-mono">
                     {showAiPredictions ? `${totalProjectedXp} pts` : `${squadFormSum.toFixed(1)} avg`}
                   </span>
                 </div>
-                <div className="p-1.5 rounded-xl bg-cyan-500/10 text-cyan-400 text-xs">📈</div>
+                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 text-sm sm:text-base">📈</div>
               </div>
 
               {/* Active Strategy / Chips */}
-              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center justify-between shadow-lg">
+              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Strategy</span>
-                  <span className="text-xs font-black text-slate-200 uppercase truncate block">
+                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">Strategy</span>
+                  <span className="text-xs sm:text-sm lg:text-base font-black text-slate-200 uppercase truncate block">
                     {currentChip && currentChip !== 'none' ? `${currentChip}` : 'No Chip Active'}
                   </span>
                 </div>
-                <div className="p-1.5 rounded-xl bg-purple-500/10 text-purple-400 text-xs">⚡</div>
+                <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 text-sm sm:text-base">⚡</div>
               </div>
             </div>
 
