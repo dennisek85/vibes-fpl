@@ -189,7 +189,22 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
           )}
         </button>
 
-        <p className="text-[10px] text-slate-500 mt-3">
+        {/* Quick Start with Default Team Button */}
+        <div className="w-full max-w-[260px] mt-3 pt-3 border-t border-white/10">
+          <button
+            type="button"
+            disabled={isChecking}
+            onClick={async () => {
+              setPin('1234');
+              await submitPin('1234');
+            }}
+            className="w-full py-2 rounded-xl bg-slate-950 hover:bg-slate-800 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 hover:text-white font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow"
+          >
+            <span>⚡ Quick Start with Default Team</span>
+          </button>
+        </div>
+
+        <p className="text-[10px] text-slate-500 mt-2.5">
           🔒 Entering your Team ID + PIN pairs your plan uniquely to your team.
         </p>
       </div>
