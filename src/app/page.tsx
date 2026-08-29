@@ -121,56 +121,56 @@ export default function PlannerPage() {
       )}
 
       {/* Top Navigation Header with Centered Gameweek Stepper & View Switcher */}
-      <header className="w-full bg-slate-950/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 px-3 sm:px-6 py-2 flex justify-center">
-        <div className="w-[98vw] flex items-center justify-between gap-2 sm:gap-4">
+      <header className="w-full bg-slate-950/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 px-2 sm:px-4 py-1.5 flex justify-center overflow-x-hidden">
+        <div className="w-full max-w-[99vw] flex items-center justify-between gap-1 sm:gap-3">
           {/* Left: Brand & Team */}
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-950/50">
-              <Trophy className="w-4 h-4 sm:w-5 sm:h-5" />
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-950/50">
+              <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <h1 className="text-sm sm:text-base font-extrabold text-white tracking-tight">
-                  FPL Squad Planner
+              <div className="flex items-center gap-1">
+                <h1 className="text-xs sm:text-sm md:text-base font-extrabold text-white tracking-tight leading-tight">
+                  <span className="hidden sm:inline">FPL Squad </span>Planner
                 </h1>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.2 rounded border border-emerald-500/30">
-                  2026/27
+                <span className="hidden sm:inline text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-1 py-0.2 rounded border border-emerald-500/30">
+                  26/27
                 </span>
               </div>
               {teamSummary ? (
-                <p className="text-[11px] text-slate-400 truncate max-w-[150px] sm:max-w-[280px]">
+                <p className="hidden sm:block text-[10.5px] text-slate-400 truncate max-w-[130px] sm:max-w-[240px] leading-tight">
                   {teamSummary.name} · <span className="text-slate-300">{teamSummary.player_first_name} {teamSummary.player_last_name}</span>
                 </p>
               ) : (
-                <p className="text-[11px] text-slate-400">Enter PIN or Import Team to start</p>
+                <p className="hidden sm:block text-[10.5px] text-slate-400 leading-tight">Enter PIN or Import Team</p>
               )}
             </div>
           </div>
 
           {/* Center: Gameweek Arrow Stepper & View Switcher */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1 sm:gap-2">
             {/* Gameweek Stepper */}
-            <div className="flex items-center gap-1.5 sm:gap-2 bg-slate-900/90 border border-white/15 px-2 sm:px-3 py-1 rounded-2xl shadow-lg">
+            <div className="flex items-center gap-1 sm:gap-1.5 bg-slate-900/90 border border-white/15 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-xl sm:rounded-2xl shadow-lg">
               <button
                 disabled={selectedGameweek <= 1}
                 onClick={() => selectGameweek(selectedGameweek - 1)}
-                className="p-1 sm:p-1.5 rounded-xl hover:bg-slate-800 disabled:opacity-25 disabled:cursor-not-allowed text-slate-200 hover:text-white transition-all active:scale-90"
+                className="p-1 rounded-lg hover:bg-slate-800 disabled:opacity-25 disabled:cursor-not-allowed text-slate-200 hover:text-white transition-all active:scale-90"
                 title="Previous Gameweek"
               >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
 
-              <div className="flex items-center gap-1.5 px-2 sm:px-3 select-none">
-                <span className="text-sm sm:text-base md:text-lg font-black text-white tracking-tight">
+              <div className="flex items-center gap-1 px-1 sm:px-2 select-none">
+                <span className="text-xs sm:text-sm md:text-base font-black text-white tracking-tight">
                   GW {selectedGameweek}
                 </span>
                 {currentTransfers > 0 && (
-                  <span className="text-[10px] bg-emerald-400 text-slate-950 font-black px-1.5 py-0.2 rounded-full">
+                  <span className="text-[9px] bg-emerald-400 text-slate-950 font-black px-1 py-0.2 rounded-full">
                     +{currentTransfers}
                   </span>
                 )}
                 {currentChip && currentChip !== 'none' && (
-                  <span className="text-[10px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.2 rounded-full uppercase">
+                  <span className="text-[9px] bg-amber-400 text-slate-950 font-black px-1 py-0.2 rounded-full uppercase">
                     {currentChip === 'wildcard' ? 'WC' : currentChip === 'freehit' ? 'FH' : currentChip === 'bboost' ? 'BB' : '3TC'}
                   </span>
                 )}
@@ -179,46 +179,46 @@ export default function PlannerPage() {
               <button
                 disabled={selectedGameweek >= 38}
                 onClick={() => selectGameweek(selectedGameweek + 1)}
-                className="p-1 sm:p-1.5 rounded-xl hover:bg-slate-800 disabled:opacity-25 disabled:cursor-not-allowed text-slate-200 hover:text-white transition-all active:scale-90"
+                className="p-1 rounded-lg hover:bg-slate-800 disabled:opacity-25 disabled:cursor-not-allowed text-slate-200 hover:text-white transition-all active:scale-90"
                 title="Next Gameweek"
               >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
 
             {/* View Switcher Toggle Tabs */}
-            <div className="flex items-center gap-1 bg-slate-900/90 border border-white/15 p-1 rounded-2xl shadow-lg">
+            <div className="flex items-center gap-0.5 bg-slate-900/90 border border-white/15 p-0.5 rounded-xl sm:rounded-2xl shadow-lg">
               <button
                 onClick={() => setCurrentView('pitch')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+                className={`flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all ${
                   currentView === 'pitch'
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950/60 scale-102'
+                    ? 'bg-emerald-600 text-white shadow-md'
                     : 'text-slate-400 hover:text-white'
                 }`}
                 title="Visual Pitch Planner"
               >
-                <LayoutGrid className="w-3.5 h-3.5" />
+                <LayoutGrid className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span className="hidden md:inline">Pitch</span>
               </button>
               <button
                 onClick={() => setCurrentView('matrix')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+                className={`flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all ${
                   currentView === 'matrix'
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950/60 scale-102'
+                    ? 'bg-emerald-600 text-white shadow-md'
                     : 'text-slate-400 hover:text-white'
                 }`}
                 title="Player Projections & Metrics Matrix"
               >
-                <TableProperties className="w-3.5 h-3.5" />
+                <TableProperties className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span className="hidden md:inline">Stats Matrix</span>
               </button>
             </div>
           </div>
 
           {/* Right: Actions & Sync */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             {activePin && (
-              <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-300">
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-300">
                 {isSaving ? (
                   <>
                     <Loader2 className="w-3.5 h-3.5 text-emerald-400 animate-spin" />
@@ -227,7 +227,7 @@ export default function PlannerPage() {
                 ) : (
                   <>
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>PIN: <strong className="font-mono text-white">{activePin}</strong> (Synced)</span>
+                    <span>PIN: <strong className="font-mono text-white">{activePin}</strong></span>
                   </>
                 )}
               </div>
@@ -235,36 +235,38 @@ export default function PlannerPage() {
 
             <button
               onClick={() => setIsImportModalOpen(true)}
-              className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 transition-colors"
+              className="flex items-center gap-1 text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 transition-colors"
+              title="Import FPL Team"
             >
-              <Search className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="hidden md:inline">Import Team</span>
+              <Search className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400" />
+              <span className="hidden sm:inline">Import</span>
             </button>
 
             <button
               onClick={() => setIsSaveModalOpen(true)}
-              className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 transition-colors"
+              className="flex items-center gap-1 text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 transition-colors"
+              title="Saved Plans"
             >
-              <Save className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden md:inline">Plans</span>
+              <Save className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Plans</span>
             </button>
 
             {!isLocked && (
               <button
                 onClick={() => openTransferDrawer()}
-                className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all active:scale-95"
+                className="flex items-center gap-1 text-[11px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all active:scale-95"
               >
-                <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Transfers</span>
+                <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <span className="hidden xs:inline">Transfers</span>
               </button>
             )}
 
             <button
               onClick={handleLogout}
-              className="p-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-300 border border-white/10 transition-colors ml-1"
+              className="p-1 sm:p-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-rose-300 border border-white/10 transition-colors"
               title="Lock / Switch PIN"
             >
-              <Lock className="w-3.5 h-3.5" />
+              <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </button>
           </div>
         </div>
@@ -272,7 +274,7 @@ export default function PlannerPage() {
 
       {/* Main Content Area: Visual Pitch View vs Stats Matrix View */}
       {currentView === 'pitch' ? (
-        <div className="w-full max-w-[99vw] px-2 py-1.5 flex flex-col lg:flex-row items-stretch justify-center gap-2.5 lg:h-[calc(100vh-62px)] overflow-hidden animate-in fade-in duration-200">
+        <div className="w-full max-w-full lg:max-w-[99vw] px-1 sm:px-2 py-1.5 flex flex-col lg:flex-row items-stretch justify-center gap-2.5 lg:h-[calc(100vh-62px)] lg:overflow-hidden animate-in fade-in duration-200">
           
           {/* Left Desktop Panel: Chips, AI Radar, Horizon, Optimizer & Overrides */}
           <LeftStrategyPanel onOpenOverrides={() => setIsOverridesModalOpen(true)} />
