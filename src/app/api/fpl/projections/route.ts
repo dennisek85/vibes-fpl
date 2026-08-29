@@ -104,6 +104,32 @@ export async function GET() {
           continue;
         }
 
+        // Progressive availability factor per target gameweek
+        let availabilityMultiplier = 1.0;
+        const isImmediateGw = targetGw <= currentGw;
+        const isNextPlusOne = targetGw === currentGw + 1;
+
+        if (p.status === 'i' || p.status === 's' || p.status === 'u') {
+          const isLongTerm = p.news && (p.news.includes('surgery') || p.news.includes('months') || p.news.includes('ACL') || p.news.includes('fracture'));
+          if (isImmediateGw) {
+            availabilityMultiplier = 0.0;
+          } else if (isNextPlusOne) {
+            availabilityMultiplier = isLongTerm ? 0.0 : 0.40;
+          } else {
+            availabilityMultiplier = isLongTerm ? 0.0 : 0.85;
+          }
+        } else if (p.chance_of_playing_next_round !== null && p.chance_of_playing_next_round !== undefined) {
+          if (isImmediateGw) {
+            availabilityMultiplier = p.chance_of_playing_next_round / 100.0;
+          } else if (isNextPlusOne) {
+            availabilityMultiplier = Math.min(1.0, (p.chance_of_playing_next_round / 100.0) + 0.35);
+          } else {
+            availabilityMultiplier = 1.0;
+          }
+        } else if (p.status === 'd') {
+          availabilityMultiplier = isImmediateGw ? 0.5 : isNextPlusOne ? 0.85 : 1.0;
+        }
+
         let totalFixtureXp = 0;
 
         for (const fix of gwFixtures) {

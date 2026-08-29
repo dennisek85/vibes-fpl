@@ -1387,18 +1387,36 @@ currentView: 'pitch',
   },
 
   getPlayerGameweekXp: (playerId: number, gameweek: number): number => {
-    const { aiProjectionsMap, playerMap } = get();
+    const { aiProjectionsMap, playerMap, nextGameweekId } = get();
     const p = playerMap.get(playerId);
+    const currentNextGw = nextGameweekId || 3;
 
-    // 1. Availability probability factor from official FPL injury/fitness telemetry
+    // 1. Availability probability factor with progressive injury recovery horizon
     let availabilityFactor = 1.0;
     if (p) {
+      const isImmediateGw = gameweek <= currentNextGw;
+      const isNextPlusOne = gameweek === currentNextGw + 1;
+
       if (p.status === 'i' || p.status === 's' || p.status === 'u') {
-        availabilityFactor = 0.0;
+        const isLongTerm = p.news && (p.news.includes('surgery') || p.news.includes('months') || p.news.includes('ACL') || p.news.includes('fracture'));
+        if (isImmediateGw) {
+          availabilityFactor = 0.0;
+        } else if (isNextPlusOne) {
+          availabilityFactor = isLongTerm ? 0.0 : 0.40;
+        } else {
+          // Future GW+2 onwards
+          availabilityFactor = isLongTerm ? 0.0 : 0.85;
+        }
       } else if (p.chance_of_playing_next_round !== null && p.chance_of_playing_next_round !== undefined) {
-        availabilityFactor = p.chance_of_playing_next_round / 100.0;
+        if (isImmediateGw) {
+          availabilityFactor = p.chance_of_playing_next_round / 100.0;
+        } else if (isNextPlusOne) {
+          availabilityFactor = Math.min(1.0, (p.chance_of_playing_next_round / 100.0) + 0.35); // 50% -> 85%, 75% -> 100%
+        } else {
+          availabilityFactor = 1.0; // Minor knocks fully recovered in future rounds
+        }
       } else if (p.status === 'd') {
-        availabilityFactor = 0.5;
+        availabilityFactor = isImmediateGw ? 0.5 : isNextPlusOne ? 0.85 : 1.0;
       }
     }
 

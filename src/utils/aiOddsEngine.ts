@@ -11,6 +11,37 @@ export interface MatchExpectancy {
 
 const LEAGUE_AVG_GOALS_PER_MATCH = 1.38;
 
+// Primary Premier League penalty takers registry (0.79 xG conversion equity)
+const PRIMARY_PENALTY_TAKERS = new Set([
+  'haaland',
+  'salah',
+  'palmer',
+  'saka',
+  'isak',
+  'fernandes',
+  'mbeumo',
+  'wood',
+  'solanke',
+  'cunha',
+  'mateta',
+  'armstrong',
+  'delap',
+  'schade',
+  'paquetá',
+  'kudus',
+  'bowen',
+  'vardy',
+  'watkins',
+  'son',
+  'toney'
+]);
+
+export function isDesignatedPenaltyTaker(player: FPLPlayer): boolean {
+  if (!player) return false;
+  const name = (player.web_name || player.second_name || '').toLowerCase().trim();
+  return PRIMARY_PENALTY_TAKERS.has(name);
+}
+
 /**
  * Calculates Poisson-derived Implied Team Goals & Clean Sheet Probabilities for any fixture:
  * - Implied Team Goals (λ) from relative attack/defense strengths + home venue boost.
@@ -74,7 +105,7 @@ export function calculateBpsBonusExpectancy(
   const bpsPer90 = minutes > 0 ? (rawBps / (minutes / 90.0)) : 18.0;
 
   if (pos === 1) {
-    // Goalkeeper: BPS bonus when keeping clean sheets and making saves
+    // Goalkeeper: BPS bonus when keeping clean sheets and making high saves
     return Math.min(0.85, cleanSheetProb * 0.70 + (bpsPer90 > 22 ? 0.25 : 0.05));
   }
 
@@ -85,19 +116,24 @@ export function calculateBpsBonusExpectancy(
   }
 
   if (pos === 3 || pos === 4) {
-    // Attackers: Match-winning goal bonus probability
+    // Attackers: Match-winning goal & penalty bonus probability
     const xg = parseFloat(player.expected_goals || '0');
     const threatRate = parseFloat(player.threat || '0');
+    const hasPens = isDesignatedPenaltyTaker(player);
     const attackWeight = (impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH);
-    const talismanFactor = (threatRate > 35 || xg > 2.0 || bpsPer90 > 22) ? 0.55 : 0.20;
-    return Math.min(1.2, talismanFactor * attackWeight);
+    const talismanFactor = (threatRate > 35 || xg > 2.0 || bpsPer90 > 22 || hasPens) ? 0.60 : 0.20;
+    return Math.min(1.25, talismanFactor * attackWeight + (hasPens ? 0.20 : 0));
   }
 
   return 0.2;
 }
 
 /**
- * Calculates player fixture equity based on exact Implied Team Goals, Poisson Clean Sheet Odds, & BPS Regression.
+ * Calculates player fixture equity based on:
+ * 1. Exact Implied Team Goals & Poisson Clean Sheet Odds.
+ * 2. Designated Penalty Taker Conversion Equity (+0.75-0.90 xP).
+ * 3. Goalkeeper Save Volume vs Conceded Goals Offset.
+ * 4. BPS Statistical Regression.
  */
 export function calculatePlayerOddsXp(
   player: FPLPlayer,
@@ -120,15 +156,24 @@ export function calculatePlayerOddsXp(
   // BPS Bonus Expectancy from regression
   const xBps = calculateBpsBonusExpectancy(player, cleanSheetProb, impliedGoalsScored);
 
+  // Penalty duty equity (0.79 xG * conversion rate)
+  const isPenTaker = isDesignatedPenaltyTaker(player);
+  const penEquity = isPenTaker ? 0.75 * (impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH) : 0;
+
   const pos = player.element_type;
 
   if (pos === 1) {
-    // Goalkeeper: 2 pts appearance + Save points buffer + (4 * P(CS)) + BPS Bonus
-    const expectedSavesPts = Math.min(2.5, impliedGoalsConceded * 0.7);
+    // Goalkeeper: Save volume mathematically offsets conceded goals (+1 pt per 3 saves)
+    // When opponent goals are high, shots on target are high (~2.8x opponent goals)
+    const expectedShotsFaced = impliedGoalsConceded * 2.8;
+    const expectedSaves = Math.max(1.5, expectedShotsFaced - impliedGoalsConceded);
+    const savePoints = (expectedSaves / 3.0) * 1.0; // FPL: 1 pt per 3 saves
     const csEquity = cleanSheetProb * 4.0;
     const goalsConcededPenalty = Math.max(0, (impliedGoalsConceded - 1) * 0.5);
-    const gkScore = 2.0 + expectedSavesPts + csEquity + xBps - goalsConcededPenalty;
-    return Math.max(2.5, Math.round((baseXp * 0.40 + gkScore * 0.60) * 10) / 10);
+    
+    // Net Goalkeeper Score with robust save floor buffer
+    const gkScore = 2.0 + savePoints + csEquity + xBps - goalsConcededPenalty;
+    return Math.max(2.8, Math.round((baseXp * 0.35 + gkScore * 0.65) * 10) / 10);
   }
 
   if (pos === 2) {
@@ -138,22 +183,22 @@ export function calculatePlayerOddsXp(
     const attackEquity = (xg * 6.0 + xa * 3.0) * (impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH);
     const csEquity = cleanSheetProb * 4.0;
     const goalsConcededPenalty = Math.max(0, (impliedGoalsConceded - 1) * 0.5);
-    const defScore = 2.0 + attackEquity + csEquity + xBps - goalsConcededPenalty;
+    const defScore = 2.0 + attackEquity + penEquity + csEquity + xBps - goalsConcededPenalty;
     return Math.max(1.5, Math.round((baseXp * 0.35 + defScore * 0.65) * 10) / 10);
   }
 
   if (pos === 3) {
-    // Midfielder: 2 pts appearance + (xGI * 5.0 * (Implied Goals / Avg)) + (1 * P(CS)) + BPS Bonus
+    // Midfielder: 2 pts appearance + (xGI * 5.0 * (Implied Goals / Avg)) + Pen Equity + (1 * P(CS)) + BPS Bonus
     const attackRatio = Math.max(0.5, impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH);
     const midCsEquity = cleanSheetProb * 1.0;
-    const midScore = (baseXp - 0.5) * attackRatio + midCsEquity + xBps;
+    const midScore = (baseXp - 0.5) * attackRatio + penEquity + midCsEquity + xBps;
     return Math.max(1.8, Math.round(midScore * 10) / 10);
   }
 
   if (pos === 4) {
-    // Forward: 2 pts appearance + (xGI * 4.0 * (Implied Goals / Avg)) + BPS Bonus
+    // Forward: 2 pts appearance + (xGI * 4.0 * (Implied Goals / Avg)) + Pen Equity + BPS Bonus
     const attackRatio = Math.max(0.5, impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH);
-    const fwdScore = baseXp * attackRatio + xBps;
+    const fwdScore = baseXp * attackRatio + penEquity + xBps;
     return Math.max(2.0, Math.round(fwdScore * 10) / 10);
   }
 

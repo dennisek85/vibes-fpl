@@ -1,5 +1,6 @@
 import { FPLPlayer, SquadPick } from '@/types/fpl';
 import { solveOptimalSquad } from '@/utils/aiOptimalSquadSolver';
+import { optimizeLineup } from '@/utils/aiOptimizer';
 
 export interface SquadRatingResult {
   overallPercentage: number;
@@ -41,7 +42,6 @@ function calibratePercentile(actualXp: number, benchmarkXp: number, baselinePerP
 
 /**
  * Calculates Poisson multi-goal / explosive haul leverage for captaincy candidates.
- * High-threat talisman attackers facing weak home defenses receive compounding ceiling bonuses.
  */
 function getCaptaincyEffectiveValue(player: FPLPlayer, baseXp: number): number {
   if (!player) return baseXp;
@@ -50,7 +50,6 @@ function getCaptaincyEffectiveValue(player: FPLPlayer, baseXp: number): number {
   const threat = parseFloat(player.threat || '0');
   const pos = player.element_type;
 
-  // Multi-goal / explosive hat-trick probability factor for elite attackers (FWD / MID)
   let multiGoalFactor = 0;
   if (pos === 4 || pos === 3) {
     if (baseXp >= 6.5 || threat > 30 || xg > 1.5) {
@@ -58,18 +57,18 @@ function getCaptaincyEffectiveValue(player: FPLPlayer, baseXp: number): number {
     }
   }
 
-  // Compounded expected captain return
   return baseXp * (1.0 + multiGoalFactor);
 }
 
 /**
- * Computes 0-100% Squad Strength Ratings incorporating all 6 professional FPL model factors:
+ * Computes 0-100% Squad Strength Ratings incorporating all professional FPL model factors:
  * 1. 3-GW Time-Decayed Horizon Weighting (50% GW1 + 30% GW2 + 20% GW3).
- * 2. Auto-Sub Bench Probability Weighting (12% B1, 6% B2, 2% B3, 3% GK).
- * 3. Vice-Captain Auto-Armband Contingency (+3.5% VC xP).
- * 4. Bench Enabler Cost Normalization (rewarding optimal £4.0m budget allocation).
- * 5. Budget-Feasible Optimal Squad Benchmark.
- * 6. Captaincy Explosive Ceiling & Opportunity Cost Modeling.
+ * 2. Progressive Injury Recovery Modeling.
+ * 3. Future Gameweek Dynamic Starting XI Evaluation.
+ * 4. Stored Free Transfer Flexibility Equity (+1.2 xP per accumulated FT).
+ * 5. Auto-Sub Bench Probability Weighting (12% B1, 6% B2, 2% B3, 3% GK).
+ * 6. Bench Enabler Cost Normalization.
+ * 7. Captaincy Explosive Ceiling Modeling.
  */
 export function calculateSquadRating(
   squad: SquadPick[],
@@ -78,7 +77,8 @@ export function calculateSquadRating(
   gameweek: number,
   getXp: (playerId: number, gw: number) => number,
   horizon: number = 3,
-  totalBudget?: number
+  totalBudget?: number,
+  availableFreeTransfers: number = 1
 ): SquadRatingResult | null {
   if (!squad || squad.length === 0 || !allPlayers || allPlayers.length === 0) return null;
 
@@ -103,11 +103,15 @@ export function calculateSquadRating(
     return Math.round((sum / (weightTotal || 1)) * 10) / 10;
   };
 
-  // 2. Calculate Your Squad Points
-  const yourStarters = squad.filter(p => p.position <= 11);
+  // 2. Evaluate Dynamic Starting Lineup for this Gameweek's Fixtures
+  // (In future Gameweeks, top tools evaluate the squad's best 11 rather than penalizing if bench player has easier fixture)
+  const optimalLineupForGw = optimizeLineup(squad, playerMap, gameweek, getDecayedHorizonXp);
+  const evaluatedSquad = optimalLineupForGw ? optimalLineupForGw.optimizedSquad : squad;
+
+  const yourStarters = evaluatedSquad.filter(p => p.position <= 11);
   if (yourStarters.length === 0) return null;
 
-  const benchPicks = squad.filter(p => p.position > 11).sort((a, b) => a.position - b.position);
+  const benchPicks = evaluatedSquad.filter(p => p.position > 11).sort((a, b) => a.position - b.position);
 
   let yourGkDefXp = 0;
   let yourMidXp = 0;
@@ -121,6 +125,10 @@ export function calculateSquadRating(
   let defCount = 0;
   let midCount = 0;
   let fwdCount = 0;
+
+  // Check actual user captain pick from current squad
+  const userCaptainPick = squad.find(p => p.is_captain);
+  const userCapPlayer = userCaptainPick ? playerMap.get(userCaptainPick.element) : null;
 
   for (const pick of yourStarters) {
     const player = playerMap.get(pick.element);
@@ -140,7 +148,10 @@ export function calculateSquadRating(
       fwdCount++;
     }
 
-    if (pick.is_captain) {
+    if (userCapPlayer && userCapPlayer.id === player.id) {
+      yourCapXp = xp;
+      yourCaptainPlayer = player;
+    } else if (pick.is_captain && !yourCaptainPlayer) {
       yourCapXp = xp;
       yourCaptainPlayer = player;
     } else if (pick.is_vice_captain) {
@@ -149,7 +160,7 @@ export function calculateSquadRating(
     }
   }
 
-  // Auto-pick captain / vice-captain if unset
+  // Auto-pick captain if unset
   if (!yourCaptainPlayer && yourStarters.length > 0) {
     const sorted = [...yourStarters].map(p => ({ pick: p, xp: getDecayedHorizonXp(p.element), player: playerMap.get(p.element) }))
       .sort((a, b) => b.xp - a.xp);
@@ -185,7 +196,10 @@ export function calculateSquadRating(
   // Vice-captain fallback probability contingency (+3.5% of VC xP)
   const viceCaptainContingency = yourViceCapXp * 0.035;
 
-  const yourTotalScore = Math.round((yourStartersSum + effectiveCapValue + yourBenchXp + benchEnablerSavings + viceCaptainContingency) * 10) / 10;
+  // Stored Free Transfer Equity (+1.2 xP per accumulated FT beyond 1 in future rounds)
+  const ftEquity = Math.max(0, (availableFreeTransfers - 1) * 1.2);
+
+  const yourTotalScore = Math.round((yourStartersSum + effectiveCapValue + yourBenchXp + benchEnablerSavings + viceCaptainContingency + ftEquity) * 10) / 10;
 
   // 3. Benchmark against Budget-Feasible Optimal Squad
   const squadValue = squad.reduce((sum, p) => sum + (playerMap.get(p.element)?.now_cost || 0), 0);
@@ -247,7 +261,6 @@ export function calculateSquadRating(
   const midfieldPercentage = calibratePercentile(yourMidXp, benchmarkMidXp, 3.2, midCount || 4);
   const forwardPercentage = calibratePercentile(yourFwdXp, benchmarkFwdXp, 3.5, fwdCount || 2);
 
-  // Captain percentage: compares your captain's effective value directly to the best available option
   const capRatio = bestInSquadCaptain.effectiveVal > 0 ? (effectiveCapValue / bestInSquadCaptain.effectiveVal) : 1.0;
   const captainPercentage = Math.min(100, Math.max(15, Math.round(capRatio * 100)));
 

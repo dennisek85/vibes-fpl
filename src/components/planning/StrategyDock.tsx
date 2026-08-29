@@ -68,9 +68,10 @@ export const StrategyDock: React.FC<StrategyDockProps> = ({ onOpenOverrides }) =
       selectedGameweek,
       getPlayerGameweekXp,
       fixtureHorizon,
-      budget
+      budget,
+      activePlan.availableTransfers || 1
     );
-  }, [showAiPredictions, activePlan?.squad, activePlan?.calculatedBank, players, playerMap, selectedGameweek, getPlayerGameweekXp, fixtureHorizon]);
+  }, [showAiPredictions, activePlan?.squad, activePlan?.calculatedBank, activePlan?.availableTransfers, players, playerMap, selectedGameweek, getPlayerGameweekXp, fixtureHorizon]);
 
   const getChipPlannedGw = (chipId: ChipType): number | null => {
     for (const [gwStr, plan] of Object.entries(gameweekPlans)) {
