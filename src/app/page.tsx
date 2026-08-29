@@ -236,18 +236,18 @@ export default function PlannerPage() {
       {/* Main Content Area: Visual Pitch View vs Stats Matrix View */}
       {currentView === 'pitch' ? (
         <div className="w-[98vw] py-2 flex flex-col lg:flex-row items-start justify-center gap-3 sm:gap-4 animate-in fade-in duration-200">
-          <aside className="w-full lg:w-64 xl:w-72 flex-shrink-0 lg:sticky lg:top-14">
+          <aside className="w-full lg:w-64 xl:w-72 flex-shrink-0 lg:sticky lg:top-14 order-2 lg:order-1">
             <PlannerSidebar onOpenOverrides={() => setIsOverridesModalOpen(true)} />
           </aside>
 
-          <section className="w-full lg:flex-1 min-w-0 flex flex-col items-center">
+          <section className="w-full lg:flex-1 min-w-0 flex flex-col items-center order-1 lg:order-2">
             <FootballPitch />
             <div className="w-full lg:hidden mt-3">
               <BenchBar benchPicks={benchPicks} />
             </div>
           </section>
 
-          <aside className="hidden lg:flex flex-col w-48 xl:w-64 flex-shrink-0 lg:sticky lg:top-14">
+          <aside className="hidden lg:flex flex-col w-48 xl:w-64 flex-shrink-0 lg:sticky lg:top-14 lg:order-3">
             <VerticalBenchBar benchPicks={benchPicks} />
           </aside>
         </div>
