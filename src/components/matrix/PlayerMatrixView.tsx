@@ -307,28 +307,34 @@ export const PlayerMatrixView: React.FC = () => {
 
             {/* Price Radar Table */}
             <div className="w-full overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[950px]">
+              <table className="w-full text-left border-collapse min-w-[1050px]">
                 <thead>
                   <tr className="bg-slate-950/90 border-b border-white/15 text-slate-400 font-mono text-[11px]">
-                    <th className="py-3.5 px-4 min-w-[220px]">
+                    <th className="py-3.5 px-4 min-w-[210px]">
                       {renderSortHeader('Player', 'name', 'left')}
                     </th>
-                    <th className="py-3.5 px-3 text-center w-20">
+                    <th className="py-3.5 px-3 text-center w-16">
                       <span>Pos</span>
                     </th>
-                    <th className="py-3.5 px-3 text-right w-24">
+                    <th className="py-3.5 px-3 text-right w-20">
                       {renderSortHeader('Price', 'price', 'right')}
                     </th>
-                    <th className="py-3.5 px-3 text-right w-36">
+                    <th className="py-3.5 px-3 text-right w-32">
                       {renderSortHeader('Transfers Today', 'transfers_today', 'right')}
                     </th>
-                    <th className="py-3.5 px-4 text-center min-w-[200px]">
+                    <th className="py-3.5 px-3 text-right w-28">
+                      <span>Velocity</span>
+                    </th>
+                    <th className="py-3.5 px-4 text-center min-w-[180px]">
                       {renderSortHeader('Target Progress', 'target_progress')}
                     </th>
-                    <th className="py-3.5 px-4 text-center w-40">
-                      <span>Prediction Tonight</span>
+                    <th className="py-3.5 px-3 text-center w-28">
+                      <span>Timing</span>
                     </th>
-                    <th className="py-3.5 px-4 text-right w-24">
+                    <th className="py-3.5 px-4 text-center w-36">
+                      <span>Prediction</span>
+                    </th>
+                    <th className="py-3.5 px-4 text-right w-20">
                       <span>Action</span>
                     </th>
                   </tr>
@@ -393,6 +399,15 @@ export const PlayerMatrixView: React.FC = () => {
                           {item.netTransfersToday > 0 ? '+' : ''}{item.netTransfersToday.toLocaleString()}
                         </td>
 
+                        {/* Hourly Velocity */}
+                        <td className="py-3.5 px-3 text-right font-mono text-xs">
+                          <span className={`px-1.5 py-0.5 rounded-md font-bold ${
+                            item.hourlyVelocity > 0 ? 'text-emerald-300 bg-emerald-950/60' : item.hourlyVelocity < 0 ? 'text-rose-300 bg-rose-950/60' : 'text-slate-400'
+                          }`}>
+                            {item.hourlyVelocityText}
+                          </span>
+                        </td>
+
                         {/* Target Progress Meter */}
                         <td className="py-3.5 px-4">
                           <div className="flex items-center justify-between text-[11px] font-mono font-black mb-1">
@@ -409,7 +424,22 @@ export const PlayerMatrixView: React.FC = () => {
                           </div>
                         </td>
 
-                        {/* Prediction Tonight */}
+                        {/* Timing */}
+                        <td className="py-3.5 px-3 text-center">
+                          <span className={`px-2 py-0.5 rounded-lg text-[10.5px] font-mono font-bold border ${
+                            item.changeTime === 'Tonight' 
+                              ? 'bg-amber-950/80 text-amber-300 border-amber-500/40 animate-pulse'
+                              : item.changeTime === 'Tomorrow'
+                              ? 'bg-slate-900 text-slate-300 border-white/10'
+                              : item.changeTime === 'Locked'
+                              ? 'bg-slate-950 text-slate-500 border-white/5'
+                              : 'text-slate-500 border-transparent'
+                          }`}>
+                            {item.changeTime}
+                          </span>
+                        </td>
+
+                        {/* Prediction */}
                         <td className="py-3.5 px-4 text-center">
                           {item.isLocked ? (
                             <span className="px-2.5 py-1 rounded-xl bg-slate-950 border border-white/10 text-slate-400 font-bold text-[10.5px] flex items-center justify-center gap-1 mx-auto w-max">

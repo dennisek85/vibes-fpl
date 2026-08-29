@@ -42,7 +42,6 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
     showAiPredictions,
     toggleAiPredictions,
     optimizeSquadLineup,
-    autoOrderBenchLineup,
     openScoutModal,
     players,
     playerMap,
@@ -50,7 +49,6 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
   } = usePlannerStore();
 
   const [optResult, setOptResult] = useState<any | null>(null);
-  const [benchOrderedMsg, setBenchOrderedMsg] = useState(false);
   const [showResetAllConfirm, setShowResetAllConfirm] = useState(false);
 
   const isLocked = isGameweekLocked(selectedGameweek);
@@ -277,28 +275,6 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
           <Wand2 className="w-4 h-4 text-amber-400" />
           ⚡ Auto-Optimize Lineup
         </button>
-
-        {showAiPredictions && (
-          <button
-            onClick={() => {
-              const res = autoOrderBenchLineup();
-              if (res) {
-                setBenchOrderedMsg(true);
-                setTimeout(() => setBenchOrderedMsg(false), 3000);
-              }
-            }}
-            className="w-full py-2 px-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-white/10 text-cyan-300 hover:text-white font-bold text-xs flex items-center justify-center gap-2 transition active:scale-98"
-            title="Automatically sort bench slots (12-15) so the highest-scoring sub comes on first"
-          >
-            <span>🔄 Smart Auto-Order Bench</span>
-          </button>
-        )}
-
-        {benchOrderedMsg && (
-          <p className="text-[11px] text-cyan-300 font-bold text-center animate-in fade-in">
-            ✓ Bench ordered by highest expected points!
-          </p>
-        )}
 
         {optResult && (
           <p className="text-xs text-emerald-400 font-black text-center py-0.5 animate-in fade-in leading-tight">

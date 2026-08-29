@@ -52,6 +52,14 @@ export const AiScoutModal: React.FC = () => {
   const [targetPosition, setTargetPosition] = useState<number | 'value'>(3); // Default MID
   const [appliedTransferMsg, setAppliedTransferMsg] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    if (isScoutModalOpen && scoutInitialTab) {
+      setActiveTab(scoutInitialTab);
+    } else if (isScoutModalOpen && !scoutInitialTab) {
+      setActiveTab('transfers');
+    }
+  }, [isScoutModalOpen, scoutInitialTab]);
+
   const isLocked = isGameweekLocked(selectedGameweek);
   const currentPlan = gameweekPlans[selectedGameweek];
   const squad = useMemo(() => currentPlan?.squad || [], [currentPlan?.squad]);
@@ -711,18 +719,36 @@ export const AiScoutModal: React.FC = () => {
                   </div>
 
                   <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
-                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">Projected Score</span>
-                    <span className="text-sm sm:text-base font-black text-emerald-400 font-mono">
-                      {optimalSquad.totalProjectedPoints} pts
+                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">
+                      {horizon === '1gw' ? 'Projected Score' : `Total Score (${horizon === '3gw' ? '3 GWs' : '5 GWs'})`}
                     </span>
+                    <span className="text-sm sm:text-base font-black text-emerald-400 font-mono">
+                      {horizon === '1gw' 
+                        ? `${optimalSquad.totalProjectedPoints} pts` 
+                        : `${optimalSquad.cumulativePoints} pts`}
+                    </span>
+                    {horizon !== '1gw' && (
+                      <span className="text-[10px] text-slate-400 font-mono block">
+                        ({optimalSquad.totalProjectedPoints} pts/GW avg)
+                      </span>
+                    )}
                   </div>
 
                   <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
-                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">Expected Gain</span>
+                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">
+                      {horizon === '1gw' ? 'Expected Gain' : `Total Gain (${horizon === '3gw' ? '3 GWs' : '5 GWs'})`}
+                    </span>
                     <span className="text-sm sm:text-base font-black text-cyan-400 font-mono flex items-center justify-center gap-1">
                       <TrendingUp className="w-3.5 h-3.5" />
-                      +{optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} pts
+                      +{horizon === '1gw' 
+                        ? `${optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} pts` 
+                        : `${Math.round((optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0) * (horizon === '3gw' ? 3 : 5) * 10) / 10} pts`}
                     </span>
+                    {horizon !== '1gw' && (
+                      <span className="text-[10px] text-slate-400 font-mono block">
+                        (+{optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} / GW)
+                      </span>
+                    )}
                   </div>
 
                   <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
@@ -797,8 +823,15 @@ export const AiScoutModal: React.FC = () => {
                               {team?.short_name} · {formatMoney(player.now_cost, true)}
                             </span>
 
-                            <div className="mt-1.5 px-2 py-0.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-[10.5px] font-black text-emerald-300 font-mono">
-                              {isCaptain ? `${(xp * 2).toFixed(1)} xP (2x)` : `${xp.toFixed(1)} xP`}
+                            <div className="mt-1.5 px-2 py-0.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-[10.5px] font-black text-emerald-300 font-mono text-center">
+                              {horizon === '1gw' ? (
+                                <span>{isCaptain ? `${(xp * 2).toFixed(1)} xP (2x)` : `${xp.toFixed(1)} xP`}</span>
+                              ) : (
+                                <div className="leading-tight">
+                                  <span>{isCaptain ? `${(xp * 2 * (horizon === '3gw' ? 3 : 5)).toFixed(1)} xP` : `${(xp * (horizon === '3gw' ? 3 : 5)).toFixed(1)} xP`}</span>
+                                  <span className="text-[9px] text-emerald-400/70 block">({isCaptain ? `${(xp * 2).toFixed(1)}/GW` : `${xp.toFixed(1)}/GW`})</span>
+                                </div>
+                              )}
                             </div>
                           </div>
                         );

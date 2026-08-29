@@ -5,7 +5,9 @@ export interface OptimalSquadResult {
   squad: SquadPick[];
   totalCost: number; // in tenths, e.g. 1000 = £100.0m
   remainingBank: number; // in tenths
-  totalProjectedPoints: number;
+  totalProjectedPoints: number; // Average per GW
+  cumulativePoints: number; // Total points across horizon (e.g. 195.4 pts over 3 GWs)
+  horizon: number;
   captain: FPLPlayer;
   viceCaptain: FPLPlayer;
   formation: string;
@@ -44,7 +46,7 @@ export function solveOptimalSquad(
     xp: number;
   }
 
-  // Calculate horizon xP
+  // Calculate horizon xP (Average per GW across horizon)
   const getHorizonXp = (pId: number): number => {
     if (horizon === 1) return getXp(pId, gameweek);
     let sum = 0;
@@ -98,195 +100,194 @@ export function solveOptimalSquad(
     totalScore: number; 
     starters: Candidate[]; 
     bench: Candidate[]; 
-    formation: string;
-    captain: Candidate;
-    viceCaptain: Candidate;
-  } => {
-    const selGks = chosen.filter(c => c.pos === 1).sort((a, b) => b.xp - a.xp);
-    const selDefs = chosen.filter(c => c.pos === 2).sort((a, b) => b.xp - a.xp);
-    const selMids = chosen.filter(c => c.pos === 3).sort((a, b) => b.xp - a.xp);
-    const selFwds = chosen.filter(c => c.pos === 4).sort((a, b) => b.xp - a.xp);
+    captain: Candidate; 
+    viceCaptain: Candidate; 
+    formation: string 
+  } | null => {
+    const gksChosen = chosen.filter(c => c.pos === 1).sort((a, b) => b.xp - a.xp);
+    const defsChosen = chosen.filter(c => c.pos === 2).sort((a, b) => b.xp - a.xp);
+    const midsChosen = chosen.filter(c => c.pos === 3).sort((a, b) => b.xp - a.xp);
+    const fwdsChosen = chosen.filter(c => c.pos === 4).sort((a, b) => b.xp - a.xp);
 
-    const startingGk = selGks[0];
-    const benchGk = selGks[1];
+    if (gksChosen.length !== 2 || defsChosen.length !== 5 || midsChosen.length !== 5 || fwdsChosen.length !== 3) {
+      return null;
+    }
 
-    let bestScore = -Infinity;
+    const startingGk = gksChosen[0];
+    const benchGk = gksChosen[1];
+
+    let bestFormScore = -Infinity;
+    let bestFormStarters: Candidate[] = [];
+    let bestFormBenchOutfield: Candidate[] = [];
     let bestFormationStr = '3-5-2';
-    let bestStarters: Candidate[] = [];
-    let bestBenchOutfield: Candidate[] = [];
-    let bestCap = startingGk;
-    let bestVc = startingGk;
 
     for (const form of LEGAL_FORMATIONS) {
-      const sDefs = selDefs.slice(0, form.def);
-      const bDefs = selDefs.slice(form.def);
+      const formDefs = defsChosen.slice(0, form.def);
+      const benchDefs = defsChosen.slice(form.def);
 
-      const sMids = selMids.slice(0, form.mid);
-      const bMids = selMids.slice(form.mid);
+      const formMids = midsChosen.slice(0, form.mid);
+      const benchMids = midsChosen.slice(form.mid);
 
-      const sFwds = selFwds.slice(0, form.fwd);
-      const bFwds = selFwds.slice(form.fwd);
+      const formFwds = fwdsChosen.slice(0, form.fwd);
+      const benchFwds = fwdsChosen.slice(form.fwd);
 
-      const starters = [startingGk, ...sDefs, ...sMids, ...sFwds];
-      const sortedByXp = [...starters].sort((a, b) => b.xp - a.xp);
-      const cap = sortedByXp[0];
-      const vc = sortedByXp[1] || cap;
+      const starters = [startingGk, ...formDefs, ...formMids, ...formFwds];
+      const sortedStarters = [...starters].sort((a, b) => b.xp - a.xp);
+      const cap = sortedStarters[0];
 
-      const sumXp = starters.reduce((acc, p) => acc + p.xp, 0);
-      const score = sumXp + cap.xp; // captain 2x bonus
+      const score = starters.reduce((s, p) => s + p.xp, 0) + cap.xp;
 
-      if (score > bestScore) {
-        bestScore = score;
+      if (score > bestFormScore) {
+        bestFormScore = score;
+        bestFormStarters = starters;
+        bestFormBenchOutfield = [...benchDefs, ...benchMids, ...benchFwds].sort((a, b) => b.xp - a.xp);
         bestFormationStr = `${form.def}-${form.mid}-${form.fwd}`;
-        bestStarters = starters;
-        bestBenchOutfield = [...bDefs, ...bMids, ...bFwds].sort((a, b) => b.xp - a.xp);
-        bestCap = cap;
-        bestVc = vc;
       }
     }
 
+    const sortedBestStarters = [...bestFormStarters].sort((a, b) => b.xp - a.xp);
+
     return {
-      totalScore: Math.round(bestScore * 10) / 10,
-      starters: bestStarters,
-      bench: [benchGk, ...bestBenchOutfield],
-      formation: bestFormationStr,
-      captain: bestCap,
-      viceCaptain: bestVc
+      totalScore: Math.round(bestFormScore * 10) / 10,
+      starters: bestFormStarters,
+      bench: [benchGk, ...bestFormBenchOutfield],
+      captain: sortedBestStarters[0],
+      viceCaptain: sortedBestStarters[1],
+      formation: bestFormationStr
     };
   };
 
-  // Helper to check team constraint
-  const isValidTeamConstraint = (picks: Candidate[]): boolean => {
-    const teamCounts: Record<number, number> = {};
-    for (const p of picks) {
-      teamCounts[p.team] = (teamCounts[p.team] || 0) + 1;
-      if (teamCounts[p.team] > 3) return false;
+  // Club Limit Validator (max 3 players from any single club)
+  const isClubLimitValid = (players: Candidate[]): boolean => {
+    const clubCounts = new Map<number, number>();
+    for (const p of players) {
+      const count = (clubCounts.get(p.team) || 0) + 1;
+      if (count > 3) return false;
+      clubCounts.set(p.team, count);
     }
     return true;
   };
 
-  // Start with a greedy high-value baseline selection
-  const sortByPpv = (arr: Candidate[]) => [...arr].sort((a, b) => (b.xp / (b.cost || 40)) - (a.xp / (a.cost || 40)));
-
-  // Generate diverse initial seeds (greedy by xP, greedy by points per value, and balanced)
+  // Multi-pass greedy knapsack optimizer
   let bestSquadCandidates: Candidate[] | null = null;
-  let bestSquadEval: ReturnType<typeof evaluate15> | null = null;
+  let bestSquadEval: ReturnType<typeof evaluate15> = null;
   let bestTotalCost = 0;
 
-  // Smart beam search / stochastic local search across combinations
-  const iterations = 800;
+  // Pass 1: Premium Skeleton Selection + Cheapest Viable Enablers
+  const sortedGks = [...candidateGks].sort((a, b) => b.xp - a.xp);
+  const sortedDefs = [...candidateDefs].sort((a, b) => b.xp - a.xp);
+  const sortedMids = [...candidateMids].sort((a, b) => b.xp - a.xp);
+  const sortedFwds = [...candidateFwds].sort((a, b) => b.xp - a.xp);
 
-  for (let i = 0; i < iterations; i++) {
-    const teamCounts: Record<number, number> = {};
-    const selected: Candidate[] = [];
-    let currentCost = 0;
+  const premiumGks = sortedGks.slice(0, 4);
+  const enablerGks = [...candidateGks].sort((a, b) => a.cost - b.cost).slice(0, 4);
 
-    const pickRandomWeighted = (pool: Candidate[], needed: number) => {
-      const available = pool.filter(c => (teamCounts[c.team] || 0) < 3 && !selected.some(s => s.id === c.id));
-      // Sort by xP with slight noise for diversity
-      available.sort((a, b) => {
-        const noiseA = (Math.random() - 0.5) * 1.5;
-        const noiseB = (Math.random() - 0.5) * 1.5;
-        return (b.xp + noiseB) - (a.xp + noiseA);
-      });
+  const premiumMids = sortedMids.slice(0, 8);
+  const premiumFwds = sortedFwds.slice(0, 6);
+  const premiumDefs = sortedDefs.slice(0, 8);
 
-      for (const cand of available) {
-        if (selected.filter(s => s.pos === cand.pos).length >= needed) break;
-        if ((teamCounts[cand.team] || 0) < 3) {
-          selected.push(cand);
-          teamCounts[cand.team] = (teamCounts[cand.team] || 0) + 1;
-          currentCost += cand.cost;
+  for (let topMidCount = 4; topMidCount <= 5; topMidCount++) {
+    for (let topFwdCount = 2; topFwdCount <= 3; topFwdCount++) {
+      for (let topDefCount = 3; topDefCount <= 4; topDefCount++) {
+        const testMids = [...premiumMids.slice(0, topMidCount)];
+        const cheapMids = [...candidateMids].sort((a, b) => a.cost - b.cost).filter(m => !testMids.some(tm => tm.id === m.id));
+        testMids.push(...cheapMids.slice(0, 5 - topMidCount));
+
+        const testFwds = [...premiumFwds.slice(0, topFwdCount)];
+        const cheapFwds = [...candidateFwds].sort((a, b) => a.cost - b.cost).filter(f => !testFwds.some(tf => tf.id === f.id));
+        testFwds.push(...cheapFwds.slice(0, 3 - topFwdCount));
+
+        const testDefs = [...premiumDefs.slice(0, topDefCount)];
+        const cheapDefs = [...candidateDefs].sort((a, b) => a.cost - b.cost).filter(d => !testDefs.some(td => td.id === d.id));
+        testDefs.push(...cheapDefs.slice(0, 5 - topDefCount));
+
+        const testGks = [premiumGks[0], enablerGks.find(g => g.id !== premiumGks[0]?.id) || enablerGks[0]].filter(Boolean);
+
+        const current15 = [...testGks, ...testDefs, ...testMids, ...testFwds];
+        if (current15.length !== 15) continue;
+        if (!isClubLimitValid(current15)) continue;
+
+        const cost = current15.reduce((sum, p) => sum + p.cost, 0);
+        if (cost > totalBudget) continue;
+
+        const evalResult = evaluate15(current15);
+        if (!evalResult) continue;
+
+        if (!bestSquadEval || evalResult.totalScore > bestSquadEval.totalScore) {
+          bestSquadEval = evalResult;
+          bestSquadCandidates = current15;
+          bestTotalCost = cost;
         }
-      }
-    };
-
-    pickRandomWeighted(candidateGks, 2);
-    pickRandomWeighted(candidateDefs, 5);
-    pickRandomWeighted(candidateMids, 5);
-    pickRandomWeighted(candidateFwds, 3);
-
-    if (selected.length !== 15) continue;
-    if (!isValidTeamConstraint(selected)) continue;
-
-    // If over budget, attempt greedy downgrades to cheapest valid enablers
-    if (currentCost > totalBudget) {
-      let repairAttempts = 15;
-      while (currentCost > totalBudget && repairAttempts > 0) {
-        repairAttempts--;
-        // Find highest cost player on bench or lowest ppv to swap for enabler
-        const sortedCost = [...selected].sort((a, b) => b.cost - a.cost);
-        let swapped = false;
-        for (const outPlayer of sortedCost) {
-          const enablers = (
-            outPlayer.pos === 1 ? candidateGks :
-            outPlayer.pos === 2 ? candidateDefs :
-            outPlayer.pos === 3 ? candidateMids : candidateFwds
-          ).filter(e => e.cost < outPlayer.cost && !selected.some(s => s.id === e.id) && (teamCounts[e.team] || 0) < 3);
-
-          if (enablers.length > 0) {
-            const bestEnabler = enablers.sort((a, b) => a.cost - b.cost || b.xp - a.xp)[0];
-            const idx = selected.findIndex(s => s.id === outPlayer.id);
-            if (idx !== -1) {
-              selected.splice(idx, 1);
-              teamCounts[outPlayer.team]--;
-              selected.push(bestEnabler);
-              teamCounts[bestEnabler.team] = (teamCounts[bestEnabler.team] || 0) + 1;
-              currentCost = currentCost - outPlayer.cost + bestEnabler.cost;
-              swapped = true;
-              break;
-            }
-          }
-        }
-        if (!swapped) break;
-      }
-    }
-
-    if (currentCost <= totalBudget && selected.length === 15 && isValidTeamConstraint(selected)) {
-      // If remaining budget, try greedy upgrade
-      let remaining = totalBudget - currentCost;
-      if (remaining >= 5) {
-        for (let sIdx = 0; sIdx < selected.length; sIdx++) {
-          const currentP = selected[sIdx];
-          const pool = (
-            currentP.pos === 1 ? candidateGks :
-            currentP.pos === 2 ? candidateDefs :
-            currentP.pos === 3 ? candidateMids : candidateFwds
-          ).filter(u => u.cost > currentP.cost && (u.cost - currentP.cost) <= remaining && !selected.some(s => s.id === u.id) && ((teamCounts[u.team] || 0) < 3 || u.team === currentP.team));
-
-          if (pool.length > 0) {
-            const bestUpgrade = pool.sort((a, b) => b.xp - a.xp)[0];
-            if (bestUpgrade.xp > currentP.xp) {
-              teamCounts[currentP.team]--;
-              teamCounts[bestUpgrade.team] = (teamCounts[bestUpgrade.team] || 0) + 1;
-              remaining -= (bestUpgrade.cost - currentP.cost);
-              currentCost += (bestUpgrade.cost - currentP.cost);
-              selected[sIdx] = bestUpgrade;
-            }
-          }
-        }
-      }
-
-      const evaluation = evaluate15(selected);
-      if (!bestSquadEval || evaluation.totalScore > bestSquadEval.totalScore) {
-        bestSquadCandidates = [...selected];
-        bestSquadEval = evaluation;
-        bestTotalCost = currentCost;
       }
     }
   }
 
-  if (!bestSquadCandidates || !bestSquadEval) return null;
+  // Pass 2: Local Search / 1-for-1 Upgrade Iteration
+  if (bestSquadCandidates && bestSquadEval) {
+    let currentPool = [...bestSquadCandidates];
+    let improved = true;
+    let iterations = 0;
 
-  // Build the final SquadPick array matching FPL standard positions
-  const starterDefs = bestSquadEval.starters.filter(p => p.pos === 2);
-  const starterMids = bestSquadEval.starters.filter(p => p.pos === 3);
-  const starterFwds = bestSquadEval.starters.filter(p => p.pos === 4);
-  const startingGk = bestSquadEval.starters.find(p => p.pos === 1)!;
+    while (improved && iterations < 25) {
+      improved = false;
+      iterations++;
 
-  const orderedStarters = [startingGk, ...starterDefs, ...starterMids, ...starterFwds];
-  const orderedBench = bestSquadEval.bench;
+      const remainingBudget = totalBudget - bestTotalCost;
 
+      for (let i = 0; i < currentPool.length; i++) {
+        const outPlayer = currentPool[i];
+        const samePosCandidates = candidates.filter(c => c.pos === outPlayer.pos && c.id !== outPlayer.id && !currentPool.some(p => p.id === c.id));
+
+        for (const inPlayer of samePosCandidates) {
+          const costDelta = inPlayer.cost - outPlayer.cost;
+          if (costDelta > remainingBudget) continue;
+
+          const testNewPool = [...currentPool];
+          testNewPool[i] = inPlayer;
+
+          if (!isClubLimitValid(testNewPool)) continue;
+
+          const testEval = evaluate15(testNewPool);
+          if (!testEval) continue;
+
+          if (testEval.totalScore > bestSquadEval.totalScore) {
+            bestSquadEval = testEval;
+            bestSquadCandidates = testNewPool;
+            bestTotalCost += costDelta;
+            currentPool = testNewPool;
+            improved = true;
+            break;
+          }
+        }
+        if (improved) break;
+      }
+    }
+  }
+
+  // Fallback if knapsack didn't trigger
+  if (!bestSquadCandidates || !bestSquadEval) {
+    const default15 = [
+      ...candidateGks.slice(0, 2),
+      ...candidateDefs.slice(0, 5),
+      ...candidateMids.slice(0, 5),
+      ...candidateFwds.slice(0, 3)
+    ];
+    bestSquadEval = evaluate15(default15);
+    bestSquadCandidates = default15;
+    bestTotalCost = default15.reduce((s, p) => s + p.cost, 0);
+  }
+
+  if (!bestSquadEval || !bestSquadCandidates) return null;
+
+  // Build the final ordered picks (Positions 1 to 15)
   const finalSquadPicks: SquadPick[] = [];
+  const startersGk = bestSquadEval.starters.filter(p => p.pos === 1);
+  const startersDef = bestSquadEval.starters.filter(p => p.pos === 2);
+  const startersMid = bestSquadEval.starters.filter(p => p.pos === 3);
+  const startersFwd = bestSquadEval.starters.filter(p => p.pos === 4);
+
+  const orderedStarters = [...startersGk, ...startersDef, ...startersMid, ...startersFwd];
+  const orderedBench = [...bestSquadEval.bench];
 
   orderedStarters.forEach((cand, idx) => {
     const isCap = cand.id === bestSquadEval!.captain.id;
@@ -314,7 +315,7 @@ export function solveOptimalSquad(
     });
   });
 
-  // Calculate comparison with current squad
+  // Calculate comparative gain against current squad
   let currentSquadXp = 0;
   let transfersCount = 0;
 
@@ -341,6 +342,8 @@ export function solveOptimalSquad(
     totalCost: bestTotalCost,
     remainingBank: Math.max(0, totalBudget - bestTotalCost),
     totalProjectedPoints: bestSquadEval.totalScore,
+    cumulativePoints: Math.round(bestSquadEval.totalScore * (horizon || 1) * 10) / 10,
+    horizon: horizon || 1,
     captain: bestSquadEval.captain.player,
     viceCaptain: bestSquadEval.viceCaptain.player,
     formation: bestSquadEval.formation,

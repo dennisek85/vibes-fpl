@@ -60,12 +60,19 @@ export async function GET() {
         availabilityMultiplier = 0.5;
       }
 
-      // 2. Underlying Performance Base Features
+      // 2. Underlying Performance Base Features with Bayesian Sample Size Shrinkage
       const minutesPlayed = parseFloat(p.minutes || '0');
       const gamesPlayed = Math.max(1.0, minutesPlayed / 90.0);
-      const formVal = parseFloat(p.form || '0');
-      const ppgVal = parseFloat(p.points_per_game || '0');
+      const rawForm = parseFloat(p.form || '0');
+      const rawPpg = parseFloat(p.points_per_game || '0');
       const epVal = parseFloat(p.ep_next || p.ep_this || '0');
+
+      // Bayesian Shrinkage Prior by Position (prevents 1-game 11.0 ppg anomalies)
+      const positionPrior = posType === 1 ? 3.4 : posType === 2 ? 3.2 : posType === 3 ? 4.2 : 4.5;
+      const sampleConfidence = Math.min(1.0, Math.max(0.15, minutesPlayed / 450.0)); // full confidence after ~5 starts
+      const formVal = (rawForm * sampleConfidence) + (positionPrior * (1.0 - sampleConfidence));
+      const ppgVal = (rawPpg * sampleConfidence) + (positionPrior * (1.0 - sampleConfidence));
+
       const threatPer90 = (parseFloat(p.threat || '0') / gamesPlayed) / 100.0;
       const creativityPer90 = (parseFloat(p.creativity || '0') / gamesPlayed) / 100.0;
 
@@ -92,7 +99,8 @@ export async function GET() {
       }
 
       if (epVal > 0) {
-        positionBaseline = (positionBaseline * 0.55) + (epVal * 0.45);
+        const shrunkEp = (epVal * sampleConfidence) + (positionPrior * (1.0 - sampleConfidence));
+        positionBaseline = (positionBaseline * 0.55) + (shrunkEp * 0.45);
       }
 
       // 3. Multi-Gameweek Fixture Calculation with Exact Match Expectancy & Poisson Clean Sheet
