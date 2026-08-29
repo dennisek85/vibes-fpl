@@ -23,6 +23,15 @@ export const OverridesModal: React.FC<OverridesModalProps> = ({ isOpen, onClose 
     plan?.availableTransfers !== undefined ? plan.availableTransfers.toString() : '1'
   );
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !plan) return null;
 
   const handleSave = () => {
@@ -45,8 +54,14 @@ export const OverridesModal: React.FC<OverridesModalProps> = ({ isOpen, onClose 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl p-5 shadow-2xl animate-in zoom-in-95">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm cursor-pointer"
+      onClick={onClose}
+    >
+      <div 
+        className="w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl p-5 shadow-2xl animate-in zoom-in-95 cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between pb-3 border-b border-white/10">
           <h3 className="text-base font-bold text-white">
             Edit Gameweek {selectedGameweek} Overrides

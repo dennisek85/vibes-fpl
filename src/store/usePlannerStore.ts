@@ -121,9 +121,9 @@ currentView: 'pitch' | 'matrix';
   setViceCaptain: (elementId: number) => void;
   optimizeSquadLineup: (gw?: number) => OptimizationResult | null;
 
-  openTransferDrawer: (playerOutId: number) => void;
+  openTransferDrawer: (playerOutId?: number | null) => void;
   closeTransferDrawer: () => void;
-  executeTransfer: (playerIn: FPLPlayer) => boolean;
+  executeTransfer: (playerIn: FPLPlayer, explicitPlayerOutId?: number | null) => boolean;
   revertTransfer: (playerInId: number) => void;
   resetCurrentGameweek: () => void;
   resetAllFutureGameweeks: () => void;
@@ -453,9 +453,33 @@ currentView: 'pitch',
         }
       }
 
-      const baseImported = p.baseImportedPicks && p.baseImportedPicks.length > 0 
+      const { playerMap } = get();
+      const normalizePick = (pick: SquadPick): SquadPick => {
+        const pl = playerMap.get(pick.element);
+        const actualCost = pl ? pl.now_cost : (pick.selling_price || 50);
+        return {
+          ...pick,
+          purchase_price: actualCost,
+          selling_price: actualCost,
+        };
+      };
+
+      const normalizedPlans: Record<number, PlannedGameweek> = {};
+      Object.keys(plans).forEach(gwKey => {
+        const gw = parseInt(gwKey, 10);
+        const plan = plans[gw];
+        if (plan) {
+          normalizedPlans[gw] = {
+            ...plan,
+            squad: (plan.squad || []).map(normalizePick),
+          };
+        }
+      });
+
+      const baseImported = (p.baseImportedPicks && p.baseImportedPicks.length > 0 
         ? p.baseImportedPicks 
-        : (allPlansList.find(gwPlan => gwPlan && gwPlan.squad && gwPlan.squad.length > 0)?.squad || []);
+        : (allPlansList.find(gwPlan => gwPlan && gwPlan.squad && gwPlan.squad.length > 0)?.squad || [])
+      ).map(normalizePick);
 
       set({
         teamSummary: p.teamSummary,
@@ -468,10 +492,12 @@ currentView: 'pitch',
         selectedGameweek: p.selectedGameweek || get().nextGameweekId,
         initialBank: p.initialBank || 0,
         initialFreeTransfers: p.initialFreeTransfers || 1,
-        gameweekPlans: plans,
+        gameweekPlans: normalizedPlans,
         lastSavedTime: p.updatedAt || new Date().toLocaleTimeString(),
         isLoading: false,
       });
+
+      recalculateMultiGameweekPlans(get, set);
 
       // Save locally as backup
       try {
@@ -903,13 +929,13 @@ currentView: 'pitch',
     return result;
   },
 
-  openTransferDrawer: (playerOutId: number) => {
+  openTransferDrawer: (playerOutId?: number | null) => {
     const { playerMap, isGameweekLocked, selectedGameweek } = get();
     if (isGameweekLocked(selectedGameweek)) return;
 
-    const playerOut = playerMap.get(playerOutId);
+    const playerOut = playerOutId ? playerMap.get(playerOutId) : null;
     set({
-      selectedPlayerForTransfer: playerOutId,
+      selectedPlayerForTransfer: playerOutId || null,
       isMarketOpen: true,
       marketPosition: playerOut ? playerOut.element_type : null,
       marketSearch: '',
@@ -920,21 +946,12 @@ currentView: 'pitch',
     set({ isMarketOpen: false, selectedPlayerForTransfer: null });
   },
 
-  executeTransfer: (playerIn: FPLPlayer) => {
+  executeTransfer: (playerIn: FPLPlayer, explicitPlayerOutId?: number | null) => {
     const { selectedPlayerForTransfer, selectedGameweek, gameweekPlans, playerMap, isGameweekLocked } = get();
     if (isGameweekLocked(selectedGameweek)) return false;
-    if (!selectedPlayerForTransfer) return false;
 
     const currentPlan = gameweekPlans[selectedGameweek];
     if (!currentPlan) return false;
-
-    const playerOut = playerMap.get(selectedPlayerForTransfer);
-    if (!playerOut) return false;
-
-    if (playerOut.element_type !== playerIn.element_type) {
-      alert(`Cannot replace ${playerOut.web_name} with ${playerIn.web_name}. Positions must match.`);
-      return false;
-    }
 
     const isAlreadyIn = currentPlan.squad.some(p => p.element === playerIn.id);
     if (isAlreadyIn) {
@@ -942,15 +959,42 @@ currentView: 'pitch',
       return false;
     }
 
-    const outPick = currentPlan.squad.find(p => p.element === selectedPlayerForTransfer);
-    if (!outPick) return false;
+    const targetOutId = explicitPlayerOutId ?? selectedPlayerForTransfer;
+    let outPick = targetOutId 
+      ? currentPlan.squad.find(p => p.element === targetOutId) 
+      : null;
 
-    const sellPrice = outPick.selling_price;
+    // If no player was preselected, find the most valuable squad player in that position
+    if (!outPick) {
+      const matchingPicks = currentPlan.squad.filter(p => playerMap.get(p.element)?.element_type === playerIn.element_type);
+      if (matchingPicks.length === 0) {
+        alert(`No players found in your squad matching ${playerIn.web_name}'s position.`);
+        return false;
+      }
+      outPick = matchingPicks.sort((a, b) => {
+        const pA = playerMap.get(a.element);
+        const pB = playerMap.get(b.element);
+        const costA = a.selling_price || pA?.now_cost || 0;
+        const costB = b.selling_price || pB?.now_cost || 0;
+        return costB - costA; // Highest sell price first
+      })[0];
+    }
+
+    const playerOut = playerMap.get(outPick.element);
+    if (!playerOut) return false;
+
+    if (playerOut.element_type !== playerIn.element_type) {
+      alert(`Cannot replace ${playerOut.web_name} with ${playerIn.web_name}. Positions must match.`);
+      return false;
+    }
+
+    const sellPrice = playerOut.now_cost;
     const buyPrice = playerIn.now_cost;
     const priceDiff = sellPrice - buyPrice;
 
     if (currentPlan.calculatedBank + priceDiff < 0) {
-      alert(`Transfer unaffordable! Requires £${((buyPrice - sellPrice - currentPlan.calculatedBank) / 10).toFixed(1)}m more in the bank.`);
+      const deficit = ((buyPrice - sellPrice - currentPlan.calculatedBank) / 10).toFixed(1);
+      alert(`Transfer unaffordable! Requires £${deficit}m more in the bank.`);
       return false;
     }
 
@@ -964,7 +1008,7 @@ currentView: 'pitch',
       selling_price: buyPrice,
     };
 
-    const newSquad = currentPlan.squad.map(p => p.element === selectedPlayerForTransfer ? newPick : p);
+    const newSquad = currentPlan.squad.map(p => p.element === playerOut.id ? newPick : p);
 
     const clubValidation = validateClubLimit(newSquad, playerMap);
     if (!clubValidation.isValid) {
@@ -973,15 +1017,10 @@ currentView: 'pitch',
       return false;
     }
 
-    const transfersOut = [...currentPlan.transfersOut, playerOut.id];
-    const transfersIn = [...currentPlan.transfersIn, playerIn.id];
-
     const updatedPlans = { ...gameweekPlans };
     updatedPlans[selectedGameweek] = {
       ...currentPlan,
       squad: newSquad,
-      transfersIn,
-      transfersOut,
     };
 
     set({
@@ -999,8 +1038,7 @@ currentView: 'pitch',
     const { playerMap, executeTransfer } = get();
     const playerIn = playerMap.get(playerInId);
     if (!playerIn) return false;
-    set({ selectedPlayerForTransfer: playerOutId });
-    return executeTransfer(playerIn);
+    return executeTransfer(playerIn, playerOutId);
   },
 
   revertTransfer: (playerInId: number) => {
@@ -1240,13 +1278,28 @@ function recalculateMultiGameweekPlans(
   get: () => PlannerState,
   set: (state: Partial<PlannerState>) => void
 ) {
-  const { initialBank, initialFreeTransfers, gameweekPlans, playerMap } = get();
+  const { initialBank, initialFreeTransfers, gameweekPlans, playerMap, baseImportedPicks } = get();
   const maxGw = 38;
 
-  let rollingBank = initialBank;
+  // 1. Calculate Base Total Team Value: Sum of costs of base imported squad + initial bank
+  let baseSquadCost = 0;
+  if (baseImportedPicks.length > 0) {
+    baseImportedPicks.forEach(p => {
+      const pl = playerMap.get(p.element);
+      baseSquadCost += pl ? pl.now_cost : (p.selling_price || 50);
+    });
+  } else {
+    const firstSquad = (Object.values(gameweekPlans) as PlannedGameweek[]).find(p => p?.squad?.length > 0)?.squad || [];
+    firstSquad.forEach(p => {
+      const pl = playerMap.get(p.element);
+      baseSquadCost += pl ? pl.now_cost : (p.selling_price || 50);
+    });
+  }
+  const totalTeamValue = baseSquadCost + initialBank;
+
   let rollingFT = initialFreeTransfers;
   const allPlansList = Object.values(gameweekPlans) as PlannedGameweek[];
-  let rollingSquad: SquadPick[] = allPlansList.find(p => p && p.squad && p.squad.length > 0)?.squad || [];
+  let rollingSquad: SquadPick[] = allPlansList.find(p => p && p.squad && p.squad.length > 0)?.squad || baseImportedPicks;
 
   const newPlans: Record<number, PlannedGameweek> = {};
 
@@ -1254,27 +1307,29 @@ function recalculateMultiGameweekPlans(
     const existing = gameweekPlans[gw];
     const squad = existing ? existing.squad : [...rollingSquad];
     const chip = existing ? existing.chip : 'none';
-    const transfersCount = existing ? existing.transfersIn.length : 0;
     const bankOverride = existing?.bankOverride;
     const ftOverride = existing?.freeTransfersOverride;
 
-    let gwBank = rollingBank;
-    if (existing && existing.transfersIn.length > 0) {
-      let soldValue = 0;
-      let boughtValue = 0;
-      existing.transfersOut.forEach(id => {
-        const p = playerMap.get(id);
-        if (p) soldValue += p.now_cost;
-      });
-      existing.transfersIn.forEach(id => {
-        const p = playerMap.get(id);
-        if (p) boughtValue += p.now_cost;
-      });
-      gwBank = rollingBank + soldValue - boughtValue;
-    }
+    // Calculate current squad cost
+    let currentSquadCost = 0;
+    squad.forEach(pick => {
+      const pl = playerMap.get(pick.element);
+      currentSquadCost += pl ? pl.now_cost : (pick.selling_price || 50);
+    });
+
+    // Invariant: Bank is Total Team Value - Current Squad Cost
+    const currentBank = Math.max(0, totalTeamValue - currentSquadCost);
+
+    // Calculate transfers relative to previous gameweek squad (or base squad)
+    const prevSquadIds = new Set(rollingSquad.map(p => p.element));
+    const currSquadIds = new Set(squad.map(p => p.element));
+    
+    const derivedTransfersIn = squad.filter(p => !prevSquadIds.has(p.element)).map(p => p.element);
+    const derivedTransfersOut = rollingSquad.filter(p => !currSquadIds.has(p.element)).map(p => p.element);
+    const transfersCount = derivedTransfersIn.length;
 
     const financials = calculateGameweekFinancials({
-      currentBank: gwBank,
+      currentBank,
       availableFreeTransfers: rollingFT,
       transfersCount,
       chip,
@@ -1285,8 +1340,8 @@ function recalculateMultiGameweekPlans(
     newPlans[gw] = {
       gameweek: gw,
       squad,
-      transfersIn: existing ? existing.transfersIn : [],
-      transfersOut: existing ? existing.transfersOut : [],
+      transfersIn: derivedTransfersIn,
+      transfersOut: derivedTransfersOut,
       chip,
       bankOverride,
       freeTransfersOverride: ftOverride,
@@ -1296,7 +1351,6 @@ function recalculateMultiGameweekPlans(
       transferCost: financials.hitPoints,
     };
 
-    rollingBank = financials.effectiveBank;
     rollingFT = financials.nextGameweekFT;
     rollingSquad = [...squad];
   }

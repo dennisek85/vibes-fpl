@@ -338,7 +338,7 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
               <div className="mt-2">
                 <span className="text-[11px] text-slate-400 font-bold block uppercase tracking-wider">Free Transfers</span>
                 <span className="text-lg sm:text-xl font-black text-white leading-tight">
-                  {transfersCount} / {availableFT}
+                  {Math.max(0, availableFT - transfersCount)} / {availableFT}
                 </span>
                 {isFTOverridden && <span className="text-[9px] text-amber-400 font-normal block">(override)</span>}
               </div>

@@ -19,7 +19,8 @@ export const PlayerDetailModal: React.FC = () => {
     teamMap, 
     getPlayerUpcomingFixtures,
     getPlayerGameweekXp,
-    openTransferDrawer
+    openTransferDrawer,
+    showAiPredictions
   } = usePlannerStore();
 
   const [loading, setLoading] = useState(false);
@@ -101,6 +102,15 @@ export const PlayerDetailModal: React.FC = () => {
     };
   }, [summaryData]);
 
+  React.useEffect(() => {
+    if (!selectedPlayerForDetail) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closePlayerDetail();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPlayerForDetail, closePlayerDetail]);
+
   if (!selectedPlayerForDetail || !player) return null;
 
   const posName = player.element_type === 1 ? 'Goalkeeper' :
@@ -121,7 +131,7 @@ export const PlayerDetailModal: React.FC = () => {
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200 cursor-pointer"
       onClick={closePlayerDetail}
     >
       <div 
@@ -252,11 +262,11 @@ export const PlayerDetailModal: React.FC = () => {
             </div>
           </div>
 
-          {/* Upcoming Next 5 Fixtures (Grid of 5 items so all 5 fit perfectly without scrollbar) */}
+          {/* Upcoming Next 5 Fixtures */}
           <div className="flex flex-col gap-2.5">
             <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-200 flex items-center gap-2">
               <Calendar className="w-4 h-4 text-emerald-400" />
-              Upcoming 5 Fixtures & Projected xP
+              Upcoming 5 Fixtures {showAiPredictions && '& Projected xP'}
             </span>
             <div className="w-full grid grid-cols-5 gap-1.5 sm:gap-2">
               {upcomingNext5.map(f => {
@@ -279,9 +289,11 @@ export const PlayerDetailModal: React.FC = () => {
                       <span className={`text-[10px] sm:text-xs font-mono font-black px-1.5 py-0.5 rounded-lg w-full shadow-sm truncate ${diffColor}`}>
                         FDR {diff}
                       </span>
-                      <span className="text-[10px] sm:text-xs font-mono font-black text-emerald-300 bg-emerald-950/90 px-1.5 py-0.5 rounded-lg border border-emerald-500/40 w-full shadow-sm truncate">
-                        {xpVal.toFixed(1)} xP
-                      </span>
+                      {showAiPredictions && (
+                        <span className="text-[10px] sm:text-xs font-mono font-black text-emerald-300 bg-emerald-950/90 px-1.5 py-0.5 rounded-lg border border-emerald-500/40 w-full shadow-sm truncate">
+                          {xpVal.toFixed(1)} xP
+                        </span>
+                      )}
                     </div>
                   </div>
                 );
@@ -357,7 +369,9 @@ export const PlayerDetailModal: React.FC = () => {
                   {summaryData?.history && summaryData.history.length > 0 ? (
                     summaryData.history.map(m => {
                       const opp = teamMap.get(m.opponent_team);
-                      const resultStr = `${m.team_h_score} - ${m.team_a_score}`;
+                      const resultStr = (m.team_h_score !== null && m.team_a_score !== null && m.team_h_score !== undefined && m.team_a_score !== undefined)
+                        ? `${m.team_h_score} - ${m.team_a_score}`
+                        : 'N/A';
                       return (
                         <tr key={m.fixture} className="hover:bg-slate-800/50 transition-colors">
                           <td className="py-2.5 px-3.5 font-bold text-white">GW{m.round}</td>
@@ -496,12 +510,14 @@ export const PlayerDetailModal: React.FC = () => {
                         {isHome ? 'Home (H)' : 'Away (A)'}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between border-t border-white/10 pt-2.5">
-                      <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Projected</span>
-                      <span className="text-sm font-mono font-black text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
-                        {eventXp.toFixed(1)} xP
-                      </span>
-                    </div>
+                    {showAiPredictions && (
+                      <div className="flex items-center justify-between border-t border-white/10 pt-2.5">
+                        <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Projected</span>
+                        <span className="text-sm font-mono font-black text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                          {eventXp.toFixed(1)} xP
+                        </span>
+                      </div>
+                    )}
                   </div>
                 );
               })}

@@ -136,7 +136,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
           </div>
         )}
 
-        {/* 1. Top Section: Centered 7rem (112px) Official Kit */}
+        {/* 1. Top Section: Centered 7rem (112px) Official Kit (Click to open Transfer Market for this player) */}
         <div className={`pt-3 pb-1 px-3 flex items-center justify-center min-h-[105px] sm:min-h-[120px] md:min-h-[135px] transition-colors ${
           isDark 
             ? 'bg-slate-950/70' 
@@ -146,10 +146,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
             onClick={(e) => {
               if (!isLocked) {
                 e.stopPropagation();
-                setShowRoleMenu(!showRoleMenu);
+                openTransferDrawer(player.id);
               }
             }}
-            className={isLocked ? 'cursor-default' : 'cursor-pointer'}
+            className={isLocked ? 'cursor-default' : 'cursor-pointer hover:scale-105 transition-transform'}
+            title={!isLocked ? `Click jersey to transfer / replace ${player.web_name}` : undefined}
           >
             <KitIcon 
               teamCode={team?.code} 

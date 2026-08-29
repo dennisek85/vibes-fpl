@@ -12,6 +12,15 @@ export const TeamImportModal: React.FC<TeamImportModalProps> = ({ isOpen, onClos
   const [teamIdInput, setTeamIdInput] = useState('');
   const [localError, setLocalError] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleImport = async (e: React.FormEvent) => {
@@ -35,8 +44,14 @@ export const TeamImportModal: React.FC<TeamImportModalProps> = ({ isOpen, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in">
-      <div className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in cursor-pointer"
+      onClick={onClose}
+    >
+      <div 
+        className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between pb-3 border-b border-white/10">
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">

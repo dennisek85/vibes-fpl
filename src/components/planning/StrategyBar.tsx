@@ -40,7 +40,7 @@ export const StrategyBar: React.FC<StrategyBarProps> = ({ onOpenOverrides }) => 
           <div className="flex flex-col">
             <span className="text-[11px] font-semibold text-slate-400 leading-none">Free Transfers</span>
             <span className="text-sm sm:text-base font-black text-white leading-tight flex items-center gap-1.5 mt-0.5">
-              {transfersCount} / {availableFT}
+              {Math.max(0, availableFT - transfersCount)} / {availableFT}
               {isFTOverridden && <span className="text-[10px] text-amber-400 font-normal">(override)</span>}
             </span>
           </div>

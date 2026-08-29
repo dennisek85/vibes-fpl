@@ -40,7 +40,8 @@ export const PlayerMatrixView: React.FC = () => {
     openPlayerDetail,
     selectedGameweek,
     isGameweekLocked,
-    gameweekPlans
+    gameweekPlans,
+    showAiPredictions
   } = usePlannerStore();
 
   const isLocked = isGameweekLocked(selectedGameweek);
@@ -212,7 +213,11 @@ export const PlayerMatrixView: React.FC = () => {
             <span>players matching filters</span>
           </div>
           <div className="flex items-center gap-2 text-[11px]">
-            <span className="font-mono text-emerald-400 font-bold">● Live Projections Active</span>
+            {showAiPredictions ? (
+              <span className="font-mono text-emerald-400 font-bold">● Live Projections Active</span>
+            ) : (
+              <span className="font-mono text-slate-400 font-bold">● Official Match Stats</span>
+            )}
             <span>· Sorted by <strong className="text-white uppercase">{matrixSortBy}</strong></span>
           </div>
         </div>
@@ -238,9 +243,15 @@ export const PlayerMatrixView: React.FC = () => {
                 <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-indigo-950/20 text-indigo-300">
                   Defensive
                 </th>
-                <th colSpan={3} className="py-2.5 px-4 text-center bg-emerald-950/30 text-emerald-300">
-                  AI Projections
-                </th>
+                {showAiPredictions ? (
+                  <th colSpan={3} className="py-2.5 px-4 text-center bg-emerald-950/30 text-emerald-300">
+                    AI Projections
+                  </th>
+                ) : (
+                  <th colSpan={1} className="py-2.5 px-3 text-center border-r border-white/10 text-slate-300">
+                    Form
+                  </th>
+                )}
                 <th className="py-2.5 px-3 text-center">
                   Action
                 </th>
@@ -297,16 +308,24 @@ export const PlayerMatrixView: React.FC = () => {
                   {renderSortHeader('CS', 'cs')}
                 </th>
 
-                {/* 6. AI Projections */}
-                <th className="py-3 px-3 text-center w-20 bg-emerald-950/20 text-emerald-300">
-                  {renderSortHeader(`GW${selectedGameweek} xP`, 'xP')}
-                </th>
-                <th className="py-3 px-3 text-center w-20 bg-emerald-950/20 text-emerald-300">
-                  {renderSortHeader(`${matrixHorizon}GW xP`, 'horizonXp')}
-                </th>
-                <th className="py-3 px-2 text-center w-14 bg-emerald-950/20 text-emerald-300 border-r border-white/10">
-                  {renderSortHeader('Form', 'form')}
-                </th>
+                {/* 6. AI Projections / Form */}
+                {showAiPredictions ? (
+                  <>
+                    <th className="py-3 px-3 text-center w-20 bg-emerald-950/20 text-emerald-300">
+                      {renderSortHeader(`GW${selectedGameweek} xP`, 'xP')}
+                    </th>
+                    <th className="py-3 px-3 text-center w-20 bg-emerald-950/20 text-emerald-300">
+                      {renderSortHeader(`${matrixHorizon}GW xP`, 'horizonXp')}
+                    </th>
+                    <th className="py-3 px-2 text-center w-14 bg-emerald-950/20 text-emerald-300 border-r border-white/10">
+                      {renderSortHeader('Form', 'form')}
+                    </th>
+                  </>
+                ) : (
+                  <th className="py-3 px-3 text-center w-16 border-r border-white/10">
+                    {renderSortHeader('Form', 'form')}
+                  </th>
+                )}
 
                 {/* Action */}
                 <th className="py-3 px-3 text-center w-24">
@@ -418,16 +437,24 @@ export const PlayerMatrixView: React.FC = () => {
                       {player.clean_sheets || 0}
                     </td>
 
-                    {/* AI Projections: GW xP, Horizon xP, Form */}
-                    <td className="py-2.5 px-3 text-center font-black text-sm text-emerald-300 bg-emerald-950/15">
-                      {nextXp.toFixed(1)}
-                    </td>
-                    <td className="py-2.5 px-3 text-center font-black text-sm text-teal-300 bg-emerald-950/15 font-mono">
-                      {horizonXp.toFixed(1)}
-                    </td>
-                    <td className="py-2.5 px-2 text-center font-bold text-slate-300 bg-emerald-950/15 border-r border-white/10">
-                      {player.form || '0.0'}
-                    </td>
+                    {/* AI Projections / Form */}
+                    {showAiPredictions ? (
+                      <>
+                        <td className="py-2.5 px-3 text-center font-black text-sm text-emerald-300 bg-emerald-950/15">
+                          {nextXp.toFixed(1)}
+                        </td>
+                        <td className="py-2.5 px-3 text-center font-black text-sm text-teal-300 bg-emerald-950/15 font-mono">
+                          {horizonXp.toFixed(1)}
+                        </td>
+                        <td className="py-2.5 px-2 text-center font-bold text-slate-300 bg-emerald-950/15 border-r border-white/10">
+                          {player.form || '0.0'}
+                        </td>
+                      </>
+                    ) : (
+                      <td className="py-2.5 px-3 text-center font-bold text-slate-300 border-r border-white/10">
+                        {player.form || '0.0'}
+                      </td>
+                    )}
 
                     {/* Action */}
                     <td className="py-2.5 px-3 text-center">

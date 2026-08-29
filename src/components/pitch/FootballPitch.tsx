@@ -3,6 +3,7 @@ import { usePlannerStore } from '@/store/usePlannerStore';
 import { PlayerCard } from './PlayerCard';
 import { SquadPick } from '@/types/fpl';
 import { CheckCircle2, Wand2, Loader2 } from 'lucide-react';
+
 export const FootballPitch: React.FC = () => {
   const { 
     selectedGameweek, 
@@ -75,7 +76,7 @@ export const FootballPitch: React.FC = () => {
     );
   }
 
-  const startingPicks = currentPlan.squad.filter(p => p.position <= 11);
+  const startingPicks = (currentPlan?.squad || []).filter(p => p.position <= 11);
 
   const gks: SquadPick[] = [];
   const defs: SquadPick[] = [];

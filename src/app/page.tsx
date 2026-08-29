@@ -214,7 +214,7 @@ export default function PlannerPage() {
 
             {!isLocked && (
               <button
-                onClick={() => openTransferDrawer(players[0]?.id || 1)}
+                onClick={() => openTransferDrawer()}
                 className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all active:scale-95"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />

@@ -32,7 +32,8 @@ export const MatrixFilterBar: React.FC = () => {
     setMatrixHorizon,
     matrixPer90,
     setMatrixPer90,
-    selectedGameweek
+    selectedGameweek,
+    showAiPredictions
   } = usePlannerStore();
 
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,23 +71,25 @@ export const MatrixFilterBar: React.FC = () => {
           ))}
         </div>
 
-        {/* Gameweek Horizon Tabs */}
-        <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-2xl border border-white/10">
-          <span className="text-xs font-bold text-slate-400 px-2 hidden sm:inline">Projections:</span>
-          {([1, 3, 5] as const).map(h => (
-            <button
-              key={h}
-              onClick={() => setMatrixHorizon(h)}
-              className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
-                matrixHorizon === h
-                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {h === 1 ? `GW ${selectedGameweek}` : `Next ${h} GWs`}
-            </button>
-          ))}
-        </div>
+        {/* Gameweek Horizon Tabs (Only shown when AI Predictions are active) */}
+        {showAiPredictions && (
+          <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-2xl border border-white/10">
+            <span className="text-xs font-bold text-slate-400 px-2 hidden sm:inline">Projections:</span>
+            {([1, 3, 5] as const).map(h => (
+              <button
+                key={h}
+                onClick={() => setMatrixHorizon(h)}
+                className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
+                  matrixHorizon === h
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {h === 1 ? `GW ${selectedGameweek}` : `Next ${h} GWs`}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Per-90 vs Total Toggle */}
         <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-2xl border border-white/10">
