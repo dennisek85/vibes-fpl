@@ -17,26 +17,41 @@ export const FdrFixtureCell: React.FC<FdrFixtureCellProps> = ({ fixture, totalCo
   if (diff === 1 || diff === 2) {
     bgClass = 'bg-emerald-600 text-white';
   } else if (diff === 3) {
-    bgClass = 'bg-slate-400 text-slate-950 font-black';
+    bgClass = 'bg-slate-300 text-slate-900 font-black';
   } else if (diff === 4) {
-    bgClass = 'bg-rose-600 text-white';
+    bgClass = 'bg-[#e90052] text-white font-black';
   } else if (diff === 5) {
-    bgClass = 'bg-red-950 text-rose-200 border-t border-rose-500/40';
+    bgClass = 'bg-[#6a041d] text-rose-100 font-black';
   }
 
-  const heightClass = totalCount <= 1 ? 'py-1.5' : totalCount <= 3 ? 'py-1' : 'py-0.5';
+  // Adaptive font and spacing classes based on number of columns
+  const heightClass = totalCount <= 1 ? 'py-1.5' : totalCount <= 3 ? 'py-1' : 'py-1';
+  
+  const oppText = totalCount === 5 ? `${opp}${loc}` : `${opp} ${loc}`;
+
+  const oppFontClass = totalCount === 1 
+    ? 'text-[13px] sm:text-[15px] md:text-[16.5px] tracking-tight'
+    : totalCount <= 3 
+    ? 'text-[11.5px] sm:text-[13px] md:text-[14.5px] tracking-tight'
+    : 'text-[9.5px] sm:text-[10.5px] md:text-[11.5px] lg:text-[12.5px] tracking-tighter';
+
+  const xpFontClass = totalCount === 1 
+    ? 'text-[12px] sm:text-[13.5px] md:text-[15px]'
+    : totalCount <= 3 
+    ? 'text-[10.5px] sm:text-[12px] md:text-[13.5px]'
+    : 'text-[8.5px] sm:text-[9.5px] md:text-[10.5px] lg:text-[11.5px] tracking-tighter';
 
   return (
     <div
-      className={`flex-1 flex flex-col items-center justify-center ${heightClass} ${bgClass} transition-all font-mono select-none px-0.5`}
-      title={`Gameweek ${fixture.event}: vs ${opp} ${loc} (Difficulty: ${diff}${showAiPredictions && fixture.xP ? ` · ${fixture.xP} xP` : ''})`}
+      className={`flex-1 min-w-0 overflow-hidden flex flex-col items-center justify-center ${heightClass} ${bgClass} transition-all font-mono select-none px-0.5`}
+      title={`Gameweek ${fixture.event}: vs ${opp} ${loc} (Difficulty: ${diff}${showAiPredictions && fixture.xP !== undefined ? ` · ${fixture.xP.toFixed(1)} xP` : ''})`}
     >
-      <span className="text-[11.5px] sm:text-[12.5px] md:text-[14px] font-black tracking-tight leading-tight uppercase truncate max-w-full">
-        {opp} {loc}
+      <span className={`${oppFontClass} font-black leading-tight uppercase truncate max-w-full`}>
+        {oppText}
       </span>
       {showAiPredictions && fixture.xP !== undefined && (
-        <span className="text-[10px] sm:text-[12px] md:text-[13px] opacity-95 font-extrabold leading-none mt-0.5">
-          {fixture.xP.toFixed(1)} xP
+        <span className={`${xpFontClass} opacity-95 font-extrabold leading-none mt-0.5 truncate max-w-full`}>
+          {totalCount === 5 ? `${fixture.xP.toFixed(1)}` : `${fixture.xP.toFixed(1)} xP`}
         </span>
       )}
     </div>

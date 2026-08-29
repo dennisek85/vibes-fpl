@@ -37,6 +37,7 @@ export const PlayerMatrixView: React.FC = () => {
     getPlayerGameweekXp,
     getPlayerHorizonXp,
     openTransferDrawer,
+    openPlayerDetail,
     selectedGameweek,
     isGameweekLocked,
     gameweekPlans
@@ -335,8 +336,12 @@ export const PlayerMatrixView: React.FC = () => {
                       idx % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40'
                     }`}
                   >
-                    {/* Player Info */}
-                    <td className="py-2.5 px-4 flex items-center gap-2.5 min-w-[200px]">
+                    {/* Player Info (Click to open full player detail modal) */}
+                    <td 
+                      onClick={() => openPlayerDetail(player.id)}
+                      className="py-2.5 px-4 flex items-center gap-2.5 min-w-[200px] cursor-pointer"
+                      title={`Click to view ${player.web_name} full statistics & match log`}
+                    >
                       <div className="w-7 h-7 flex-shrink-0 flex items-center justify-center">
                         <KitIcon 
                           teamCode={player.team_code} 

@@ -1,7 +1,6242 @@
 {
   "1234": {
     "pin": "1234",
-    "updatedAt": "2026-08-29T08:49:56.969Z",
+    "teamId": 164332,
+    "updatedAt": "2026-08-29T10:18:12.978Z",
+    "teamSummary": {
+      "id": 164332,
+      "joined_time": "2026-07-23T13:36:24.456711Z",
+      "started_event": 1,
+      "favourite_team": 1,
+      "player_first_name": "Dennis",
+      "player_last_name": "Ek",
+      "player_region_id": 206,
+      "player_region_name": "Sweden",
+      "player_region_iso_code_short": "SE",
+      "player_region_iso_code_long": "SWE",
+      "years_active": 7,
+      "summary_overall_points": 79,
+      "summary_overall_rank": 120623,
+      "summary_event_points": 0,
+      "summary_event_rank": null,
+      "current_event": 2,
+      "leagues": {
+        "classic": [
+          {
+            "id": 1,
+            "name": "Arsenal",
+            "short_name": "team-1",
+            "created": "2026-07-23T11:36:56.504260Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "s",
+            "scoring": "c",
+            "admin_entry": null,
+            "start_event": 1,
+            "entry_can_leave": false,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": true,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 1042634,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 16907,
+                "last_rank": 16907,
+                "rank_sort": 17086,
+                "total": 79,
+                "league_id": 1,
+                "rank_count": 1042634,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 16907,
+                "last_rank": 16907,
+                "rank_sort": 17086,
+                "total": 79,
+                "league_id": 1,
+                "rank_count": 1042639,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 16907,
+            "entry_last_rank": 16907
+          },
+          {
+            "id": 226,
+            "name": "Sweden",
+            "short_name": "region-206",
+            "created": "2026-07-23T11:36:59.543804Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "s",
+            "scoring": "c",
+            "admin_entry": null,
+            "start_event": 1,
+            "entry_can_leave": false,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": true,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 152023,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 3094,
+                "last_rank": 3094,
+                "rank_sort": 3139,
+                "total": 79,
+                "league_id": 226,
+                "rank_count": 152023,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 3094,
+                "last_rank": 3094,
+                "rank_sort": 3139,
+                "total": 79,
+                "league_id": 226,
+                "rank_count": 152023,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 3094,
+            "entry_last_rank": 3094
+          },
+          {
+            "id": 276,
+            "name": "Gameweek 1",
+            "short_name": "event-1",
+            "created": "2026-07-23T11:37:00.226484Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "s",
+            "scoring": "c",
+            "admin_entry": null,
+            "start_event": 1,
+            "entry_can_leave": false,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": false,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 8903396,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 120623,
+                "last_rank": 120623,
+                "rank_sort": 122060,
+                "total": 79,
+                "league_id": 276,
+                "rank_count": 8903396,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 120623,
+                "last_rank": 120623,
+                "rank_sort": 122060,
+                "total": 79,
+                "league_id": 276,
+                "rank_count": 8903376,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 120623,
+            "entry_last_rank": 120623
+          },
+          {
+            "id": 314,
+            "name": "Overall",
+            "short_name": "overall",
+            "created": "2026-07-23T11:37:00.733233Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "s",
+            "scoring": "c",
+            "admin_entry": null,
+            "start_event": 1,
+            "entry_can_leave": false,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": true,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 8903396,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 120623,
+                "last_rank": 120623,
+                "rank_sort": 122060,
+                "total": 79,
+                "league_id": 314,
+                "rank_count": 8903396,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 120623,
+                "last_rank": 120623,
+                "rank_sort": 122060,
+                "total": 79,
+                "league_id": 314,
+                "rank_count": 8903380,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 120623,
+            "entry_last_rank": 120623
+          },
+          {
+            "id": 322,
+            "name": "Top 10% 25/26 League",
+            "short_name": "top-10%",
+            "created": "2026-07-23T11:37:00.844547Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "s",
+            "scoring": "c",
+            "admin_entry": null,
+            "start_event": 1,
+            "entry_can_leave": false,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": true,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 1213174,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 31350,
+                "last_rank": 31350,
+                "rank_sort": 32254,
+                "total": 79,
+                "league_id": 322,
+                "rank_count": 1213174,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 31350,
+                "last_rank": 31350,
+                "rank_sort": 32254,
+                "total": 79,
+                "league_id": 322,
+                "rank_count": 1213174,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 31350,
+            "entry_last_rank": 31350
+          },
+          {
+            "id": 28071,
+            "name": "youtube.com/letstalkfpl ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â½ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â",
+            "short_name": null,
+            "created": "2026-07-23T13:22:15.591207Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "x",
+            "scoring": "c",
+            "admin_entry": 41,
+            "start_event": 1,
+            "entry_can_leave": true,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": true,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 105672,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 4241,
+                "last_rank": 4241,
+                "rank_sort": 4363,
+                "total": 79,
+                "league_id": 28071,
+                "rank_count": 105672,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 4241,
+                "last_rank": 4241,
+                "rank_sort": 4363,
+                "total": 79,
+                "league_id": 28071,
+                "rank_count": 105674,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 4241,
+            "entry_last_rank": 4241
+          },
+          {
+            "id": 431167,
+            "name": "Viaplay League",
+            "short_name": "brd-viaplay",
+            "created": "2026-07-30T12:01:10.285709Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "s",
+            "scoring": "c",
+            "admin_entry": null,
+            "start_event": 1,
+            "entry_can_leave": false,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": false,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 485875,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 9523,
+                "last_rank": 9523,
+                "rank_sort": 9646,
+                "total": 79,
+                "league_id": 431167,
+                "rank_count": 485875,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 9523,
+                "last_rank": 9523,
+                "rank_sort": 9646,
+                "total": 79,
+                "league_id": 431167,
+                "rank_count": 485873,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 9523,
+            "entry_last_rank": 9523
+          },
+          {
+            "id": 563386,
+            "name": "The Avensia League",
+            "short_name": null,
+            "created": "2026-08-04T08:27:16.495682Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "x",
+            "scoring": "c",
+            "admin_entry": 2808477,
+            "start_event": 1,
+            "entry_can_leave": true,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": true,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 25,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 1,
+                "last_rank": 1,
+                "rank_sort": 1,
+                "total": 79,
+                "league_id": 563386,
+                "rank_count": 25,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 1,
+                "last_rank": 1,
+                "rank_sort": 1,
+                "total": 79,
+                "league_id": 563386,
+                "rank_count": 25,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 1,
+            "entry_last_rank": 1
+          },
+          {
+            "id": 1235685,
+            "name": "Werners VÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤nner",
+            "short_name": null,
+            "created": "2026-08-18T13:13:04.629004Z",
+            "closed": false,
+            "rank": null,
+            "max_entries": null,
+            "league_type": "x",
+            "scoring": "c",
+            "admin_entry": 5652503,
+            "start_event": 1,
+            "entry_can_leave": true,
+            "entry_can_admin": false,
+            "entry_can_invite": false,
+            "has_cup": true,
+            "cup_league": null,
+            "cup_qualified": null,
+            "rank_count": 23,
+            "entry_percentile_rank": 5,
+            "active_phases": [
+              {
+                "phase": 1,
+                "rank": 1,
+                "last_rank": 1,
+                "rank_sort": 1,
+                "total": 79,
+                "league_id": 1235685,
+                "rank_count": 23,
+                "entry_percentile_rank": 5
+              },
+              {
+                "phase": 2,
+                "rank": 1,
+                "last_rank": 1,
+                "rank_sort": 1,
+                "total": 79,
+                "league_id": 1235685,
+                "rank_count": 23,
+                "entry_percentile_rank": 5
+              }
+            ],
+            "featured_entry_ids": [],
+            "entry_rank": 1,
+            "entry_last_rank": 1
+          }
+        ],
+        "h2h": [],
+        "cup": {
+          "matches": [],
+          "status": {
+            "qualification_event": null,
+            "qualification_numbers": null,
+            "qualification_rank": null,
+            "qualification_state": null
+          },
+          "cup_league": null
+        },
+        "cup_matches": [],
+        "event": []
+      },
+      "name": "Bruno Dos Tres",
+      "name_change_blocked": false,
+      "entered_events": [
+        1,
+        2
+      ],
+      "kit": null,
+      "last_deadline_bank": 0,
+      "last_deadline_value": 1002,
+      "last_deadline_total_transfers": 0,
+      "club_badge_src": null
+    },
+    "teamHistoryCurrent": [
+      {
+        "event": 1,
+        "points": 79,
+        "total_points": 79,
+        "rank": 120623,
+        "rank_sort": 122060,
+        "overall_rank": 120623,
+        "percentile_rank": 5,
+        "overall_rank_percentage": "1",
+        "bank": 0,
+        "value": 1000,
+        "event_transfers": 0,
+        "event_transfers_cost": 0,
+        "points_on_bench": 0
+      },
+      {
+        "event": 2,
+        "points": 18,
+        "total_points": 97,
+        "rank": 4738169,
+        "rank_sort": 4746499,
+        "overall_rank": 302478,
+        "percentile_rank": 50,
+        "overall_rank_percentage": "3",
+        "bank": 0,
+        "value": 1002,
+        "event_transfers": 0,
+        "event_transfers_cost": 0,
+        "points_on_bench": 0
+      }
+    ],
+    "playedChips": [
+      {
+        "name": "bboost",
+        "event": 1,
+        "time": "2026-08-21T16:22:44.376105Z"
+      }
+    ],
+    "baseImportedPicks": [
+      {
+        "position": 1,
+        "element": 412,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 2,
+        "element": 418,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 3,
+        "element": 8,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 4,
+        "element": 10,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 5,
+        "element": 368,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 6,
+        "element": 237,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 7,
+        "element": 397,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 8,
+        "element": 426,
+        "multiplier": 2,
+        "is_captain": true,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 9,
+        "element": 346,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 10,
+        "element": 411,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": true
+      },
+      {
+        "position": 11,
+        "element": 552,
+        "multiplier": 1,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 12,
+        "element": 109,
+        "multiplier": 0,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 13,
+        "element": 88,
+        "multiplier": 0,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 14,
+        "element": 127,
+        "multiplier": 0,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      },
+      {
+        "position": 15,
+        "element": 304,
+        "multiplier": 0,
+        "is_captain": false,
+        "purchase_price": 50,
+        "selling_price": 50,
+        "is_vice_captain": false
+      }
+    ],
+    "showAiPredictions": true,
+    "startGameweek": 1,
+    "selectedGameweek": 3,
+    "initialBank": 0,
+    "initialFreeTransfers": 1,
+    "gameweekPlans": {
+      "1": {
+        "gameweek": 1,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 127,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 426,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 304,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "bboost",
+        "calculatedBank": 0,
+        "availableTransfers": 1,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "2": {
+        "gameweek": 2,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 2,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "3": {
+        "gameweek": 3,
+        "squad": [
+          {
+            "position": 1,
+            "element": 109,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 88,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 426,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 127,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 11,
+            "element": 411,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 412,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 552,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 418,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 346,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 3,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "4": {
+        "gameweek": 4,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 4,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "5": {
+        "gameweek": 5,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "6": {
+        "gameweek": 6,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "7": {
+        "gameweek": 7,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "8": {
+        "gameweek": 8,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "9": {
+        "gameweek": 9,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "10": {
+        "gameweek": 10,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "11": {
+        "gameweek": 11,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "12": {
+        "gameweek": 12,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "13": {
+        "gameweek": 13,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "14": {
+        "gameweek": 14,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "15": {
+        "gameweek": 15,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "16": {
+        "gameweek": 16,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "17": {
+        "gameweek": 17,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "18": {
+        "gameweek": 18,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "19": {
+        "gameweek": 19,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "20": {
+        "gameweek": 20,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "21": {
+        "gameweek": 21,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "22": {
+        "gameweek": 22,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "23": {
+        "gameweek": 23,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "24": {
+        "gameweek": 24,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "25": {
+        "gameweek": 25,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "26": {
+        "gameweek": 26,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "27": {
+        "gameweek": 27,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "28": {
+        "gameweek": 28,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "29": {
+        "gameweek": 29,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "30": {
+        "gameweek": 30,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "31": {
+        "gameweek": 31,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "32": {
+        "gameweek": 32,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "33": {
+        "gameweek": 33,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "34": {
+        "gameweek": 34,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "35": {
+        "gameweek": 35,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "36": {
+        "gameweek": 36,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "37": {
+        "gameweek": 37,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      },
+      "38": {
+        "gameweek": 38,
+        "squad": [
+          {
+            "position": 1,
+            "element": 412,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 2,
+            "element": 418,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 3,
+            "element": 8,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 4,
+            "element": 10,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 5,
+            "element": 368,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 6,
+            "element": 237,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 7,
+            "element": 397,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 8,
+            "element": 426,
+            "multiplier": 2,
+            "is_captain": true,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 9,
+            "element": 346,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 10,
+            "element": 411,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": true
+          },
+          {
+            "position": 11,
+            "element": 552,
+            "multiplier": 1,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 12,
+            "element": 109,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 13,
+            "element": 88,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 14,
+            "element": 127,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          },
+          {
+            "position": 15,
+            "element": 304,
+            "multiplier": 0,
+            "is_captain": false,
+            "purchase_price": 50,
+            "selling_price": 50,
+            "is_vice_captain": false
+          }
+        ],
+        "transfersIn": [],
+        "transfersOut": [],
+        "chip": "none",
+        "calculatedBank": 0,
+        "availableTransfers": 5,
+        "transfersUsed": 0,
+        "transferCost": 0
+      }
+    }
+  },
+  "fpl_user_164332_1234": {
+    "pin": "1234",
+    "teamId": 164332,
+    "updatedAt": "2026-08-29T10:18:12.978Z",
     "teamSummary": {
       "id": 164332,
       "joined_time": "2026-07-23T13:36:24.456711Z",

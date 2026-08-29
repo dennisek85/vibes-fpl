@@ -46,6 +46,8 @@ interface PlannerState {
   nextGameweekId: number;
 
   fixtureHorizon: 1 | 3 | 5;
+  cardTheme: 'classic' | 'dark';
+  setCardTheme: (theme: 'classic' | 'dark') => void;
 currentView: 'pitch' | 'matrix';
   setCurrentView: (view: 'pitch' | 'matrix') => void;
 
@@ -86,6 +88,9 @@ currentView: 'pitch' | 'matrix';
   selectedSlotForSwap: number | null;
   isMarketOpen: boolean;
   isScoutModalOpen: boolean;
+  selectedPlayerForDetail: number | null;
+  openPlayerDetail: (playerId: number) => void;
+  closePlayerDetail: () => void;
   scoutPlayerOut: FPLPlayer | null;
   scoutPlayerIn: FPLPlayer | null;
   scoutGain: number;
@@ -210,6 +215,9 @@ currentView: 'pitch',
   selectedSlotForSwap: null,
   isMarketOpen: false,
   isScoutModalOpen: false,
+  selectedPlayerForDetail: null,
+  openPlayerDetail: (id) => set({ selectedPlayerForDetail: id }),
+  closePlayerDetail: () => set({ selectedPlayerForDetail: null }),
   scoutPlayerOut: null,
   scoutPlayerIn: null,
   scoutGain: 0,
@@ -225,8 +233,15 @@ currentView: 'pitch',
   marketSortBy: 'now_cost',
   marketSortOrder: 'desc',
 
+  cardTheme: 'classic',
+  setCardTheme: (theme: 'classic' | 'dark') => {
+    if (typeof window !== 'undefined') {
+      try { localStorage.setItem('fpl_card_theme', theme); } catch {}
+    }
+    set({ cardTheme: theme });
+  },
   setFixtureHorizon: (count: 1 | 3 | 5) => set({ fixtureHorizon: count }),
-toggleAiPredictions: () => {
+  toggleAiPredictions: () => {
     const next = !get().showAiPredictions;
     set({ showAiPredictions: next });
     get().saveCurrentPlanToServer();

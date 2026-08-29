@@ -13,6 +13,7 @@ import { SavePlanModal } from '@/components/ui/SavePlanModal';
 import { PinAuthModal } from '@/components/ui/PinAuthModal';
 import { AiScoutModal } from '@/components/planning/AiScoutModal';
 import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
+import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
 import { logoutPin, isPinVerified } from '@/lib/auth';
 import { 
   Trophy, 
@@ -274,6 +275,8 @@ export default function PlannerPage() {
       />
 
       <AiScoutModal />
+
+      <PlayerDetailModal />
     </main>
   );
 }

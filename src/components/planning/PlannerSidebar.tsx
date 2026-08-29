@@ -21,7 +21,10 @@ import {
   Wand2,
   Lightbulb,
   CheckCircle2,
-  EyeOff
+  EyeOff,
+  Palette,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 const CHIPS: Array<{ id: ChipType; label: string; icon: any; color: string; desc: string }> = [
@@ -43,6 +46,8 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
     setChip,
     fixtureHorizon,
     setFixtureHorizon,
+    cardTheme,
+    setCardTheme,
     resetCurrentGameweek,
     resetAllFutureGameweeks,
     getPlayerGameweekXp,
@@ -235,28 +240,61 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
         </div>
       )}
 
-      {/* 3. Fixture Horizon Filter Card (Only for unlocked future gameweeks) */}
+      {/* 3. Fixture Horizon & Card Theme Filter Card (Only for unlocked future gameweeks) */}
       {!isLocked && (
-        <div className="bg-slate-900/90 backdrop-blur-md p-3 sm:p-3.5 rounded-3xl border border-white/15 shadow-xl flex items-center justify-between gap-2">
-          <span className="text-xs sm:text-[13px] font-black text-slate-200 uppercase tracking-wider flex items-center gap-1.5 shrink-0">
-            <Eye className="w-4 h-4 text-emerald-400" />
-            Fixtures
-          </span>
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-2xl border border-white/10 shrink-0">
-            {([1, 3, 5] as const).map(count => (
+        <div className="bg-slate-900/90 backdrop-blur-md p-3 sm:p-3.5 rounded-3xl border border-white/15 shadow-xl flex flex-col gap-2.5">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs sm:text-[13px] font-black text-slate-200 uppercase tracking-wider flex items-center gap-1.5 shrink-0">
+              <Eye className="w-4 h-4 text-emerald-400" />
+              Fixtures
+            </span>
+            <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-2xl border border-white/10 shrink-0">
+              {([1, 3, 5] as const).map(count => (
+                <button
+                  key={count}
+                  onClick={() => setFixtureHorizon(count)}
+                  className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all ${
+                    fixtureHorizon === count
+                      ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950/60'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                  title={`Show next ${count} fixture(s)`}
+                >
+                  {count}GW
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
+            <span className="text-xs sm:text-[13px] font-black text-slate-200 uppercase tracking-wider flex items-center gap-1.5 shrink-0">
+              <Palette className="w-4 h-4 text-purple-400" />
+              Cards
+            </span>
+            <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-2xl border border-white/10 shrink-0">
               <button
-                key={count}
-                onClick={() => setFixtureHorizon(count)}
-                className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all ${
-                  fixtureHorizon === count
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950/60'
+                onClick={() => setCardTheme('classic')}
+                className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
+                  cardTheme === 'classic'
+                    ? 'bg-white text-slate-950 shadow-md'
                     : 'text-slate-400 hover:text-white'
                 }`}
-                title={`Show next ${count} fixture(s)`}
+                title="Classic Light Cards"
               >
-                {count}GW
+                <Sun className="w-3.5 h-3.5" /> Light
               </button>
-            ))}
+              <button
+                onClick={() => setCardTheme('dark')}
+                className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
+                  cardTheme === 'dark'
+                    ? 'bg-purple-600 text-white shadow-md shadow-purple-950/60'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                title="Dark Translucent Cards"
+              >
+                <Moon className="w-3.5 h-3.5" /> Dark
+              </button>
+            </div>
           </div>
         </div>
       )}
