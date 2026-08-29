@@ -406,7 +406,6 @@ currentView: 'pitch',
         nextGameweekId: nextGwId,
         startGameweek: 1,
         selectedGameweek: nextGwId,
-        isLoading: false,
       });
 
       // Fetch live points for past GWs
@@ -417,6 +416,8 @@ currentView: 'pitch',
       const savedPin = getActivePin();
       if (savedPin) {
         await get().loadUserPlanByPin(savedPin);
+      } else {
+        set({ isLoading: false });
       }
     } catch (err: any) {
       console.error('initFPLData error:', err);
@@ -428,90 +429,112 @@ currentView: 'pitch',
     set({ isLoading: true, activePin: pin });
     saveActivePin(pin);
 
+    const applyPlanState = (p: any) => {
+      let playedChips = p.playedChips || [];
+      const plans: Record<number, PlannedGameweek> = { ...(p.gameweekPlans || {}) };
+      const allPlansList = Object.values(plans) as PlannedGameweek[];
+      const baseSquad = allPlansList.find(gwPlan => gwPlan && gwPlan.squad && gwPlan.squad.length > 0)?.squad || [];
+
+      if (baseSquad.length > 0) {
+        for (let g = 1; g <= 38; g++) {
+          if (!plans[g] || !plans[g].squad || plans[g].squad.length === 0) {
+            plans[g] = {
+              gameweek: g,
+              squad: [...baseSquad],
+              transfersIn: [],
+              transfersOut: [],
+              chip: 'none',
+              calculatedBank: p.initialBank || 0,
+              availableTransfers: 1,
+              transfersUsed: 0,
+              transferCost: 0,
+            };
+          }
+        }
+      }
+
+      const baseImported = p.baseImportedPicks && p.baseImportedPicks.length > 0 
+        ? p.baseImportedPicks 
+        : (allPlansList.find(gwPlan => gwPlan && gwPlan.squad && gwPlan.squad.length > 0)?.squad || []);
+
+      set({
+        teamSummary: p.teamSummary,
+        teamHistoryCurrent: p.teamHistoryCurrent || [],
+        playedChips,
+        baseImportedPicks: baseImported,
+        showAiPredictions: p.showAiPredictions || false,
+        cardTheme: p.cardTheme || 'dark',
+        startGameweek: 1,
+        selectedGameweek: p.selectedGameweek || get().nextGameweekId,
+        initialBank: p.initialBank || 0,
+        initialFreeTransfers: p.initialFreeTransfers || 1,
+        gameweekPlans: plans,
+        lastSavedTime: p.updatedAt || new Date().toLocaleTimeString(),
+        isLoading: false,
+      });
+
+      // Save locally as backup
+      try {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('fpl_plan_' + pin, JSON.stringify(p));
+        }
+      } catch {}
+
+      // Pre-fetch live points for past gameweeks
+      for (let g = 1; g < get().nextGameweekId; g++) {
+        get().fetchLivePointsForGameweek(g);
+      }
+    };
+
     try {
       const res = await fetch(`/api/user-plan?pin=${encodeURIComponent(pin)}${teamId ? `&teamId=${encodeURIComponent(teamId)}` : ''}`);
-      if (!res.ok) throw new Error('Failed to query user plan');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.exists && data.plan) {
+          const p = data.plan;
 
-      const data = await res.json();
-      if (data.exists && data.plan) {
-        const p = data.plan;
-
-        let playedChips = p.playedChips || [];
-        let teamHistoryCurrent: TeamHistoryEvent[] = [];
-
-        if (p.teamSummary?.id) {
-          try {
-            const entryRes = await fetch(`/api/fpl/entry/${p.teamSummary.id}`);
-            if (entryRes.ok) {
-              const entryData = await entryRes.json();
-              if (entryData.history?.chips?.length) {
-                playedChips = entryData.history.chips.map((c: any) => ({
-                  name: c.name,
-                  event: c.event,
-                  time: c.time,
-                }));
+          // Refresh official entry chips if available
+          if (p.teamSummary?.id) {
+            try {
+              const entryRes = await fetch(`/api/fpl/entry/${p.teamSummary.id}`);
+              if (entryRes.ok) {
+                const entryData = await entryRes.json();
+                if (entryData.history?.chips?.length) {
+                  p.playedChips = entryData.history.chips.map((c: any) => ({
+                    name: c.name,
+                    event: c.event,
+                    time: c.time,
+                  }));
+                }
+                if (entryData.history?.current?.length) {
+                  p.teamHistoryCurrent = entryData.history.current;
+                }
               }
-              if (entryData.history?.current?.length) {
-                teamHistoryCurrent = entryData.history.current;
-              }
-            }
-          } catch (fetchErr) {
-            console.warn('Could not refresh official chip history:', fetchErr);
-          }
-        }
-
-        const plans: Record<number, PlannedGameweek> = { ...(p.gameweekPlans || {}) };
-        const allPlansList = Object.values(plans) as PlannedGameweek[];
-        const baseSquad = allPlansList.find(gwPlan => gwPlan && gwPlan.squad && gwPlan.squad.length > 0)?.squad || [];
-
-        if (baseSquad.length > 0) {
-          for (let g = 1; g <= 38; g++) {
-            if (!plans[g] || !plans[g].squad || plans[g].squad.length === 0) {
-              plans[g] = {
-                gameweek: g,
-                squad: [...baseSquad],
-                transfersIn: [],
-                transfersOut: [],
-                chip: 'none',
-                calculatedBank: p.initialBank || 0,
-                availableTransfers: 1,
-                transfersUsed: 0,
-                transferCost: 0,
-              };
+            } catch (fetchErr) {
+              console.warn('Could not refresh official chip history:', fetchErr);
             }
           }
+
+          applyPlanState(p);
+          return { exists: true, teamLoaded: true };
         }
-
-        const baseImported = p.baseImportedPicks && p.baseImportedPicks.length > 0 
-          ? p.baseImportedPicks 
-          : (allPlansList.find(gwPlan => gwPlan && gwPlan.squad && gwPlan.squad.length > 0)?.squad || []);
-
-        set({
-          teamSummary: p.teamSummary,
-          teamHistoryCurrent,
-          playedChips,
-          baseImportedPicks: baseImported,
-          showAiPredictions: p.showAiPredictions || false,
-          cardTheme: p.cardTheme || 'dark',
-          startGameweek: 1,
-          selectedGameweek: p.selectedGameweek || get().nextGameweekId,
-          initialBank: p.initialBank || 0,
-          initialFreeTransfers: p.initialFreeTransfers || 1,
-          gameweekPlans: plans,
-          lastSavedTime: p.updatedAt || new Date().toLocaleTimeString(),
-          isLoading: false,
-        });
-
-        // Pre-fetch live points for all past gameweeks
-        for (let g = 1; g < get().nextGameweekId; g++) {
-          get().fetchLivePointsForGameweek(g);
-        }
-
-        return { exists: true, teamLoaded: true };
-      } else {
-        set({ isLoading: false });
-        return { exists: false, teamLoaded: false };
       }
+      
+      // Fallback to local storage if server has no record (e.g. serverless cold start)
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem('fpl_plan_' + pin);
+        if (cached) {
+          const p = JSON.parse(cached);
+          if (p && p.teamSummary) {
+            applyPlanState(p);
+            get().saveCurrentPlanToServer();
+            return { exists: true, teamLoaded: true };
+          }
+        }
+      }
+
+      set({ isLoading: false });
+      return { exists: false, teamLoaded: false };
     } catch (e) {
       console.error('Error loading user plan from server, trying local cache:', e);
       try {
@@ -520,21 +543,8 @@ currentView: 'pitch',
           if (cached) {
             const p = JSON.parse(cached);
             if (p && p.teamSummary) {
-              set({
-                teamSummary: p.teamSummary,
-                teamHistoryCurrent: p.teamHistoryCurrent || [],
-                playedChips: p.playedChips || [],
-                baseImportedPicks: p.baseImportedPicks || [],
-                showAiPredictions: p.showAiPredictions || false,
-                cardTheme: p.cardTheme || 'dark',
-                startGameweek: 1,
-                selectedGameweek: p.selectedGameweek || get().nextGameweekId,
-                initialBank: p.initialBank || 0,
-                initialFreeTransfers: p.initialFreeTransfers || 1,
-                gameweekPlans: p.gameweekPlans || {},
-                lastSavedTime: new Date().toLocaleTimeString(),
-                isLoading: false,
-              });
+              applyPlanState(p);
+              get().saveCurrentPlanToServer();
               return { exists: true, teamLoaded: true };
             }
           }

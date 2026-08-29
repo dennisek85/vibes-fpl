@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { PlayerCard } from './PlayerCard';
 import { SquadPick } from '@/types/fpl';
-import { CheckCircle2, Wand2 } from 'lucide-react';
+import { CheckCircle2, Wand2, Loader2 } from 'lucide-react';
 export const FootballPitch: React.FC = () => {
   const { 
     selectedGameweek, 
@@ -11,7 +11,8 @@ export const FootballPitch: React.FC = () => {
     showAiPredictions, 
     toggleAiPredictions,
     optimizeSquadLineup,
-    isGameweekLocked
+    isGameweekLocked,
+    isLoading
   } = usePlannerStore();
   const isLocked = isGameweekLocked(selectedGameweek);
   const currentPlan = gameweekPlans[selectedGameweek];
@@ -56,6 +57,15 @@ export const FootballPitch: React.FC = () => {
   useEffect(() => {
     return () => cancelLongPress();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-16 bg-slate-900/50 rounded-3xl border border-white/10 text-slate-400 w-full h-[calc(94vh-80px)]">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-400 mb-3" />
+        <p className="text-sm font-semibold text-slate-300">Loading your squad & plan...</p>
+      </div>
+    );
+  }
 
   if (!currentPlan || !currentPlan.squad || currentPlan.squad.length === 0) {
     return (
