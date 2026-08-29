@@ -240,16 +240,22 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
         <div className="bg-slate-900/90 backdrop-blur-md p-3 sm:p-3.5 rounded-3xl border border-white/15 shadow-xl flex items-center justify-between gap-2">
           <span className="text-xs sm:text-[13px] font-black text-slate-200 uppercase tracking-wider flex items-center gap-1.5 shrink-0">
             <Eye className="w-4 h-4 text-emerald-400" />
+            Fixtures
+          </span>
+          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-2xl border border-white/10 shrink-0">
             {([1, 3, 5] as const).map(count => (
               <button
                 key={count}
+                onClick={() => setFixtureHorizon(count)}
                 className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all ${
                   fixtureHorizon === count
                     ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950/60'
                     : 'text-slate-400 hover:text-white'
                 }`}
+                title={`Show next ${count} fixture(s)`}
               >
                 {count}GW
+              </button>
             ))}
           </div>
         </div>
