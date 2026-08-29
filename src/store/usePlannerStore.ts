@@ -13,6 +13,7 @@ import {
 import { calculateGameweekFinancials, canSwapSquadSlots, validateClubLimit } from '@/lib/fpl-rules';
 import { MAX_SAVED_FREE_TRANSFERS } from '@/lib/fpl-constants';
 import { saveActivePin, getActivePin } from '@/lib/auth';
+import { optimizeLineup, OptimizationResult } from '@/utils/aiOptimizer';
 
 export interface PlayedChipInfo {
   name: string;
@@ -118,6 +119,7 @@ currentView: 'pitch' | 'matrix';
   selectSlotForSwap: (slot: number) => void;
   setCaptain: (elementId: number) => void;
   setViceCaptain: (elementId: number) => void;
+  optimizeSquadLineup: (gw?: number) => OptimizationResult | null;
 
   openTransferDrawer: (playerOutId: number) => void;
   closeTransferDrawer: () => void;
@@ -368,17 +370,13 @@ currentView: 'pitch',
       if (projectionsRes && projectionsRes.ok) {
         try {
           const projData = await projectionsRes.json();
-          if (Array.isArray(projData.topProjected)) {
-            projData.topProjected.forEach((p: any) => {
-              if (p.name && p.prPoints) {
-                const key = `${p.name.toLowerCase()}_${(p.team || '').toLowerCase()}`;
-                aiProjectionsMap.set(key, Math.round(p.prPoints * 10) / 10);
-                aiProjectionsMap.set(p.name.toLowerCase(), Math.round(p.prPoints * 10) / 10);
-              }
-            });
+          if (projData.predictions && typeof projData.predictions === 'object') {
+            for (const [key, val] of Object.entries(projData.predictions)) {
+              aiProjectionsMap.set(key, Number(val));
+            }
           }
         } catch (e) {
-          console.warn('Projections parsing warning:', e);
+          console.warn('OpenFPL projections parsing warning:', e);
         }
       }
 
@@ -868,6 +866,29 @@ currentView: 'pitch',
     get().saveCurrentPlanToServer();
   },
 
+  optimizeSquadLineup: (targetGw?: number) => {
+    const { selectedGameweek, gameweekPlans, playerMap, getPlayerGameweekXp, isGameweekLocked } = get();
+    const gw = targetGw ?? selectedGameweek;
+    if (isGameweekLocked(gw)) return null;
+
+    const currentPlan = gameweekPlans[gw];
+    if (!currentPlan || !currentPlan.squad || currentPlan.squad.length !== 15) return null;
+
+    const result = optimizeLineup(currentPlan.squad, playerMap, gw, getPlayerGameweekXp);
+    if (!result) return null;
+
+    const updatedPlans = { ...gameweekPlans };
+    updatedPlans[gw] = {
+      ...currentPlan,
+      squad: result.optimizedSquad,
+    };
+
+    set({ gameweekPlans: updatedPlans, selectedSlotForSwap: null });
+    recalculateMultiGameweekPlans(get, set);
+    get().saveCurrentPlanToServer();
+    return result;
+  },
+
   openTransferDrawer: (playerOutId: number) => {
     const { playerMap, isGameweekLocked, selectedGameweek } = get();
     if (isGameweekLocked(selectedGameweek)) return;
@@ -1132,9 +1153,6 @@ currentView: 'pitch',
     const playerTeamId = player.team;
     const upcoming: PlayerFixtureItem[] = [];
 
-    const solioKey = `${player.web_name.toLowerCase()}_${(playerTeam?.short_name || '').toLowerCase()}`;
-    const solioDirect = aiProjectionsMap.get(solioKey) || aiProjectionsMap.get(player.web_name.toLowerCase());
-
     const baseForm = parseFloat(player.form) || (player.total_points > 0 ? player.total_points / 2 : 3.5);
     const epBase = parseFloat(player.ep_next || player.ep_this || `${baseForm}`);
 
@@ -1147,18 +1165,18 @@ currentView: 'pitch',
         const difficulty = isHome ? fix.team_h_difficulty : fix.team_a_difficulty;
         const oppShort = (oppTeam?.short_name || 'TBD').toUpperCase().slice(0, 3);
 
-        let xP = solioDirect && gw === selectedGameweek ? solioDirect : epBase;
-        if (!solioDirect || gw !== selectedGameweek) {
+        const openFplKey = `${playerId}_${gw}`;
+        let xP = aiProjectionsMap.get(openFplKey);
+
+        if (xP === undefined) {
           const fdrMultiplier = difficulty === 1 ? 1.20 : difficulty === 2 ? 1.10 : difficulty === 4 ? 0.85 : difficulty === 5 ? 0.70 : 1.00;
           const homeMultiplier = isHome ? 1.08 : 0.92;
           xP = epBase * fdrMultiplier * homeMultiplier;
+          if (player.chance_of_playing_next_round !== null && player.chance_of_playing_next_round < 100) {
+            xP = xP * (player.chance_of_playing_next_round / 100);
+          }
+          xP = Math.max(0.5, Math.round(xP * 10) / 10);
         }
-
-        if (player.chance_of_playing_next_round !== null && player.chance_of_playing_next_round < 100) {
-          xP = xP * (player.chance_of_playing_next_round / 100);
-        }
-
-        xP = Math.max(0.5, Math.round(xP * 10) / 10);
 
         upcoming.push({
           event: gw,
@@ -1177,9 +1195,13 @@ currentView: 'pitch',
   },
 
   getPlayerGameweekXp: (playerId: number, gameweek: number): number => {
+    const { aiProjectionsMap } = get();
+    const openFplDirect = aiProjectionsMap.get(`${playerId}_${gameweek}`);
+    if (openFplDirect !== undefined) return openFplDirect;
+
     const fixtures = get().getPlayerUpcomingFixtures(playerId, 10);
     const match = fixtures.find(f => f.event === gameweek);
-    if (match && match.xP) return match.xP;
+    if (match && match.xP !== undefined) return match.xP;
     const p = get().playerMap.get(playerId);
     return p ? Math.round((parseFloat(p.form) || 3.0) * 10) / 10 : 3.0;
   },

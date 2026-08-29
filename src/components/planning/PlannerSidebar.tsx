@@ -55,7 +55,7 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
     isGameweekLocked,
     showAiPredictions,
     toggleAiPredictions,
-    autoOptimizeStartingXI,
+    optimizeSquadLineup,
     players,
     playerMap,
     teamMap,
@@ -64,7 +64,7 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
   } = usePlannerStore();
 
   const [showResetAllConfirm, setShowResetAllConfirm] = useState(false);
-  const [optimizedToast, setOptimizedToast] = useState(false);
+  const [optResult, setOptResult] = useState<any | null>(null);
 
   const isLocked = isGameweekLocked(selectedGameweek);
   const activePlan = gameweekPlans[selectedGameweek];
@@ -118,9 +118,11 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
   };
 
   const handleAutoOptimize = () => {
-    autoOptimizeStartingXI();
-    setOptimizedToast(true);
-    setTimeout(() => setOptimizedToast(false), 2500);
+    const res = optimizeSquadLineup(selectedGameweek);
+    if (res) {
+      setOptResult(res);
+      setTimeout(() => setOptResult(null), 5000);
+    }
   };
 
   const handleFindTransfer = () => {
@@ -215,9 +217,9 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
             {/* Auto-Pick Optimal XI Button */}
             <button
               onClick={handleAutoOptimize}
-              className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50 transition-all active:scale-95"
+              className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50 transition-all hover:scale-101 active:scale-95 group"
             >
-              <Wand2 className="w-4 h-4" />
+              <Wand2 className="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform" />
               Auto-Optimize Starting XI &amp; (C)
             </button>
 
@@ -230,10 +232,25 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
               Scout Best Transfer (+xP)
             </button>
 
-            {optimizedToast && (
-              <div className="text-center text-xs font-black text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 p-2 rounded-xl flex items-center justify-center gap-1.5 animate-in fade-in">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                Optimal XI &amp; Captain Applied!
+            {optResult && (
+              <div className="bg-slate-950/90 border border-emerald-500/50 p-3 rounded-2xl flex flex-col gap-1.5 text-xs text-emerald-200 animate-in fade-in zoom-in-95 shadow-xl">
+                <div className="flex items-center justify-between font-black text-white">
+                  <span className="flex items-center gap-1.5 text-emerald-400">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    Lineup Optimized!
+                  </span>
+                  <span className="bg-emerald-900/80 text-emerald-300 px-2 py-0.5 rounded-lg font-mono font-black">
+                    {optResult.formation}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-[11px] pt-1.5 border-t border-white/10">
+                  <span>Captain: <strong className="text-amber-300">{optResult.captainName} (C)</strong></span>
+                  <span>Vice: <strong className="text-slate-200">{optResult.viceCaptainName} (V)</strong></span>
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-emerald-400 font-mono font-bold pt-0.5">
+                  <span>Projected Return</span>
+                  <span>{optResult.totalProjectedPoints} xP</span>
+                </div>
               </div>
             )}
           </div>

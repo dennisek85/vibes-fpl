@@ -1,0 +1,53 @@
+name: Generate OpenFPL ML Predictions
+
+on:
+  schedule:
+    # Runs daily at 03:00 UTC
+    - cron: '0 3 * * *'
+    # Runs at 10:00 UTC on Fridays and Saturdays (Pre-Deadline Updates)
+    - cron: '0 10 * * 5,6'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/generate_openfpl_ml.py'
+      - '.github/workflows/generate_ml_predictions.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  run-openfpl-ml:
+    name: Generate & Sync OpenFPL Forecasts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run OpenFPL Machine Learning Pipeline
+        env:
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+        run: |
+          python scripts/generate_openfpl_ml.py
+
+      - name: Commit & Push Updated Predictions
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/openfpl_predictions.json
+          if git diff --staged --quiet; then
+            echo "No changes in OpenFPL predictions."
+          else
+            git commit -m "🤖 [OpenFPL ML] Auto-update player forecasts dataset"
+            git push origin main
+          fi

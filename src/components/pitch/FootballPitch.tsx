@@ -2,12 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { PlayerCard } from './PlayerCard';
 import { SquadPick } from '@/types/fpl';
-import { Sparkles, CheckCircle2 } from 'lucide-react';
-
+import { Sparkles, CheckCircle2, Wand2 } from 'lucide-react';
 export const FootballPitch: React.FC = () => {
-  const { selectedGameweek, gameweekPlans, playerMap, showAiPredictions, toggleAiPredictions } = usePlannerStore();
-  const currentPlan = gameweekPlans[selectedGameweek];
-
+  const { 
+    selectedGameweek, 
   const [isPressing, setIsPressing] = useState(false);
   const [pressProgress, setPressProgress] = useState(0);
   const [showUnlockToast, setShowUnlockToast] = useState(false);
@@ -136,14 +134,11 @@ export const FootballPitch: React.FC = () => {
           </div>
         )}
 
-        {/* In-Pitch Formation Badge (Top Right) */}
-        <div className="absolute top-4 right-4 z-20 pointer-events-none">
-          <span className="bg-slate-950/75 text-emerald-300 font-black px-3 py-1.5 rounded-full border border-emerald-500/40 text-xs backdrop-blur-md shadow-lg">
-            {formationString}
-          </span>
-        </div>
-
-        {/* 1. Goalkeeper Row */}
+        {/* In-Pitch Top Right Bar: Quick AI Optimize + Formation Badge */}
+        <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+          {!isLocked && (
+            <button
+              onClick={() => {
         <div className="relative z-10 w-full flex justify-center items-center py-1">
           {gks.map(pick => (
             <PlayerCard key={pick.position} pick={pick} />
