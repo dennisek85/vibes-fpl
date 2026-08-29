@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
-import { X, Save, FolderOpen, Check, Trash2, Calendar } from 'lucide-react';
+import { X, Save, FolderOpen, Check } from 'lucide-react';
 import { SavedPlan } from '@/types/fpl';
 
 interface SavePlanModalProps {

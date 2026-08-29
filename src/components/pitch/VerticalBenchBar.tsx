@@ -24,7 +24,6 @@ export const VerticalBenchBar: React.FC<VerticalBenchProps> = ({ benchPicks }) =
 
       <div className="flex flex-col justify-around flex-1 py-1 gap-2">
         {benchPicks.map((pick, idx) => {
-          const player = playerMap.get(pick.element);
           const posLabel = idx === 0 ? 'GK' : `Bench ${idx}`;
 
           return (

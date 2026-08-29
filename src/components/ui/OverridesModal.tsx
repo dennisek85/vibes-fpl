@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
-import { X, Check, RotateCcw } from 'lucide-react';
+import { X, RotateCcw } from 'lucide-react';
 
 interface OverridesModalProps {
   isOpen: boolean;

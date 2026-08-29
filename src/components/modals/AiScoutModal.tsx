@@ -15,17 +15,12 @@ import {
   X, 
   Sparkles, 
   ArrowRight, 
-  TrendingUp, 
-  DollarSign, 
   CheckCircle2, 
   Zap, 
   Award, 
   Target, 
   Flame, 
-  ShieldAlert,
-  AlertTriangle,
-  HelpCircle,
-  SlidersHorizontal 
+  ShieldAlert 
 } from 'lucide-react';
 import { formatMoney } from '@/lib/fpl-rules';
 
@@ -64,12 +59,11 @@ export const AiScoutModal: React.FC = () => {
       squad,
       players,
       playerMap,
-      teamMap,
       bankInMillions,
       selectedGameweek,
       getPlayerGameweekXp
     );
-  }, [isScoutModalOpen, squad, players, playerMap, teamMap, bankInMillions, selectedGameweek, getPlayerGameweekXp]);
+  }, [isScoutModalOpen, squad, players, playerMap, bankInMillions, selectedGameweek, getPlayerGameweekXp]);
 
   // 2. Unconstrained Dream Targets & Value Picks
   const dreamTargets = useMemo(() => {

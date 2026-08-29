@@ -1,5 +1,5 @@
-import { FPLPlayer, SquadPick, ChipType, PositionType } from '@/types/fpl';
-import { MAX_SAVED_FREE_TRANSFERS, HIT_COST_POINTS, POSITION_MAP } from './fpl-constants';
+import { FPLPlayer, SquadPick, ChipType } from '@/types/fpl';
+import { MAX_SAVED_FREE_TRANSFERS, HIT_COST_POINTS } from './fpl-constants';
 
 /**
  * Calculates selling price under standard FPL 50% profit rules

@@ -40,7 +40,6 @@ export function getSmartTransferRecommendations(
   squad: SquadPick[],
   players: FPLPlayer[],
   playerMap: Map<number, FPLPlayer>,
-  teamMap: Map<number, FPLTeam>,
   currentBank: number, // in £m (e.g. 1.5)
   selectedGameweek: number,
   getXp: (pId: number, gw: number) => number

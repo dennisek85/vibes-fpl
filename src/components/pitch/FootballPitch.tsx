@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { PlayerCard } from './PlayerCard';
 import { SquadPick } from '@/types/fpl';
-import { Sparkles, CheckCircle2, Wand2 } from 'lucide-react';
+import { CheckCircle2, Wand2 } from 'lucide-react';
 export const FootballPitch: React.FC = () => {
   const { 
     selectedGameweek, 

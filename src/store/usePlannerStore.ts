@@ -11,7 +11,6 @@ import {
   PlayerFixtureItem 
 } from '@/types/fpl';
 import { calculateGameweekFinancials, canSwapSquadSlots, validateClubLimit } from '@/lib/fpl-rules';
-import { MAX_SAVED_FREE_TRANSFERS } from '@/lib/fpl-constants';
 import { saveActivePin, getActivePin } from '@/lib/auth';
 import { optimizeLineup, OptimizationResult } from '@/utils/aiOptimizer';
 
@@ -1162,7 +1161,6 @@ currentView: 'pitch',
     const player = playerMap.get(playerId);
     if (!player || !fixtures.length) return [];
 
-    const playerTeam = teamMap.get(player.team);
     const playerTeamId = player.team;
     const upcoming: PlayerFixtureItem[] = [];
 

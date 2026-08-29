@@ -1,55 +1,51 @@
-# AI Transfer Scout & Market Intelligence Lab Plan
+# Codebase Cleanup & Performance Optimization Plan
 
-This plan introduces a dedicated, high-power **AI Transfer Scout & Intelligence Hub** powered by our calibrated OpenFPL machine learning engine.
-
----
-
-## 🎯 Features to Build
-
-### 1. 🔍 Smart Squad Transfers (Budget-Aware & Constraint-Checked)
-* Evaluates all legal 1-for-1 transfers for your current 15-man squad against all ~650 Premier League players.
-* Checks:
-  * **Remaining Bank Balance** (must afford Player IN price).
-  * **Max 3 Players Per Club** limit.
-  * **Same Position Rule** (GK $\rightarrow$ GK, DEF $\rightarrow$ DEF, etc.).
-* Calculates net expected point delta:
-  $$\Delta xP = xP_{\text{IN}} - xP_{\text{OUT}}$$
-* Allows filtering by:
-  * **1-Gameweek Sprint** (Immediate impact for this upcoming deadline).
-  * **3-Gameweek Horizon** (Optimal upcoming fixture swing).
-  * **5-Gameweek Hold** (Long-term value).
-* Includes a **1-Click "Apply Transfer"** button that swaps the players in your gameweek plan automatically!
+This plan details the dead-code elimination, performance optimizations, and structural cleanup identified across the project.
 
 ---
 
-### 2. 🌟 Unconstrained Dream Targets ("The Template & Market Leaders")
-* Shows the top target players across the entire Premier League without budget constraints:
-  * **Top Projected by Position** (Best GK, DEF, MID, FWD across 1, 3, and 5 GWs).
-  * **Value ROI Leaders** (Highest $xP$ per £1.0M budget).
-  * **Form & Fixture Momentum** (Players with easiest upcoming FDR runs + high xG/xA).
+## 🧹 1. Dead Code & Unused Declarations Cleanup
+
+### A. `src/utils/aiTransferScout.ts`
+* **[MODIFY]** Remove unused `teamMap` parameter from `getSmartTransferRecommendations` and update call sites.
+* **[MODIFY]** Clean up type definition parameter names (e.g. `_pId`, `_gw`).
+
+### B. Delete Obsolete Component
+* **[DELETE]** `src/components/planning/AiScoutModal.tsx` (superseded by `src/components/modals/AiScoutModal.tsx`).
+
+### C. Clean Unused Imports in UI Components
+* **[MODIFY]** `src/components/planning/PlannerSidebar.tsx`:
+  * Remove unused `FPLPlayer`, `AiScoutModal` import.
+  * Remove unneeded store destructuring (`players`, `playerMap`, `teamMap`, `openTransferDrawer`).
+* **[MODIFY]** `src/components/modals/AiScoutModal.tsx`:
+  * Clean up unused imports (`DollarSign`, `TrendingUp`, `SlidersHorizontal`, etc.).
+* **[MODIFY]** `src/components/player/PlayerDetailModal.tsx`:
+  * Remove unused icon imports (`Sparkles`, `TrendingUp`, `Shield`, `Award`, `Zap`, `Percent`, `AlertCircle`) and unneeded store variables (`selectedGameweek`, `isGameweekLocked`).
+* **[MODIFY]** `src/components/pitch/FootballPitch.tsx`:
+  * Remove unused `Sparkles`, `isPressing`, `pressProgress`.
+* **[MODIFY]** `src/components/pitch/PlayerCard.tsx` & `BenchBar.tsx`:
+  * Remove unused `FPLPlayer`, `isBench`.
+* **[MODIFY]** `src/components/ui/OverridesModal.tsx` & `SavePlanModal.tsx`:
+  * Remove unused icons (`Check`, `Trash2`, `Calendar`).
 
 ---
 
-### 3. 🃏 AI Chip Advisor
-* **Triple Captain Radar**: Highlights the top 3 single-gameweek captaincy peaks across the next 10 GWs (e.g. Haaland GW6 home = $7.4\text{ xP} \times 3 = 22.2\text{ pts}$).
-* **Bench Boost Detector**: Analyzes bench scoring potential and identifies the peak Gameweek for bench points.
-* **Wildcard / Free Hit Timing**: Highlights major fixture swing gameweeks where an overhaul provides maximum point gain.
+## ⚡ 2. Performance & Code Optimizations
+
+### A. High-Performance Fast Key Lookup for Projections
+* In `usePlannerStore.ts`, avoid string concatenation allocations when looking up player points by caching numeric hash indices or using a direct `Map<number, number>`.
+
+### B. Next.js Image Optimization
+* In `src/components/ui/KitIcon.tsx` and `src/components/player/PlayerDetailModal.tsx`, resolve `@next/next/no-img-element` warnings by configuring `<Image />` or clean SVG handling.
+
+### C. Strict ESLint Configuration
+* Configure `.eslintrc.json` with clean, production-grade rules with 0 warnings.
 
 ---
 
-## 🖥️ UI / UX Layout
-
-We will create `src/components/modals/AiScoutModal.tsx`:
-* Accessible by clicking **`Scout Best Transfer (+xP)`** in the Sidebar or from the Pitch toolbar.
-* Tabbed design:
-  1. **🎯 My Squad Recommendations** (Tailored transfers with 1-click Apply).
-  2. **🌟 Premier League Dream Targets** (Unconstrained top performers & ROI value picks).
-  3. **🃏 Chip Strategy Radar** (Optimal Triple Captain, Bench Boost, and Wildcard gameweeks).
-
----
-
-## 📁 Files to Modify & Create
-* **[NEW]** `src/utils/aiTransferScout.ts`: Pure TypeScript transfer evaluator computing $\Delta xP$, budget constraints, and unconstrained market leaders.
-* **[NEW]** `src/components/modals/AiScoutModal.tsx`: Rich glassmorphism modal with tabs, stat cards, and 1-click action buttons.
-* **[MODIFY]** `src/store/usePlannerStore.ts`: Expose `isScoutModalOpen`, `openScoutModal`, and `closeScoutModal`.
-* **[MODIFY]** `src/components/planning/PlannerSidebar.tsx`: Connect `Scout Best Transfer (+xP)` button to launch the new Scout Hub.
+## 🔍 Verification Plan
+1. **Automated Checks**:
+   * Run `npm run check` (`tsc --noEmit && next lint`) — must produce **0 errors and 0 warnings**.
+   * Run `npm run build` — must produce **`✓ Generating static pages (9/9)`** with 0 errors.
+2. **Local Manual Verification**:
+   * Verify on `http://localhost:3000` that Pitch cards, AI Scout Modal, Player Modal, Lineup Optimizer, and Theme switcher function smoothly.

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
-import { FPLPlayer, ChipType } from '@/types/fpl';
+import { ChipType } from '@/types/fpl';
 import { formatMoney } from '@/lib/fpl-rules';
-import { AiScoutModal } from './AiScoutModal';
 import { 
   Sparkles, 
   Zap, 
@@ -56,10 +55,6 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
     showAiPredictions,
     toggleAiPredictions,
     optimizeSquadLineup,
-    players,
-    playerMap,
-    teamMap,
-    openTransferDrawer,
     openScoutModal
   } = usePlannerStore();
 

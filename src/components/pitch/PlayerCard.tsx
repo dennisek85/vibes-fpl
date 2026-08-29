@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { SquadPick, FPLPlayer } from '@/types/fpl';
+import { SquadPick } from '@/types/fpl';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { KitIcon } from '@/components/ui/KitIcon';
 import { FdrFixtureCell } from '@/components/ui/FdrBadge';

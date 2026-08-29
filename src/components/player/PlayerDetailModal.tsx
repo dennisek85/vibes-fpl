@@ -5,17 +5,10 @@ import { usePlannerStore } from '@/store/usePlannerStore';
 import { KitIcon } from '@/components/ui/KitIcon';
 import { 
   X, 
-  Sparkles, 
-  TrendingUp, 
-  Shield, 
   Calendar, 
   History, 
   ShoppingBag, 
-  Loader2, 
-  Award, 
-  Zap, 
-  Percent, 
-  AlertCircle
+  Loader2 
 } from 'lucide-react';
 
 export const PlayerDetailModal: React.FC = () => {
@@ -24,11 +17,9 @@ export const PlayerDetailModal: React.FC = () => {
     closePlayerDetail, 
     playerMap, 
     teamMap, 
-    selectedGameweek, 
     getPlayerUpcomingFixtures,
     getPlayerGameweekXp,
-    openTransferDrawer,
-    isGameweekLocked
+    openTransferDrawer
   } = usePlannerStore();
 
   const [loading, setLoading] = useState(false);

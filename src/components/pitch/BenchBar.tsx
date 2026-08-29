@@ -24,7 +24,6 @@ export const BenchBar: React.FC<BenchBarProps> = ({ benchPicks }) => {
 
       <div className="grid grid-cols-4 gap-2 sm:gap-4 md:gap-6 justify-items-center">
         {benchPicks.map((pick, idx) => {
-          const player = playerMap.get(pick.element);
           const posLabel = idx === 0 ? 'GK' : `Bench ${idx}`;
           return (
             <div key={pick.element || idx} className="flex flex-col items-center w-full">
