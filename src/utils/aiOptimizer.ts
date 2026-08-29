@@ -130,7 +130,6 @@ export function optimizeLineup(
     const isVc = p.player.id === viceCaptainPick.player.id;
 
     finalSquadPicks.push({
-      ...p.pick,
       element: p.player.id,
       position: idx + 1,
       is_captain: isCap,
@@ -142,7 +141,6 @@ export function optimizeLineup(
   // Bench (Positions 12 to 15)
   orderedBenchPicks.forEach((p, idx) => {
     finalSquadPicks.push({
-      ...p.pick,
       element: p.player.id,
       position: 12 + idx,
       is_captain: false,

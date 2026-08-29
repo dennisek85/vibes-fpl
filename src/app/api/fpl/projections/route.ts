@@ -79,27 +79,30 @@ export async function GET() {
         availabilityMultiplier = 0.2;
       }
 
-      // 2. Underlying Performance Features (Rolling xG, xA, Threat, Form, Points per Match)
-      const formVal = parseFloat(p.form) || 0;
-      const ppgVal = parseFloat(p.points_per_game) || 0;
-      const epVal = parseFloat(p.ep_next || p.ep_this || '0');
-      const threatVal = parseFloat(p.threat || '0') / 100;
-      const creativityVal = parseFloat(p.creativity || '0') / 100;
+      // 2. Underlying Performance Features (Per-90 Normalized Calibration)
+      const minutesPlayed = parseFloat(p.minutes || '0');
+      const gamesPlayed = Math.max(1.0, minutesPlayed / 90.0);
 
-      // Base expected baseline by position
+      const formVal = parseFloat(p.form || '0');
+      const ppgVal = parseFloat(p.points_per_game || '0');
+      const epVal = parseFloat(p.ep_next || p.ep_this || '0');
+      const threatPer90 = (parseFloat(p.threat || '0') / gamesPlayed) / 100.0;
+      const creativityPer90 = (parseFloat(p.creativity || '0') / gamesPlayed) / 100.0;
+
+      // Calibrated baseline by position
       let positionBaseline = 0;
       if (posType === 1) {
-        // Goalkeeper: clean sheet odds + save yield (avg 3.5 - 4.5 pts)
-        positionBaseline = Math.max(1.8, (ppgVal * 0.5) + (formVal * 0.3) + 1.2);
+        // Goalkeeper: typical range 2.0 - 4.2 xP
+        positionBaseline = Math.max(1.8, Math.min(4.5, (ppgVal * 0.40) + (formVal * 0.25) + 1.2));
       } else if (posType === 2) {
-        // Defender: clean sheet odds + goal threat (avg 3.0 - 5.5 pts)
-        positionBaseline = Math.max(1.6, (ppgVal * 0.45) + (formVal * 0.35) + (threatVal * 0.5) + 0.8);
+        // Defender: typical range 1.8 - 4.8 xP
+        positionBaseline = Math.max(1.6, Math.min(5.0, (ppgVal * 0.35) + (formVal * 0.30) + (threatPer90 * 0.4) + 0.8));
       } else if (posType === 3) {
-        // Midfielder: attacking involvement + appearance (avg 3.5 - 7.5 pts)
-        positionBaseline = Math.max(2.0, (ppgVal * 0.45) + (formVal * 0.35) + (threatVal * 0.8) + (creativityVal * 0.4));
+        // Midfielder: typical range 2.0 - 6.2 xP
+        positionBaseline = Math.max(2.0, Math.min(6.5, (ppgVal * 0.35) + (formVal * 0.30) + (threatPer90 * 0.5) + (creativityPer90 * 0.2) + 0.5));
       } else {
-        // Forward: goal volume + bonus rate (avg 3.5 - 8.5 pts)
-        positionBaseline = Math.max(2.0, (ppgVal * 0.5) + (formVal * 0.3) + (threatVal * 1.0));
+        // Forward: typical range 2.2 - 6.5 xP
+        positionBaseline = Math.max(2.2, Math.min(7.0, (ppgVal * 0.40) + (formVal * 0.30) + (threatPer90 * 0.6) + 0.5));
       }
 
       // Blend with official FPL expectation if available
