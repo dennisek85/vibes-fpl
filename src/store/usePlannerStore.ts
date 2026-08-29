@@ -103,7 +103,7 @@ currentView: 'pitch' | 'matrix';
 
   setFixtureHorizon: (count: 1 | 3 | 5) => void;
   initFPLData: () => Promise<void>;
-  loadUserPlanByPin: (pin: string) => Promise<{ exists: boolean; teamLoaded: boolean }>;
+  loadUserPlanByPin: (pin: string, teamId?: number | null) => Promise<{ exists: boolean; teamLoaded: boolean }>;
   saveCurrentPlanToServer: () => Promise<void>;
   importTeam: (teamId: number) => Promise<boolean>;
   loadDemoTeam: () => void;
@@ -410,12 +410,12 @@ toggleAiPredictions: () => {
     }
   },
 
-  loadUserPlanByPin: async (pin: string) => {
+  loadUserPlanByPin: async (pin: string, teamId?: number | null) => {
     set({ isLoading: true, activePin: pin });
     saveActivePin(pin);
 
     try {
-      const res = await fetch(`/api/user-plan?pin=${encodeURIComponent(pin)}`);
+      const res = await fetch(`/api/user-plan?pin=${encodeURIComponent(pin)}${teamId ? `&teamId=${encodeURIComponent(teamId)}` : ''}`);
       if (!res.ok) throw new Error('Failed to query user plan');
 
       const data = await res.json();

@@ -4,7 +4,6 @@ import path from 'path';
 import os from 'os';
 import { Redis } from '@upstash/redis';
 
-// Initialize Upstash Redis if environment variables are present
 let redisClient: Redis | null = null;
 try {
   if (
@@ -17,7 +16,6 @@ try {
   console.warn('Redis client initialization note (falling back to memory):', e);
 }
 
-// Global in-memory fallback for local development
 declare global {
   var __userPlansMemoryCache: Record<string, any> | undefined;
 }
@@ -63,25 +61,42 @@ function writeLocalUserPlans(plans: Record<string, any>) {
   }
 }
 
+// Build unique storage key: fpl_user_{teamId}_{pin} or fpl_pin_{pin}
+function buildStorageKey(pin: string, teamId?: number | string | null): string {
+  const cleanPin = String(pin).trim();
+  if (teamId && String(teamId).trim()) {
+    return `fpl_user_${String(teamId).trim()}_${cleanPin}`;
+  }
+  return `fpl_pin_${cleanPin}`;
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const pin = searchParams.get('pin');
+  const teamId = searchParams.get('teamId');
 
   if (!pin || pin.trim().length < 4) {
     return NextResponse.json({ error: 'PIN must be at least 4 digits' }, { status: 400 });
   }
 
   const cleanPin = pin.trim();
+  const storageKey = buildStorageKey(cleanPin, teamId);
 
   // 1. Try Upstash Redis first
   if (redisClient) {
     try {
-      const redisPlan = await redisClient.get(`fpl_pin_${cleanPin}`);
+      let redisPlan = await redisClient.get(storageKey);
+      
+      // Fallback: If not found with teamId_pin, check legacy pin key
+      if (!redisPlan && teamId) {
+        redisPlan = await redisClient.get(`fpl_pin_${cleanPin}`);
+      }
+
       if (redisPlan) {
         const parsed = typeof redisPlan === 'string' ? JSON.parse(redisPlan) : redisPlan;
         return NextResponse.json({ exists: true, plan: parsed });
       } else {
-        return NextResponse.json({ exists: false, message: 'New PIN workspace' }, { status: 200 });
+        return NextResponse.json({ exists: false, message: 'New workspace' }, { status: 200 });
       }
     } catch (redisErr) {
       console.warn('Redis read failed, trying local fallback:', redisErr);
@@ -90,10 +105,10 @@ export async function GET(req: NextRequest) {
 
   // 2. Fallback to local memory / temp storage
   const allPlans = readLocalUserPlans();
-  const userPlan = allPlans[cleanPin];
+  const userPlan = allPlans[storageKey] || allPlans[cleanPin];
 
   if (!userPlan) {
-    return NextResponse.json({ exists: false, message: 'New PIN workspace' }, { status: 200 });
+    return NextResponse.json({ exists: false, message: 'New workspace' }, { status: 200 });
   }
 
   return NextResponse.json({ exists: true, plan: userPlan });
@@ -121,8 +136,12 @@ export async function POST(req: NextRequest) {
     }
 
     const cleanPin = String(pin).trim();
+    const teamId = teamSummary?.id || null;
+    const storageKey = buildStorageKey(cleanPin, teamId);
+
     const planData = {
       pin: cleanPin,
+      teamId,
       updatedAt: new Date().toISOString(),
       teamSummary,
       teamHistoryCurrent: teamHistoryCurrent || [],
@@ -139,15 +158,16 @@ export async function POST(req: NextRequest) {
     // 1. Save to Upstash Redis if available
     if (redisClient) {
       try {
-        await redisClient.set(`fpl_pin_${cleanPin}`, JSON.stringify(planData));
+        await redisClient.set(storageKey, JSON.stringify(planData));
       } catch (redisErr) {
         console.warn('Redis write failed:', redisErr);
       }
     }
 
-    // 2. Also save to local memory / temp storage
+    // 2. Save to local storage cache
     const allPlans = readLocalUserPlans();
-    allPlans[cleanPin] = planData;
+    allPlans[storageKey] = planData;
+    allPlans[cleanPin] = planData; // Also keep pin mapping
     writeLocalUserPlans(allPlans);
 
     return NextResponse.json({ success: true, updatedAt: planData.updatedAt });
