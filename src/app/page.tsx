@@ -275,7 +275,6 @@ export default function PlannerPage() {
       {/* Main Content Area: Visual Pitch View vs Stats Matrix View */}
       {currentView === 'pitch' ? (
         <div className="w-full max-w-full lg:max-w-[99vw] px-1 sm:px-2 py-1.5 flex flex-col lg:flex-row items-stretch justify-center gap-2.5 lg:h-[calc(100vh-62px)] lg:overflow-hidden animate-in fade-in duration-200">
-          
           {/* Left Desktop Panel: Chips, AI Radar, Horizon, Optimizer & Overrides */}
           <LeftStrategyPanel onOpenOverrides={() => setIsOverridesModalOpen(true)} />
 
