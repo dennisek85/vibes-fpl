@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
 """
-OpenFPL Calibrated Machine Learning Forecast Generator
+OpenFPL Calibrated Machine Learning Forecast Generator (with Understat xG/xA Integration)
 Computes authentic expected point forecasts for all ~650 Premier League players across upcoming gameweeks.
+Blends official FPL metrics, live OpenFPL scout benchmarks, and Understat underlying xG/xA metrics.
 Runs in GitHub Actions (or locally) and exports calibrated predictions to src/data/openfpl_predictions.json.
 """
 
 import os
+import re
 import json
 import urllib.request
 import urllib.error
+import math
 from datetime import datetime
 
 FPL_BOOTSTRAP_URL = "https://fantasy.premierleague.com/api/bootstrap-static/"
 FPL_FIXTURES_URL = "https://fantasy.premierleague.com/api/fixtures/"
 OPENFPL_SCOUT_URL = "https://openfpl.kassem.dev/api/scout"
+UNDERSTAT_EPL_URL = "https://understat.com/league/EPL"
+
 OUTPUT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src", "data", "openfpl_predictions.json")
 
 def fetch_json(url):
@@ -25,12 +30,95 @@ def fetch_json(url):
     with urllib.request.urlopen(req, timeout=15) as resp:
         return json.loads(resp.read().decode('utf-8'))
 
+def fetch_understat_data():
+    """
+    Fetches underlying xG, xA, and team metrics directly from Understat EPL.
+    """
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    }
+    understat_players = {}
+    understat_teams = {}
+
+    try:
+        req = urllib.request.Request(UNDERSTAT_EPL_URL, headers=headers)
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html = resp.read().decode('utf-8')
+
+            # 1. Parse Players Data (xG, xA, shots, key passes)
+            p_match = re.search(r"var playersData\s*=\s*JSON\.parse\('([^']+)'\)", html)
+            if p_match:
+                raw_p = p_match.group(1).encode('utf-8').decode('unicode_escape')
+                p_list = json.loads(raw_p)
+                for p in p_list:
+                    # Index by normalized name lowercase
+                    clean_name = re.sub(r'[^a-zA-Z0-9]', '', p.get("player_name", "").lower())
+                    understat_players[clean_name] = p
+
+                print(f"Loaded {len(understat_players)} player records from Understat.")
+
+            # 2. Parse Teams Data (xG, xGA)
+            t_match = re.search(r"var teamsData\s*=\s*JSON\.parse\('([^']+)'\)", html)
+            if t_match:
+                raw_t = t_match.group(1).encode('utf-8').decode('unicode_escape')
+                t_dict = json.loads(raw_t)
+                for _, t_val in t_dict.items():
+                    title = t_val.get("title", "").lower()
+                    clean_t = re.sub(r'[^a-zA-Z0-9]', '', title)
+                    history = t_val.get("history", [])
+                    if history:
+                        total_xga = sum(float(m.get("xGA") or 0.0) for m in history)
+                        total_xg = sum(float(m.get("xG") or 0.0) for m in history)
+                        matches_count = max(1, len(history))
+                        understat_teams[clean_t] = {
+                            "avg_xGA": total_xga / matches_count,
+                            "avg_xG": total_xg / matches_count,
+                        }
+
+                print(f"Loaded {len(understat_teams)} team defense/attack metrics from Understat.")
+
+    except Exception as e:
+        print(f"Note: Understat fetch error (falling back to FPL/OpenFPL baseline): {e}")
+
+    return understat_players, understat_teams
+
+def match_understat_player(fpl_player, understat_players):
+    """
+    Fuzzy matches an FPL player against Understat records.
+    """
+    first_name = fpl_player.get("first_name", "").lower()
+    second_name = fpl_player.get("second_name", "").lower()
+    web_name = fpl_player.get("web_name", "").lower()
+
+    # Try full name: "erlinghaaland"
+    full_clean = re.sub(r'[^a-zA-Z0-9]', '', f"{first_name}{second_name}")
+    if full_clean in understat_players:
+        return understat_players[full_clean]
+
+    # Try second name: "haaland"
+    second_clean = re.sub(r'[^a-zA-Z0-9]', '', second_name)
+    if second_clean in understat_players:
+        return understat_players[second_clean]
+
+    # Try web name: "haaland"
+    web_clean = re.sub(r'[^a-zA-Z0-9]', '', web_name)
+    if web_clean in understat_players:
+        return understat_players[web_clean]
+
+    # Prefix match
+    for u_key, u_val in understat_players.items():
+        if len(second_clean) >= 4 and (second_clean in u_key or u_key in second_clean):
+            return u_val
+
+    return None
+
 def run_openfpl_pipeline():
-    print(f"[{datetime.utcnow().isoformat()}] Starting OpenFPL ML generation...")
+    print(f"[{datetime.utcnow().isoformat()}] Starting OpenFPL ML + Understat ensemble generator...")
 
     # 1. Fetch Official FPL Ingestion & OpenFPL Scout API
     bootstrap = fetch_json(FPL_BOOTSTRAP_URL)
     fixtures = fetch_json(FPL_FIXTURES_URL)
+    understat_players, understat_teams = fetch_understat_data()
 
     openfpl_direct_map = {}
     try:
@@ -59,8 +147,9 @@ def run_openfpl_pipeline():
 
     player_predictions = {}
     top_projected = []
+    understat_matched_count = 0
 
-    # 2. OpenFPL Calibrated Feature Construction & Position Regressors
+    # 2. OpenFPL Calibrated Feature Construction with Understat xG/xA
     for p in elements:
         p_id = p["id"]
         p_name = p["web_name"]
@@ -94,11 +183,24 @@ def run_openfpl_pipeline():
         threat_per_90 = (float(p.get("threat") or 0.0) / games_played) / 100.0
         creativity_per_90 = (float(p.get("creativity") or 0.0) / games_played) / 100.0
 
-        # Direct OpenFPL API baseline if available for this player
+        # Match with Understat xG / xA
+        u_record = match_understat_player(p, understat_players)
+        understat_xp = None
+        if u_record:
+            understat_matched_count += 1
+            u_xg90 = float(u_record.get("xG90") or 0.0)
+            u_xa90 = float(u_record.get("xA90") or 0.0)
+            u_shots90 = float(u_record.get("shots") or 0.0) / max(1.0, float(u_record.get("time") or 90.0) / 90.0)
+            u_kp90 = float(u_record.get("key_passes") or 0.0) / max(1.0, float(u_record.get("time") or 90.0) / 90.0)
+
+            # Goal points by position: FWD=4, MID=5, DEF=6
+            goal_pts = 4.0 if pos_type == 4 else 5.0 if pos_type == 3 else 6.0
+            understat_xp = 2.0 + (u_xg90 * goal_pts) + (u_xa90 * 3.0) + (u_shots90 * 0.12) + (u_kp90 * 0.10)
+
+        # Baseline point calculation
         if p_id in openfpl_direct_map:
             pos_base = openfpl_direct_map[p_id]
         else:
-            # Calibrated OpenFPL Regressor
             if pos_type == 1:
                 # GK: typical range 2.0 - 4.2 xP
                 pos_base = max(1.8, min(4.5, (ppg_val * 0.40) + (form_val * 0.25) + 1.2))
@@ -114,6 +216,10 @@ def run_openfpl_pipeline():
 
             if ep_val > 0:
                 pos_base = (pos_base * 0.60) + (ep_val * 0.40)
+
+        # Blend Understat xG/xA if matched
+        if understat_xp is not None and minutes_played >= 90:
+            pos_base = (pos_base * 0.65) + (understat_xp * 0.35)
 
         # Multi-Gameweek Horizon Forecasts (GW current to GW 38)
         for target_gw in range(current_gw, min(39, current_gw + 11)):
@@ -171,12 +277,13 @@ def run_openfpl_pipeline():
     top_projected.sort(key=lambda x: x["xP"], reverse=True)
 
     result = {
-        "model": "OpenFPL-Ensemble-ML",
-        "version": "2.1.0",
-        "source": "OpenFPL Calibrated Machine Learning Pipeline",
+        "model": "OpenFPL-Understat-Ensemble-ML",
+        "version": "3.0.0",
+        "source": "OpenFPL Calibrated Machine Learning Pipeline with Understat xG/xA",
         "generatedAt": datetime.utcnow().isoformat() + "Z",
         "currentGameweek": current_gw,
         "totalPlayersAnalyzed": len(elements),
+        "understatMatched": understat_matched_count,
         "predictions": player_predictions,
         "topProjected": top_projected[:50]
     }
@@ -186,7 +293,7 @@ def run_openfpl_pipeline():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
 
-    print(f"Successfully generated calibrated OpenFPL ML forecasts for {len(elements)} players!")
+    print(f"Successfully generated OpenFPL + Understat ML forecasts for {len(elements)} players ({understat_matched_count} Understat matched)!")
     print(f"Saved dataset to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
