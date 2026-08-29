@@ -1,33 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { SavedPlan } from '@/types/fpl';
 
-const DATA_DIR = path.join(process.cwd(), '.data');
-const PLANS_FILE = path.join(DATA_DIR, 'plans.json');
+declare global {
+  var __plansMemoryCache: SavedPlan[] | undefined;
+}
 
-function ensureDataFile() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!globalThis.__plansMemoryCache) {
+  globalThis.__plansMemoryCache = [];
+}
+
+function getPlansFilePath(): string {
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return path.join(os.tmpdir(), 'plans.json');
   }
-  if (!fs.existsSync(PLANS_FILE)) {
-    fs.writeFileSync(PLANS_FILE, JSON.stringify([]), 'utf-8');
-  }
+  const localDataDir = path.join(process.cwd(), '.data');
+  return path.join(localDataDir, 'plans.json');
 }
 
 function readPlans(): SavedPlan[] {
-  ensureDataFile();
+  const filePath = getPlansFilePath();
   try {
-    const raw = fs.readFileSync(PLANS_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch {
-    return [];
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, 'utf-8');
+      const parsed = JSON.parse(raw);
+      globalThis.__plansMemoryCache = parsed;
+      return parsed;
+    }
+  } catch (err) {
+    console.warn('Plans filesystem read warning:', err);
   }
+  return globalThis.__plansMemoryCache || [];
 }
 
 function writePlans(plans: SavedPlan[]) {
-  ensureDataFile();
-  fs.writeFileSync(PLANS_FILE, JSON.stringify(plans, null, 2), 'utf-8');
+  globalThis.__plansMemoryCache = plans;
+  const filePath = getPlansFilePath();
+  try {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(filePath, JSON.stringify(plans, null, 2), 'utf-8');
+  } catch (err) {
+    console.warn('Plans filesystem write warning:', err);
+  }
 }
 
 export async function GET(req: NextRequest) {
@@ -58,14 +77,15 @@ export async function POST(req: NextRequest) {
     } else {
       allPlans.unshift({
         ...body,
-        id: body.id || `plan_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        id: body.id || `plan_${Date.now()}`,
         savedAt: new Date().toISOString(),
       });
     }
 
     writePlans(allPlans);
-    return NextResponse.json({ success: true, plan: body });
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Failed to save plan' }, { status: 500 });
+    return NextResponse.json({ success: true, count: allPlans.length });
+  } catch (err: any) {
+    console.error('Error saving plan:', err);
+    return NextResponse.json({ error: 'Failed to save plan', details: err?.message }, { status: 500 });
   }
 }

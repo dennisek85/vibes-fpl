@@ -498,7 +498,32 @@ toggleAiPredictions: () => {
         return { exists: false, teamLoaded: false };
       }
     } catch (e) {
-      console.error('Error loading user plan:', e);
+      console.error('Error loading user plan from server, trying local cache:', e);
+      try {
+        if (typeof window !== 'undefined') {
+          const cached = localStorage.getItem('fpl_plan_' + pin);
+          if (cached) {
+            const p = JSON.parse(cached);
+            if (p && p.teamSummary) {
+              set({
+                teamSummary: p.teamSummary,
+                teamHistoryCurrent: p.teamHistoryCurrent || [],
+                playedChips: p.playedChips || [],
+                baseImportedPicks: p.baseImportedPicks || [],
+                showAiPredictions: p.showAiPredictions || false,
+                startGameweek: 1,
+                selectedGameweek: p.selectedGameweek || get().nextGameweekId,
+                initialBank: p.initialBank || 0,
+                initialFreeTransfers: p.initialFreeTransfers || 1,
+                gameweekPlans: p.gameweekPlans || {},
+                lastSavedTime: new Date().toLocaleTimeString(),
+                isLoading: false,
+              });
+              return { exists: true, teamLoaded: true };
+            }
+          }
+        }
+      } catch {}
       set({ isLoading: false });
       return { exists: false, teamLoaded: false };
     }
@@ -510,22 +535,30 @@ toggleAiPredictions: () => {
 
     set({ isSaving: true });
     try {
+      const planPayload = {
+        pin: activePin,
+        teamSummary,
+        teamHistoryCurrent,
+        playedChips,
+        baseImportedPicks,
+        showAiPredictions,
+        startGameweek: 1,
+        selectedGameweek,
+        initialBank,
+        initialFreeTransfers,
+        gameweekPlans,
+      };
+
+      try {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('fpl_plan_' + activePin, JSON.stringify(planPayload));
+        }
+      } catch {}
+
       const res = await fetch('/api/user-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          pin: activePin,
-          teamSummary,
-          teamHistoryCurrent,
-          playedChips,
-          baseImportedPicks,
-          showAiPredictions,
-          startGameweek: 1,
-          selectedGameweek,
-          initialBank,
-          initialFreeTransfers,
-          gameweekPlans,
-        }),
+        body: JSON.stringify(planPayload),
       });
 
       if (res.ok) {
