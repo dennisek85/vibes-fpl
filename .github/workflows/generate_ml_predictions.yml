@@ -51,3 +51,4 @@ jobs:
             git commit -m "🤖 [OpenFPL ML] Auto-update player forecasts dataset"
             git push origin main
           fi
+

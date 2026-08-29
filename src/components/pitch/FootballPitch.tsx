@@ -6,6 +6,16 @@ import { Sparkles, CheckCircle2, Wand2 } from 'lucide-react';
 export const FootballPitch: React.FC = () => {
   const { 
     selectedGameweek, 
+    gameweekPlans, 
+    playerMap, 
+    showAiPredictions, 
+    toggleAiPredictions,
+    optimizeSquadLineup,
+    isGameweekLocked
+  } = usePlannerStore();
+  const isLocked = isGameweekLocked(selectedGameweek);
+  const currentPlan = gameweekPlans[selectedGameweek];
+
   const [isPressing, setIsPressing] = useState(false);
   const [pressProgress, setPressProgress] = useState(0);
   const [showUnlockToast, setShowUnlockToast] = useState(false);
@@ -139,6 +149,27 @@ export const FootballPitch: React.FC = () => {
           {!isLocked && (
             <button
               onClick={() => {
+                const res = optimizeSquadLineup(selectedGameweek);
+                if (res) {
+                  setToastMessage(`✨ Optimized ${res.formation} · ${res.captainName} (C) · ${res.totalProjectedPoints} xP`);
+                  setShowUnlockToast(true);
+                  setTimeout(() => setShowUnlockToast(false), 4000);
+                }
+              }}
+              className="bg-slate-950/80 hover:bg-emerald-600 text-emerald-300 hover:text-white font-black px-3 py-1.5 rounded-full border border-emerald-500/40 text-xs backdrop-blur-md shadow-lg transition-all flex items-center gap-1.5 active:scale-95 group"
+              title="Auto-optimize starting XI and captain for highest expected points"
+            >
+              <Wand2 className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform" />
+              <span>AI Optimize</span>
+            </button>
+          )}
+
+          <span className="bg-slate-950/75 text-emerald-300 font-black px-3 py-1.5 rounded-full border border-emerald-500/40 text-xs backdrop-blur-md shadow-lg pointer-events-none">
+            {formationString}
+          </span>
+        </div>
+
+        {/* 1. Goalkeeper Row */}
         <div className="relative z-10 w-full flex justify-center items-center py-1">
           {gks.map(pick => (
             <PlayerCard key={pick.position} pick={pick} />
