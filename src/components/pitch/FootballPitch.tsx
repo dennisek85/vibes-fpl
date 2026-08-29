@@ -95,9 +95,9 @@ export const FootballPitch: React.FC = () => {
   const formationString = `${defs.length}-${mids.length}-${fwds.length}`;
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
+    <div className="w-full flex-1 h-full flex flex-col items-center min-h-0">
       {/* Football Pitch Graphic Container */}
-      <div className="relative w-full h-[calc(95vh-75px)] min-h-[760px] rounded-3xl overflow-hidden shadow-2xl border-2 border-emerald-500/40 bg-gradient-to-b from-[#0c2e17] via-[#0f4422] to-[#071f0f] flex flex-col justify-between py-4 sm:py-6 px-2 sm:px-6">
+      <div className="relative w-full h-full flex-1 rounded-3xl overflow-hidden shadow-2xl border-2 border-emerald-500/40 bg-gradient-to-b from-[#0c2e17] via-[#0f4422] to-[#071f0f] flex flex-col justify-around py-2 sm:py-3 px-2 sm:px-6">
         {/* Grass Pattern Stripes */}
         <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.06)_0px,rgba(0,0,0,0.06)_60px,transparent_60px,transparent_120px)] pointer-events-none" />
 

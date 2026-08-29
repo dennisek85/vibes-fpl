@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { FootballPitch } from '@/components/pitch/FootballPitch';
-import { VerticalBenchBar } from '@/components/pitch/VerticalBenchBar';
 import { BenchBar } from '@/components/pitch/BenchBar';
-import { PlannerSidebar } from '@/components/planning/PlannerSidebar';
+import { VerticalBenchBar } from '@/components/pitch/VerticalBenchBar';
+import { StrategyDock } from '@/components/planning/StrategyDock';
+import { LeftStrategyPanel } from '@/components/planning/LeftStrategyPanel';
 import { PlayerMarketDrawer } from '@/components/market/PlayerMarketDrawer';
 import { TeamImportModal } from '@/components/ui/TeamImportModal';
 import { OverridesModal } from '@/components/ui/OverridesModal';
@@ -15,6 +16,7 @@ import { AiScoutModal } from '@/components/modals/AiScoutModal';
 import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
 import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
 import { logoutPin, isPinVerified } from '@/lib/auth';
+import { formatMoney } from '@/lib/fpl-rules';
 import { 
   Trophy, 
   Search, 
@@ -26,7 +28,10 @@ import {
   ChevronLeft,
   ChevronRight,
   LayoutGrid,
-  TableProperties
+  TableProperties,
+  Sparkles,
+  Zap,
+  TrendingUp
 } from 'lucide-react';
 
 export default function PlannerPage() {
@@ -34,6 +39,7 @@ export default function PlannerPage() {
     initFPLData, 
     teamSummary, 
     players, 
+    playerMap,
     openTransferDrawer, 
     activePin, 
     isSaving, 
@@ -42,7 +48,12 @@ export default function PlannerPage() {
     gameweekPlans,
     isGameweekLocked,
     currentView,
-    setCurrentView
+    setCurrentView,
+    getPlayerGameweekXp,
+    showAiPredictions,
+    toggleAiPredictions,
+    fixtureHorizon,
+    setFixtureHorizon
   } = usePlannerStore();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -76,9 +87,35 @@ export default function PlannerPage() {
   const currentChip = currentPlan?.chip;
   const currentTransfers = currentPlan?.transfersIn?.length || 0;
   const isLocked = isGameweekLocked(selectedGameweek);
+  const availableFT = currentPlan?.availableTransfers || 1;
+  const bank = currentPlan?.calculatedBank || 0;
+  const hits = currentPlan?.transferCost || 0;
+
+  // Calculate Total Squad Projected Points (xP) for top telemetry
+  let totalProjectedXp = 0;
+  let squadFormSum = 0;
+  if (currentPlan?.squad) {
+    const isBenchBoost = currentChip === 'bboost';
+    const isTripleCaptain = currentChip === '3xc';
+
+    currentPlan.squad.forEach(pick => {
+      const isStarting = pick.position <= 11;
+      const pl = playerMap.get(pick.element);
+      if (isStarting || isBenchBoost) {
+        const xp = getPlayerGameweekXp(pick.element, selectedGameweek);
+        let mult = 1;
+        if (pick.is_captain) {
+          mult = isTripleCaptain ? 3 : 2;
+        }
+        totalProjectedXp += xp * mult;
+        if (pl) squadFormSum += parseFloat(pl.form) || 0;
+      }
+    });
+  }
+  totalProjectedXp = Math.round((totalProjectedXp - hits) * 10) / 10;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col items-center pb-2">
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col items-center">
       {!isAuthenticated && (
         <PinAuthModal onSuccess={handleAuthSuccess} />
       )}
@@ -235,21 +272,78 @@ export default function PlannerPage() {
 
       {/* Main Content Area: Visual Pitch View vs Stats Matrix View */}
       {currentView === 'pitch' ? (
-        <div className="w-[98vw] py-2 flex flex-col lg:flex-row items-start justify-center gap-3 sm:gap-4 animate-in fade-in duration-200">
-          <aside className="w-full lg:w-64 xl:w-72 flex-shrink-0 lg:sticky lg:top-14 order-2 lg:order-1">
-            <PlannerSidebar onOpenOverrides={() => setIsOverridesModalOpen(true)} />
-          </aside>
+        <div className="w-full max-w-[99vw] px-2 py-1.5 flex flex-col lg:flex-row items-stretch justify-center gap-2.5 lg:h-[calc(100vh-62px)] overflow-hidden animate-in fade-in duration-200">
+          
+          {/* Left Desktop Panel: Chips, AI Radar, Horizon, Optimizer & Overrides */}
+          <LeftStrategyPanel onOpenOverrides={() => setIsOverridesModalOpen(true)} />
 
-          <section className="w-full lg:flex-1 min-w-0 flex flex-col items-center order-1 lg:order-2">
-            <FootballPitch />
-            <div className="w-full lg:hidden mt-3">
+          {/* Center Command Center: Telemetry + Stadium Pitch */}
+          <section className="flex-1 min-w-0 flex flex-col items-center gap-1.5 h-full">
+            {/* Top Telemetry Row */}
+            <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-2 flex-shrink-0">
+              {/* Free Transfers */}
+              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center justify-between shadow-lg">
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Free Transfers</span>
+                  <span className="text-sm sm:text-base font-black text-emerald-400 font-mono">
+                    {Math.max(0, availableFT - currentTransfers)} / {availableFT}
+                  </span>
+                </div>
+                <div className="p-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 text-xs">🔄</div>
+              </div>
+
+              {/* Bank */}
+              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center justify-between shadow-lg">
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">In The Bank</span>
+                  <span className="text-sm sm:text-base font-black text-white font-mono">{formatMoney(bank)}</span>
+                </div>
+                <div className="p-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 text-xs">💰</div>
+              </div>
+
+              {/* Forecast xP */}
+              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center justify-between shadow-lg">
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                    {showAiPredictions ? 'GW Projected xP' : 'Projected Form'}
+                  </span>
+                  <span className="text-sm sm:text-base font-black text-cyan-400 font-mono">
+                    {showAiPredictions ? `${totalProjectedXp} pts` : `${squadFormSum.toFixed(1)} avg`}
+                  </span>
+                </div>
+                <div className="p-1.5 rounded-xl bg-cyan-500/10 text-cyan-400 text-xs">📈</div>
+              </div>
+
+              {/* Active Strategy / Chips */}
+              <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center justify-between shadow-lg">
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Strategy</span>
+                  <span className="text-xs font-black text-slate-200 uppercase truncate block">
+                    {currentChip && currentChip !== 'none' ? `${currentChip}` : 'No Chip Active'}
+                  </span>
+                </div>
+                <div className="p-1.5 rounded-xl bg-purple-500/10 text-purple-400 text-xs">⚡</div>
+              </div>
+            </div>
+
+            {/* Stadium Pitch */}
+            <div className="w-full flex-1 min-h-0 flex flex-col items-center">
+              <FootballPitch />
+            </div>
+
+            {/* Mobile Only: Substitutes Bench Bar */}
+            <div className="w-full lg:hidden">
               <BenchBar benchPicks={benchPicks} />
+            </div>
+
+            {/* Mobile Only: Bottom Strategy Carousel Dock */}
+            <div className="w-full lg:hidden">
+              <StrategyDock onOpenOverrides={() => setIsOverridesModalOpen(true)} />
             </div>
           </section>
 
-          <aside className="hidden lg:flex flex-col w-48 xl:w-64 flex-shrink-0 lg:sticky lg:top-14 lg:order-3">
-            <VerticalBenchBar benchPicks={benchPicks} />
-          </aside>
+          {/* Right Desktop Panel: Full Vertical Substitutes Bench with Fixtures */}
+          <VerticalBenchBar benchPicks={benchPicks} />
         </div>
       ) : (
         <div className="w-[98vw] py-2 flex flex-col items-center animate-in fade-in duration-200">
