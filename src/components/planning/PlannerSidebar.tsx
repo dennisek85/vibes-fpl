@@ -126,40 +126,7 @@ export const PlannerSidebar: React.FC<PlannerSidebarProps> = ({ onOpenOverrides 
   };
 
   const handleFindTransfer = () => {
-    if (!activePlan?.squad || !players.length) return;
-    let bestGain = 0;
-    let bestOut: FPLPlayer | null = null;
-    let bestIn: FPLPlayer | null = null;
-
-    activePlan.squad.forEach(pick => {
-      const pOut = playerMap.get(pick.element);
-      if (!pOut) return;
-      const outXp = getPlayerGameweekXp(pOut.id, selectedGameweek);
-      const maxBudget = bank + pick.selling_price;
-
-      // Find players in same position within budget
-      const candidates = players.filter(p => 
-        p.element_type === pOut.element_type && 
-        p.now_cost <= maxBudget && 
-        !activePlan.squad.some(s => s.element === p.id)
-      );
-
-      candidates.forEach(cand => {
-        const candXp = getPlayerGameweekXp(cand.id, selectedGameweek);
-        const gain = candXp - outXp;
-        if (gain > bestGain) {
-          bestGain = gain;
-          bestOut = pOut;
-          bestIn = cand;
-        }
-      });
-    });
-
-    if (bestOut && bestIn) {
-      openScoutModal(bestOut, bestIn, Math.max(0, Math.round(bestGain * 10) / 10));
-    } else {
-      alert('Your squad already holds the highest projected players for your budget this week!');
-    }
+    openScoutModal();
   };
 
   return (

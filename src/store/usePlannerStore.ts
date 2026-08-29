@@ -95,8 +95,9 @@ currentView: 'pitch' | 'matrix';
   scoutPlayerOut: FPLPlayer | null;
   scoutPlayerIn: FPLPlayer | null;
   scoutGain: number;
-  openScoutModal: (pOut: FPLPlayer, pIn: FPLPlayer, gain: number) => void;
+  openScoutModal: (pOut?: FPLPlayer | null, pIn?: FPLPlayer | null, gain?: number) => void;
   closeScoutModal: () => void;
+  executeDirectTransfer: (playerOutId: number, playerInId: number) => boolean;
 
   marketSearch: string;
   marketPosition: number | null;
@@ -235,12 +236,13 @@ currentView: 'pitch',
   marketSortBy: 'now_cost',
   marketSortOrder: 'desc',
 
-  cardTheme: 'classic',
+  cardTheme: (typeof window !== 'undefined' && localStorage.getItem('fpl_card_theme') as any) || 'dark',
   setCardTheme: (theme: 'classic' | 'dark') => {
     if (typeof window !== 'undefined') {
       try { localStorage.setItem('fpl_card_theme', theme); } catch {}
     }
     set({ cardTheme: theme });
+    get().saveCurrentPlanToServer();
   },
   setFixtureHorizon: (count: 1 | 3 | 5) => set({ fixtureHorizon: count }),
   toggleAiPredictions: () => {
@@ -491,6 +493,7 @@ currentView: 'pitch',
           playedChips,
           baseImportedPicks: baseImported,
           showAiPredictions: p.showAiPredictions || false,
+          cardTheme: p.cardTheme || 'dark',
           startGameweek: 1,
           selectedGameweek: p.selectedGameweek || get().nextGameweekId,
           initialBank: p.initialBank || 0,
@@ -524,6 +527,7 @@ currentView: 'pitch',
                 playedChips: p.playedChips || [],
                 baseImportedPicks: p.baseImportedPicks || [],
                 showAiPredictions: p.showAiPredictions || false,
+                cardTheme: p.cardTheme || 'dark',
                 startGameweek: 1,
                 selectedGameweek: p.selectedGameweek || get().nextGameweekId,
                 initialBank: p.initialBank || 0,
@@ -543,7 +547,7 @@ currentView: 'pitch',
   },
 
   saveCurrentPlanToServer: async () => {
-    const { activePin, teamSummary, teamHistoryCurrent, playedChips, baseImportedPicks, showAiPredictions, selectedGameweek, initialBank, initialFreeTransfers, gameweekPlans } = get();
+    const { activePin, teamSummary, teamHistoryCurrent, playedChips, baseImportedPicks, showAiPredictions, cardTheme, selectedGameweek, initialBank, initialFreeTransfers, gameweekPlans } = get();
     if (!activePin || !teamSummary) return;
 
     set({ isSaving: true });
@@ -555,6 +559,7 @@ currentView: 'pitch',
         playedChips,
         baseImportedPicks,
         showAiPredictions,
+        cardTheme,
         startGameweek: 1,
         selectedGameweek,
         initialBank,
@@ -979,6 +984,14 @@ currentView: 'pitch',
     recalculateMultiGameweekPlans(get, set);
     get().saveCurrentPlanToServer();
     return true;
+  },
+
+  executeDirectTransfer: (playerOutId: number, playerInId: number) => {
+    const { playerMap, executeTransfer } = get();
+    const playerIn = playerMap.get(playerInId);
+    if (!playerIn) return false;
+    set({ selectedPlayerForTransfer: playerOutId });
+    return executeTransfer(playerIn);
   },
 
   revertTransfer: (playerInId: number) => {

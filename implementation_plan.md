@@ -1,42 +1,55 @@
-# OpenFPL Prediction Accuracy & Calibration Plan
+# AI Transfer Scout & Market Intelligence Lab Plan
 
-## 🔍 Why Some Numbers Looked Off
-
-When we examined the initial numbers (e.g. *De Cuyper 13.2 xP*, *Cherki 12.4 xP*), we identified why they were skewed:
-1. **FPL Cumulative Metric Bug**: The official FPL API returns `threat` and `creativity` as cumulative season totals (e.g., 150–400 points). Without dividing by games played (per 90 mins), players with high raw stats got inflated additive bonuses.
-2. **Normal OpenFPL Realistic Range**: Authentic OpenFPL expected points typically range between **2.0 and 8.0 xP** per match (e.g. Haaland ~4.5–6.0 xP, Saka ~4.5–5.5 xP, Defenders ~2.5–4.5 xP).
+This plan introduces a dedicated, high-power **AI Transfer Scout & Intelligence Hub** powered by our calibrated OpenFPL machine learning engine.
 
 ---
 
-## 📊 Side-by-Side Comparison: OpenFPL Official API vs Initial Script
+## 🎯 Features to Build
 
-| Player | Position | Official OpenFPL Model xP | What Initial Script Produced | Status |
-| :--- | :---: | :---: | :---: | :---: |
-| **Erling Haaland** | FWD | **4.55** | 7.8 | ⚠️ Inflated |
-| **Bruno Fernandes** | MID | **4.08** | 6.2 | ⚠️ Inflated |
-| **Antoine Semenyo** | MID | **3.78** | 5.8 | ⚠️ Inflated |
-| **João Pedro** | FWD | **3.55** | 5.1 | ⚠️ Inflated |
-| **Dominik Szoboszlai** | MID | **3.31** | 4.9 | ⚠️ Inflated |
-| **Bryan Mbeumo** | MID | **3.24** | 5.4 | ⚠️ Inflated |
-| **Riccardo Calafiori** | DEF | **3.10** | 4.6 | ⚠️ Inflated |
-| **Gabriel** | DEF | **2.73** | 3.8 | ⚠️ Inflated |
-| **Maxence Lacroix** | DEF | **2.57** | 3.5 | ⚠️ Inflated |
+### 1. 🔍 Smart Squad Transfers (Budget-Aware & Constraint-Checked)
+* Evaluates all legal 1-for-1 transfers for your current 15-man squad against all ~650 Premier League players.
+* Checks:
+  * **Remaining Bank Balance** (must afford Player IN price).
+  * **Max 3 Players Per Club** limit.
+  * **Same Position Rule** (GK $\rightarrow$ GK, DEF $\rightarrow$ DEF, etc.).
+* Calculates net expected point delta:
+  $$\Delta xP = xP_{\text{IN}} - xP_{\text{OUT}}$$
+* Allows filtering by:
+  * **1-Gameweek Sprint** (Immediate impact for this upcoming deadline).
+  * **3-Gameweek Horizon** (Optimal upcoming fixture swing).
+  * **5-Gameweek Hold** (Long-term value).
+* Includes a **1-Click "Apply Transfer"** button that swaps the players in your gameweek plan automatically!
 
 ---
 
-## 🛠️ Proposed Solution & Calibration Plan
+### 2. 🌟 Unconstrained Dream Targets ("The Template & Market Leaders")
+* Shows the top target players across the entire Premier League without budget constraints:
+  * **Top Projected by Position** (Best GK, DEF, MID, FWD across 1, 3, and 5 GWs).
+  * **Value ROI Leaders** (Highest $xP$ per £1.0M budget).
+  * **Form & Fixture Momentum** (Players with easiest upcoming FDR runs + high xG/xA).
 
-### 1. Calibrate Python ML Script (`scripts/generate_openfpl_ml.py`)
-* **Per-90 Normalization**: Divide cumulative ICT/Threat/Creativity by games played (`minutes / 90`) rather than using raw totals.
-* **Match Official OpenFPL Baseline Bounds**:
-  * Forwards: $2.5 - 7.5\text{ xP}$
-  * Midfielders: $2.2 - 6.8\text{ xP}$
-  * Defenders: $1.8 - 4.8\text{ xP}$
-  * Goalkeepers: $2.0 - 4.5\text{ xP}$
-* **Direct Integration Option**: Incorporate live predictions from OpenFPL's official API (`https://openfpl.kassem.dev/api/scout`) for the target Gameweek, and use calibrated decay for future Gameweeks.
+---
 
-### 2. Re-run GitHub Cloud Action
-* Trigger the GitHub Action to regenerate `src/data/openfpl_predictions.json` with the perfectly calibrated numbers.
+### 3. 🃏 AI Chip Advisor
+* **Triple Captain Radar**: Highlights the top 3 single-gameweek captaincy peaks across the next 10 GWs (e.g. Haaland GW6 home = $7.4\text{ xP} \times 3 = 22.2\text{ pts}$).
+* **Bench Boost Detector**: Analyzes bench scoring potential and identifies the peak Gameweek for bench points.
+* **Wildcard / Free Hit Timing**: Highlights major fixture swing gameweeks where an overhaul provides maximum point gain.
 
-### 3. Verify in UI
-* Verify that Haaland shows ~4.5–5.5 xP, Salah/Palmer show ~4.5–5.5 xP, and defenders show realistic ~2.5–4.0 xP.
+---
+
+## 🖥️ UI / UX Layout
+
+We will create `src/components/modals/AiScoutModal.tsx`:
+* Accessible by clicking **`Scout Best Transfer (+xP)`** in the Sidebar or from the Pitch toolbar.
+* Tabbed design:
+  1. **🎯 My Squad Recommendations** (Tailored transfers with 1-click Apply).
+  2. **🌟 Premier League Dream Targets** (Unconstrained top performers & ROI value picks).
+  3. **🃏 Chip Strategy Radar** (Optimal Triple Captain, Bench Boost, and Wildcard gameweeks).
+
+---
+
+## 📁 Files to Modify & Create
+* **[NEW]** `src/utils/aiTransferScout.ts`: Pure TypeScript transfer evaluator computing $\Delta xP$, budget constraints, and unconstrained market leaders.
+* **[NEW]** `src/components/modals/AiScoutModal.tsx`: Rich glassmorphism modal with tabs, stat cards, and 1-click action buttons.
+* **[MODIFY]** `src/store/usePlannerStore.ts`: Expose `isScoutModalOpen`, `openScoutModal`, and `closeScoutModal`.
+* **[MODIFY]** `src/components/planning/PlannerSidebar.tsx`: Connect `Scout Best Transfer (+xP)` button to launch the new Scout Hub.

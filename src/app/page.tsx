@@ -11,7 +11,7 @@ import { TeamImportModal } from '@/components/ui/TeamImportModal';
 import { OverridesModal } from '@/components/ui/OverridesModal';
 import { SavePlanModal } from '@/components/ui/SavePlanModal';
 import { PinAuthModal } from '@/components/ui/PinAuthModal';
-import { AiScoutModal } from '@/components/planning/AiScoutModal';
+import { AiScoutModal } from '@/components/modals/AiScoutModal';
 import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
 import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
 import { logoutPin, isPinVerified } from '@/lib/auth';

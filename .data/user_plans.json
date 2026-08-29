@@ -2,7 +2,7 @@
   "1234": {
     "pin": "1234",
     "teamId": 164332,
-    "updatedAt": "2026-08-29T11:52:13.933Z",
+    "updatedAt": "2026-08-29T12:36:16.842Z",
     "teamSummary": {
       "id": 164332,
       "joined_time": "2026-07-23T13:36:24.456711Z",
@@ -980,7 +980,7 @@
           },
           {
             "position": 5,
-            "element": 304,
+            "element": 237,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -989,7 +989,7 @@
           },
           {
             "position": 6,
-            "element": 237,
+            "element": 397,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -1007,7 +1007,7 @@
           },
           {
             "position": 8,
-            "element": 368,
+            "element": 426,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -1016,7 +1016,7 @@
           },
           {
             "position": 9,
-            "element": 397,
+            "element": 368,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -1034,7 +1034,7 @@
           },
           {
             "position": 11,
-            "element": 552,
+            "element": 346,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -1052,7 +1052,7 @@
           },
           {
             "position": 13,
-            "element": 426,
+            "element": 304,
             "multiplier": 0,
             "is_captain": false,
             "purchase_price": 50,
@@ -1061,7 +1061,7 @@
           },
           {
             "position": 14,
-            "element": 346,
+            "element": 552,
             "multiplier": 0,
             "is_captain": false,
             "purchase_price": 50,
@@ -6236,7 +6236,7 @@
   "fpl_user_164332_1234": {
     "pin": "1234",
     "teamId": 164332,
-    "updatedAt": "2026-08-29T11:52:13.933Z",
+    "updatedAt": "2026-08-29T12:36:16.842Z",
     "teamSummary": {
       "id": 164332,
       "joined_time": "2026-07-23T13:36:24.456711Z",
@@ -7214,7 +7214,7 @@
           },
           {
             "position": 5,
-            "element": 304,
+            "element": 237,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -7223,7 +7223,7 @@
           },
           {
             "position": 6,
-            "element": 237,
+            "element": 397,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -7241,7 +7241,7 @@
           },
           {
             "position": 8,
-            "element": 368,
+            "element": 426,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -7250,7 +7250,7 @@
           },
           {
             "position": 9,
-            "element": 397,
+            "element": 368,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -7268,7 +7268,7 @@
           },
           {
             "position": 11,
-            "element": 552,
+            "element": 346,
             "multiplier": 1,
             "is_captain": false,
             "purchase_price": 50,
@@ -7286,7 +7286,7 @@
           },
           {
             "position": 13,
-            "element": 426,
+            "element": 304,
             "multiplier": 0,
             "is_captain": false,
             "purchase_price": 50,
@@ -7295,7 +7295,7 @@
           },
           {
             "position": 14,
-            "element": 346,
+            "element": 552,
             "multiplier": 0,
             "is_captain": false,
             "purchase_price": 50,
