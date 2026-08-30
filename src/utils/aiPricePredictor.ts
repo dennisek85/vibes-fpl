@@ -133,13 +133,23 @@ export function calculatePlayerPricePrediction(
   const hourlyVelocity = Math.round(rawHourlyVelocity * 100) / 100;
   const hourlyVelocityText = hourlyVelocity > 0 ? `+${hourlyVelocity.toFixed(2)}%/hr` : hourlyVelocity < 0 ? `${hourlyVelocity.toFixed(2)}%/hr` : '0.00%/hr';
 
-  // 8. Strict Timing & Status Synchronization
+  // 8. Strict Timing & Status Synchronization with Velocity Forward Projection to 01:30 AM Cutoff
+  const now = new Date();
+  const nowUtc = now.getTime();
+  const nextCutoff = new Date(now);
+  nextCutoff.setUTCHours(1, 30, 0, 0);
+  if (nextCutoff.getTime() <= nowUtc) {
+    nextCutoff.setUTCDate(nextCutoff.getUTCDate() + 1);
+  }
+  const hoursUntilCutoff = Math.max(0.5, Math.min(24.0, (nextCutoff.getTime() - nowUtc) / (1000 * 60 * 60)));
+  const projectedTonight = targetProgress + (hourlyVelocity * hoursUntilCutoff);
+
   let changeTime: PriceChangeTime = 'Later';
   if (isLocked) {
     changeTime = 'Locked';
-  } else if (Math.abs(targetProgress) >= 100.0) {
+  } else if (Math.abs(targetProgress) >= 100.0 || (Math.abs(projectedTonight) >= 100.0 && Math.abs(targetProgress) >= 70.0)) {
     changeTime = 'Tonight';
-  } else if (Math.abs(targetProgress) >= 65.0) {
+  } else if (Math.abs(targetProgress) >= 60.0 || Math.abs(targetProgress + (hourlyVelocity * (hoursUntilCutoff + 24))) >= 100.0) {
     changeTime = 'Tomorrow';
   }
 
