@@ -1,18 +1,414 @@
 {
-  "lastUpdated": "2026-08-30T22:45:00.000Z",
+  "lastUpdated": "2026-08-30T20:52:28.999Z",
   "season": "2026/27",
   "fixtures": {
     "gw3": [
-      { "homeTeamId": 1, "awayTeamId": 4, "homeTeam": "ARS", "awayTeam": "BHA", "homeCleanSheet": 0.52, "awayCleanSheet": 0.18, "homeGoals": 2.15, "awayGoals": 0.85 },
-      { "homeTeamId": 6, "awayTeamId": 7, "homeTeam": "CHE", "awayTeam": "CRY", "homeCleanSheet": 0.44, "awayCleanSheet": 0.20, "homeGoals": 1.95, "awayGoals": 0.95 },
-      { "homeTeamId": 9, "awayTeamId": 3, "homeTeam": "EVE", "awayTeam": "BOU", "homeCleanSheet": 0.36, "awayCleanSheet": 0.26, "homeGoals": 1.45, "awayGoals": 1.25 },
-      { "homeTeamId": 11, "awayTeamId": 16, "homeTeam": "IPS", "awayTeam": "FUL", "homeCleanSheet": 0.25, "awayCleanSheet": 0.32, "homeGoals": 1.15, "awayGoals": 1.40 },
-      { "homeTeamId": 12, "awayTeamId": 2, "homeTeam": "LEI", "awayTeam": "AVL", "homeCleanSheet": 0.22, "awayCleanSheet": 0.38, "homeGoals": 1.10, "awayGoals": 1.75 },
-      { "homeTeamId": 14, "awayTeamId": 5, "homeTeam": "MCI", "awayTeam": "BRE", "homeCleanSheet": 0.56, "awayCleanSheet": 0.12, "homeGoals": 2.65, "awayGoals": 0.70 },
-      { "homeTeamId": 15, "awayTeamId": 13, "homeTeam": "MUN", "awayTeam": "LIV", "homeCleanSheet": 0.24, "awayCleanSheet": 0.35, "homeGoals": 1.35, "awayGoals": 1.70 },
-      { "homeTeamId": 17, "awayTeamId": 19, "homeTeam": "NEW", "awayTeam": "TOT", "homeCleanSheet": 0.28, "awayCleanSheet": 0.22, "homeGoals": 1.70, "awayGoals": 1.65 },
-      { "homeTeamId": 18, "awayTeamId": 20, "homeTeam": "NFO", "awayTeam": "WOL", "homeCleanSheet": 0.38, "awayCleanSheet": 0.25, "homeGoals": 1.40, "awayGoals": 1.10 },
-      { "homeTeamId": 21, "awayTeamId": 10, "homeTeam": "WHU", "awayTeam": "SOU", "homeCleanSheet": 0.42, "awayCleanSheet": 0.20, "homeGoals": 1.85, "awayGoals": 0.95 }
+      {
+        "homeTeamId": 12,
+        "awayTeamId": 14,
+        "homeTeam": "IPS",
+        "awayTeam": "LIV",
+        "homeCleanSheet": 0.09,
+        "awayCleanSheet": 0.45,
+        "homeGoals": 0.79,
+        "awayGoals": 2.4
+      },
+      {
+        "homeTeamId": 17,
+        "awayTeamId": 3,
+        "homeTeam": "NEW",
+        "awayTeam": "BOU",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      },
+      {
+        "homeTeamId": 4,
+        "awayTeamId": 20,
+        "homeTeam": "BRE",
+        "awayTeam": "SUN",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      },
+      {
+        "homeTeamId": 5,
+        "awayTeamId": 13,
+        "homeTeam": "BHA",
+        "awayTeam": "LEE",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      },
+      {
+        "homeTeamId": 10,
+        "awayTeamId": 8,
+        "homeTeam": "FUL",
+        "awayTeam": "CRY",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      },
+      {
+        "homeTeamId": 15,
+        "awayTeamId": 7,
+        "homeTeam": "MCI",
+        "awayTeam": "COV",
+        "homeCleanSheet": 0.54,
+        "awayCleanSheet": 0.06,
+        "homeGoals": 2.8,
+        "awayGoals": 0.61
+      },
+      {
+        "homeTeamId": 18,
+        "awayTeamId": 19,
+        "homeTeam": "NFO",
+        "awayTeam": "TOT",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      },
+      {
+        "homeTeamId": 11,
+        "awayTeamId": 2,
+        "homeTeam": "HUL",
+        "awayTeam": "AVL",
+        "homeCleanSheet": 0.09,
+        "awayCleanSheet": 0.45,
+        "homeGoals": 0.79,
+        "awayGoals": 2.4
+      },
+      {
+        "homeTeamId": 9,
+        "awayTeamId": 16,
+        "homeTeam": "EVE",
+        "awayTeam": "MUN",
+        "homeCleanSheet": 0.2,
+        "awayCleanSheet": 0.3,
+        "homeGoals": 1.19,
+        "awayGoals": 1.62
+      },
+      {
+        "homeTeamId": 1,
+        "awayTeamId": 6,
+        "homeTeam": "ARS",
+        "awayTeam": "CHE",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      }
+    ],
+    "gw4": [
+      {
+        "homeTeamId": 2,
+        "awayTeamId": 18,
+        "homeTeam": "AVL",
+        "awayTeam": "NFO",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      },
+      {
+        "homeTeamId": 3,
+        "awayTeamId": 4,
+        "homeTeam": "BOU",
+        "awayTeam": "BRE",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      },
+      {
+        "homeTeamId": 6,
+        "awayTeamId": 11,
+        "homeTeam": "CHE",
+        "awayTeam": "HUL",
+        "homeCleanSheet": 0.54,
+        "awayCleanSheet": 0.06,
+        "homeGoals": 2.8,
+        "awayGoals": 0.61
+      },
+      {
+        "homeTeamId": 8,
+        "awayTeamId": 12,
+        "homeTeam": "CRY",
+        "awayTeam": "IPS",
+        "homeCleanSheet": 0.45,
+        "awayCleanSheet": 0.09,
+        "homeGoals": 2.38,
+        "awayGoals": 0.81
+      },
+      {
+        "homeTeamId": 14,
+        "awayTeamId": 10,
+        "homeTeam": "LIV",
+        "awayTeam": "FUL",
+        "homeCleanSheet": 0.4,
+        "awayCleanSheet": 0.12,
+        "homeGoals": 2.12,
+        "awayGoals": 0.91
+      },
+      {
+        "homeTeamId": 19,
+        "awayTeamId": 9,
+        "homeTeam": "TOT",
+        "awayTeam": "EVE",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      },
+      {
+        "homeTeamId": 20,
+        "awayTeamId": 1,
+        "homeTeam": "SUN",
+        "awayTeam": "ARS",
+        "homeCleanSheet": 0.09,
+        "awayCleanSheet": 0.5,
+        "homeGoals": 0.63,
+        "awayGoals": 2.4
+      },
+      {
+        "homeTeamId": 7,
+        "awayTeamId": 5,
+        "homeTeam": "COV",
+        "awayTeam": "BHA",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      },
+      {
+        "homeTeamId": 16,
+        "awayTeamId": 15,
+        "homeTeam": "MUN",
+        "awayTeam": "MCI",
+        "homeCleanSheet": 0.22,
+        "awayCleanSheet": 0.28,
+        "homeGoals": 1.27,
+        "awayGoals": 1.52
+      },
+      {
+        "homeTeamId": 13,
+        "awayTeamId": 17,
+        "homeTeam": "LEE",
+        "awayTeam": "NEW",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      }
+    ],
+    "gw5": [
+      {
+        "homeTeamId": 4,
+        "awayTeamId": 6,
+        "homeTeam": "BRE",
+        "awayTeam": "CHE",
+        "homeCleanSheet": 0.2,
+        "awayCleanSheet": 0.3,
+        "homeGoals": 1.19,
+        "awayGoals": 1.62
+      },
+      {
+        "homeTeamId": 19,
+        "awayTeamId": 2,
+        "homeTeam": "TOT",
+        "awayTeam": "AVL",
+        "homeCleanSheet": 0.2,
+        "awayCleanSheet": 0.3,
+        "homeGoals": 1.19,
+        "awayGoals": 1.62
+      },
+      {
+        "homeTeamId": 5,
+        "awayTeamId": 1,
+        "homeTeam": "BHA",
+        "awayTeam": "ARS",
+        "homeCleanSheet": 0.09,
+        "awayCleanSheet": 0.5,
+        "homeGoals": 0.63,
+        "awayGoals": 2.4
+      },
+      {
+        "homeTeamId": 9,
+        "awayTeamId": 12,
+        "homeTeam": "EVE",
+        "awayTeam": "IPS",
+        "homeCleanSheet": 0.45,
+        "awayCleanSheet": 0.09,
+        "homeGoals": 2.38,
+        "awayGoals": 0.81
+      },
+      {
+        "homeTeamId": 13,
+        "awayTeamId": 8,
+        "homeTeam": "LEE",
+        "awayTeam": "CRY",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      },
+      {
+        "homeTeamId": 17,
+        "awayTeamId": 11,
+        "homeTeam": "NEW",
+        "awayTeam": "HUL",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      },
+      {
+        "homeTeamId": 18,
+        "awayTeamId": 7,
+        "homeTeam": "NFO",
+        "awayTeam": "COV",
+        "homeCleanSheet": 0.45,
+        "awayCleanSheet": 0.09,
+        "homeGoals": 2.38,
+        "awayGoals": 0.81
+      },
+      {
+        "homeTeamId": 3,
+        "awayTeamId": 14,
+        "homeTeam": "BOU",
+        "awayTeam": "LIV",
+        "homeCleanSheet": 0.2,
+        "awayCleanSheet": 0.3,
+        "homeGoals": 1.19,
+        "awayGoals": 1.62
+      },
+      {
+        "homeTeamId": 15,
+        "awayTeamId": 20,
+        "homeTeam": "MCI",
+        "awayTeam": "SUN",
+        "homeCleanSheet": 0.4,
+        "awayCleanSheet": 0.12,
+        "homeGoals": 2.12,
+        "awayGoals": 0.91
+      },
+      {
+        "homeTeamId": 10,
+        "awayTeamId": 16,
+        "homeTeam": "FUL",
+        "awayTeam": "MUN",
+        "homeCleanSheet": 0.09,
+        "awayCleanSheet": 0.45,
+        "homeGoals": 0.79,
+        "awayGoals": 2.4
+      }
+    ],
+    "gw6": [
+      {
+        "homeTeamId": 1,
+        "awayTeamId": 13,
+        "homeTeam": "ARS",
+        "awayTeam": "LEE",
+        "homeCleanSheet": 0.4,
+        "awayCleanSheet": 0.12,
+        "homeGoals": 2.12,
+        "awayGoals": 0.91
+      },
+      {
+        "homeTeamId": 2,
+        "awayTeamId": 4,
+        "homeTeam": "AVL",
+        "awayTeam": "BRE",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      },
+      {
+        "homeTeamId": 6,
+        "awayTeamId": 3,
+        "homeTeam": "CHE",
+        "awayTeam": "BOU",
+        "homeCleanSheet": 0.4,
+        "awayCleanSheet": 0.12,
+        "homeGoals": 2.12,
+        "awayGoals": 0.91
+      },
+      {
+        "homeTeamId": 12,
+        "awayTeamId": 10,
+        "homeTeam": "IPS",
+        "awayTeam": "FUL",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      },
+      {
+        "homeTeamId": 20,
+        "awayTeamId": 5,
+        "homeTeam": "SUN",
+        "awayTeam": "BHA",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      },
+      {
+        "homeTeamId": 16,
+        "awayTeamId": 19,
+        "homeTeam": "MUN",
+        "awayTeam": "TOT",
+        "homeCleanSheet": 0.4,
+        "awayCleanSheet": 0.12,
+        "homeGoals": 2.12,
+        "awayGoals": 0.91
+      },
+      {
+        "homeTeamId": 8,
+        "awayTeamId": 18,
+        "homeTeam": "CRY",
+        "awayTeam": "NFO",
+        "homeCleanSheet": 0.3,
+        "awayCleanSheet": 0.2,
+        "homeGoals": 1.59,
+        "awayGoals": 1.21
+      },
+      {
+        "homeTeamId": 11,
+        "awayTeamId": 9,
+        "homeTeam": "HUL",
+        "awayTeam": "EVE",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      },
+      {
+        "homeTeamId": 14,
+        "awayTeamId": 15,
+        "homeTeam": "LIV",
+        "awayTeam": "MCI",
+        "homeCleanSheet": 0.22,
+        "awayCleanSheet": 0.28,
+        "homeGoals": 1.27,
+        "awayGoals": 1.52
+      },
+      {
+        "homeTeamId": 7,
+        "awayTeamId": 17,
+        "homeTeam": "COV",
+        "awayTeam": "NEW",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
+      }
     ]
   },
   "anytimeGoalscorers": {
@@ -29,9 +425,9 @@
     "son": 0.35,
     "joão pedro": 0.33,
     "mateta": 0.32,
-    "wood": 0.30,
+    "wood": 0.3,
     "cunha": 0.28,
-    "wissa": 0.30,
+    "wissa": 0.3,
     "bowen": 0.28,
     "eze": 0.26,
     "kudus": 0.25,
@@ -40,8 +436,7 @@
     "gordon": 0.28,
     "havertz": 0.32,
     "ødegaard": 0.24,
-    "foden": 0.30,
+    "foden": 0.3,
     "de bruyne": 0.25
   }
 }
-
