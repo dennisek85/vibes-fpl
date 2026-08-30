@@ -1,0 +1,47 @@
+{
+  "lastUpdated": "2026-08-30T22:45:00.000Z",
+  "season": "2026/27",
+  "fixtures": {
+    "gw3": [
+      { "homeTeamId": 1, "awayTeamId": 4, "homeTeam": "ARS", "awayTeam": "BHA", "homeCleanSheet": 0.52, "awayCleanSheet": 0.18, "homeGoals": 2.15, "awayGoals": 0.85 },
+      { "homeTeamId": 6, "awayTeamId": 7, "homeTeam": "CHE", "awayTeam": "CRY", "homeCleanSheet": 0.44, "awayCleanSheet": 0.20, "homeGoals": 1.95, "awayGoals": 0.95 },
+      { "homeTeamId": 9, "awayTeamId": 3, "homeTeam": "EVE", "awayTeam": "BOU", "homeCleanSheet": 0.36, "awayCleanSheet": 0.26, "homeGoals": 1.45, "awayGoals": 1.25 },
+      { "homeTeamId": 11, "awayTeamId": 16, "homeTeam": "IPS", "awayTeam": "FUL", "homeCleanSheet": 0.25, "awayCleanSheet": 0.32, "homeGoals": 1.15, "awayGoals": 1.40 },
+      { "homeTeamId": 12, "awayTeamId": 2, "homeTeam": "LEI", "awayTeam": "AVL", "homeCleanSheet": 0.22, "awayCleanSheet": 0.38, "homeGoals": 1.10, "awayGoals": 1.75 },
+      { "homeTeamId": 14, "awayTeamId": 5, "homeTeam": "MCI", "awayTeam": "BRE", "homeCleanSheet": 0.56, "awayCleanSheet": 0.12, "homeGoals": 2.65, "awayGoals": 0.70 },
+      { "homeTeamId": 15, "awayTeamId": 13, "homeTeam": "MUN", "awayTeam": "LIV", "homeCleanSheet": 0.24, "awayCleanSheet": 0.35, "homeGoals": 1.35, "awayGoals": 1.70 },
+      { "homeTeamId": 17, "awayTeamId": 19, "homeTeam": "NEW", "awayTeam": "TOT", "homeCleanSheet": 0.28, "awayCleanSheet": 0.22, "homeGoals": 1.70, "awayGoals": 1.65 },
+      { "homeTeamId": 18, "awayTeamId": 20, "homeTeam": "NFO", "awayTeam": "WOL", "homeCleanSheet": 0.38, "awayCleanSheet": 0.25, "homeGoals": 1.40, "awayGoals": 1.10 },
+      { "homeTeamId": 21, "awayTeamId": 10, "homeTeam": "WHU", "awayTeam": "SOU", "homeCleanSheet": 0.42, "awayCleanSheet": 0.20, "homeGoals": 1.85, "awayGoals": 0.95 }
+    ]
+  },
+  "anytimeGoalscorers": {
+    "haaland": 0.62,
+    "salah": 0.48,
+    "palmer": 0.44,
+    "isak": 0.42,
+    "saka": 0.38,
+    "watkins": 0.38,
+    "fernandes": 0.35,
+    "mbeumo": 0.34,
+    "solanke": 0.34,
+    "cherki": 0.33,
+    "son": 0.35,
+    "joão pedro": 0.33,
+    "mateta": 0.32,
+    "wood": 0.30,
+    "cunha": 0.28,
+    "wissa": 0.30,
+    "bowen": 0.28,
+    "eze": 0.26,
+    "kudus": 0.25,
+    "brennan johnson": 0.27,
+    "diaz": 0.29,
+    "gordon": 0.28,
+    "havertz": 0.32,
+    "ødegaard": 0.24,
+    "foden": 0.30,
+    "de bruyne": 0.25
+  }
+}
+

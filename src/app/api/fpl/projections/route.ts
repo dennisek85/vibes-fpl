@@ -92,7 +92,7 @@ export async function GET() {
           const oppId = isHome ? fix.team_a : fix.team_h;
           const oppTeam = teamMap.get(oppId);
 
-          const calculatedMatchXp = calculatePlayerOddsXp(p, isHome, pTeam, oppTeam);
+          const calculatedMatchXp = calculatePlayerOddsXp(p, isHome, pTeam, oppTeam, undefined, targetGw);
           const finalMatchXp = Math.max(0.0, Math.round(calculatedMatchXp * availabilityMultiplier * 10) / 10);
           totalFixtureXp += finalMatchXp;
         }

@@ -36,16 +36,17 @@ jobs:
       - name: Run Price Tracking & Snapshot Engine
         run: |
           node scripts/track_fpl_prices.js
+          node scripts/sync_betting_odds.js
 
-      - name: Commit & Push Updated Snapshots
+      - name: Commit & Push Updated Snapshots & Odds
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/price_snapshots.json
+          git add src/data/price_snapshots.json src/data/match_odds.json
           if git diff --staged --quiet; then
-            echo "No price delta changes to commit."
+            echo "No price delta or odds changes to commit."
           else
-            git commit -m "📊 [FPL Price Tracker] Auto-update transfer baselines & velocity"
+            git commit -m "📊 [FPL Data Tracker] Auto-update price baselines, velocity & match odds"
             git push origin main
           fi
 

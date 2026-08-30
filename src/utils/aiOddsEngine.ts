@@ -1,4 +1,5 @@
 import { FPLPlayer } from '@/types/fpl';
+import { getMarketFixtureOdds, getMarketAnytimeGoalscorerProb } from '@/lib/oddsTracker';
 
 export interface MatchExpectancy {
   homeTeamId: number;
@@ -7,6 +8,7 @@ export interface MatchExpectancy {
   awayImpliedGoals: number;
   homeCleanSheetProb: number; // 0.0 to 1.0 (e.g. 0.52 = 52%)
   awayCleanSheetProb: number; // 0.0 to 1.0
+  isMarketOdds: boolean;
 }
 
 const LEAGUE_AVG_GOALS_PER_MATCH = 1.38;
@@ -56,13 +58,14 @@ function parseTeamStrength(team: any, isHome: boolean): number {
 }
 
 /**
- * Calculates Poisson-derived Implied Team Goals & Clean Sheet Probabilities for any fixture:
- * - Implied Team Goals (λ) from relative attack/defense strengths + home venue boost.
- * - Poisson Clean Sheet Probability: P(CS = 0 conceded) = e^(-λ_opponent)
+ * Calculates Implied Team Goals & Clean Sheet Probabilities for any fixture:
+ * 1. Checks live bookmaker exchange odds from match_odds.json (highest accuracy signal).
+ * 2. Fallback: Poisson-derived Implied Team Goals & Clean Sheet Probability from relative attack/defense strengths.
  */
 export function calculateMatchExpectancy(
   homeTeam: any,
-  awayTeam: any
+  awayTeam: any,
+  gameweek?: number
 ): MatchExpectancy {
   if (!homeTeam || !awayTeam) {
     return {
@@ -72,9 +75,28 @@ export function calculateMatchExpectancy(
       awayImpliedGoals: 1.15,
       homeCleanSheetProb: 0.32,
       awayCleanSheetProb: 0.23,
+      isMarketOdds: false,
     };
   }
 
+  // 1. Try to load live bookmaker market odds if gameweek is provided
+  if (gameweek) {
+    const marketOdds = getMarketFixtureOdds(homeTeam.id, awayTeam.id, gameweek);
+    if (marketOdds) {
+      const isHomeFirst = marketOdds.homeTeamId === homeTeam.id;
+      return {
+        homeTeamId: homeTeam.id,
+        awayTeamId: awayTeam.id,
+        homeImpliedGoals: isHomeFirst ? marketOdds.homeGoals : marketOdds.awayGoals,
+        awayImpliedGoals: isHomeFirst ? marketOdds.awayGoals : marketOdds.homeGoals,
+        homeCleanSheetProb: isHomeFirst ? marketOdds.homeCleanSheet : marketOdds.awayCleanSheet,
+        awayCleanSheetProb: isHomeFirst ? marketOdds.awayCleanSheet : marketOdds.homeCleanSheet,
+        isMarketOdds: true,
+      };
+    }
+  }
+
+  // 2. Fallback to Poisson Mathematical Simulation
   const homeStr = parseTeamStrength(homeTeam, true);
   const awayStr = parseTeamStrength(awayTeam, false);
 
@@ -93,6 +115,7 @@ export function calculateMatchExpectancy(
     awayImpliedGoals: Math.round(awayImplied * 100) / 100,
     homeCleanSheetProb: Math.round(homeCleanSheetProb * 1000) / 1000,
     awayCleanSheetProb: Math.round(awayCleanSheetProb * 1000) / 1000,
+    isMarketOdds: false,
   };
 }
 
@@ -129,9 +152,9 @@ function getPlayerInvolvementShare(pos: number, cost: number): { xgShare: number
 
 /**
  * Calculates bottom-up statistical Expected Points (xP) using industry benchmark solver methodology:
- * 1. 60-Minute FPL Appearance Step Function: P(>=60m)*2 + P(1-59m)*1
- * 2. Team Implied Goal Share Allocation (xG / xA) with Bayesian blending
- * 3. Exact Poisson Implied Match Goals & Clean Sheet Odds
+ * 1. Live Bookmaker Clean Sheet & Goalscorer Odds (when available)
+ * 2. 60-Minute FPL Appearance Step Function: P(>=60m)*2 + P(1-59m)*1
+ * 3. Team Implied Goal Share Allocation (xG / xA) with Bayesian blending
  * 4. Disciplinary Deductions (Yellow/Red Card Expectancy)
  * 5. BPS Statistical Regression
  */
@@ -140,7 +163,8 @@ export function calculatePlayerOddsXp(
   isHome: boolean,
   playerTeam: any,
   oppTeam: any,
-  baseXp?: number
+  baseXp?: number,
+  gameweek?: number
 ): number {
   if (!player || !playerTeam || !oppTeam) return baseXp || 3.5;
 
@@ -149,7 +173,8 @@ export function calculatePlayerOddsXp(
 
   const expectancy = calculateMatchExpectancy(
     isHome ? playerTeam : oppTeam,
-    isHome ? oppTeam : playerTeam
+    isHome ? oppTeam : playerTeam,
+    gameweek
   );
 
   const impliedGoalsScored = isHome ? expectancy.homeImpliedGoals : expectancy.awayImpliedGoals;
@@ -213,59 +238,53 @@ export function calculatePlayerOddsXp(
 
   // 4. Fixture-Adjusted Match xG and xA
   const minsScale = expectedMins / 90.0;
-  const matchXG = Math.max(0.0, (impliedGoalsScored * playerXgShare * minsScale) + penXG);
+  let matchXG = Math.max(0.0, (impliedGoalsScored * playerXgShare * minsScale) + penXG);
   const matchXA = Math.max(0.0, impliedGoalsScored * playerXaShare * minsScale);
 
-  // 5. Disciplinary Deductions (Yellow/Red Card Expectancy)
+  // 5. Market Anytime Goalscorer Odds Integration (When Available)
+  const marketGoalProb = getMarketAnytimeGoalscorerProb(player.web_name);
+  if (marketGoalProb !== null && marketGoalProb > 0) {
+    // Bookmaker anytime goalscorer probability converted to expected goals λ = -ln(1 - P)
+    const impliedMarketXg = -Math.log(Math.max(0.01, 1.0 - marketGoalProb)) * minsScale;
+    // Blend 65% market odds + 35% statistical model
+    matchXG = (impliedMarketXg * 0.65) + (matchXG * 0.35);
+  }
+
+  // 6. Disciplinary Deductions (Yellow/Red Card Expectancy)
   const expectedCardPenalty = shares.cardPen;
 
-  // 6. Position-Specific Expected Points
-  if (pos === 1) {
-    // Goalkeeper: Appearance + (4 * P(CS)) + Save Points - Conceded Penalty + BPS - Card Deduction
-    const csPts = cleanSheetProb * 4.0;
-    const savePoints = Math.min(1.8, Math.max(0.6, impliedGoalsConceded * 0.70));
-    const concededPen = Math.max(0.0, (impliedGoalsConceded - 0.7) * 0.40);
-    const xBps = Math.min(0.6, cleanSheetProb * 0.50 + 0.10);
+  // 7. Position-Specific Scoring Breakdown
+  let goalPts = 0;
+  let assistPts = matchXA * 3.0;
+  let cleanSheetPts = 0;
+  let goalsConcededPts = 0;
+  let savePts = 0;
+  let bpsExpected = 0;
 
-    const totalGkXp = appearancePts + csPts + savePoints + xBps - concededPen - expectedCardPenalty;
-    return Math.max(2.0, Math.round(totalGkXp * 10) / 10);
+  if (pos === 1) { // GK
+    goalPts = matchXG * 10.0; // Rare GK goal
+    // Defenders/GK retain 90% of CS prob even with late substitutions
+    cleanSheetPts = cleanSheetProb * p60Mins * 4.0;
+    goalsConcededPts = -Math.max(0.0, (impliedGoalsConceded - 1.0) / 2.0) * 0.65;
+    savePts = Math.min(2.5, Math.max(0.6, impliedGoalsConceded * 0.9));
+    bpsExpected = cleanSheetProb >= 0.40 ? 0.65 : 0.20;
+  } else if (pos === 2) { // DEF
+    goalPts = matchXG * 6.0;
+    cleanSheetPts = cleanSheetProb * p60Mins * 4.0;
+    goalsConcededPts = -Math.max(0.0, (impliedGoalsConceded - 1.0) / 2.0) * 0.65;
+    bpsExpected = cleanSheetProb >= 0.40 ? 0.85 : (matchXG + matchXA > 0.2 ? 0.45 : 0.15);
+  } else if (pos === 3) { // MID
+    goalPts = matchXG * 5.0;
+    cleanSheetPts = cleanSheetProb * p60Mins * 1.0;
+    bpsExpected = matchXG >= 0.35 ? 1.45 : matchXG >= 0.20 ? 0.75 : 0.25;
+  } else if (pos === 4) { // FWD
+    goalPts = matchXG * 4.0;
+    cleanSheetPts = 0.0;
+    bpsExpected = matchXG >= 0.45 ? 1.85 : matchXG >= 0.25 ? 0.95 : 0.30;
   }
 
-  if (pos === 2) {
-    // Defender: Appearance + (4 * P(CS)) + (xG * 6) + (xA * 3) - Conceded Penalty + BPS - Card Deduction
-    // Sub-off clean sheet retention boost for early substitutions (e.g. min 65-70)
-    const csRetentionBoost = expectedMins < 75 && expectedMins >= 60 ? 0.04 : 0.0;
-    const effectiveCsProb = Math.min(0.65, cleanSheetProb + csRetentionBoost);
+  // 8. Total Expected Points (xP) Sum
+  const totalXp = appearancePts + goalPts + assistPts + cleanSheetPts + goalsConcededPts + savePts + bpsExpected - expectedCardPenalty;
 
-    const csPts = effectiveCsProb * 4.0;
-    const attackPts = (matchXG * 6.0) + (matchXA * 3.0);
-    const concededPen = Math.max(0.0, (impliedGoalsConceded - 0.7) * 0.40);
-    const xBps = Math.min(0.9, (effectiveCsProb * 0.60) + (matchXG * 0.50) + 0.12);
-
-    const totalDefXp = appearancePts + csPts + attackPts + xBps - concededPen - expectedCardPenalty;
-    return Math.max(1.5, Math.round(totalDefXp * 10) / 10);
-  }
-
-  if (pos === 3) {
-    // Midfielder: Appearance + (1 * P(CS)) + (xG * 5) + (xA * 3) + BPS - Card Deduction
-    const csPts = cleanSheetProb * 1.0;
-    const goalPts = matchXG * 5.0;
-    const assistPts = matchXA * 3.0;
-    const xBps = Math.min(1.3, 0.15 + (matchXG * 0.75) + (matchXA * 0.40) + (cleanSheetProb * 0.20));
-
-    const totalMidXp = appearancePts + csPts + goalPts + assistPts + xBps - expectedCardPenalty;
-    return Math.max(1.8, Math.round(totalMidXp * 10) / 10);
-  }
-
-  if (pos === 4) {
-    // Forward: Appearance + (xG * 4) + (xA * 3) + BPS - Card Deduction
-    const goalPts = matchXG * 4.0;
-    const assistPts = matchXA * 3.0;
-    const xBps = Math.min(1.4, 0.20 + (matchXG * 0.85) + (matchXA * 0.35));
-
-    const totalFwdXp = appearancePts + goalPts + assistPts + xBps - expectedCardPenalty;
-    return Math.max(2.0, Math.round(totalFwdXp * 10) / 10);
-  }
-
-  return 3.5;
+  return Math.max(0.5, Math.round(totalXp * 10) / 10);
 }
