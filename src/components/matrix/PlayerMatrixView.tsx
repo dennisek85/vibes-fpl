@@ -106,16 +106,16 @@ export const PlayerMatrixView: React.FC = () => {
           valB = b.netTransfersToday;
           break;
         case 'target_progress':
-          valA = a.targetProgress;
-          valB = b.targetProgress;
+          valA = a.projectedTonightProgress !== undefined ? a.projectedTonightProgress : a.targetProgress;
+          valB = b.projectedTonightProgress !== undefined ? b.projectedTonightProgress : b.targetProgress;
           break;
         case 'season_delta':
           valA = a.seasonDelta;
           valB = b.seasonDelta;
           break;
         default:
-          valA = a.targetProgress;
-          valB = b.targetProgress;
+          valA = a.projectedTonightProgress !== undefined ? a.projectedTonightProgress : a.targetProgress;
+          valB = b.projectedTonightProgress !== undefined ? b.projectedTonightProgress : b.targetProgress;
       }
 
       return matrixSortDirection === 'asc' ? valA - valB : valB - valA;
@@ -445,19 +445,19 @@ export const PlayerMatrixView: React.FC = () => {
                             <span className="px-2.5 py-1 rounded-xl bg-slate-950 border border-white/10 text-slate-400 font-bold text-[10.5px] flex items-center justify-center gap-1 mx-auto w-max">
                               <Lock className="w-3 h-3" /> Locked
                             </span>
-                          ) : item.targetProgress >= 100 ? (
+                          ) : (item.status === 'rising' || (item.changeTime === 'Tonight' && item.targetProgress > 0)) ? (
                             <span className="px-2.5 py-1 rounded-xl bg-emerald-950/90 border border-emerald-500/60 text-emerald-300 font-black text-[11px] shadow-sm animate-pulse flex items-center justify-center gap-1 mx-auto w-max">
                               <Flame className="w-3.5 h-3.5 text-emerald-400" /> RISE (+£0.1m)
                             </span>
-                          ) : item.targetProgress >= 80 ? (
-                            <span className="px-2.5 py-1 rounded-xl bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold text-[10.5px] flex items-center justify-center gap-1 mx-auto w-max">
-                              <Zap className="w-3 h-3 text-amber-400" /> Likely Soon
-                            </span>
-                          ) : item.targetProgress <= -100 ? (
+                          ) : (item.status === 'falling' || (item.changeTime === 'Tonight' && item.targetProgress < 0)) ? (
                             <span className="px-2.5 py-1 rounded-xl bg-rose-950/90 border border-rose-500/60 text-rose-300 font-black text-[11px] shadow-sm animate-pulse flex items-center justify-center gap-1 mx-auto w-max">
                               <Snowflake className="w-3.5 h-3.5 text-rose-400" /> FALL (-£0.1m)
                             </span>
-                          ) : item.targetProgress <= -80 ? (
+                          ) : (item.status === 'approaching_rise' || item.targetProgress >= 75) ? (
+                            <span className="px-2.5 py-1 rounded-xl bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold text-[10.5px] flex items-center justify-center gap-1 mx-auto w-max">
+                              <Zap className="w-3 h-3 text-amber-400" /> Likely Soon
+                            </span>
+                          ) : (item.status === 'approaching_fall' || item.targetProgress <= -75) ? (
                             <span className="px-2.5 py-1 rounded-xl bg-rose-950/40 border border-rose-500/30 text-rose-400 font-semibold text-[10.5px] flex items-center justify-center gap-1 mx-auto w-max">
                               At Risk
                             </span>

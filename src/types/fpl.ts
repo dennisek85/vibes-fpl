@@ -46,6 +46,11 @@ export interface FPLPlayer {
   transfers_out?: number;
   cost_change_event?: number;
   cost_change_start?: number;
+  price_change_percent?: string;
+  price_change_hourly_rate?: number;
+  price_change_projections?: Array<{ offset: number; projected_percent: string; likelihood: number }>;
+  price_change_locked_until?: string | null;
+  price_change_calibrating?: boolean;
   priceTelemetry?: {
     netToday: number;
     inToday: number;

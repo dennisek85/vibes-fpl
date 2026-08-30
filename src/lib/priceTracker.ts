@@ -34,8 +34,11 @@ function getStorageFilePath(): string {
   if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
     return path.join(os.tmpdir(), 'price_snapshots.json');
   }
-  const localDataDir = path.join(process.cwd(), '.data');
-  return path.join(localDataDir, 'price_snapshots.json');
+  const bundledPath = path.join(process.cwd(), 'src', 'data', 'price_snapshots.json');
+  if (fs.existsSync(bundledPath)) {
+    return bundledPath;
+  }
+  return path.join(process.cwd(), '.data', 'price_snapshots.json');
 }
 
 function getTodayUkDateString(): string {
@@ -124,9 +127,12 @@ export function updateAndGetPriceTelemetry(elements: FPLPlayer[]): {
 
     // Check if player changed price since last recorded baseline
     const hasPriceChanged = baseline && baseline.cost !== currentCost;
+    const costChangeEvent = (p as any).cost_change_event || 0;
+    const hasChangedThisGw = costChangeEvent !== 0;
+
     if (hasPriceChanged) {
       // Log the observed threshold trigger
-      const deltaBeforeChange = (currentIn - baseline.transfersIn) - (currentOut - baseline.transfersOut);
+      const deltaBeforeChange = (currentIn - (baseline.transfersIn || 0)) - (currentOut - (baseline.transfersOut || 0));
       const key = `${currentCost > baseline.cost ? 'rise' : 'fall'}_${id}_${currentUkDay}`;
       snapshotData.observedThresholds[key] = Math.abs(deltaBeforeChange);
 
@@ -139,22 +145,21 @@ export function updateAndGetPriceTelemetry(elements: FPLPlayer[]): {
         lastCostChangeDate: currentUkDay,
       };
       snapshotData.baselines[id] = baseline;
-    } else if (!baseline || isNewDay) {
-      // Initialize or rollover baseline
-      if (!baseline) {
-        baseline = {
-          cost: currentCost,
-          transfersIn: currentIn,
-          transfersOut: currentOut,
-          timestamp: nowMs,
-        };
-        snapshotData.baselines[id] = baseline;
-      }
+    } else if (!baseline) {
+      // Initial cold-start:
+      baseline = {
+        cost: currentCost,
+        transfersIn: hasChangedThisGw ? currentIn : 0,
+        transfersOut: hasChangedThisGw ? currentOut : 0,
+        timestamp: nowMs,
+        lastCostChangeDate: hasChangedThisGw ? currentUkDay : undefined,
+      };
+      snapshotData.baselines[id] = baseline;
     }
 
     // Calculate true net delta today
-    const inToday = Math.max(0, currentIn - baseline.transfersIn);
-    const outToday = Math.max(0, currentOut - baseline.transfersOut);
+    const inToday = Math.max(0, currentIn - (baseline.transfersIn || 0));
+    const outToday = Math.max(0, currentOut - (baseline.transfersOut || 0));
     const netToday = inToday - outToday;
 
     // Maintain recent hourly history (last 24 hours)
@@ -211,4 +216,3 @@ export function updateAndGetPriceTelemetry(elements: FPLPlayer[]): {
     observedThresholds: snapshotData.observedThresholds,
   };
 }
-

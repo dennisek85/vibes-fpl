@@ -127,11 +127,14 @@ async function main() {
         snapshotData.baselines[pId] = baseline;
       }
     } else {
+      const costChangeEvent = p.cost_change_event || 0;
+      const hasChangedThisGw = costChangeEvent !== 0;
       baseline = {
         cost: currentCost,
-        transfersIn: currentIn,
-        transfersOut: currentOut,
-        timestamp: nowMs
+        transfersIn: hasChangedThisGw ? currentIn : 0,
+        transfersOut: hasChangedThisGw ? currentOut : 0,
+        timestamp: nowMs,
+        lastCostChangeDate: hasChangedThisGw ? currentUkDay : undefined
       };
       snapshotData.baselines[pId] = baseline;
     }
@@ -181,3 +184,4 @@ main().catch(err => {
   console.error('Fatal error in price tracking:', err);
   process.exit(1);
 });
+
