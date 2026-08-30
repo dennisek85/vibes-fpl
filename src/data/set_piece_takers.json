@@ -1,0 +1,127 @@
+{
+  "lastUpdated": "2026-08-30T22:50:00.000Z",
+  "season": "2026/27",
+  "teams": {
+    "ARS": {
+      "penalties": ["saka", "havertz", "ødegaard"],
+      "corners": ["saka", "rice", "ødegaard"],
+      "directFreeKicks": ["ødegaard", "rice", "saka"],
+      "indirectFreeKicks": ["rice", "saka", "ødegaard"]
+    },
+    "AVL": {
+      "penalties": ["watkins", "tielemans", "bailey"],
+      "corners": ["mcginn", "digne", "tielemans", "bailey"],
+      "directFreeKicks": ["digne", "tielemans", "bailey"],
+      "indirectFreeKicks": ["digne", "mcginn", "tielemans"]
+    },
+    "BOU": {
+      "penalties": ["kluivert", "evanilson", "t Tavernier"],
+      "corners": ["tavernier", "cook", "christie", "scott"],
+      "directFreeKicks": ["tavernier", "cook"],
+      "indirectFreeKicks": ["tavernier", "cook", "scott"]
+    },
+    "BRE": {
+      "penalties": ["mbeumo", "schade", "wissa"],
+      "corners": ["mbeumo", "jensen", "damsgaard"],
+      "directFreeKicks": ["mbeumo", "jensen"],
+      "indirectFreeKicks": ["jensen", "mbeumo", "damsgaard"]
+    },
+    "BHA": {
+      "penalties": ["groß", "pedro", "welbeck"],
+      "corners": ["groß", "mitoma", "estupiñán"],
+      "directFreeKicks": ["groß", "estupiñán"],
+      "indirectFreeKicks": ["groß", "gilmour"]
+    },
+    "CHE": {
+      "penalties": ["palmer", "nkunku", "enzo"],
+      "corners": ["palmer", "enzo", "neto", "cucurella"],
+      "directFreeKicks": ["palmer", "enzo", "neto"],
+      "indirectFreeKicks": ["palmer", "enzo"]
+    },
+    "CRY": {
+      "penalties": ["mateta", "eze", "sarr"],
+      "corners": ["eze", "wharton", "mitchell"],
+      "directFreeKicks": ["eze"],
+      "indirectFreeKicks": ["eze", "wharton"]
+    },
+    "EVE": {
+      "penalties": ["calvert-lewin", "beto", "mcneil"],
+      "corners": ["mcneil", "garner", "young"],
+      "directFreeKicks": ["mcneil", "garner"],
+      "indirectFreeKicks": ["mcneil", "garner"]
+    },
+    "FUL": {
+      "penalties": ["jiménez", "muniz", "pereira"],
+      "corners": ["pereira", "iwobi", "willian"],
+      "directFreeKicks": ["pereira", "wilson"],
+      "indirectFreeKicks": ["pereira", "iwobi"]
+    },
+    "IPS": {
+      "penalties": ["delap", "chaplin", "szmodics"],
+      "corners": ["leif davis", "davis", "morsy"],
+      "directFreeKicks": ["leif davis", "davis"],
+      "indirectFreeKicks": ["leif davis", "davis"]
+    },
+    "LEI": {
+      "penalties": ["vardy", "mavididi", "ayew"],
+      "corners": ["winks", "fatawu", "mavididi"],
+      "directFreeKicks": ["fatawu", "mavididi"],
+      "indirectFreeKicks": ["winks", "fatawu"]
+    },
+    "LIV": {
+      "penalties": ["salah", "szoboszlai", "gakpo", "mac allister"],
+      "corners": ["trent", "alexander-arnold", "szoboszlai", "robertson"],
+      "directFreeKicks": ["trent", "alexander-arnold", "szoboszlai", "salah"],
+      "indirectFreeKicks": ["trent", "alexander-arnold", "szoboszlai", "robertson"]
+    },
+    "MCI": {
+      "penalties": ["haaland", "de bruyne", "foden"],
+      "corners": ["de bruyne", "foden", "bernardo", "cherki", "gündoğan"],
+      "directFreeKicks": ["de bruyne", "foden"],
+      "indirectFreeKicks": ["de bruyne", "foden", "bernardo"]
+    },
+    "MUN": {
+      "penalties": ["fernandes", "rashford", "höjlund"],
+      "corners": ["fernandes", "eriksen", "mount"],
+      "directFreeKicks": ["fernandes", "rashford", "eriksen"],
+      "indirectFreeKicks": ["fernandes", "eriksen"]
+    },
+    "NEW": {
+      "penalties": ["isak", "wilson", "gordon", "schar"],
+      "corners": ["trippier", "gordon", "tonali", "hall"],
+      "directFreeKicks": ["trippier", "schär", "gordon"],
+      "indirectFreeKicks": ["trippier", "gordon", "tonali"]
+    },
+    "NFO": {
+      "penalties": ["wood", "gibbs-white", "elanga"],
+      "corners": ["gibbs-white", "elanga", "hudson-odoi"],
+      "directFreeKicks": ["gibbs-white", "williams"],
+      "indirectFreeKicks": ["gibbs-white", "elanga"]
+    },
+    "SOU": {
+      "penalties": ["armstrong", "brereton díaz", "archer"],
+      "corners": ["smallbone", "downes", "walker-peters"],
+      "directFreeKicks": ["smallbone", "armstrong"],
+      "indirectFreeKicks": ["smallbone", "downes"]
+    },
+    "TOT": {
+      "penalties": ["son", "solanke", "richarlison", "maddison"],
+      "corners": ["maddison", "kulusevski", "son", "porro"],
+      "directFreeKicks": ["maddison", "porro", "son"],
+      "indirectFreeKicks": ["maddison", "porro", "kulusevski"]
+    },
+    "WHU": {
+      "penalties": ["paquetá", "bowen", "füllkrug", "kudus"],
+      "corners": ["ward-prowse", "bowen", "paquetá", "emerson"],
+      "directFreeKicks": ["ward-prowse", "bowen", "paquetá"],
+      "indirectFreeKicks": ["ward-prowse", "bowen"]
+    },
+    "WOL": {
+      "penalties": ["cunha", "hwang", "strand larsen"],
+      "corners": ["ait-nouri", "sarabia", "cunha", "doyle"],
+      "directFreeKicks": ["cunha", "sarabia", "doyle"],
+      "indirectFreeKicks": ["ait-nouri", "sarabia", "doyle"]
+    }
+  }
+}
+

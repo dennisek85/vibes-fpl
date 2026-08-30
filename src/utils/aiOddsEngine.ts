@@ -1,5 +1,6 @@
 import { FPLPlayer } from '@/types/fpl';
 import { getMarketFixtureOdds, getMarketAnytimeGoalscorerProb } from '@/lib/oddsTracker';
+import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 
 export interface MatchExpectancy {
   homeTeamId: number;
@@ -232,14 +233,16 @@ export function calculatePlayerOddsXp(
   const playerXgShare = Math.min(0.42, (sampleConfidence * rawXgShare) + ((1.0 - sampleConfidence) * shares.xgShare));
   const playerXaShare = Math.min(0.25, (sampleConfidence * rawXaShare) + ((1.0 - sampleConfidence) * shares.xaShare));
 
-  // 3. Penalty Duty Equity (Designated penalty taker adds ~+0.14 xG per match)
-  const isPenTaker = isDesignatedPenaltyTaker(player);
-  const penXG = isPenTaker ? (0.14 * (impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH)) : 0.0;
+  // 3. Set-Piece & Penalty Hierarchy Duty (Corners, Penalties, Direct/Indirect Free-Kicks)
+  const minsScale = expectedMins / 90.0;
+  const setPieces = getPlayerSetPieceProfile(player, playerTeam?.short_name);
+  const teamAttackScale = impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH;
+  const setPieceXG = (setPieces.addedXg * teamAttackScale * minsScale);
+  const setPieceXA = (setPieces.addedXa * teamAttackScale * minsScale);
 
   // 4. Fixture-Adjusted Match xG and xA
-  const minsScale = expectedMins / 90.0;
-  let matchXG = Math.max(0.0, (impliedGoalsScored * playerXgShare * minsScale) + penXG);
-  const matchXA = Math.max(0.0, impliedGoalsScored * playerXaShare * minsScale);
+  let matchXG = Math.max(0.0, (impliedGoalsScored * playerXgShare * minsScale) + setPieceXG);
+  let matchXA = Math.max(0.0, (impliedGoalsScored * playerXaShare * minsScale) + setPieceXA);
 
   // 5. Market Anytime Goalscorer Odds Integration (When Available)
   const marketGoalProb = getMarketAnytimeGoalscorerProb(player.web_name);

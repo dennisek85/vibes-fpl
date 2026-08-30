@@ -10,6 +10,7 @@ import {
   ShoppingBag, 
   Loader2 
 } from 'lucide-react';
+import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 
 export const PlayerDetailModal: React.FC = () => {
   const { 
@@ -170,13 +171,22 @@ export const PlayerDetailModal: React.FC = () => {
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
                 {player.first_name} {player.second_name}
               </h2>
-              <div className="flex items-center gap-3 mt-1.5">
+              <div className="flex flex-wrap items-center gap-2 mt-1.5">
                 <span className="text-sm sm:text-lg font-bold text-slate-200">
                   {team?.name || 'Premier League'}
                 </span>
                 <span className="text-xs sm:text-sm font-mono font-black text-emerald-400 bg-slate-950/80 px-3 py-1 rounded-full border border-emerald-500/30 shadow">
                   £{(player.now_cost / 10).toFixed(1)}m
                 </span>
+                {(() => {
+                  const sp = getPlayerSetPieceProfile(player, team?.short_name);
+                  return sp.roles.map((role, idx) => (
+                    <span key={idx} className="text-[11px] sm:text-xs font-mono font-black text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-500/40 shadow flex items-center gap-1">
+                      {role.includes('PEN') ? '🎯 ' : role.includes('CORNER') ? '⛳ ' : '⚡ '}
+                      {role}
+                    </span>
+                  ));
+                })()}
               </div>
             </div>
           </div>
