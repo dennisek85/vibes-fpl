@@ -18,7 +18,7 @@ import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
 import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
 import { logoutPin, isPinVerified } from '@/lib/auth';
 import { formatMoney } from '@/lib/fpl-rules';
-import { calculateSquadRating } from '@/utils/aiSquadRating';
+import { useSquadTelemetry } from '@/hooks/useSquadTelemetry';
 import { 
   Trophy, 
   Search, 
@@ -50,23 +50,21 @@ export default function PlannerPage() {
     gameweekPlans,
     players,
     playerMap,
-    currentView,
-    setCurrentView,
     getPlayerGameweekXp,
     showAiPredictions,
-    toggleAiPredictions,
-    openTransferDrawer, 
-    activePin, 
-    isSaving, 
-    fixtureHorizon,
-    setFixtureHorizon
+    currentView,
+    setCurrentView,
+    openTransferDrawer,
+    activePin,
+    isSaving,
+    lastSavedTime
   } = usePlannerStore();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isOverridesModalOpen, setIsOverridesModalOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   useEffect(() => {
     initFPLData();
@@ -90,60 +88,17 @@ export default function PlannerPage() {
   const benchPicks = currentPlan?.squad
     ? currentPlan.squad.filter(p => p.position > 11).sort((a, b) => a.position - b.position)
     : [];
-
-  const currentChip = currentPlan?.chip;
-  const currentTransfers = currentPlan?.transfersIn?.length || 0;
   const isLocked = isGameweekLocked(selectedGameweek);
-  const availableFT = currentPlan?.availableTransfers || 1;
-  const bank = currentPlan?.calculatedBank || 0;
-  const hits = currentPlan?.transferCost || 0;
 
-  // Calculate Total Squad Projected Points (xP) for top telemetry
-  let totalProjectedXp = 0;
-  let squadFormSum = 0;
-  if (currentPlan?.squad) {
-    const isBenchBoost = currentChip === 'bboost';
-    const isTripleCaptain = currentChip === '3xc';
-
-    currentPlan.squad.forEach(pick => {
-      const isStarting = pick.position <= 11;
-      const pl = playerMap.get(pick.element);
-      const xp = getPlayerGameweekXp(pick.element, selectedGameweek);
-
-      if (isStarting) {
-        let mult = 1;
-        if (pick.is_captain) {
-          mult = isTripleCaptain ? 3 : 2;
-        }
-        totalProjectedXp += xp * mult;
-        if (pl) squadFormSum += parseFloat(pl.form) || 0;
-      } else if (isBenchBoost) {
-        // Full bench boost: all 4 subs count 100%
-        totalProjectedXp += xp;
-      } else {
-        // Auto-sub expected value (contingency if starter rests)
-        const subWeight = pick.position === 12 ? 0.03 : pick.position === 13 ? 0.12 : pick.position === 14 ? 0.06 : 0.02;
-        totalProjectedXp += xp * subWeight;
-      }
-    });
-  }
-  totalProjectedXp = Math.round((totalProjectedXp - hits) * 10) / 10;
-
-  const squadRating = React.useMemo(() => {
-    if (!showAiPredictions || !currentPlan?.squad || currentPlan.squad.length === 0) return null;
-    const currentVal = currentPlan.squad.reduce((s, p) => s + (playerMap.get(p.element)?.now_cost || 0), 0);
-    const totalBudg = currentVal + (currentPlan.calculatedBank || 0);
-
-    return calculateSquadRating(
-      currentPlan.squad,
-      players,
-      playerMap,
-      selectedGameweek,
-      getPlayerGameweekXp,
-      fixtureHorizon,
-      totalBudg
-    );
-  }, [showAiPredictions, currentPlan?.squad, currentPlan?.calculatedBank, players, playerMap, selectedGameweek, getPlayerGameweekXp, fixtureHorizon]);
+  const {
+    totalProjectedXp,
+    squadFormSum,
+    bank,
+    availableFT,
+    currentTransfers,
+    currentChip,
+    squadRating
+  } = useSquadTelemetry();
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col items-center">
@@ -180,63 +135,62 @@ export default function PlannerPage() {
 
           {/* Center: Gameweek Arrow Stepper & View Switcher */}
           <div className="flex items-center gap-1 sm:gap-2">
-            {/* Gameweek Stepper */}
-            <div className="flex items-center gap-1 sm:gap-1.5 bg-slate-900/90 border border-white/15 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-xl sm:rounded-2xl shadow-lg">
+            {/* Minimalist Gameweek Arrow Stepper */}
+            <div className="flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner">
               <button
                 disabled={selectedGameweek <= 1}
                 onClick={() => selectGameweek(selectedGameweek - 1)}
-                className="p-1 rounded-lg hover:bg-slate-800 disabled:opacity-25 disabled:cursor-not-allowed text-slate-200 hover:text-white transition-all active:scale-90"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
                 title="Previous Gameweek"
               >
-                <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <ChevronLeft className="w-4 h-4" />
               </button>
 
-              <div className="flex items-center gap-1 px-1 sm:px-2 select-none">
-                <span className="text-xs sm:text-sm md:text-base font-black text-white tracking-tight">
-                  GW {selectedGameweek}
+              <div className="px-2 sm:px-3 text-center min-w-[70px] sm:min-w-[90px]">
+                <div className="flex items-center justify-center gap-1">
+                  <span className="text-xs sm:text-sm font-black text-white uppercase tracking-wider font-mono">
+                    GW {selectedGameweek}
+                  </span>
+                  {isLocked && (
+                    <Lock className="w-3 h-3 text-amber-400" />
+                  )}
+                </div>
+                <span className="text-[9px] sm:text-[10px] text-slate-400 font-mono block leading-none">
+                  {isLocked ? 'Completed' : 'Planned'}
                 </span>
-                {currentTransfers > 0 && (
-                  <span className="text-[9px] bg-emerald-400 text-slate-950 font-black px-1 py-0.2 rounded-full">
-                    +{currentTransfers}
-                  </span>
-                )}
-                {currentChip && currentChip !== 'none' && (
-                  <span className="text-[9px] bg-amber-400 text-slate-950 font-black px-1 py-0.2 rounded-full uppercase">
-                    {currentChip === 'wildcard' ? 'WC' : currentChip === 'freehit' ? 'FH' : currentChip === 'bboost' ? 'BB' : '3TC'}
-                  </span>
-                )}
               </div>
 
               <button
                 disabled={selectedGameweek >= 38}
                 onClick={() => selectGameweek(selectedGameweek + 1)}
-                className="p-1 rounded-lg hover:bg-slate-800 disabled:opacity-25 disabled:cursor-not-allowed text-slate-200 hover:text-white transition-all active:scale-90"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
                 title="Next Gameweek"
               >
-                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* View Switcher Toggle Tabs */}
-            <div className="flex items-center gap-0.5 bg-slate-900/90 border border-white/15 p-0.5 rounded-xl sm:rounded-2xl shadow-lg">
+            {/* View Switcher: Pitch View vs Matrix Table View */}
+            <div className="flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner">
               <button
                 onClick={() => setCurrentView('pitch')}
-                className={`flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all ${
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
                   currentView === 'pitch'
                     ? 'bg-emerald-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-400 hover:text-slate-200'
                 }`}
-                title="Visual Pitch Planner"
+                title="Visual Pitch View"
               >
                 <LayoutGrid className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span className="hidden md:inline">Pitch</span>
               </button>
+
               <button
                 onClick={() => setCurrentView('matrix')}
-                className={`flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all ${
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
                   currentView === 'matrix'
                     ? 'bg-emerald-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-400 hover:text-slate-200'
                 }`}
                 title="Player Projections & Metrics Matrix"
               >
@@ -319,10 +273,10 @@ export default function PlannerPage() {
           {/* Left Desktop Panel: Chips, AI Radar, Horizon, Optimizer & Overrides */}
           <LeftStrategyPanel onOpenOverrides={() => setIsOverridesModalOpen(true)} />
 
-          {/* Center Command Center: Telemetry + Stadium Pitch */}
-          <section className="flex-1 min-w-0 flex flex-col items-center gap-1.5 h-full">
-            {/* 1. Mobile-Only Compact Telemetry Strip (Saves ~110px of vertical space on mobile) */}
-            <div className="flex sm:hidden w-full items-center justify-between gap-1 px-2.5 py-1.5 bg-slate-900/90 border border-white/10 rounded-xl text-[11px] font-mono shadow-md flex-shrink-0">
+          {/* Center Column: Telemetry Header, Stadium Pitch & Mobile Bench */}
+          <section className="flex-1 flex flex-col items-center justify-between gap-1.5 min-w-0 max-w-full lg:h-full lg:overflow-hidden">
+            {/* 1. Mobile-Only Compact Telemetry Strip */}
+            <div className="w-full flex sm:hidden items-center justify-between px-3 py-1.5 bg-slate-900/90 border border-white/10 rounded-2xl text-[11px] font-mono shadow-md">
               <div className="flex items-center gap-1">
                 <span className="text-slate-400 font-bold font-sans">FT:</span>
                 <strong className="text-emerald-400">{Math.max(0, availableFT - currentTransfers)}/{availableFT}</strong>
@@ -418,44 +372,33 @@ export default function PlannerPage() {
             </div>
           </section>
 
-          {/* Right Desktop Panel: Full Vertical Substitutes Bench with Fixtures */}
-          <VerticalBenchBar benchPicks={benchPicks} />
+          {/* Right Desktop Panel: Vertical Substitutes Bench */}
+          <aside className="hidden lg:flex flex-col w-48 xl:w-56 2xl:w-64 flex-shrink-0 lg:h-full lg:overflow-hidden select-none">
+            <VerticalBenchBar benchPicks={benchPicks} />
+          </aside>
         </div>
       ) : (
-        <div className="w-[98vw] py-2 flex flex-col items-center animate-in fade-in duration-200">
+        /* Player Projections & Metrics Matrix View */
+        <div className="w-full max-w-[99vw] px-2 sm:px-4 py-2 animate-in fade-in duration-200">
           <PlayerMatrixView />
         </div>
       )}
 
+      {/* Global Drawers & Modals */}
       <PlayerMarketDrawer />
-
-      <TeamImportModal 
-        isOpen={isImportModalOpen} 
-        onClose={() => setIsImportModalOpen(false)} 
-      />
-
-      <OverridesModal 
-        isOpen={isOverridesModalOpen} 
-        onClose={() => setIsOverridesModalOpen(false)} 
-      />
-
-      <SavePlanModal 
-        isOpen={isSaveModalOpen} 
-        onClose={() => setIsSaveModalOpen(false)} 
-      />
-
+      <TeamImportModal isOpen={isImportModalOpen} onClose={() => setIsImportModalOpen(false)} />
+      <OverridesModal isOpen={isOverridesModalOpen} onClose={() => setIsOverridesModalOpen(false)} />
+      <SavePlanModal isOpen={isSaveModalOpen} onClose={() => setIsSaveModalOpen(false)} />
+      <AiScoutModal />
+      <PlayerDetailModal />
       <MobileMenuDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        onOpenImport={() => setIsImportModalOpen(true)}
-        onOpenSave={() => setIsSaveModalOpen(true)}
-        onOpenOverrides={() => setIsOverridesModalOpen(true)}
-        onLogout={handleLogout}
+        onOpenImport={() => { setIsMobileMenuOpen(false); setIsImportModalOpen(true); }}
+        onOpenSave={() => { setIsMobileMenuOpen(false); setIsSaveModalOpen(true); }}
+        onOpenOverrides={() => { setIsMobileMenuOpen(false); setIsOverridesModalOpen(true); }}
+        onLogout={() => { setIsMobileMenuOpen(false); handleLogout(); }}
       />
-
-      <AiScoutModal />
-
-      <PlayerDetailModal />
     </main>
   );
 }

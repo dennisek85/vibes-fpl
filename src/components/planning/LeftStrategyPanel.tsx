@@ -14,7 +14,7 @@ import {
   AlertCircle,
   Gauge
 } from 'lucide-react';
-import { calculateSquadRating } from '@/utils/aiSquadRating';
+import { useSquadRating } from '@/hooks/useSquadRating';
 
 const CHIPS: Array<{ id: ChipType; label: string; color: string; desc: string }> = [
   { id: 'wildcard', label: 'WC', color: 'text-purple-300 border-purple-500/30', desc: 'Wildcard' },
@@ -42,9 +42,6 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
     toggleAiPredictions,
     optimizeSquadLineup,
     openScoutModal,
-    players,
-    playerMap,
-    getPlayerGameweekXp
   } = usePlannerStore();
 
   const [optResult, setOptResult] = useState<any | null>(null);
@@ -54,22 +51,7 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
   const activePlan = gameweekPlans[selectedGameweek];
   const activeChip = activePlan?.chip || 'none';
 
-  const squadRating = useMemo(() => {
-    if (!showAiPredictions || !activePlan?.squad) return null;
-    const currentVal = activePlan.squad.reduce((s, p) => s + (playerMap.get(p.element)?.now_cost || 0), 0);
-    const budget = currentVal + (activePlan.calculatedBank || 0);
-
-    return calculateSquadRating(
-      activePlan.squad,
-      players,
-      playerMap,
-      selectedGameweek,
-      getPlayerGameweekXp,
-      fixtureHorizon,
-      budget,
-      activePlan.availableTransfers || 1
-    );
-  }, [showAiPredictions, activePlan?.squad, activePlan?.calculatedBank, activePlan?.availableTransfers, players, playerMap, selectedGameweek, getPlayerGameweekXp, fixtureHorizon]);
+  const squadRating = useSquadRating();
 
   const getChipPlannedGw = (chipId: ChipType): number | null => {
     for (const [gwStr, plan] of Object.entries(gameweekPlans)) {

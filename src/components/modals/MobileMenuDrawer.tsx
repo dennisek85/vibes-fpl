@@ -17,7 +17,7 @@ import {
   Layers,
   Gauge
 } from 'lucide-react';
-import { calculateSquadRating } from '@/utils/aiSquadRating';
+import { useSquadRating } from '@/hooks/useSquadRating';
 
 interface MobileMenuDrawerProps {
   isOpen: boolean;
@@ -76,22 +76,7 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
     return null;
   };
 
-  const squadRating = React.useMemo(() => {
-    if (!showAiPredictions || !activePlan?.squad) return null;
-    const currentVal = activePlan.squad.reduce((s, p) => s + (playerMap.get(p.element)?.now_cost || 0), 0);
-    const budget = currentVal + (activePlan.calculatedBank || 0);
-
-    return calculateSquadRating(
-      activePlan.squad,
-      players,
-      playerMap,
-      selectedGameweek,
-      getPlayerGameweekXp,
-      fixtureHorizon,
-      budget,
-      activePlan.availableTransfers || 1
-    );
-  }, [showAiPredictions, activePlan?.squad, activePlan?.calculatedBank, activePlan?.availableTransfers, players, playerMap, selectedGameweek, getPlayerGameweekXp, fixtureHorizon]);
+  const squadRating = useSquadRating();
 
   if (!isOpen) return null;
 
