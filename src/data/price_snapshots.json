@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-30T17:16:37.038Z",
+  "lastUpdated": "2026-08-30T20:04:37.458Z",
   "lastPriceChangeDate": "2026-08-30",
   "baselines": {
     "1": {
@@ -3739,6 +3739,24 @@
       "transfersIn": 443,
       "transfersOut": 32,
       "timestamp": 1788081676612
+    },
+    "624": {
+      "cost": 50,
+      "transfersIn": 0,
+      "transfersOut": 0,
+      "timestamp": 1788120277457
+    },
+    "625": {
+      "cost": 40,
+      "transfersIn": 0,
+      "transfersOut": 0,
+      "timestamp": 1788120277457
+    },
+    "626": {
+      "cost": 45,
+      "transfersIn": 0,
+      "transfersOut": 0,
+      "timestamp": 1788120277457
     }
   },
   "hourlyHistory": {
@@ -3760,6 +3778,12 @@
         "transfersIn": 35888,
         "transfersOut": 32941,
         "net": 513
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 43441,
+        "transfersOut": 45992,
+        "net": -4985
       }
     ],
     "2": [
@@ -3780,6 +3804,12 @@
         "transfersIn": 153,
         "transfersOut": 244,
         "net": -16
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 184,
+        "transfersOut": 299,
+        "net": -40
       }
     ],
     "3": [
@@ -3800,6 +3830,12 @@
         "transfersIn": 30,
         "transfersOut": 86,
         "net": -20
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 35,
+        "transfersOut": 109,
+        "net": -38
       }
     ],
     "4": [
@@ -3820,6 +3856,12 @@
         "transfersIn": 11658,
         "transfersOut": 57276,
         "net": -14125
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 13741,
+        "transfersOut": 76656,
+        "net": -31422
       }
     ],
     "5": [
@@ -3840,6 +3882,12 @@
         "transfersIn": 156,
         "transfersOut": 716,
         "net": -150
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 202,
+        "transfersOut": 865,
+        "net": -253
       }
     ],
     "6": [
@@ -3860,6 +3908,12 @@
         "transfersIn": 444,
         "transfersOut": 1771,
         "net": -389
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 517,
+        "transfersOut": 2111,
+        "net": -656
       }
     ],
     "7": [
@@ -3880,6 +3934,12 @@
         "transfersIn": 1777,
         "transfersOut": 2314,
         "net": -298
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2222,
+        "transfersOut": 2909,
+        "net": -448
       }
     ],
     "8": [
@@ -3900,6 +3960,12 @@
         "transfersIn": 53171,
         "transfersOut": 20681,
         "net": 9491
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 66529,
+        "transfersOut": 29594,
+        "net": 13936
       }
     ],
     "9": [
@@ -3920,6 +3986,12 @@
         "transfersIn": 1618,
         "transfersOut": 5304,
         "net": -1278
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2042,
+        "transfersOut": 6619,
+        "net": -2169
       }
     ],
     "10": [
@@ -3940,6 +4012,12 @@
         "transfersIn": 25246,
         "transfersOut": 17035,
         "net": 3263
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 31330,
+        "transfersOut": 22038,
+        "net": 4344
       }
     ],
     "11": [
@@ -3960,6 +4038,12 @@
         "transfersIn": 3090,
         "transfersOut": 14360,
         "net": -2783
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3936,
+        "transfersOut": 17680,
+        "net": -5257
       }
     ],
     "12": [
@@ -3980,6 +4064,12 @@
         "transfersIn": 10364,
         "transfersOut": 17299,
         "net": -2614
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 11909,
+        "transfersOut": 24173,
+        "net": -7943
       }
     ],
     "13": [
@@ -4000,6 +4090,12 @@
         "transfersIn": 5499,
         "transfersOut": 44111,
         "net": -11879
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6517,
+        "transfersOut": 55909,
+        "net": -22659
       }
     ],
     "14": [
@@ -4020,6 +4116,12 @@
         "transfersIn": 2192,
         "transfersOut": 7180,
         "net": -1561
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2608,
+        "transfersOut": 8807,
+        "net": -2772
       }
     ],
     "15": [
@@ -4040,6 +4142,12 @@
         "transfersIn": 30094,
         "transfersOut": 17470,
         "net": 2424
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 36570,
+        "transfersOut": 24035,
+        "net": 2335
       }
     ],
     "16": [
@@ -4060,6 +4168,12 @@
         "transfersIn": 460,
         "transfersOut": 1238,
         "net": -272
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 527,
+        "transfersOut": 1521,
+        "net": -488
       }
     ],
     "17": [
@@ -4080,6 +4194,12 @@
         "transfersIn": 931,
         "transfersOut": 3236,
         "net": -798
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1136,
+        "transfersOut": 3917,
+        "net": -1274
       }
     ],
     "18": [
@@ -4100,6 +4220,12 @@
         "transfersIn": 396,
         "transfersOut": 1121,
         "net": -279
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 465,
+        "transfersOut": 1408,
+        "net": -497
       }
     ],
     "19": [
@@ -4120,6 +4246,12 @@
         "transfersIn": 1091,
         "transfersOut": 3620,
         "net": -735
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1441,
+        "transfersOut": 4404,
+        "net": -1169
       }
     ],
     "20": [
@@ -4140,6 +4272,12 @@
         "transfersIn": 239,
         "transfersOut": 472,
         "net": -100
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 288,
+        "transfersOut": 561,
+        "net": -140
       }
     ],
     "21": [
@@ -4160,6 +4298,12 @@
         "transfersIn": 34,
         "transfersOut": 565,
         "net": -162
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 39,
+        "transfersOut": 676,
+        "net": -268
       }
     ],
     "22": [
@@ -4180,6 +4324,12 @@
         "transfersIn": 52,
         "transfersOut": 76,
         "net": -8
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 66,
+        "transfersOut": 93,
+        "net": -11
       }
     ],
     "23": [
@@ -4200,6 +4350,12 @@
         "transfersIn": 54,
         "transfersOut": 47,
         "net": 1
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 63,
+        "transfersOut": 57,
+        "net": 0
       }
     ],
     "24": [
@@ -4220,6 +4376,12 @@
         "transfersIn": 4,
         "transfersOut": 111,
         "net": -30
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4,
+        "transfersOut": 118,
+        "net": -37
       }
     ],
     "25": [
@@ -4240,6 +4402,12 @@
         "transfersIn": 2300,
         "transfersOut": 27168,
         "net": -8004
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2790,
+        "transfersOut": 33342,
+        "net": -13688
       }
     ],
     "26": [
@@ -4260,6 +4428,12 @@
         "transfersIn": 17817,
         "transfersOut": 19269,
         "net": -1535
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 21802,
+        "transfersOut": 24686,
+        "net": -2967
       }
     ],
     "27": [
@@ -4280,6 +4454,12 @@
         "transfersIn": 1040,
         "transfersOut": 1710,
         "net": -407
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1214,
+        "transfersOut": 2149,
+        "net": -672
       }
     ],
     "28": [
@@ -4300,6 +4480,12 @@
         "transfersIn": 11808,
         "transfersOut": 5232,
         "net": 1898
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 16971,
+        "transfersOut": 9084,
+        "net": 5205
       }
     ],
     "29": [
@@ -4320,6 +4506,12 @@
         "transfersIn": 598,
         "transfersOut": 344,
         "net": 90
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 824,
+        "transfersOut": 450,
+        "net": 210
       }
     ],
     "30": [
@@ -4340,6 +4532,12 @@
         "transfersIn": 0,
         "transfersOut": 696,
         "net": -194
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 824,
+        "net": -322
       }
     ],
     "31": [
@@ -4360,6 +4558,12 @@
         "transfersIn": 23466,
         "transfersOut": 37750,
         "net": -5266
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 30222,
+        "transfersOut": 46576,
+        "net": -7336
       }
     ],
     "32": [
@@ -4380,6 +4584,12 @@
         "transfersIn": 4841,
         "transfersOut": 15745,
         "net": -4043
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6262,
+        "transfersOut": 20014,
+        "net": -6891
       }
     ],
     "33": [
@@ -4400,6 +4610,12 @@
         "transfersIn": 673,
         "transfersOut": 708,
         "net": -41
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 864,
+        "transfersOut": 924,
+        "net": -66
       }
     ],
     "34": [
@@ -4420,6 +4636,12 @@
         "transfersIn": 430,
         "transfersOut": 815,
         "net": -126
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 561,
+        "transfersOut": 1013,
+        "net": -193
       }
     ],
     "35": [
@@ -4440,6 +4662,12 @@
         "transfersIn": 204,
         "transfersOut": 251,
         "net": -13
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 275,
+        "transfersOut": 332,
+        "net": -23
       }
     ],
     "36": [
@@ -4460,6 +4688,12 @@
         "transfersIn": 771,
         "transfersOut": 1484,
         "net": -216
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1032,
+        "transfersOut": 1913,
+        "net": -384
       }
     ],
     "37": [
@@ -4480,6 +4714,12 @@
         "transfersIn": 392,
         "transfersOut": 576,
         "net": -41
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 530,
+        "transfersOut": 733,
+        "net": -60
       }
     ],
     "38": [
@@ -4500,6 +4740,12 @@
         "transfersIn": 2987,
         "transfersOut": 3178,
         "net": -150
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4066,
+        "transfersOut": 4064,
+        "net": 43
       }
     ],
     "39": [
@@ -4520,6 +4766,12 @@
         "transfersIn": 0,
         "transfersOut": 1158,
         "net": -326
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 1388,
+        "net": -556
       }
     ],
     "40": [
@@ -4540,6 +4792,12 @@
         "transfersIn": 65839,
         "transfersOut": 46628,
         "net": 20117
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 78285,
+        "transfersOut": 65679,
+        "net": 13512
       }
     ],
     "41": [
@@ -4560,6 +4818,12 @@
         "transfersIn": 2093,
         "transfersOut": 4731,
         "net": -1004
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2525,
+        "transfersOut": 5831,
+        "net": -1672
       }
     ],
     "42": [
@@ -4580,6 +4844,12 @@
         "transfersIn": 158,
         "transfersOut": 293,
         "net": -46
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 180,
+        "transfersOut": 338,
+        "net": -69
       }
     ],
     "43": [
@@ -4600,6 +4870,12 @@
         "transfersIn": 3196,
         "transfersOut": 9965,
         "net": -2557
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3815,
+        "transfersOut": 13546,
+        "net": -5519
       }
     ],
     "44": [
@@ -4620,6 +4896,12 @@
         "transfersIn": 320,
         "transfersOut": 619,
         "net": -90
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 394,
+        "transfersOut": 755,
+        "net": -152
       }
     ],
     "45": [
@@ -4640,6 +4922,12 @@
         "transfersIn": 2829,
         "transfersOut": 8597,
         "net": -2149
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3441,
+        "transfersOut": 10786,
+        "net": -3726
       }
     ],
     "46": [
@@ -4660,6 +4948,12 @@
         "transfersIn": 732,
         "transfersOut": 700,
         "net": -19
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 914,
+        "transfersOut": 891,
+        "net": -28
       }
     ],
     "47": [
@@ -4680,6 +4974,12 @@
         "transfersIn": 958,
         "transfersOut": 1262,
         "net": -144
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1214,
+        "transfersOut": 1575,
+        "net": -201
       }
     ],
     "48": [
@@ -4700,6 +5000,12 @@
         "transfersIn": 45,
         "transfersOut": 160,
         "net": -36
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 56,
+        "transfersOut": 196,
+        "net": -61
       }
     ],
     "49": [
@@ -4720,6 +5026,12 @@
         "transfersIn": 0,
         "transfersOut": 21,
         "net": -9
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 26,
+        "net": -14
       }
     ],
     "50": [
@@ -4740,6 +5052,12 @@
         "transfersIn": 1740,
         "transfersOut": 1787,
         "net": -75
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2410,
+        "transfersOut": 2318,
+        "net": 64
       }
     ],
     "51": [
@@ -4760,6 +5078,12 @@
         "transfersIn": 4236,
         "transfersOut": 2005,
         "net": 504
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5587,
+        "transfersOut": 2627,
+        "net": 1233
       }
     ],
     "52": [
@@ -4780,6 +5104,12 @@
         "transfersIn": 119,
         "transfersOut": 179,
         "net": -18
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 149,
+        "transfersOut": 225,
+        "net": -34
       }
     ],
     "53": [
@@ -4800,6 +5130,12 @@
         "transfersIn": 125,
         "transfersOut": 1685,
         "net": -448
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 142,
+        "transfersOut": 2000,
+        "net": -746
       }
     ],
     "54": [
@@ -4820,6 +5156,12 @@
         "transfersIn": 17,
         "transfersOut": 337,
         "net": -85
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 20,
+        "transfersOut": 395,
+        "net": -140
       }
     ],
     "55": [
@@ -4840,6 +5182,12 @@
         "transfersIn": 1937,
         "transfersOut": 52264,
         "net": -14392
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2341,
+        "transfersOut": 63902,
+        "net": -25626
       }
     ],
     "56": [
@@ -4860,6 +5208,12 @@
         "transfersIn": 119,
         "transfersOut": 731,
         "net": -190
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 145,
+        "transfersOut": 868,
+        "net": -301
       }
     ],
     "57": [
@@ -4880,6 +5234,12 @@
         "transfersIn": 8948,
         "transfersOut": 5332,
         "net": 1537
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 12079,
+        "transfersOut": 7100,
+        "net": 2900
       }
     ],
     "58": [
@@ -4900,6 +5260,12 @@
         "transfersIn": 5334,
         "transfersOut": 3402,
         "net": 445
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 7693,
+        "transfersOut": 4364,
+        "net": 1842
       }
     ],
     "59": [
@@ -4920,6 +5286,12 @@
         "transfersIn": 0,
         "transfersOut": 915,
         "net": -201
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 1069,
+        "net": -355
       }
     ],
     "60": [
@@ -4940,6 +5312,12 @@
         "transfersIn": 1787,
         "transfersOut": 2057,
         "net": -80
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2125,
+        "transfersOut": 2635,
+        "net": -320
       }
     ],
     "61": [
@@ -4960,6 +5338,12 @@
         "transfersIn": 3755,
         "transfersOut": 7067,
         "net": -1087
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4386,
+        "transfersOut": 9351,
+        "net": -2740
       }
     ],
     "62": [
@@ -4980,6 +5364,12 @@
         "transfersIn": 538,
         "transfersOut": 968,
         "net": -214
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 636,
+        "transfersOut": 1199,
+        "net": -347
       }
     ],
     "63": [
@@ -5000,6 +5390,12 @@
         "transfersIn": 22,
         "transfersOut": 62,
         "net": -8
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 28,
+        "transfersOut": 73,
+        "net": -13
       }
     ],
     "64": [
@@ -5020,6 +5416,12 @@
         "transfersIn": 381,
         "transfersOut": 383,
         "net": -40
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 501,
+        "transfersOut": 499,
+        "net": -36
       }
     ],
     "65": [
@@ -5040,6 +5442,12 @@
         "transfersIn": 27,
         "transfersOut": 124,
         "net": -23
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 33,
+        "transfersOut": 143,
+        "net": -36
       }
     ],
     "66": [
@@ -5060,6 +5468,12 @@
         "transfersIn": 703,
         "transfersOut": 502,
         "net": 217
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1118,
+        "transfersOut": 627,
+        "net": 507
       }
     ],
     "67": [
@@ -5080,6 +5494,12 @@
         "transfersIn": 3152,
         "transfersOut": 13266,
         "net": -3986
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3607,
+        "transfersOut": 16752,
+        "net": -7017
       }
     ],
     "68": [
@@ -5100,6 +5520,12 @@
         "transfersIn": 9614,
         "transfersOut": 9469,
         "net": -2208
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10602,
+        "transfersOut": 12684,
+        "net": -4435
       }
     ],
     "69": [
@@ -5120,6 +5546,12 @@
         "transfersIn": 13706,
         "transfersOut": 3586,
         "net": 4773
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 16949,
+        "transfersOut": 4652,
+        "net": 6950
       }
     ],
     "70": [
@@ -5140,6 +5572,12 @@
         "transfersIn": 2673,
         "transfersOut": 4828,
         "net": -1006
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3133,
+        "transfersOut": 6304,
+        "net": -2022
       }
     ],
     "71": [
@@ -5160,6 +5598,12 @@
         "transfersIn": 1512,
         "transfersOut": 659,
         "net": 305
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1993,
+        "transfersOut": 925,
+        "net": 520
       }
     ],
     "72": [
@@ -5180,6 +5624,12 @@
         "transfersIn": 110,
         "transfersOut": 374,
         "net": -116
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 132,
+        "transfersOut": 462,
+        "net": -182
       }
     ],
     "73": [
@@ -5200,6 +5650,12 @@
         "transfersIn": 1356,
         "transfersOut": 1106,
         "net": 18
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1758,
+        "transfersOut": 1411,
+        "net": 115
       }
     ],
     "74": [
@@ -5220,6 +5676,12 @@
         "transfersIn": 279,
         "transfersOut": 212,
         "net": 30
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 361,
+        "transfersOut": 261,
+        "net": 63
       }
     ],
     "75": [
@@ -5240,6 +5702,12 @@
         "transfersIn": 247,
         "transfersOut": 118,
         "net": 46
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 320,
+        "transfersOut": 146,
+        "net": 91
       }
     ],
     "76": [
@@ -5260,6 +5728,12 @@
         "transfersIn": 29,
         "transfersOut": 64,
         "net": -11
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 37,
+        "transfersOut": 75,
+        "net": -14
       }
     ],
     "77": [
@@ -5280,6 +5754,12 @@
         "transfersIn": 25,
         "transfersOut": 206,
         "net": -56
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 29,
+        "transfersOut": 241,
+        "net": -87
       }
     ],
     "78": [
@@ -5300,6 +5780,12 @@
         "transfersIn": 89,
         "transfersOut": 2833,
         "net": -772
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 103,
+        "transfersOut": 3332,
+        "net": -1257
       }
     ],
     "79": [
@@ -5320,6 +5806,12 @@
         "transfersIn": 20708,
         "transfersOut": 8107,
         "net": 3099
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 24311,
+        "transfersOut": 10518,
+        "net": 4291
       }
     ],
     "80": [
@@ -5340,6 +5832,12 @@
         "transfersIn": 0,
         "transfersOut": 166,
         "net": -41
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 205,
+        "net": -80
       }
     ],
     "81": [
@@ -5360,6 +5858,12 @@
         "transfersIn": 377,
         "transfersOut": 452,
         "net": -74
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 439,
+        "transfersOut": 547,
+        "net": -107
       }
     ],
     "82": [
@@ -5380,6 +5884,12 @@
         "transfersIn": 21454,
         "transfersOut": 7848,
         "net": 4776
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 26616,
+        "transfersOut": 11080,
+        "net": 6706
       }
     ],
     "83": [
@@ -5400,6 +5910,12 @@
         "transfersIn": 180,
         "transfersOut": 245,
         "net": -48
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 230,
+        "transfersOut": 326,
+        "net": -79
       }
     ],
     "84": [
@@ -5420,6 +5936,12 @@
         "transfersIn": 6292,
         "transfersOut": 3234,
         "net": 1336
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 7538,
+        "transfersOut": 4383,
+        "net": 1433
       }
     ],
     "85": [
@@ -5440,6 +5962,12 @@
         "transfersIn": 37,
         "transfersOut": 780,
         "net": -207
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 45,
+        "transfersOut": 921,
+        "net": -340
       }
     ],
     "86": [
@@ -5460,6 +5988,12 @@
         "transfersIn": 16451,
         "transfersOut": 3358,
         "net": 8108
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 22335,
+        "transfersOut": 4912,
+        "net": 12438
       }
     ],
     "87": [
@@ -5480,6 +6014,12 @@
         "transfersIn": 19973,
         "transfersOut": 6591,
         "net": 4613
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 26446,
+        "transfersOut": 8757,
+        "net": 8920
       }
     ],
     "88": [
@@ -5500,6 +6040,12 @@
         "transfersIn": 42039,
         "transfersOut": 10526,
         "net": 10727
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 53177,
+        "transfersOut": 15281,
+        "net": 17110
       }
     ],
     "89": [
@@ -5520,6 +6066,12 @@
         "transfersIn": 125,
         "transfersOut": 422,
         "net": -156
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 157,
+        "transfersOut": 529,
+        "net": -231
       }
     ],
     "90": [
@@ -5540,6 +6092,12 @@
         "transfersIn": 171,
         "transfersOut": 200,
         "net": -46
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 214,
+        "transfersOut": 245,
+        "net": -48
       }
     ],
     "91": [
@@ -5560,6 +6118,12 @@
         "transfersIn": 182,
         "transfersOut": 277,
         "net": -58
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 209,
+        "transfersOut": 331,
+        "net": -85
       }
     ],
     "92": [
@@ -5580,6 +6144,12 @@
         "transfersIn": 35,
         "transfersOut": 61,
         "net": -16
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 45,
+        "transfersOut": 76,
+        "net": -21
       }
     ],
     "93": [
@@ -5600,6 +6170,12 @@
         "transfersIn": 35,
         "transfersOut": 236,
         "net": -94
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 45,
+        "transfersOut": 315,
+        "net": -163
       }
     ],
     "94": [
@@ -5620,6 +6196,12 @@
         "transfersIn": 12828,
         "transfersOut": 8759,
         "net": 6954
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 18299,
+        "transfersOut": 10819,
+        "net": 10365
       }
     ],
     "95": [
@@ -5640,6 +6222,12 @@
         "transfersIn": 1286,
         "transfersOut": 5213,
         "net": -2509
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1413,
+        "transfersOut": 7045,
+        "net": -4214
       }
     ],
     "96": [
@@ -5660,6 +6248,12 @@
         "transfersIn": 732,
         "transfersOut": 1550,
         "net": -217
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 915,
+        "transfersOut": 1949,
+        "net": -433
       }
     ],
     "97": [
@@ -5680,6 +6274,12 @@
         "transfersIn": 492,
         "transfersOut": 933,
         "net": -595
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 499,
+        "transfersOut": 1414,
+        "net": -1069
       }
     ],
     "98": [
@@ -5700,6 +6300,12 @@
         "transfersIn": 9229,
         "transfersOut": 2441,
         "net": 1060
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10800,
+        "transfersOut": 3410,
+        "net": 1662
       }
     ],
     "99": [
@@ -5719,6 +6325,12 @@
         "time": 1788110197038,
         "transfersIn": 10,
         "transfersOut": 10,
+        "net": 0
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 12,
+        "transfersOut": 12,
         "net": 0
       }
     ],
@@ -5740,6 +6352,12 @@
         "transfersIn": 129,
         "transfersOut": 78,
         "net": 2
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 166,
+        "transfersOut": 102,
+        "net": 15
       }
     ],
     "101": [
@@ -5760,6 +6378,12 @@
         "transfersIn": 76,
         "transfersOut": 219,
         "net": -57
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 93,
+        "transfersOut": 258,
+        "net": -79
       }
     ],
     "102": [
@@ -5780,6 +6404,12 @@
         "transfersIn": 212,
         "transfersOut": 3664,
         "net": -1563
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 280,
+        "transfersOut": 4776,
+        "net": -2607
       }
     ],
     "103": [
@@ -5800,6 +6430,12 @@
         "transfersIn": 42,
         "transfersOut": 121,
         "net": -30
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 47,
+        "transfersOut": 157,
+        "net": -61
       }
     ],
     "104": [
@@ -5820,6 +6456,12 @@
         "transfersIn": 114,
         "transfersOut": 778,
         "net": -238
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 141,
+        "transfersOut": 946,
+        "net": -379
       }
     ],
     "105": [
@@ -5840,6 +6482,12 @@
         "transfersIn": 454,
         "transfersOut": 695,
         "net": -144
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 530,
+        "transfersOut": 927,
+        "net": -300
       }
     ],
     "106": [
@@ -5860,6 +6508,12 @@
         "transfersIn": 13902,
         "transfersOut": 62683,
         "net": -24845
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 15924,
+        "transfersOut": 83963,
+        "net": -44103
       }
     ],
     "107": [
@@ -5880,6 +6534,12 @@
         "transfersIn": 4026,
         "transfersOut": 2470,
         "net": 439
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6040,
+        "transfersOut": 3195,
+        "net": 1728
       }
     ],
     "108": [
@@ -5900,6 +6560,12 @@
         "transfersIn": 1244,
         "transfersOut": 1486,
         "net": -359
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1531,
+        "transfersOut": 1913,
+        "net": -499
       }
     ],
     "109": [
@@ -5920,6 +6586,12 @@
         "transfersIn": 43699,
         "transfersOut": 22893,
         "net": 2556
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 55974,
+        "transfersOut": 30193,
+        "net": 7531
       }
     ],
     "110": [
@@ -5940,6 +6612,12 @@
         "transfersIn": 630,
         "transfersOut": 3663,
         "net": -752
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 775,
+        "transfersOut": 4409,
+        "net": -1353
       }
     ],
     "111": [
@@ -5960,6 +6638,12 @@
         "transfersIn": 7151,
         "transfersOut": 4374,
         "net": 435
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10042,
+        "transfersOut": 5789,
+        "net": 1911
       }
     ],
     "112": [
@@ -5980,6 +6664,12 @@
         "transfersIn": 5409,
         "transfersOut": 46602,
         "net": -15564
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6284,
+        "transfersOut": 58404,
+        "net": -26491
       }
     ],
     "113": [
@@ -6000,6 +6690,12 @@
         "transfersIn": 2475,
         "transfersOut": 6087,
         "net": -1026
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3606,
+        "transfersOut": 7902,
+        "net": -1710
       }
     ],
     "114": [
@@ -6020,6 +6716,12 @@
         "transfersIn": 1770,
         "transfersOut": 746,
         "net": 57
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2055,
+        "transfersOut": 997,
+        "net": 91
       }
     ],
     "115": [
@@ -6040,6 +6742,12 @@
         "transfersIn": 166035,
         "transfersOut": 13637,
         "net": 40757
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 208379,
+        "transfersOut": 20426,
+        "net": 76312
       }
     ],
     "116": [
@@ -6060,6 +6768,12 @@
         "transfersIn": 4940,
         "transfersOut": 2117,
         "net": 202
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5992,
+        "transfersOut": 3036,
+        "net": 335
       }
     ],
     "117": [
@@ -6080,6 +6794,12 @@
         "transfersIn": 57,
         "transfersOut": 62,
         "net": -14
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 70,
+        "transfersOut": 71,
+        "net": -10
       }
     ],
     "118": [
@@ -6100,6 +6820,12 @@
         "transfersIn": 157,
         "transfersOut": 199,
         "net": -52
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 180,
+        "transfersOut": 246,
+        "net": -76
       }
     ],
     "119": [
@@ -6120,6 +6846,12 @@
         "transfersIn": 69,
         "transfersOut": 93,
         "net": -18
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 93,
+        "transfersOut": 127,
+        "net": -28
       }
     ],
     "120": [
@@ -6140,6 +6872,12 @@
         "transfersIn": 211,
         "transfersOut": 192,
         "net": -32
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 247,
+        "transfersOut": 249,
+        "net": -53
       }
     ],
     "121": [
@@ -6160,6 +6898,12 @@
         "transfersIn": 49,
         "transfersOut": 303,
         "net": -70
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 55,
+        "transfersOut": 361,
+        "net": -122
       }
     ],
     "122": [
@@ -6180,6 +6924,12 @@
         "transfersIn": 27,
         "transfersOut": 627,
         "net": -145
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 31,
+        "transfersOut": 730,
+        "net": -244
       }
     ],
     "123": [
@@ -6200,6 +6950,12 @@
         "transfersIn": 3485,
         "transfersOut": 32203,
         "net": -7573
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3748,
+        "transfersOut": 38198,
+        "net": -13305
       }
     ],
     "124": [
@@ -6220,6 +6976,12 @@
         "transfersIn": 24127,
         "transfersOut": 22448,
         "net": 10232
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 45281,
+        "transfersOut": 26071,
+        "net": 27763
       }
     ],
     "125": [
@@ -6240,6 +7002,12 @@
         "transfersIn": 2005,
         "transfersOut": 6139,
         "net": -2251
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2245,
+        "transfersOut": 7713,
+        "net": -3585
       }
     ],
     "126": [
@@ -6260,6 +7028,12 @@
         "transfersIn": 274,
         "transfersOut": 414,
         "net": -106
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 327,
+        "transfersOut": 525,
+        "net": -164
       }
     ],
     "127": [
@@ -6280,6 +7054,12 @@
         "transfersIn": 15233,
         "transfersOut": 7660,
         "net": 3917
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 24878,
+        "transfersOut": 10184,
+        "net": 11038
       }
     ],
     "128": [
@@ -6300,6 +7080,12 @@
         "transfersIn": 0,
         "transfersOut": 33,
         "net": -11
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 35,
+        "net": -13
       }
     ],
     "129": [
@@ -6320,6 +7106,12 @@
         "transfersIn": 1151,
         "transfersOut": 2852,
         "net": -1272
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1231,
+        "transfersOut": 4164,
+        "net": -2504
       }
     ],
     "130": [
@@ -6340,6 +7132,12 @@
         "transfersIn": 4125,
         "transfersOut": 1419,
         "net": 443
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4794,
+        "transfersOut": 1957,
+        "net": 574
       }
     ],
     "131": [
@@ -6360,6 +7158,12 @@
         "transfersIn": 560,
         "transfersOut": 1489,
         "net": -283
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 694,
+        "transfersOut": 1847,
+        "net": -507
       }
     ],
     "132": [
@@ -6380,6 +7184,12 @@
         "transfersIn": 0,
         "transfersOut": 320,
         "net": -93
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 381,
+        "net": -154
       }
     ],
     "133": [
@@ -6400,6 +7210,12 @@
         "transfersIn": 0,
         "transfersOut": 11,
         "net": -5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 15,
+        "net": -9
       }
     ],
     "134": [
@@ -6420,6 +7236,12 @@
         "transfersIn": 672,
         "transfersOut": 711,
         "net": -53
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 928,
+        "transfersOut": 933,
+        "net": -19
       }
     ],
     "135": [
@@ -6440,6 +7262,12 @@
         "transfersIn": 113,
         "transfersOut": 313,
         "net": -98
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 138,
+        "transfersOut": 419,
+        "net": -179
       }
     ],
     "136": [
@@ -6460,6 +7288,12 @@
         "transfersIn": 2722,
         "transfersOut": 5430,
         "net": -2353
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3039,
+        "transfersOut": 7270,
+        "net": -3876
       }
     ],
     "137": [
@@ -6480,6 +7314,12 @@
         "transfersIn": 16,
         "transfersOut": 57,
         "net": -13
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 18,
+        "transfersOut": 64,
+        "net": -18
       }
     ],
     "138": [
@@ -6500,6 +7340,12 @@
         "transfersIn": 1939,
         "transfersOut": 668,
         "net": 1015
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3337,
+        "transfersOut": 939,
+        "net": 2142
       }
     ],
     "139": [
@@ -6520,6 +7366,12 @@
         "transfersIn": 167,
         "transfersOut": 210,
         "net": -12
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 207,
+        "transfersOut": 256,
+        "net": -18
       }
     ],
     "140": [
@@ -6540,6 +7392,12 @@
         "transfersIn": 1118,
         "transfersOut": 16247,
         "net": -10361
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1195,
+        "transfersOut": 20627,
+        "net": -14664
       }
     ],
     "141": [
@@ -6560,6 +7418,12 @@
         "transfersIn": 0,
         "transfersOut": 83,
         "net": -31
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 99,
+        "net": -47
       }
     ],
     "142": [
@@ -6580,6 +7444,12 @@
         "transfersIn": 11277,
         "transfersOut": 38345,
         "net": -20930
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 12626,
+        "transfersOut": 51738,
+        "net": -32974
       }
     ],
     "143": [
@@ -6600,6 +7470,12 @@
         "transfersIn": 0,
         "transfersOut": 1225,
         "net": -323
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 1471,
+        "net": -569
       }
     ],
     "144": [
@@ -6620,6 +7496,12 @@
         "transfersIn": 3279,
         "transfersOut": 3862,
         "net": -444
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3978,
+        "transfersOut": 5183,
+        "net": -1066
       }
     ],
     "145": [
@@ -6640,6 +7522,12 @@
         "transfersIn": 775,
         "transfersOut": 240,
         "net": 299
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 957,
+        "transfersOut": 314,
+        "net": 407
       }
     ],
     "146": [
@@ -6660,6 +7548,12 @@
         "transfersIn": 0,
         "transfersOut": 274,
         "net": -52
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 305,
+        "net": -83
       }
     ],
     "147": [
@@ -6680,6 +7574,12 @@
         "transfersIn": 64,
         "transfersOut": 514,
         "net": -242
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 79,
+        "transfersOut": 659,
+        "net": -372
       }
     ],
     "148": [
@@ -6700,6 +7600,12 @@
         "transfersIn": 4267,
         "transfersOut": 1538,
         "net": 2912
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6333,
+        "transfersOut": 2105,
+        "net": 4411
       }
     ],
     "149": [
@@ -6720,6 +7626,12 @@
         "transfersIn": 2701,
         "transfersOut": 6175,
         "net": -1788
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3201,
+        "transfersOut": 8209,
+        "net": -3322
       }
     ],
     "150": [
@@ -6740,6 +7652,12 @@
         "transfersIn": 24,
         "transfersOut": 1279,
         "net": -301
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 24,
+        "transfersOut": 1441,
+        "net": -463
       }
     ],
     "151": [
@@ -6760,6 +7678,12 @@
         "transfersIn": 2036,
         "transfersOut": 1632,
         "net": -489
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2300,
+        "transfersOut": 2010,
+        "net": -603
       }
     ],
     "152": [
@@ -6780,6 +7704,12 @@
         "transfersIn": 265,
         "transfersOut": 19982,
         "net": -7284
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 301,
+        "transfersOut": 24326,
+        "net": -11592
       }
     ],
     "153": [
@@ -6800,6 +7730,12 @@
         "transfersIn": 310,
         "transfersOut": 233,
         "net": 20
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 396,
+        "transfersOut": 279,
+        "net": 60
       }
     ],
     "154": [
@@ -6820,6 +7756,12 @@
         "transfersIn": 109437,
         "transfersOut": 24239,
         "net": 29901
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 128333,
+        "transfersOut": 39228,
+        "net": 33808
       }
     ],
     "155": [
@@ -6840,6 +7782,12 @@
         "transfersIn": 2287,
         "transfersOut": 34445,
         "net": -16471
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2644,
+        "transfersOut": 43806,
+        "net": -25475
       }
     ],
     "156": [
@@ -6860,6 +7808,12 @@
         "transfersIn": 5037,
         "transfersOut": 4911,
         "net": 3089
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6722,
+        "transfersOut": 5825,
+        "net": 3860
       }
     ],
     "157": [
@@ -6880,6 +7834,12 @@
         "transfersIn": 1349,
         "transfersOut": 8424,
         "net": -4096
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1512,
+        "transfersOut": 10928,
+        "net": -6437
       }
     ],
     "158": [
@@ -6900,6 +7860,12 @@
         "transfersIn": 90,
         "transfersOut": 230,
         "net": -84
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 98,
+        "transfersOut": 309,
+        "net": -155
       }
     ],
     "159": [
@@ -6920,6 +7886,12 @@
         "transfersIn": 1288,
         "transfersOut": 24674,
         "net": -6531
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1552,
+        "transfersOut": 30389,
+        "net": -11982
       }
     ],
     "160": [
@@ -6940,6 +7912,12 @@
         "transfersIn": 605,
         "transfersOut": 2468,
         "net": -609
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 742,
+        "transfersOut": 3005,
+        "net": -1009
       }
     ],
     "161": [
@@ -6960,6 +7938,12 @@
         "transfersIn": 1686,
         "transfersOut": 335,
         "net": 1280
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2813,
+        "transfersOut": 526,
+        "net": 2216
       }
     ],
     "162": [
@@ -6980,6 +7964,12 @@
         "transfersIn": 2334,
         "transfersOut": 4811,
         "net": -1398
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2730,
+        "transfersOut": 6688,
+        "net": -2879
       }
     ],
     "163": [
@@ -7000,6 +7990,12 @@
         "transfersIn": 453,
         "transfersOut": 698,
         "net": -142
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 596,
+        "transfersOut": 877,
+        "net": -178
       }
     ],
     "164": [
@@ -7020,6 +8016,12 @@
         "transfersIn": 71,
         "transfersOut": 279,
         "net": -104
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 83,
+        "transfersOut": 379,
+        "net": -192
       }
     ],
     "165": [
@@ -7040,6 +8042,12 @@
         "transfersIn": 93890,
         "transfersOut": 23084,
         "net": 43631
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 119556,
+        "transfersOut": 29395,
+        "net": 62986
       }
     ],
     "166": [
@@ -7060,6 +8068,12 @@
         "transfersIn": 16204,
         "transfersOut": 2592,
         "net": 3503
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 19006,
+        "transfersOut": 3277,
+        "net": 5620
       }
     ],
     "167": [
@@ -7080,6 +8094,12 @@
         "transfersIn": 8270,
         "transfersOut": 2467,
         "net": 1558
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10198,
+        "transfersOut": 3089,
+        "net": 2864
       }
     ],
     "168": [
@@ -7100,6 +8120,12 @@
         "transfersIn": 809,
         "transfersOut": 1889,
         "net": -558
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1035,
+        "transfersOut": 2339,
+        "net": -782
       }
     ],
     "169": [
@@ -7120,6 +8146,12 @@
         "transfersIn": 1356,
         "transfersOut": 1249,
         "net": -29
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1894,
+        "transfersOut": 1554,
+        "net": 204
       }
     ],
     "170": [
@@ -7140,6 +8172,12 @@
         "transfersIn": 518,
         "transfersOut": 846,
         "net": -221
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 672,
+        "transfersOut": 1057,
+        "net": -278
       }
     ],
     "171": [
@@ -7160,6 +8198,12 @@
         "transfersIn": 1587,
         "transfersOut": 1889,
         "net": -213
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2061,
+        "transfersOut": 2344,
+        "net": -194
       }
     ],
     "172": [
@@ -7180,6 +8224,12 @@
         "transfersIn": 45,
         "transfersOut": 907,
         "net": -282
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 58,
+        "transfersOut": 1136,
+        "net": -498
       }
     ],
     "173": [
@@ -7200,6 +8250,12 @@
         "transfersIn": 15501,
         "transfersOut": 9679,
         "net": 3398
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 24533,
+        "transfersOut": 12194,
+        "net": 9915
       }
     ],
     "174": [
@@ -7220,6 +8276,12 @@
         "transfersIn": 127,
         "transfersOut": 1257,
         "net": -421
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 170,
+        "transfersOut": 1566,
+        "net": -687
       }
     ],
     "175": [
@@ -7240,6 +8302,12 @@
         "transfersIn": 8330,
         "transfersOut": 24751,
         "net": -5768
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 11327,
+        "transfersOut": 30854,
+        "net": -8874
       }
     ],
     "176": [
@@ -7260,6 +8328,12 @@
         "transfersIn": 426,
         "transfersOut": 1167,
         "net": -219
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 591,
+        "transfersOut": 1454,
+        "net": -341
       }
     ],
     "177": [
@@ -7280,6 +8354,12 @@
         "transfersIn": 25,
         "transfersOut": 376,
         "net": -97
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 31,
+        "transfersOut": 454,
+        "net": -169
       }
     ],
     "178": [
@@ -7300,6 +8380,12 @@
         "transfersIn": 63,
         "transfersOut": 234,
         "net": -63
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 98,
+        "transfersOut": 286,
+        "net": -80
       }
     ],
     "179": [
@@ -7320,6 +8406,12 @@
         "transfersIn": 55,
         "transfersOut": 96,
         "net": -20
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 77,
+        "transfersOut": 122,
+        "net": -24
       }
     ],
     "180": [
@@ -7340,6 +8432,12 @@
         "transfersIn": 95,
         "transfersOut": 968,
         "net": -212
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 146,
+        "transfersOut": 1161,
+        "net": -354
       }
     ],
     "181": [
@@ -7360,6 +8458,12 @@
         "transfersIn": 19,
         "transfersOut": 323,
         "net": -88
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 19,
+        "transfersOut": 368,
+        "net": -133
       }
     ],
     "182": [
@@ -7380,6 +8484,12 @@
         "transfersIn": 407,
         "transfersOut": 1612,
         "net": -344
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 551,
+        "transfersOut": 1979,
+        "net": -567
       }
     ],
     "183": [
@@ -7400,6 +8510,12 @@
         "transfersIn": 218,
         "transfersOut": 533,
         "net": -131
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 262,
+        "transfersOut": 653,
+        "net": -207
       }
     ],
     "184": [
@@ -7420,6 +8536,12 @@
         "transfersIn": 157,
         "transfersOut": 720,
         "net": -189
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 192,
+        "transfersOut": 906,
+        "net": -340
       }
     ],
     "185": [
@@ -7440,6 +8562,12 @@
         "transfersIn": 35,
         "transfersOut": 366,
         "net": -117
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 46,
+        "transfersOut": 438,
+        "net": -178
       }
     ],
     "186": [
@@ -7460,6 +8588,12 @@
         "transfersIn": 79,
         "transfersOut": 415,
         "net": -124
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 85,
+        "transfersOut": 523,
+        "net": -226
       }
     ],
     "187": [
@@ -7480,6 +8614,12 @@
         "transfersIn": 29,
         "transfersOut": 80,
         "net": -9
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 33,
+        "transfersOut": 97,
+        "net": -22
       }
     ],
     "188": [
@@ -7500,6 +8640,12 @@
         "transfersIn": 22,
         "transfersOut": 670,
         "net": -217
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 24,
+        "transfersOut": 817,
+        "net": -362
       }
     ],
     "189": [
@@ -7520,6 +8666,12 @@
         "transfersIn": 329,
         "transfersOut": 795,
         "net": -155
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 458,
+        "transfersOut": 1024,
+        "net": -255
       }
     ],
     "190": [
@@ -7540,6 +8692,12 @@
         "transfersIn": 48,
         "transfersOut": 587,
         "net": -187
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 50,
+        "transfersOut": 731,
+        "net": -329
       }
     ],
     "191": [
@@ -7560,6 +8718,12 @@
         "transfersIn": 365,
         "transfersOut": 540,
         "net": -70
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 490,
+        "transfersOut": 670,
+        "net": -75
       }
     ],
     "192": [
@@ -7580,6 +8744,12 @@
         "transfersIn": 142,
         "transfersOut": 5583,
         "net": -1498
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 142,
+        "transfersOut": 6584,
+        "net": -2499
       }
     ],
     "193": [
@@ -7600,6 +8770,12 @@
         "transfersIn": 29,
         "transfersOut": 1077,
         "net": -298
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 32,
+        "transfersOut": 1276,
+        "net": -494
       }
     ],
     "194": [
@@ -7620,6 +8796,12 @@
         "transfersIn": 5018,
         "transfersOut": 3688,
         "net": 656
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6548,
+        "transfersOut": 4807,
+        "net": 1067
       }
     ],
     "195": [
@@ -7640,6 +8822,12 @@
         "transfersIn": 3364,
         "transfersOut": 4919,
         "net": -949
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4015,
+        "transfersOut": 6138,
+        "net": -1517
       }
     ],
     "196": [
@@ -7660,6 +8848,12 @@
         "transfersIn": 0,
         "transfersOut": 96,
         "net": -27
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 118,
+        "net": -49
       }
     ],
     "197": [
@@ -7680,6 +8874,12 @@
         "transfersIn": 0,
         "transfersOut": 196,
         "net": -66
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 237,
+        "net": -107
       }
     ],
     "198": [
@@ -7700,6 +8900,12 @@
         "transfersIn": 2950,
         "transfersOut": 4113,
         "net": -422
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3717,
+        "transfersOut": 5157,
+        "net": -699
       }
     ],
     "199": [
@@ -7720,6 +8926,12 @@
         "transfersIn": 140,
         "transfersOut": 289,
         "net": -52
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 176,
+        "transfersOut": 351,
+        "net": -78
       }
     ],
     "200": [
@@ -7740,6 +8952,12 @@
         "transfersIn": 15111,
         "transfersOut": 23226,
         "net": -7783
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 16776,
+        "transfersOut": 32698,
+        "net": -15590
       }
     ],
     "201": [
@@ -7760,6 +8978,12 @@
         "transfersIn": 4716,
         "transfersOut": 56156,
         "net": -13613
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5595,
+        "transfersOut": 67275,
+        "net": -23853
       }
     ],
     "202": [
@@ -7780,6 +9004,12 @@
         "transfersIn": 1137,
         "transfersOut": 2621,
         "net": -503
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1354,
+        "transfersOut": 3288,
+        "net": -953
       }
     ],
     "203": [
@@ -7800,6 +9030,12 @@
         "transfersIn": 334,
         "transfersOut": 1269,
         "net": -287
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 390,
+        "transfersOut": 1565,
+        "net": -527
       }
     ],
     "204": [
@@ -7820,6 +9056,12 @@
         "transfersIn": 1927,
         "transfersOut": 16294,
         "net": -4867
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2439,
+        "transfersOut": 20668,
+        "net": -8729
       }
     ],
     "205": [
@@ -7840,6 +9082,12 @@
         "transfersIn": 29,
         "transfersOut": 104,
         "net": -29
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 38,
+        "transfersOut": 131,
+        "net": -47
       }
     ],
     "206": [
@@ -7860,6 +9108,12 @@
         "transfersIn": 56,
         "transfersOut": 563,
         "net": -105
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 72,
+        "transfersOut": 641,
+        "net": -167
       }
     ],
     "207": [
@@ -7880,6 +9134,12 @@
         "transfersIn": 66,
         "transfersOut": 278,
         "net": -73
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 77,
+        "transfersOut": 339,
+        "net": -123
       }
     ],
     "208": [
@@ -7900,6 +9160,12 @@
         "transfersIn": 90,
         "transfersOut": 36371,
         "net": -9183
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 102,
+        "transfersOut": 42076,
+        "net": -14876
       }
     ],
     "209": [
@@ -7920,6 +9186,12 @@
         "transfersIn": 203,
         "transfersOut": 802,
         "net": -204
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 227,
+        "transfersOut": 986,
+        "net": -364
       }
     ],
     "210": [
@@ -7940,6 +9212,12 @@
         "transfersIn": 2977,
         "transfersOut": 3075,
         "net": -239
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3426,
+        "transfersOut": 3856,
+        "net": -571
       }
     ],
     "211": [
@@ -7960,6 +9238,12 @@
         "transfersIn": 1396,
         "transfersOut": 505,
         "net": 172
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1603,
+        "transfersOut": 626,
+        "net": 258
       }
     ],
     "212": [
@@ -7980,6 +9264,12 @@
         "transfersIn": 7760,
         "transfersOut": 29827,
         "net": -7361
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10609,
+        "transfersOut": 37254,
+        "net": -11939
       }
     ],
     "213": [
@@ -8000,6 +9290,12 @@
         "transfersIn": 49,
         "transfersOut": 436,
         "net": -99
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 59,
+        "transfersOut": 519,
+        "net": -172
       }
     ],
     "214": [
@@ -8020,6 +9316,12 @@
         "transfersIn": 1109,
         "transfersOut": 947,
         "net": -53
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1341,
+        "transfersOut": 1208,
+        "net": -82
       }
     ],
     "215": [
@@ -8040,6 +9342,12 @@
         "transfersIn": 24,
         "transfersOut": 53,
         "net": -11
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 30,
+        "transfersOut": 66,
+        "net": -18
       }
     ],
     "216": [
@@ -8060,6 +9368,12 @@
         "transfersIn": 57,
         "transfersOut": 198,
         "net": -56
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 68,
+        "transfersOut": 244,
+        "net": -91
       }
     ],
     "217": [
@@ -8080,6 +9394,12 @@
         "transfersIn": 417,
         "transfersOut": 310,
         "net": 94
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 560,
+        "transfersOut": 383,
+        "net": 164
       }
     ],
     "218": [
@@ -8100,6 +9420,12 @@
         "transfersIn": 82,
         "transfersOut": 353,
         "net": -82
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 105,
+        "transfersOut": 423,
+        "net": -129
       }
     ],
     "219": [
@@ -8120,6 +9446,12 @@
         "transfersIn": 9,
         "transfersOut": 26,
         "net": -4
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 13,
+        "transfersOut": 31,
+        "net": -5
       }
     ],
     "220": [
@@ -8140,6 +9472,12 @@
         "transfersIn": 0,
         "transfersOut": 13,
         "net": -5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 15,
+        "net": -7
       }
     ],
     "221": [
@@ -8160,6 +9498,12 @@
         "transfersIn": 162,
         "transfersOut": 276,
         "net": -40
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 214,
+        "transfersOut": 337,
+        "net": -49
       }
     ],
     "222": [
@@ -8180,6 +9524,12 @@
         "transfersIn": 2097,
         "transfersOut": 2025,
         "net": -259
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2309,
+        "transfersOut": 2465,
+        "net": -487
       }
     ],
     "223": [
@@ -8200,6 +9550,12 @@
         "transfersIn": 818,
         "transfersOut": 91941,
         "net": -21871
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 838,
+        "transfersOut": 105682,
+        "net": -35592
       }
     ],
     "224": [
@@ -8220,6 +9576,12 @@
         "transfersIn": 2466,
         "transfersOut": 1799,
         "net": -20
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3040,
+        "transfersOut": 2246,
+        "net": 107
       }
     ],
     "225": [
@@ -8237,6 +9599,12 @@
       },
       {
         "time": 1788110197038,
+        "transfersIn": 0,
+        "transfersOut": 0,
+        "net": 0
+      },
+      {
+        "time": 1788120277457,
         "transfersIn": 0,
         "transfersOut": 0,
         "net": 0
@@ -8260,6 +9628,12 @@
         "transfersIn": 17587,
         "transfersOut": 12769,
         "net": 1132
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 20874,
+        "transfersOut": 17396,
+        "net": -208
       }
     ],
     "227": [
@@ -8280,6 +9654,12 @@
         "transfersIn": 65,
         "transfersOut": 119,
         "net": -10
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 82,
+        "transfersOut": 147,
+        "net": -21
       }
     ],
     "228": [
@@ -8300,6 +9680,12 @@
         "transfersIn": 68,
         "transfersOut": 109,
         "net": -12
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 84,
+        "transfersOut": 133,
+        "net": -20
       }
     ],
     "229": [
@@ -8320,6 +9706,12 @@
         "transfersIn": 53668,
         "transfersOut": 12965,
         "net": 23771
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 68135,
+        "transfersOut": 17856,
+        "net": 33347
       }
     ],
     "230": [
@@ -8340,6 +9732,12 @@
         "transfersIn": 4835,
         "transfersOut": 3534,
         "net": 589
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5773,
+        "transfersOut": 4647,
+        "net": 414
       }
     ],
     "231": [
@@ -8360,6 +9758,12 @@
         "transfersIn": 512,
         "transfersOut": 8046,
         "net": -2581
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 601,
+        "transfersOut": 9935,
+        "net": -4381
       }
     ],
     "232": [
@@ -8380,6 +9784,12 @@
         "transfersIn": 232,
         "transfersOut": 1998,
         "net": -587
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 285,
+        "transfersOut": 2473,
+        "net": -1009
       }
     ],
     "233": [
@@ -8400,6 +9810,12 @@
         "transfersIn": 8322,
         "transfersOut": 3536,
         "net": 1898
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 11608,
+        "transfersOut": 4809,
+        "net": 3911
       }
     ],
     "234": [
@@ -8420,6 +9836,12 @@
         "transfersIn": 56,
         "transfersOut": 105,
         "net": -28
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 72,
+        "transfersOut": 131,
+        "net": -38
       }
     ],
     "235": [
@@ -8440,6 +9862,12 @@
         "transfersIn": 277,
         "transfersOut": 465,
         "net": -51
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 356,
+        "transfersOut": 567,
+        "net": -74
       }
     ],
     "236": [
@@ -8460,6 +9888,12 @@
         "transfersIn": 16332,
         "transfersOut": 17908,
         "net": -2305
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 18588,
+        "transfersOut": 24082,
+        "net": -6223
       }
     ],
     "237": [
@@ -8480,6 +9914,12 @@
         "transfersIn": 25908,
         "transfersOut": 47060,
         "net": -13408
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 30035,
+        "transfersOut": 63215,
+        "net": -25436
       }
     ],
     "238": [
@@ -8500,6 +9940,12 @@
         "transfersIn": 358,
         "transfersOut": 1476,
         "net": -176
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 428,
+        "transfersOut": 1721,
+        "net": -351
       }
     ],
     "239": [
@@ -8520,6 +9966,12 @@
         "transfersIn": 637,
         "transfersOut": 747,
         "net": -114
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 729,
+        "transfersOut": 942,
+        "net": -217
       }
     ],
     "240": [
@@ -8540,6 +9992,12 @@
         "transfersIn": 20,
         "transfersOut": 48,
         "net": -2
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 31,
+        "transfersOut": 58,
+        "net": -1
       }
     ],
     "241": [
@@ -8560,6 +10018,12 @@
         "transfersIn": 141,
         "transfersOut": 576,
         "net": -136
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 153,
+        "transfersOut": 695,
+        "net": -243
       }
     ],
     "242": [
@@ -8580,6 +10044,12 @@
         "transfersIn": 475,
         "transfersOut": 969,
         "net": -209
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 549,
+        "transfersOut": 1238,
+        "net": -404
       }
     ],
     "243": [
@@ -8600,6 +10070,12 @@
         "transfersIn": 205,
         "transfersOut": 434,
         "net": -82
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 267,
+        "transfersOut": 533,
+        "net": -119
       }
     ],
     "244": [
@@ -8620,6 +10096,12 @@
         "transfersIn": 5909,
         "transfersOut": 1515,
         "net": 1199
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 7236,
+        "transfersOut": 2105,
+        "net": 1936
       }
     ],
     "245": [
@@ -8640,6 +10122,12 @@
         "transfersIn": 48,
         "transfersOut": 181,
         "net": -49
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 58,
+        "transfersOut": 226,
+        "net": -84
       }
     ],
     "246": [
@@ -8660,6 +10148,12 @@
         "transfersIn": 136,
         "transfersOut": 218,
         "net": -43
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 160,
+        "transfersOut": 275,
+        "net": -76
       }
     ],
     "247": [
@@ -8680,6 +10174,12 @@
         "transfersIn": 121,
         "transfersOut": 1149,
         "net": -208
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 151,
+        "transfersOut": 1323,
+        "net": -352
       }
     ],
     "248": [
@@ -8700,6 +10200,12 @@
         "transfersIn": 1891,
         "transfersOut": 11919,
         "net": -3617
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2306,
+        "transfersOut": 14742,
+        "net": -6025
       }
     ],
     "249": [
@@ -8720,6 +10226,12 @@
         "transfersIn": 38717,
         "transfersOut": 16822,
         "net": 3751
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 47419,
+        "transfersOut": 21654,
+        "net": 7621
       }
     ],
     "250": [
@@ -8740,6 +10252,12 @@
         "transfersIn": 4872,
         "transfersOut": 4021,
         "net": 237
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6766,
+        "transfersOut": 5355,
+        "net": 797
       }
     ],
     "251": [
@@ -8760,6 +10278,12 @@
         "transfersIn": 971,
         "transfersOut": 1085,
         "net": -161
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1239,
+        "transfersOut": 1431,
+        "net": -239
       }
     ],
     "252": [
@@ -8780,6 +10304,12 @@
         "transfersIn": 692,
         "transfersOut": 222,
         "net": 62
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 830,
+        "transfersOut": 268,
+        "net": 154
       }
     ],
     "253": [
@@ -8800,6 +10330,12 @@
         "transfersIn": 1309,
         "transfersOut": 405,
         "net": 227
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1552,
+        "transfersOut": 519,
+        "net": 356
       }
     ],
     "254": [
@@ -8820,6 +10356,12 @@
         "transfersIn": 2544,
         "transfersOut": 2934,
         "net": -433
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3177,
+        "transfersOut": 3887,
+        "net": -753
       }
     ],
     "255": [
@@ -8840,6 +10382,12 @@
         "transfersIn": 176,
         "transfersOut": 123,
         "net": -10
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 194,
+        "transfersOut": 168,
+        "net": -37
       }
     ],
     "256": [
@@ -8860,6 +10408,12 @@
         "transfersIn": 99,
         "transfersOut": 498,
         "net": -193
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 121,
+        "transfersOut": 677,
+        "net": -350
       }
     ],
     "257": [
@@ -8880,6 +10434,12 @@
         "transfersIn": 1361,
         "transfersOut": 1455,
         "net": -28
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1752,
+        "transfersOut": 1929,
+        "net": -111
       }
     ],
     "258": [
@@ -8900,6 +10460,12 @@
         "transfersIn": 3871,
         "transfersOut": 913,
         "net": 1535
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6924,
+        "transfersOut": 1396,
+        "net": 4105
       }
     ],
     "259": [
@@ -8920,6 +10486,12 @@
         "transfersIn": 7660,
         "transfersOut": 22011,
         "net": -5760
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10336,
+        "transfersOut": 28441,
+        "net": -9514
       }
     ],
     "260": [
@@ -8940,6 +10512,12 @@
         "transfersIn": 2134,
         "transfersOut": 28495,
         "net": -14551
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2370,
+        "transfersOut": 38696,
+        "net": -24516
       }
     ],
     "261": [
@@ -8960,6 +10538,12 @@
         "transfersIn": 1465,
         "transfersOut": 3195,
         "net": -941
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1749,
+        "transfersOut": 4297,
+        "net": -1759
       }
     ],
     "262": [
@@ -8980,6 +10564,12 @@
         "transfersIn": 379,
         "transfersOut": 1356,
         "net": -493
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 456,
+        "transfersOut": 1746,
+        "net": -806
       }
     ],
     "263": [
@@ -9000,6 +10590,12 @@
         "transfersIn": 103,
         "transfersOut": 300,
         "net": -107
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 121,
+        "transfersOut": 401,
+        "net": -190
       }
     ],
     "264": [
@@ -9020,6 +10616,12 @@
         "transfersIn": 1052,
         "transfersOut": 1219,
         "net": -189
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1244,
+        "transfersOut": 1576,
+        "net": -354
       }
     ],
     "265": [
@@ -9040,6 +10642,12 @@
         "transfersIn": 424,
         "transfersOut": 986,
         "net": -227
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 544,
+        "transfersOut": 1313,
+        "net": -434
       }
     ],
     "266": [
@@ -9060,6 +10668,12 @@
         "transfersIn": 3,
         "transfersOut": 23,
         "net": -9
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3,
+        "transfersOut": 29,
+        "net": -15
       }
     ],
     "267": [
@@ -9080,6 +10694,12 @@
         "transfersIn": 211,
         "transfersOut": 298,
         "net": -46
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 246,
+        "transfersOut": 408,
+        "net": -121
       }
     ],
     "268": [
@@ -9100,6 +10720,12 @@
         "transfersIn": 5785,
         "transfersOut": 2144,
         "net": 377
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6602,
+        "transfersOut": 3003,
+        "net": 335
       }
     ],
     "269": [
@@ -9120,6 +10746,12 @@
         "transfersIn": 221,
         "transfersOut": 861,
         "net": -371
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 256,
+        "transfersOut": 1100,
+        "net": -575
       }
     ],
     "270": [
@@ -9140,6 +10772,12 @@
         "transfersIn": 1823,
         "transfersOut": 3941,
         "net": -1127
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2438,
+        "transfersOut": 5215,
+        "net": -1786
       }
     ],
     "271": [
@@ -9160,6 +10798,12 @@
         "transfersIn": 944,
         "transfersOut": 2198,
         "net": -742
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1161,
+        "transfersOut": 2931,
+        "net": -1258
       }
     ],
     "272": [
@@ -9180,6 +10824,12 @@
         "transfersIn": 10350,
         "transfersOut": 14065,
         "net": -2250
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 14855,
+        "transfersOut": 17953,
+        "net": -1633
       }
     ],
     "273": [
@@ -9200,6 +10850,12 @@
         "transfersIn": 1461,
         "transfersOut": 1982,
         "net": -211
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1958,
+        "transfersOut": 2474,
+        "net": -206
       }
     ],
     "274": [
@@ -9220,6 +10876,12 @@
         "transfersIn": 25,
         "transfersOut": 407,
         "net": -128
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 39,
+        "transfersOut": 506,
+        "net": -213
       }
     ],
     "275": [
@@ -9240,6 +10902,12 @@
         "transfersIn": 0,
         "transfersOut": 25,
         "net": -5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 33,
+        "net": -13
       }
     ],
     "276": [
@@ -9260,6 +10928,12 @@
         "transfersIn": 0,
         "transfersOut": 84,
         "net": -23
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 99,
+        "net": -38
       }
     ],
     "277": [
@@ -9280,6 +10954,12 @@
         "transfersIn": 41873,
         "transfersOut": 3872,
         "net": 18280
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 63150,
+        "transfersOut": 5761,
+        "net": 37668
       }
     ],
     "278": [
@@ -9300,6 +10980,12 @@
         "transfersIn": 26,
         "transfersOut": 436,
         "net": -124
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 32,
+        "transfersOut": 546,
+        "net": -228
       }
     ],
     "279": [
@@ -9320,6 +11006,12 @@
         "transfersIn": 107031,
         "transfersOut": 6025,
         "net": 47743
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 156184,
+        "transfersOut": 8328,
+        "net": 94593
       }
     ],
     "280": [
@@ -9340,6 +11032,12 @@
         "transfersIn": 626,
         "transfersOut": 1807,
         "net": -668
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 683,
+        "transfersOut": 2351,
+        "net": -1155
       }
     ],
     "281": [
@@ -9360,6 +11058,12 @@
         "transfersIn": 196,
         "transfersOut": 189,
         "net": 3
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 282,
+        "transfersOut": 234,
+        "net": 44
       }
     ],
     "282": [
@@ -9380,6 +11084,12 @@
         "transfersIn": 3235,
         "transfersOut": 1084,
         "net": 1063
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4825,
+        "transfersOut": 1420,
+        "net": 2317
       }
     ],
     "283": [
@@ -9400,6 +11110,12 @@
         "transfersIn": 22,
         "transfersOut": 45,
         "net": -14
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 27,
+        "transfersOut": 55,
+        "net": -19
       }
     ],
     "284": [
@@ -9420,6 +11136,12 @@
         "transfersIn": 173,
         "transfersOut": 275,
         "net": -7
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 282,
+        "transfersOut": 362,
+        "net": 15
       }
     ],
     "285": [
@@ -9440,6 +11162,12 @@
         "transfersIn": 145,
         "transfersOut": 336,
         "net": -68
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 212,
+        "transfersOut": 425,
+        "net": -90
       }
     ],
     "286": [
@@ -9460,6 +11188,12 @@
         "transfersIn": 5901,
         "transfersOut": 1431,
         "net": 1838
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 7622,
+        "transfersOut": 2009,
+        "net": 2981
       }
     ],
     "287": [
@@ -9480,6 +11214,12 @@
         "transfersIn": 1049,
         "transfersOut": 219,
         "net": 331
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1324,
+        "transfersOut": 291,
+        "net": 534
       }
     ],
     "288": [
@@ -9500,6 +11240,12 @@
         "transfersIn": 1013,
         "transfersOut": 1320,
         "net": -39
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1472,
+        "transfersOut": 1681,
+        "net": 59
       }
     ],
     "289": [
@@ -9520,6 +11266,12 @@
         "transfersIn": 1678,
         "transfersOut": 3585,
         "net": -1157
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1841,
+        "transfersOut": 4493,
+        "net": -1902
       }
     ],
     "290": [
@@ -9540,6 +11292,12 @@
         "transfersIn": 32168,
         "transfersOut": 10747,
         "net": 5153
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 41556,
+        "transfersOut": 14110,
+        "net": 11178
       }
     ],
     "291": [
@@ -9560,6 +11318,12 @@
         "transfersIn": 19,
         "transfersOut": 31,
         "net": -2
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 29,
+        "transfersOut": 43,
+        "net": -4
       }
     ],
     "292": [
@@ -9580,6 +11344,12 @@
         "transfersIn": 50,
         "transfersOut": 116,
         "net": -16
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 70,
+        "transfersOut": 140,
+        "net": -20
       }
     ],
     "293": [
@@ -9600,6 +11370,12 @@
         "transfersIn": 0,
         "transfersOut": 32,
         "net": -10
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 38,
+        "net": -16
       }
     ],
     "294": [
@@ -9620,6 +11396,12 @@
         "transfersIn": 265,
         "transfersOut": 543,
         "net": -41
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 355,
+        "transfersOut": 689,
+        "net": -97
       }
     ],
     "295": [
@@ -9640,6 +11422,12 @@
         "transfersIn": 9581,
         "transfersOut": 10540,
         "net": -1243
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 11676,
+        "transfersOut": 13247,
+        "net": -1855
       }
     ],
     "296": [
@@ -9660,6 +11448,12 @@
         "transfersIn": 337,
         "transfersOut": 373,
         "net": -25
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 410,
+        "transfersOut": 461,
+        "net": -40
       }
     ],
     "297": [
@@ -9680,6 +11474,12 @@
         "transfersIn": 31,
         "transfersOut": 126,
         "net": -21
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 38,
+        "transfersOut": 156,
+        "net": -44
       }
     ],
     "298": [
@@ -9700,6 +11500,12 @@
         "transfersIn": 0,
         "transfersOut": 1808,
         "net": -569
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 2175,
+        "net": -936
       }
     ],
     "299": [
@@ -9720,6 +11526,12 @@
         "transfersIn": 0,
         "transfersOut": 253,
         "net": -74
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 324,
+        "net": -145
       }
     ],
     "300": [
@@ -9740,6 +11552,12 @@
         "transfersIn": 80,
         "transfersOut": 734,
         "net": -209
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 106,
+        "transfersOut": 991,
+        "net": -440
       }
     ],
     "301": [
@@ -9760,6 +11578,12 @@
         "transfersIn": 4771,
         "transfersOut": 5428,
         "net": -621
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6105,
+        "transfersOut": 6915,
+        "net": -774
       }
     ],
     "302": [
@@ -9780,6 +11604,12 @@
         "transfersIn": 1393,
         "transfersOut": 627,
         "net": 121
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1669,
+        "transfersOut": 795,
+        "net": 229
       }
     ],
     "303": [
@@ -9800,6 +11630,12 @@
         "transfersIn": 108,
         "transfersOut": 841,
         "net": -287
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 141,
+        "transfersOut": 1162,
+        "net": -575
       }
     ],
     "304": [
@@ -9820,6 +11656,12 @@
         "transfersIn": 5686,
         "transfersOut": 5070,
         "net": -171
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6833,
+        "transfersOut": 6785,
+        "net": -739
       }
     ],
     "305": [
@@ -9840,6 +11682,12 @@
         "transfersIn": 5004,
         "transfersOut": 7254,
         "net": 1264
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10061,
+        "transfersOut": 8745,
+        "net": 4830
       }
     ],
     "306": [
@@ -9860,6 +11708,12 @@
         "transfersIn": 479,
         "transfersOut": 1445,
         "net": -375
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 651,
+        "transfersOut": 2135,
+        "net": -893
       }
     ],
     "307": [
@@ -9880,6 +11734,12 @@
         "transfersIn": 138,
         "transfersOut": 239,
         "net": -26
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 182,
+        "transfersOut": 313,
+        "net": -56
       }
     ],
     "308": [
@@ -9900,6 +11760,12 @@
         "transfersIn": 88,
         "transfersOut": 848,
         "net": -262
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 112,
+        "transfersOut": 1069,
+        "net": -459
       }
     ],
     "309": [
@@ -9920,6 +11786,12 @@
         "transfersIn": 322,
         "transfersOut": 354,
         "net": -48
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 373,
+        "transfersOut": 479,
+        "net": -122
       }
     ],
     "310": [
@@ -9940,6 +11812,12 @@
         "transfersIn": 2,
         "transfersOut": 19,
         "net": -4
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4,
+        "transfersOut": 23,
+        "net": -6
       }
     ],
     "311": [
@@ -9960,6 +11838,12 @@
         "transfersIn": 0,
         "transfersOut": 23,
         "net": -6
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 30,
+        "net": -13
       }
     ],
     "312": [
@@ -9980,6 +11864,12 @@
         "transfersIn": 46,
         "transfersOut": 207,
         "net": -41
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 61,
+        "transfersOut": 247,
+        "net": -66
       }
     ],
     "313": [
@@ -10000,6 +11890,12 @@
         "transfersIn": 575,
         "transfersOut": 864,
         "net": -245
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 609,
+        "transfersOut": 1342,
+        "net": -689
       }
     ],
     "314": [
@@ -10020,6 +11916,12 @@
         "transfersIn": 16,
         "transfersOut": 46,
         "net": -12
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 22,
+        "transfersOut": 70,
+        "net": -30
       }
     ],
     "315": [
@@ -10040,6 +11942,12 @@
         "transfersIn": 360,
         "transfersOut": 649,
         "net": 74
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 495,
+        "transfersOut": 827,
+        "net": 31
       }
     ],
     "316": [
@@ -10060,6 +11968,12 @@
         "transfersIn": 10000,
         "transfersOut": 8163,
         "net": -1103
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 11128,
+        "transfersOut": 11173,
+        "net": -2985
       }
     ],
     "317": [
@@ -10080,6 +11994,12 @@
         "transfersIn": 0,
         "transfersOut": 1185,
         "net": -322
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 1417,
+        "net": -554
       }
     ],
     "318": [
@@ -10100,6 +12020,12 @@
         "transfersIn": 4,
         "transfersOut": 1029,
         "net": -267
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6,
+        "transfersOut": 1213,
+        "net": -449
       }
     ],
     "319": [
@@ -10120,6 +12046,12 @@
         "transfersIn": 0,
         "transfersOut": 74,
         "net": -25
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 84,
+        "net": -35
       }
     ],
     "320": [
@@ -10140,6 +12072,12 @@
         "transfersIn": 1823,
         "transfersOut": 1735,
         "net": 5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5086,
+        "transfersOut": 2399,
+        "net": 2604
       }
     ],
     "321": [
@@ -10160,6 +12098,12 @@
         "transfersIn": 20201,
         "transfersOut": 8882,
         "net": 3480
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 29610,
+        "transfersOut": 11636,
+        "net": 10135
       }
     ],
     "322": [
@@ -10180,6 +12124,12 @@
         "transfersIn": 0,
         "transfersOut": 1351,
         "net": -285
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 1578,
+        "net": -512
       }
     ],
     "323": [
@@ -10200,6 +12150,12 @@
         "transfersIn": 1911,
         "transfersOut": 3083,
         "net": -554
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2724,
+        "transfersOut": 4066,
+        "net": -724
       }
     ],
     "324": [
@@ -10220,6 +12176,12 @@
         "transfersIn": 13,
         "transfersOut": 146,
         "net": -44
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 13,
+        "transfersOut": 186,
+        "net": -84
       }
     ],
     "325": [
@@ -10240,6 +12202,12 @@
         "transfersIn": 92,
         "transfersOut": 120,
         "net": -16
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 110,
+        "transfersOut": 149,
+        "net": -27
       }
     ],
     "326": [
@@ -10260,6 +12228,12 @@
         "transfersIn": 91,
         "transfersOut": 989,
         "net": -348
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 106,
+        "transfersOut": 1287,
+        "net": -631
       }
     ],
     "327": [
@@ -10280,6 +12254,12 @@
         "transfersIn": 5722,
         "transfersOut": 3291,
         "net": -269
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6565,
+        "transfersOut": 4494,
+        "net": -629
       }
     ],
     "328": [
@@ -10300,6 +12280,12 @@
         "transfersIn": 383,
         "transfersOut": 709,
         "net": -259
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 456,
+        "transfersOut": 933,
+        "net": -410
       }
     ],
     "329": [
@@ -10320,6 +12306,12 @@
         "transfersIn": 4361,
         "transfersOut": 8400,
         "net": -4352
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4471,
+        "transfersOut": 14347,
+        "net": -10189
       }
     ],
     "330": [
@@ -10340,6 +12332,12 @@
         "transfersIn": 962,
         "transfersOut": 829,
         "net": 3
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1309,
+        "transfersOut": 1134,
+        "net": 45
       }
     ],
     "331": [
@@ -10360,6 +12358,12 @@
         "transfersIn": 63,
         "transfersOut": 93,
         "net": 28
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 99,
+        "transfersOut": 112,
+        "net": 45
       }
     ],
     "332": [
@@ -10380,6 +12384,12 @@
         "transfersIn": 8764,
         "transfersOut": 3582,
         "net": 607
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 11013,
+        "transfersOut": 4790,
+        "net": 1648
       }
     ],
     "333": [
@@ -10400,6 +12410,12 @@
         "transfersIn": 0,
         "transfersOut": 14,
         "net": -2
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 15,
+        "net": -3
       }
     ],
     "334": [
@@ -10420,6 +12436,12 @@
         "transfersIn": 6070,
         "transfersOut": 6369,
         "net": 515
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 7925,
+        "transfersOut": 8165,
+        "net": 574
       }
     ],
     "335": [
@@ -10440,6 +12462,12 @@
         "transfersIn": 13596,
         "transfersOut": 8862,
         "net": -478
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 15900,
+        "transfersOut": 12040,
+        "net": -1352
       }
     ],
     "336": [
@@ -10460,6 +12488,12 @@
         "transfersIn": 451,
         "transfersOut": 2308,
         "net": -627
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 584,
+        "transfersOut": 3026,
+        "net": -1212
       }
     ],
     "337": [
@@ -10480,6 +12514,12 @@
         "transfersIn": 592,
         "transfersOut": 2905,
         "net": -1190
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 707,
+        "transfersOut": 3910,
+        "net": -2080
       }
     ],
     "338": [
@@ -10500,6 +12540,12 @@
         "transfersIn": 944,
         "transfersOut": 3407,
         "net": -1184
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1103,
+        "transfersOut": 4540,
+        "net": -2158
       }
     ],
     "339": [
@@ -10520,6 +12566,12 @@
         "transfersIn": 151,
         "transfersOut": 516,
         "net": -222
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 194,
+        "transfersOut": 684,
+        "net": -347
       }
     ],
     "340": [
@@ -10540,6 +12592,12 @@
         "transfersIn": 15,
         "transfersOut": 67,
         "net": -25
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 16,
+        "transfersOut": 79,
+        "net": -36
       }
     ],
     "341": [
@@ -10560,6 +12618,12 @@
         "transfersIn": 31,
         "transfersOut": 75,
         "net": 5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 65,
+        "transfersOut": 97,
+        "net": 17
       }
     ],
     "342": [
@@ -10580,6 +12644,12 @@
         "transfersIn": 0,
         "transfersOut": 2,
         "net": 0
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 4,
+        "net": -2
       }
     ],
     "343": [
@@ -10600,6 +12670,12 @@
         "transfersIn": 458,
         "transfersOut": 447,
         "net": -48
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 554,
+        "transfersOut": 594,
+        "net": -99
       }
     ],
     "344": [
@@ -10620,6 +12696,12 @@
         "transfersIn": 4,
         "transfersOut": 18,
         "net": -8
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5,
+        "transfersOut": 25,
+        "net": -14
       }
     ],
     "345": [
@@ -10640,6 +12722,12 @@
         "transfersIn": 307,
         "transfersOut": 960,
         "net": -270
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 382,
+        "transfersOut": 1210,
+        "net": -445
       }
     ],
     "346": [
@@ -10660,6 +12748,12 @@
         "transfersIn": 28525,
         "transfersOut": 84603,
         "net": -10521
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 41863,
+        "transfersOut": 97452,
+        "net": -10032
       }
     ],
     "347": [
@@ -10680,6 +12774,12 @@
         "transfersIn": 813,
         "transfersOut": 2030,
         "net": -476
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1154,
+        "transfersOut": 2499,
+        "net": -604
       }
     ],
     "348": [
@@ -10700,6 +12800,12 @@
         "transfersIn": 0,
         "transfersOut": 916,
         "net": -253
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 1070,
+        "net": -407
       }
     ],
     "349": [
@@ -10720,6 +12826,12 @@
         "transfersIn": 179,
         "transfersOut": 285,
         "net": -43
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 241,
+        "transfersOut": 352,
+        "net": -48
       }
     ],
     "350": [
@@ -10740,6 +12852,12 @@
         "transfersIn": 8210,
         "transfersOut": 12641,
         "net": -1666
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10224,
+        "transfersOut": 15538,
+        "net": -2549
       }
     ],
     "351": [
@@ -10760,6 +12878,12 @@
         "transfersIn": 202,
         "transfersOut": 845,
         "net": -212
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 260,
+        "transfersOut": 989,
+        "net": -298
       }
     ],
     "352": [
@@ -10780,6 +12904,12 @@
         "transfersIn": 1749,
         "transfersOut": 1671,
         "net": 89
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2550,
+        "transfersOut": 2062,
+        "net": 499
       }
     ],
     "353": [
@@ -10800,6 +12930,12 @@
         "transfersIn": 0,
         "transfersOut": 66,
         "net": -18
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 87,
+        "net": -39
       }
     ],
     "354": [
@@ -10820,6 +12956,12 @@
         "transfersIn": 82,
         "transfersOut": 54,
         "net": 5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 106,
+        "transfersOut": 64,
+        "net": 19
       }
     ],
     "355": [
@@ -10840,6 +12982,12 @@
         "transfersIn": 279,
         "transfersOut": 234,
         "net": -7
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 374,
+        "transfersOut": 277,
+        "net": 45
       }
     ],
     "356": [
@@ -10860,6 +13008,12 @@
         "transfersIn": 15808,
         "transfersOut": 59727,
         "net": -15786
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 18519,
+        "transfersOut": 75864,
+        "net": -29212
       }
     ],
     "357": [
@@ -10880,6 +13034,12 @@
         "transfersIn": 5578,
         "transfersOut": 17773,
         "net": -3402
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6860,
+        "transfersOut": 21388,
+        "net": -5735
       }
     ],
     "358": [
@@ -10900,6 +13060,12 @@
         "transfersIn": 2908,
         "transfersOut": 16391,
         "net": -3762
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3551,
+        "transfersOut": 19587,
+        "net": -6315
       }
     ],
     "359": [
@@ -10920,6 +13086,12 @@
         "transfersIn": 24,
         "transfersOut": 103,
         "net": -27
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 29,
+        "transfersOut": 128,
+        "net": -47
       }
     ],
     "360": [
@@ -10940,6 +13112,12 @@
         "transfersIn": 32,
         "transfersOut": 54,
         "net": -16
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 37,
+        "transfersOut": 62,
+        "net": -19
       }
     ],
     "361": [
@@ -10960,6 +13138,12 @@
         "transfersIn": 286,
         "transfersOut": 354,
         "net": -43
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 368,
+        "transfersOut": 430,
+        "net": -37
       }
     ],
     "362": [
@@ -10980,6 +13164,12 @@
         "transfersIn": 12575,
         "transfersOut": 7745,
         "net": 1608
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 15556,
+        "transfersOut": 9705,
+        "net": 2629
       }
     ],
     "363": [
@@ -11000,6 +13190,12 @@
         "transfersIn": 77,
         "transfersOut": 152,
         "net": -18
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 107,
+        "transfersOut": 193,
+        "net": -29
       }
     ],
     "364": [
@@ -11020,6 +13216,12 @@
         "transfersIn": 100,
         "transfersOut": 249,
         "net": -35
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 125,
+        "transfersOut": 316,
+        "net": -77
       }
     ],
     "365": [
@@ -11040,6 +13242,12 @@
         "transfersIn": 0,
         "transfersOut": 1982,
         "net": -389
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 2221,
+        "net": -628
       }
     ],
     "366": [
@@ -11060,6 +13268,12 @@
         "transfersIn": 9972,
         "transfersOut": 46140,
         "net": -7438
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 12427,
+        "transfersOut": 56022,
+        "net": -14865
       }
     ],
     "367": [
@@ -11080,6 +13294,12 @@
         "transfersIn": 46652,
         "transfersOut": 22067,
         "net": 4969
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 53334,
+        "transfersOut": 30503,
+        "net": 3215
       }
     ],
     "368": [
@@ -11100,6 +13320,12 @@
         "transfersIn": 47404,
         "transfersOut": 70925,
         "net": -13845
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 56496,
+        "transfersOut": 98796,
+        "net": -32624
       }
     ],
     "369": [
@@ -11120,6 +13346,12 @@
         "transfersIn": 993,
         "transfersOut": 8930,
         "net": -2633
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1151,
+        "transfersOut": 10688,
+        "net": -4233
       }
     ],
     "370": [
@@ -11140,6 +13372,12 @@
         "transfersIn": 15,
         "transfersOut": 1714,
         "net": -341
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 15,
+        "transfersOut": 1974,
+        "net": -601
       }
     ],
     "371": [
@@ -11160,6 +13398,12 @@
         "transfersIn": 2730,
         "transfersOut": 11476,
         "net": -3284
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3111,
+        "transfersOut": 14061,
+        "net": -5488
       }
     ],
     "372": [
@@ -11180,6 +13424,12 @@
         "transfersIn": 2626,
         "transfersOut": 6535,
         "net": -1469
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3176,
+        "transfersOut": 8061,
+        "net": -2445
       }
     ],
     "373": [
@@ -11200,6 +13450,12 @@
         "transfersIn": 1,
         "transfersOut": 325,
         "net": -70
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1,
+        "transfersOut": 378,
+        "net": -123
       }
     ],
     "374": [
@@ -11220,6 +13476,12 @@
         "transfersIn": 186,
         "transfersOut": 370,
         "net": -68
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 225,
+        "transfersOut": 449,
+        "net": -108
       }
     ],
     "375": [
@@ -11240,6 +13502,12 @@
         "transfersIn": 104,
         "transfersOut": 199,
         "net": -30
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 136,
+        "transfersOut": 227,
+        "net": -26
       }
     ],
     "376": [
@@ -11257,6 +13525,12 @@
       },
       {
         "time": 1788110197038,
+        "transfersIn": 3,
+        "transfersOut": 14,
+        "net": -2
+      },
+      {
+        "time": 1788120277457,
         "transfersIn": 3,
         "transfersOut": 14,
         "net": -2
@@ -11280,6 +13554,12 @@
         "transfersIn": 18349,
         "transfersOut": 3024,
         "net": 5544
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 22695,
+        "transfersOut": 4251,
+        "net": 8663
       }
     ],
     "378": [
@@ -11300,6 +13580,12 @@
         "transfersIn": 319,
         "transfersOut": 809,
         "net": -163
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 409,
+        "transfersOut": 980,
+        "net": -244
       }
     ],
     "379": [
@@ -11320,6 +13606,12 @@
         "transfersIn": 25277,
         "transfersOut": 47570,
         "net": -2456
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 32876,
+        "transfersOut": 58281,
+        "net": -5568
       }
     ],
     "380": [
@@ -11340,6 +13632,12 @@
         "transfersIn": 202,
         "transfersOut": 1158,
         "net": -250
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 232,
+        "transfersOut": 1322,
+        "net": -384
       }
     ],
     "381": [
@@ -11360,6 +13658,12 @@
         "transfersIn": 46,
         "transfersOut": 104,
         "net": -20
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 58,
+        "transfersOut": 118,
+        "net": -22
       }
     ],
     "382": [
@@ -11380,6 +13684,12 @@
         "transfersIn": 158,
         "transfersOut": 163,
         "net": 9
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 217,
+        "transfersOut": 203,
+        "net": 28
       }
     ],
     "383": [
@@ -11400,6 +13710,12 @@
         "transfersIn": 178,
         "transfersOut": 493,
         "net": -109
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 210,
+        "transfersOut": 586,
+        "net": -170
       }
     ],
     "384": [
@@ -11420,6 +13736,12 @@
         "transfersIn": 10617,
         "transfersOut": 33152,
         "net": -4349
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 14094,
+        "transfersOut": 39355,
+        "net": -7075
       }
     ],
     "385": [
@@ -11440,6 +13762,12 @@
         "transfersIn": 17724,
         "transfersOut": 7453,
         "net": 3000
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 22389,
+        "transfersOut": 10156,
+        "net": 4962
       }
     ],
     "386": [
@@ -11460,6 +13788,12 @@
         "transfersIn": 35,
         "transfersOut": 100,
         "net": -25
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 42,
+        "transfersOut": 116,
+        "net": -34
       }
     ],
     "387": [
@@ -11480,6 +13814,12 @@
         "transfersIn": 19048,
         "transfersOut": 68288,
         "net": -13032
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 22610,
+        "transfersOut": 84160,
+        "net": -25342
       }
     ],
     "388": [
@@ -11500,6 +13840,12 @@
         "transfersIn": 34668,
         "transfersOut": 39427,
         "net": -340
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 41895,
+        "transfersOut": 50178,
+        "net": -3864
       }
     ],
     "389": [
@@ -11520,6 +13866,12 @@
         "transfersIn": 48,
         "transfersOut": 11919,
         "net": -2909
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 56,
+        "transfersOut": 13939,
+        "net": -4921
       }
     ],
     "390": [
@@ -11540,6 +13892,12 @@
         "transfersIn": 3316,
         "transfersOut": 5696,
         "net": 24
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4519,
+        "transfersOut": 6851,
+        "net": 72
       }
     ],
     "391": [
@@ -11560,6 +13918,12 @@
         "transfersIn": 159290,
         "transfersOut": 14108,
         "net": 26360
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 182697,
+        "transfersOut": 20352,
+        "net": 43523
       }
     ],
     "392": [
@@ -11580,6 +13944,12 @@
         "transfersIn": 516,
         "transfersOut": 8115,
         "net": -1478
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 662,
+        "transfersOut": 9295,
+        "net": -2512
       }
     ],
     "393": [
@@ -11600,6 +13970,12 @@
         "transfersIn": 1907,
         "transfersOut": 5841,
         "net": -736
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2551,
+        "transfersOut": 7000,
+        "net": -1251
       }
     ],
     "394": [
@@ -11620,6 +13996,12 @@
         "transfersIn": 0,
         "transfersOut": 44,
         "net": -5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 49,
+        "net": -10
       }
     ],
     "395": [
@@ -11640,6 +14022,12 @@
         "transfersIn": 427,
         "transfersOut": 1718,
         "net": -254
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 582,
+        "transfersOut": 1979,
+        "net": -360
       }
     ],
     "396": [
@@ -11660,6 +14048,12 @@
         "transfersIn": 29,
         "transfersOut": 74,
         "net": -5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 37,
+        "transfersOut": 83,
+        "net": -6
       }
     ],
     "397": [
@@ -11680,6 +14074,12 @@
         "transfersIn": 15452,
         "transfersOut": 106385,
         "net": -19673
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 17728,
+        "transfersOut": 129485,
+        "net": -40497
       }
     ],
     "398": [
@@ -11700,6 +14100,12 @@
         "transfersIn": 33345,
         "transfersOut": 12206,
         "net": 5746
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 40923,
+        "transfersOut": 15366,
+        "net": 10164
       }
     ],
     "399": [
@@ -11720,6 +14126,12 @@
         "transfersIn": 519413,
         "transfersOut": 7564,
         "net": 104852
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 592524,
+        "transfersOut": 12863,
+        "net": 172664
       }
     ],
     "400": [
@@ -11740,6 +14152,12 @@
         "transfersIn": 149,
         "transfersOut": 11106,
         "net": -2451
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 170,
+        "transfersOut": 12846,
+        "net": -4170
       }
     ],
     "401": [
@@ -11760,6 +14178,12 @@
         "transfersIn": 32191,
         "transfersOut": 8699,
         "net": 3406
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 36346,
+        "transfersOut": 10898,
+        "net": 5362
       }
     ],
     "402": [
@@ -11780,6 +14204,12 @@
         "transfersIn": 0,
         "transfersOut": 105,
         "net": -28
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 124,
+        "net": -47
       }
     ],
     "403": [
@@ -11800,6 +14230,12 @@
         "transfersIn": 9535,
         "transfersOut": 9394,
         "net": -2958
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 9829,
+        "transfersOut": 11396,
+        "net": -4666
       }
     ],
     "404": [
@@ -11820,6 +14256,12 @@
         "transfersIn": 0,
         "transfersOut": 609,
         "net": -127
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 702,
+        "net": -220
       }
     ],
     "405": [
@@ -11840,6 +14282,12 @@
         "transfersIn": 2639,
         "transfersOut": 651,
         "net": 604
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3065,
+        "transfersOut": 810,
+        "net": 871
       }
     ],
     "406": [
@@ -11860,6 +14308,12 @@
         "transfersIn": 205,
         "transfersOut": 553,
         "net": -84
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 227,
+        "transfersOut": 658,
+        "net": -167
       }
     ],
     "407": [
@@ -11880,6 +14334,12 @@
         "transfersIn": 35,
         "transfersOut": 123,
         "net": -21
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 43,
+        "transfersOut": 137,
+        "net": -27
       }
     ],
     "408": [
@@ -11900,6 +14360,12 @@
         "transfersIn": 0,
         "transfersOut": 42,
         "net": -6
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 60,
+        "net": -24
       }
     ],
     "409": [
@@ -11920,6 +14386,12 @@
         "transfersIn": 178,
         "transfersOut": 926,
         "net": -182
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 247,
+        "transfersOut": 1093,
+        "net": -280
       }
     ],
     "410": [
@@ -11940,6 +14412,12 @@
         "transfersIn": 30,
         "transfersOut": 100,
         "net": -17
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 34,
+        "transfersOut": 118,
+        "net": -31
       }
     ],
     "411": [
@@ -11960,6 +14438,12 @@
         "transfersIn": 101907,
         "transfersOut": 5438,
         "net": 23092
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 117938,
+        "transfersOut": 9163,
+        "net": 35398
       }
     ],
     "412": [
@@ -11980,6 +14464,12 @@
         "transfersIn": 7226,
         "transfersOut": 32421,
         "net": -10367
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 9301,
+        "transfersOut": 44861,
+        "net": -20732
       }
     ],
     "413": [
@@ -12000,6 +14490,12 @@
         "transfersIn": 0,
         "transfersOut": 88,
         "net": -24
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 102,
+        "net": -38
       }
     ],
     "414": [
@@ -12020,6 +14516,12 @@
         "transfersIn": 94,
         "transfersOut": 263,
         "net": -50
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 118,
+        "transfersOut": 318,
+        "net": -81
       }
     ],
     "415": [
@@ -12040,6 +14542,12 @@
         "transfersIn": 1168,
         "transfersOut": 6742,
         "net": -2368
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1373,
+        "transfersOut": 9980,
+        "net": -5401
       }
     ],
     "416": [
@@ -12060,6 +14568,12 @@
         "transfersIn": 32,
         "transfersOut": 150,
         "net": -27
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 39,
+        "transfersOut": 181,
+        "net": -51
       }
     ],
     "417": [
@@ -12080,6 +14594,12 @@
         "transfersIn": 1786,
         "transfersOut": 6669,
         "net": -1493
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2450,
+        "transfersOut": 8988,
+        "net": -3148
       }
     ],
     "418": [
@@ -12100,6 +14620,12 @@
         "transfersIn": 8034,
         "transfersOut": 53551,
         "net": -12079
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 12198,
+        "transfersOut": 64071,
+        "net": -18435
       }
     ],
     "419": [
@@ -12120,6 +14646,12 @@
         "transfersIn": 1667,
         "transfersOut": 3278,
         "net": -315
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2239,
+        "transfersOut": 4495,
+        "net": -960
       }
     ],
     "420": [
@@ -12140,6 +14672,12 @@
         "transfersIn": 367,
         "transfersOut": 2312,
         "net": -893
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 447,
+        "transfersOut": 3069,
+        "net": -1570
       }
     ],
     "421": [
@@ -12160,6 +14698,12 @@
         "transfersIn": 510,
         "transfersOut": 1288,
         "net": -477
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 583,
+        "transfersOut": 2011,
+        "net": -1127
       }
     ],
     "422": [
@@ -12180,6 +14724,12 @@
         "transfersIn": 1013,
         "transfersOut": 2085,
         "net": -743
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1183,
+        "transfersOut": 3108,
+        "net": -1596
       }
     ],
     "423": [
@@ -12200,6 +14750,12 @@
         "transfersIn": 6857,
         "transfersOut": 47310,
         "net": -15772
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 8934,
+        "transfersOut": 67376,
+        "net": -33761
       }
     ],
     "424": [
@@ -12220,6 +14776,12 @@
         "transfersIn": 307,
         "transfersOut": 487,
         "net": -84
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 387,
+        "transfersOut": 627,
+        "net": -144
       }
     ],
     "425": [
@@ -12240,6 +14802,12 @@
         "transfersIn": 0,
         "transfersOut": 118,
         "net": -34
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 130,
+        "net": -46
       }
     ],
     "426": [
@@ -12260,6 +14828,12 @@
         "transfersIn": 20723,
         "transfersOut": 145545,
         "net": -21251
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 82376,
+        "transfersOut": 150264,
+        "net": 35683
       }
     ],
     "427": [
@@ -12280,6 +14854,12 @@
         "transfersIn": 10505,
         "transfersOut": 190499,
         "net": -51711
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 17828,
+        "transfersOut": 228420,
+        "net": -82309
       }
     ],
     "428": [
@@ -12300,6 +14880,12 @@
         "transfersIn": 4771,
         "transfersOut": 38374,
         "net": -7848
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6702,
+        "transfersOut": 46474,
+        "net": -14017
       }
     ],
     "429": [
@@ -12320,6 +14906,12 @@
         "transfersIn": 3383,
         "transfersOut": 7208,
         "net": -272
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4892,
+        "transfersOut": 10386,
+        "net": -1941
       }
     ],
     "430": [
@@ -12340,6 +14932,12 @@
         "transfersIn": 13,
         "transfersOut": 127,
         "net": -34
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 18,
+        "transfersOut": 164,
+        "net": -66
       }
     ],
     "431": [
@@ -12360,6 +14958,12 @@
         "transfersIn": 88,
         "transfersOut": 12736,
         "net": -2969
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 99,
+        "transfersOut": 15083,
+        "net": -5305
       }
     ],
     "432": [
@@ -12380,6 +14984,12 @@
         "transfersIn": 1649,
         "transfersOut": 3209,
         "net": -183
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2914,
+        "transfersOut": 4011,
+        "net": 280
       }
     ],
     "433": [
@@ -12400,6 +15010,12 @@
         "transfersIn": 11,
         "transfersOut": 21,
         "net": -4
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 11,
+        "transfersOut": 25,
+        "net": -8
       }
     ],
     "434": [
@@ -12420,6 +15036,12 @@
         "transfersIn": 19,
         "transfersOut": 43,
         "net": -10
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 21,
+        "transfersOut": 50,
+        "net": -15
       }
     ],
     "435": [
@@ -12440,6 +15062,12 @@
         "transfersIn": 114,
         "transfersOut": 215,
         "net": -37
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 129,
+        "transfersOut": 306,
+        "net": -113
       }
     ],
     "436": [
@@ -12460,6 +15088,12 @@
         "transfersIn": 41,
         "transfersOut": 48,
         "net": -11
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 45,
+        "transfersOut": 64,
+        "net": -23
       }
     ],
     "437": [
@@ -12480,6 +15114,12 @@
         "transfersIn": 356,
         "transfersOut": 610,
         "net": -87
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 483,
+        "transfersOut": 784,
+        "net": -134
       }
     ],
     "438": [
@@ -12500,6 +15140,12 @@
         "transfersIn": 474,
         "transfersOut": 967,
         "net": -157
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 599,
+        "transfersOut": 1265,
+        "net": -330
       }
     ],
     "439": [
@@ -12520,6 +15166,12 @@
         "transfersIn": 5760,
         "transfersOut": 7924,
         "net": -2342
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6316,
+        "transfersOut": 12943,
+        "net": -6805
       }
     ],
     "440": [
@@ -12540,6 +15192,12 @@
         "transfersIn": 1458,
         "transfersOut": 2604,
         "net": -410
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1785,
+        "transfersOut": 3556,
+        "net": -1035
       }
     ],
     "441": [
@@ -12560,6 +15218,12 @@
         "transfersIn": 3627,
         "transfersOut": 3153,
         "net": 213
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5013,
+        "transfersOut": 4091,
+        "net": 661
       }
     ],
     "442": [
@@ -12580,6 +15244,12 @@
         "transfersIn": 1103,
         "transfersOut": 4531,
         "net": -1162
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1404,
+        "transfersOut": 5642,
+        "net": -1972
       }
     ],
     "443": [
@@ -12600,6 +15270,12 @@
         "transfersIn": 45,
         "transfersOut": 95,
         "net": -17
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 63,
+        "transfersOut": 114,
+        "net": -18
       }
     ],
     "444": [
@@ -12620,6 +15296,12 @@
         "transfersIn": 49,
         "transfersOut": 143,
         "net": -41
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 58,
+        "transfersOut": 162,
+        "net": -51
       }
     ],
     "445": [
@@ -12640,6 +15322,12 @@
         "transfersIn": 12171,
         "transfersOut": 5447,
         "net": 2127
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 14650,
+        "transfersOut": 6725,
+        "net": 3328
       }
     ],
     "446": [
@@ -12660,6 +15348,12 @@
         "transfersIn": 461,
         "transfersOut": 1277,
         "net": -316
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 569,
+        "transfersOut": 1555,
+        "net": -486
       }
     ],
     "447": [
@@ -12680,6 +15374,12 @@
         "transfersIn": 3533,
         "transfersOut": 1152,
         "net": 989
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4519,
+        "transfersOut": 1505,
+        "net": 1622
       }
     ],
     "448": [
@@ -12700,6 +15400,12 @@
         "transfersIn": 207,
         "transfersOut": 15974,
         "net": -3945
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 268,
+        "transfersOut": 18624,
+        "net": -6534
       }
     ],
     "449": [
@@ -12720,6 +15426,12 @@
         "transfersIn": 87151,
         "transfersOut": 6866,
         "net": 43192
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 119430,
+        "transfersOut": 10530,
+        "net": 71807
       }
     ],
     "450": [
@@ -12740,6 +15452,12 @@
         "transfersIn": 16,
         "transfersOut": 271,
         "net": -70
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 21,
+        "transfersOut": 307,
+        "net": -101
       }
     ],
     "451": [
@@ -12760,6 +15478,12 @@
         "transfersIn": 0,
         "transfersOut": 633,
         "net": -195
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 768,
+        "net": -330
       }
     ],
     "452": [
@@ -12780,6 +15504,12 @@
         "transfersIn": 325,
         "transfersOut": 18845,
         "net": -5315
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 380,
+        "transfersOut": 22569,
+        "net": -8984
       }
     ],
     "453": [
@@ -12800,6 +15530,12 @@
         "transfersIn": 4173,
         "transfersOut": 4928,
         "net": -553
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4866,
+        "transfersOut": 6113,
+        "net": -1045
       }
     ],
     "454": [
@@ -12820,6 +15556,12 @@
         "transfersIn": 162261,
         "transfersOut": 8066,
         "net": 72252
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 212897,
+        "transfersOut": 13135,
+        "net": 117819
       }
     ],
     "455": [
@@ -12840,6 +15582,12 @@
         "transfersIn": 2699,
         "transfersOut": 22751,
         "net": -7865
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3036,
+        "transfersOut": 28193,
+        "net": -12970
       }
     ],
     "456": [
@@ -12860,6 +15608,12 @@
         "transfersIn": 432,
         "transfersOut": 1512,
         "net": -372
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 538,
+        "transfersOut": 1876,
+        "net": -630
       }
     ],
     "457": [
@@ -12880,6 +15634,12 @@
         "transfersIn": 222,
         "transfersOut": 928,
         "net": -217
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 256,
+        "transfersOut": 1130,
+        "net": -385
       }
     ],
     "458": [
@@ -12900,6 +15660,12 @@
         "transfersIn": 16,
         "transfersOut": 199,
         "net": -53
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 21,
+        "transfersOut": 234,
+        "net": -83
       }
     ],
     "459": [
@@ -12920,6 +15686,12 @@
         "transfersIn": 477,
         "transfersOut": 327,
         "net": 19
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 584,
+        "transfersOut": 403,
+        "net": 50
       }
     ],
     "460": [
@@ -12940,6 +15712,12 @@
         "transfersIn": 4565,
         "transfersOut": 1127,
         "net": 1231
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5982,
+        "transfersOut": 1564,
+        "net": 2211
       }
     ],
     "461": [
@@ -12960,6 +15738,12 @@
         "transfersIn": 225,
         "transfersOut": 2028,
         "net": -499
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 279,
+        "transfersOut": 2319,
+        "net": -736
       }
     ],
     "462": [
@@ -12980,6 +15764,12 @@
         "transfersIn": 176,
         "transfersOut": 704,
         "net": -216
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 202,
+        "transfersOut": 835,
+        "net": -321
       }
     ],
     "463": [
@@ -13000,6 +15790,12 @@
         "transfersIn": 2642,
         "transfersOut": 7501,
         "net": -1366
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3166,
+        "transfersOut": 8916,
+        "net": -2257
       }
     ],
     "464": [
@@ -13020,6 +15816,12 @@
         "transfersIn": 188976,
         "transfersOut": 11421,
         "net": 78245
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 244787,
+        "transfersOut": 16640,
+        "net": 128837
       }
     ],
     "465": [
@@ -13040,6 +15842,12 @@
         "transfersIn": 176,
         "transfersOut": 13668,
         "net": -3418
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 197,
+        "transfersOut": 15757,
+        "net": -5486
       }
     ],
     "466": [
@@ -13060,6 +15868,12 @@
         "transfersIn": 3116,
         "transfersOut": 2440,
         "net": 220
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4466,
+        "transfersOut": 3116,
+        "net": 894
       }
     ],
     "467": [
@@ -13080,6 +15894,12 @@
         "transfersIn": 1811,
         "transfersOut": 3004,
         "net": -369
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2274,
+        "transfersOut": 3888,
+        "net": -790
       }
     ],
     "468": [
@@ -13100,6 +15920,12 @@
         "transfersIn": 53,
         "transfersOut": 136,
         "net": -28
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 64,
+        "transfersOut": 169,
+        "net": -50
       }
     ],
     "469": [
@@ -13120,6 +15946,12 @@
         "transfersIn": 10900,
         "transfersOut": 16338,
         "net": 839
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 14096,
+        "transfersOut": 20046,
+        "net": 327
       }
     ],
     "470": [
@@ -13140,6 +15972,12 @@
         "transfersIn": 63,
         "transfersOut": 212,
         "net": -44
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 78,
+        "transfersOut": 252,
+        "net": -69
       }
     ],
     "471": [
@@ -13160,6 +15998,12 @@
         "transfersIn": 1390,
         "transfersOut": 3059,
         "net": -458
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1685,
+        "transfersOut": 3980,
+        "net": -1084
       }
     ],
     "472": [
@@ -13180,6 +16024,12 @@
         "transfersIn": 2543,
         "transfersOut": 3626,
         "net": -391
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3024,
+        "transfersOut": 4740,
+        "net": -1024
       }
     ],
     "473": [
@@ -13200,6 +16050,12 @@
         "transfersIn": 5363,
         "transfersOut": 9664,
         "net": -1656
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6842,
+        "transfersOut": 12406,
+        "net": -2919
       }
     ],
     "474": [
@@ -13220,6 +16076,12 @@
         "transfersIn": 211,
         "transfersOut": 360,
         "net": -52
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 263,
+        "transfersOut": 468,
+        "net": -108
       }
     ],
     "475": [
@@ -13240,6 +16102,12 @@
         "transfersIn": 8,
         "transfersOut": 12,
         "net": -1
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10,
+        "transfersOut": 17,
+        "net": -4
       }
     ],
     "476": [
@@ -13260,6 +16128,12 @@
         "transfersIn": 188,
         "transfersOut": 507,
         "net": -92
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 251,
+        "transfersOut": 619,
+        "net": -141
       }
     ],
     "477": [
@@ -13280,6 +16154,12 @@
         "transfersIn": 327,
         "transfersOut": 588,
         "net": -96
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 470,
+        "transfersOut": 734,
+        "net": -99
       }
     ],
     "478": [
@@ -13300,6 +16180,12 @@
         "transfersIn": 41,
         "transfersOut": 100,
         "net": -13
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 58,
+        "transfersOut": 119,
+        "net": -15
       }
     ],
     "479": [
@@ -13320,6 +16206,12 @@
         "transfersIn": 123,
         "transfersOut": 368,
         "net": -76
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 172,
+        "transfersOut": 455,
+        "net": -114
       }
     ],
     "480": [
@@ -13340,6 +16232,12 @@
         "transfersIn": 42464,
         "transfersOut": 28296,
         "net": 10158
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 50150,
+        "transfersOut": 34610,
+        "net": 11530
       }
     ],
     "481": [
@@ -13360,6 +16258,12 @@
         "transfersIn": 6541,
         "transfersOut": 32732,
         "net": -6738
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 7768,
+        "transfersOut": 38902,
+        "net": -11681
       }
     ],
     "482": [
@@ -13380,6 +16284,12 @@
         "transfersIn": 441,
         "transfersOut": 1187,
         "net": -191
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 537,
+        "transfersOut": 1416,
+        "net": -324
       }
     ],
     "483": [
@@ -13400,6 +16310,12 @@
         "transfersIn": 9130,
         "transfersOut": 1806,
         "net": 2183
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10875,
+        "transfersOut": 2458,
+        "net": 3276
       }
     ],
     "484": [
@@ -13420,6 +16336,12 @@
         "transfersIn": 91,
         "transfersOut": 747,
         "net": -239
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 107,
+        "transfersOut": 897,
+        "net": -373
       }
     ],
     "485": [
@@ -13440,6 +16362,12 @@
         "transfersIn": 0,
         "transfersOut": 198,
         "net": -41
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 220,
+        "net": -63
       }
     ],
     "486": [
@@ -13460,6 +16388,12 @@
         "transfersIn": 989,
         "transfersOut": 289,
         "net": 262
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1185,
+        "transfersOut": 361,
+        "net": 386
       }
     ],
     "487": [
@@ -13480,6 +16414,12 @@
         "transfersIn": 90,
         "transfersOut": 255,
         "net": -54
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 117,
+        "transfersOut": 312,
+        "net": -84
       }
     ],
     "488": [
@@ -13500,6 +16440,12 @@
         "transfersIn": 79,
         "transfersOut": 7654,
         "net": -1946
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 88,
+        "transfersOut": 9064,
+        "net": -3347
       }
     ],
     "489": [
@@ -13520,6 +16466,12 @@
         "transfersIn": 4691,
         "transfersOut": 4409,
         "net": 17
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6382,
+        "transfersOut": 5662,
+        "net": 455
       }
     ],
     "490": [
@@ -13540,6 +16492,12 @@
         "transfersIn": 1647,
         "transfersOut": 11615,
         "net": -2940
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2080,
+        "transfersOut": 13879,
+        "net": -4771
       }
     ],
     "491": [
@@ -13560,6 +16518,12 @@
         "transfersIn": 4824,
         "transfersOut": 18928,
         "net": -4859
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5753,
+        "transfersOut": 23436,
+        "net": -8438
       }
     ],
     "492": [
@@ -13580,6 +16544,12 @@
         "transfersIn": 1138,
         "transfersOut": 3573,
         "net": -966
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1397,
+        "transfersOut": 4452,
+        "net": -1586
       }
     ],
     "493": [
@@ -13600,6 +16570,12 @@
         "transfersIn": 93,
         "transfersOut": 330,
         "net": -94
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 122,
+        "transfersOut": 390,
+        "net": -125
       }
     ],
     "494": [
@@ -13620,6 +16596,12 @@
         "transfersIn": 0,
         "transfersOut": 1922,
         "net": -520
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 2291,
+        "net": -889
       }
     ],
     "495": [
@@ -13640,6 +16622,12 @@
         "transfersIn": 1533,
         "transfersOut": 1047,
         "net": 91
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2155,
+        "transfersOut": 1373,
+        "net": 387
       }
     ],
     "496": [
@@ -13660,6 +16648,12 @@
         "transfersIn": 9987,
         "transfersOut": 56937,
         "net": -17389
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 12441,
+        "transfersOut": 70408,
+        "net": -28406
       }
     ],
     "497": [
@@ -13680,6 +16674,12 @@
         "transfersIn": 18099,
         "transfersOut": 23484,
         "net": -3283
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 25101,
+        "transfersOut": 29518,
+        "net": -2315
       }
     ],
     "498": [
@@ -13700,6 +16700,12 @@
         "transfersIn": 2113,
         "transfersOut": 43297,
         "net": -16933
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2319,
+        "transfersOut": 54418,
+        "net": -27848
       }
     ],
     "499": [
@@ -13720,6 +16726,12 @@
         "transfersIn": 15712,
         "transfersOut": 41859,
         "net": -12556
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 18117,
+        "transfersOut": 54357,
+        "net": -22649
       }
     ],
     "500": [
@@ -13740,6 +16752,12 @@
         "transfersIn": 0,
         "transfersOut": 1396,
         "net": -323
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 1639,
+        "net": -566
       }
     ],
     "501": [
@@ -13760,6 +16778,12 @@
         "transfersIn": 209,
         "transfersOut": 776,
         "net": -229
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 230,
+        "transfersOut": 978,
+        "net": -410
       }
     ],
     "502": [
@@ -13780,6 +16804,12 @@
         "transfersIn": 3939,
         "transfersOut": 12604,
         "net": -3534
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4749,
+        "transfersOut": 15670,
+        "net": -5790
       }
     ],
     "503": [
@@ -13800,6 +16830,12 @@
         "transfersIn": 5153,
         "transfersOut": 16157,
         "net": -5539
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 6049,
+        "transfersOut": 20797,
+        "net": -9283
       }
     ],
     "504": [
@@ -13820,6 +16856,12 @@
         "transfersIn": 6423,
         "transfersOut": 5321,
         "net": -1073
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 7346,
+        "transfersOut": 7372,
+        "net": -2201
       }
     ],
     "505": [
@@ -13840,6 +16882,12 @@
         "transfersIn": 0,
         "transfersOut": 5303,
         "net": -1330
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 6290,
+        "net": -2317
       }
     ],
     "506": [
@@ -13860,6 +16908,12 @@
         "transfersIn": 317,
         "transfersOut": 1520,
         "net": -455
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 385,
+        "transfersOut": 1908,
+        "net": -775
       }
     ],
     "507": [
@@ -13880,6 +16934,12 @@
         "transfersIn": 0,
         "transfersOut": 100,
         "net": -30
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 118,
+        "net": -48
       }
     ],
     "508": [
@@ -13900,6 +16960,12 @@
         "transfersIn": 772,
         "transfersOut": 2586,
         "net": -750
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1018,
+        "transfersOut": 3280,
+        "net": -1198
       }
     ],
     "509": [
@@ -13920,6 +16986,12 @@
         "transfersIn": 96,
         "transfersOut": 141,
         "net": -15
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 132,
+        "transfersOut": 179,
+        "net": -17
       }
     ],
     "510": [
@@ -13940,6 +17012,12 @@
         "transfersIn": 115,
         "transfersOut": 215,
         "net": -44
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 159,
+        "transfersOut": 282,
+        "net": -67
       }
     ],
     "511": [
@@ -13960,6 +17038,12 @@
         "transfersIn": 465,
         "transfersOut": 760,
         "net": -133
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 624,
+        "transfersOut": 948,
+        "net": -162
       }
     ],
     "512": [
@@ -13980,6 +17064,12 @@
         "transfersIn": 659,
         "transfersOut": 484,
         "net": 195
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 887,
+        "transfersOut": 597,
+        "net": 310
       }
     ],
     "513": [
@@ -14000,6 +17090,12 @@
         "transfersIn": 27,
         "transfersOut": 125,
         "net": -27
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 29,
+        "transfersOut": 147,
+        "net": -47
       }
     ],
     "514": [
@@ -14020,6 +17116,12 @@
         "transfersIn": 424,
         "transfersOut": 4677,
         "net": -1480
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 488,
+        "transfersOut": 5703,
+        "net": -2442
       }
     ],
     "515": [
@@ -14040,6 +17142,12 @@
         "transfersIn": 75,
         "transfersOut": 11479,
         "net": -3347
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 86,
+        "transfersOut": 13624,
+        "net": -5481
       }
     ],
     "516": [
@@ -14060,6 +17168,12 @@
         "transfersIn": 227,
         "transfersOut": 532,
         "net": -104
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 279,
+        "transfersOut": 660,
+        "net": -180
       }
     ],
     "517": [
@@ -14079,6 +17193,12 @@
         "time": 1788110197038,
         "transfersIn": 9,
         "transfersOut": 14,
+        "net": -3
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10,
+        "transfersOut": 15,
         "net": -3
       }
     ],
@@ -14100,6 +17220,12 @@
         "transfersIn": 1864,
         "transfersOut": 883,
         "net": 210
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2333,
+        "transfersOut": 1170,
+        "net": 392
       }
     ],
     "519": [
@@ -14120,6 +17246,12 @@
         "transfersIn": 235,
         "transfersOut": 1566,
         "net": -511
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 265,
+        "transfersOut": 1908,
+        "net": -823
       }
     ],
     "520": [
@@ -14140,6 +17272,12 @@
         "transfersIn": 149,
         "transfersOut": 832,
         "net": -251
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 174,
+        "transfersOut": 991,
+        "net": -385
       }
     ],
     "521": [
@@ -14160,6 +17298,12 @@
         "transfersIn": 21,
         "transfersOut": 44,
         "net": -6
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 24,
+        "transfersOut": 58,
+        "net": -17
       }
     ],
     "522": [
@@ -14180,6 +17324,12 @@
         "transfersIn": 608,
         "transfersOut": 945,
         "net": -156
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 797,
+        "transfersOut": 1170,
+        "net": -192
       }
     ],
     "523": [
@@ -14200,6 +17350,12 @@
         "transfersIn": 404,
         "transfersOut": 997,
         "net": -293
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 473,
+        "transfersOut": 1264,
+        "net": -491
       }
     ],
     "524": [
@@ -14220,6 +17376,12 @@
         "transfersIn": 385,
         "transfersOut": 2403,
         "net": -801
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 507,
+        "transfersOut": 3023,
+        "net": -1299
       }
     ],
     "525": [
@@ -14240,6 +17402,12 @@
         "transfersIn": 1124,
         "transfersOut": 11015,
         "net": -3893
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1286,
+        "transfersOut": 13769,
+        "net": -6485
       }
     ],
     "526": [
@@ -14260,6 +17428,12 @@
         "transfersIn": 2020,
         "transfersOut": 8978,
         "net": -2835
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2238,
+        "transfersOut": 11012,
+        "net": -4651
       }
     ],
     "527": [
@@ -14280,6 +17454,12 @@
         "transfersIn": 2167,
         "transfersOut": 29113,
         "net": -9091
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2441,
+        "transfersOut": 35181,
+        "net": -14885
       }
     ],
     "528": [
@@ -14300,6 +17480,12 @@
         "transfersIn": 7219,
         "transfersOut": 5433,
         "net": 625
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 10275,
+        "transfersOut": 6869,
+        "net": 2245
       }
     ],
     "529": [
@@ -14320,6 +17506,12 @@
         "transfersIn": 1216,
         "transfersOut": 11007,
         "net": -2013
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1885,
+        "transfersOut": 13309,
+        "net": -3646
       }
     ],
     "530": [
@@ -14340,6 +17532,12 @@
         "transfersIn": 0,
         "transfersOut": 492,
         "net": -164
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 599,
+        "net": -271
       }
     ],
     "531": [
@@ -14360,6 +17558,12 @@
         "transfersIn": 65,
         "transfersOut": 180,
         "net": -67
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 83,
+        "transfersOut": 231,
+        "net": -100
       }
     ],
     "532": [
@@ -14380,6 +17584,12 @@
         "transfersIn": 2099,
         "transfersOut": 19845,
         "net": -3047
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2984,
+        "transfersOut": 23313,
+        "net": -5630
       }
     ],
     "533": [
@@ -14400,6 +17610,12 @@
         "transfersIn": 3383,
         "transfersOut": 6129,
         "net": 1371
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5662,
+        "transfersOut": 7121,
+        "net": 2658
       }
     ],
     "534": [
@@ -14420,6 +17636,12 @@
         "transfersIn": 2482,
         "transfersOut": 16020,
         "net": -2770
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3979,
+        "transfersOut": 19688,
+        "net": -4941
       }
     ],
     "535": [
@@ -14440,6 +17662,12 @@
         "transfersIn": 451,
         "transfersOut": 1715,
         "net": -874
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 553,
+        "transfersOut": 2381,
+        "net": -1438
       }
     ],
     "536": [
@@ -14460,6 +17688,12 @@
         "transfersIn": 224,
         "transfersOut": 867,
         "net": -132
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 389,
+        "transfersOut": 1062,
+        "net": -162
       }
     ],
     "537": [
@@ -14480,6 +17714,12 @@
         "transfersIn": 3,
         "transfersOut": 123,
         "net": -31
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3,
+        "transfersOut": 135,
+        "net": -43
       }
     ],
     "538": [
@@ -14500,6 +17740,12 @@
         "transfersIn": 0,
         "transfersOut": 224,
         "net": -77
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 264,
+        "net": -117
       }
     ],
     "539": [
@@ -14520,6 +17766,12 @@
         "transfersIn": 972,
         "transfersOut": 5771,
         "net": -2512
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1336,
+        "transfersOut": 7776,
+        "net": -4153
       }
     ],
     "540": [
@@ -14540,6 +17792,12 @@
         "transfersIn": 0,
         "transfersOut": 1015,
         "net": -314
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 1198,
+        "net": -497
       }
     ],
     "541": [
@@ -14560,6 +17818,12 @@
         "transfersIn": 371,
         "transfersOut": 426,
         "net": 153
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 703,
+        "transfersOut": 532,
+        "net": 379
       }
     ],
     "542": [
@@ -14580,6 +17844,12 @@
         "transfersIn": 1635,
         "transfersOut": 47984,
         "net": -18067
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1905,
+        "transfersOut": 64906,
+        "net": -34719
       }
     ],
     "543": [
@@ -14600,6 +17870,12 @@
         "transfersIn": 87,
         "transfersOut": 289,
         "net": -93
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 90,
+        "transfersOut": 412,
+        "net": -213
       }
     ],
     "544": [
@@ -14620,6 +17896,12 @@
         "transfersIn": 7771,
         "transfersOut": 8478,
         "net": -1064
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 9357,
+        "transfersOut": 11866,
+        "net": -2866
       }
     ],
     "545": [
@@ -14640,6 +17922,12 @@
         "transfersIn": 367,
         "transfersOut": 953,
         "net": -188
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 495,
+        "transfersOut": 1226,
+        "net": -333
       }
     ],
     "546": [
@@ -14660,6 +17948,12 @@
         "transfersIn": 66,
         "transfersOut": 506,
         "net": -126
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 86,
+        "transfersOut": 631,
+        "net": -231
       }
     ],
     "547": [
@@ -14680,6 +17974,12 @@
         "transfersIn": 14,
         "transfersOut": 30,
         "net": -7
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 20,
+        "transfersOut": 39,
+        "net": -10
       }
     ],
     "548": [
@@ -14700,6 +18000,12 @@
         "transfersIn": 33,
         "transfersOut": 182,
         "net": -68
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 43,
+        "transfersOut": 231,
+        "net": -107
       }
     ],
     "549": [
@@ -14720,6 +18026,12 @@
         "transfersIn": 64,
         "transfersOut": 742,
         "net": -317
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 75,
+        "transfersOut": 1024,
+        "net": -588
       }
     ],
     "550": [
@@ -14740,6 +18052,12 @@
         "transfersIn": 14,
         "transfersOut": 21,
         "net": -2
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 23,
+        "transfersOut": 26,
+        "net": 2
       }
     ],
     "551": [
@@ -14760,6 +18078,12 @@
         "transfersIn": 902,
         "transfersOut": 535,
         "net": 85
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1251,
+        "transfersOut": 713,
+        "net": 256
       }
     ],
     "552": [
@@ -14780,6 +18104,12 @@
         "transfersIn": 7843,
         "transfersOut": 69364,
         "net": -36159
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 8926,
+        "transfersOut": 92322,
+        "net": -58034
       }
     ],
     "553": [
@@ -14800,6 +18130,12 @@
         "transfersIn": 2050,
         "transfersOut": 2968,
         "net": 438
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4469,
+        "transfersOut": 3622,
+        "net": 2203
       }
     ],
     "554": [
@@ -14820,6 +18156,12 @@
         "transfersIn": 0,
         "transfersOut": 254,
         "net": -66
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 0,
+        "transfersOut": 291,
+        "net": -103
       }
     ],
     "555": [
@@ -14840,6 +18182,12 @@
         "transfersIn": 2497,
         "transfersOut": 1942,
         "net": -278
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2932,
+        "transfersOut": 2443,
+        "net": -344
       }
     ],
     "556": [
@@ -14860,6 +18208,12 @@
         "transfersIn": 1622,
         "transfersOut": 5553,
         "net": -1446
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2446,
+        "transfersOut": 6944,
+        "net": -2013
       }
     ],
     "557": [
@@ -14880,6 +18234,12 @@
         "transfersIn": 41499,
         "transfersOut": 30461,
         "net": -473
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 49103,
+        "transfersOut": 42299,
+        "net": -4707
       }
     ],
     "558": [
@@ -14900,6 +18260,12 @@
         "transfersIn": 285,
         "transfersOut": 237,
         "net": 16
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 367,
+        "transfersOut": 296,
+        "net": 39
       }
     ],
     "559": [
@@ -14920,6 +18286,12 @@
         "transfersIn": 227,
         "transfersOut": 680,
         "net": -189
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 284,
+        "transfersOut": 821,
+        "net": -273
       }
     ],
     "560": [
@@ -14940,6 +18312,12 @@
         "transfersIn": 126,
         "transfersOut": 308,
         "net": -115
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 136,
+        "transfersOut": 364,
+        "net": -161
       }
     ],
     "561": [
@@ -14960,6 +18338,12 @@
         "transfersIn": 47,
         "transfersOut": 58,
         "net": -10
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 61,
+        "transfersOut": 73,
+        "net": -11
       }
     ],
     "562": [
@@ -14980,6 +18364,12 @@
         "transfersIn": 248,
         "transfersOut": 906,
         "net": -157
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 282,
+        "transfersOut": 1277,
+        "net": -494
       }
     ],
     "563": [
@@ -15000,6 +18390,12 @@
         "transfersIn": 81,
         "transfersOut": 62,
         "net": 6
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 104,
+        "transfersOut": 80,
+        "net": 11
       }
     ],
     "564": [
@@ -15020,6 +18416,12 @@
         "transfersIn": 423,
         "transfersOut": 1029,
         "net": -34
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 625,
+        "transfersOut": 1315,
+        "net": -118
       }
     ],
     "565": [
@@ -15040,6 +18442,12 @@
         "transfersIn": 77485,
         "transfersOut": 17770,
         "net": 14535
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 100025,
+        "transfersOut": 25421,
+        "net": 29424
       }
     ],
     "566": [
@@ -15060,6 +18468,12 @@
         "transfersIn": 1126,
         "transfersOut": 764,
         "net": 92
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1329,
+        "transfersOut": 979,
+        "net": 80
       }
     ],
     "567": [
@@ -15080,6 +18494,12 @@
         "transfersIn": 10269,
         "transfersOut": 1993,
         "net": 4146
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 13706,
+        "transfersOut": 2872,
+        "net": 6704
       }
     ],
     "568": [
@@ -15100,6 +18520,12 @@
         "transfersIn": 408,
         "transfersOut": 437,
         "net": -88
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 451,
+        "transfersOut": 530,
+        "net": -138
       }
     ],
     "569": [
@@ -15120,6 +18546,12 @@
         "transfersIn": 47991,
         "transfersOut": 13116,
         "net": 945
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 52882,
+        "transfersOut": 18896,
+        "net": 56
       }
     ],
     "570": [
@@ -15140,6 +18572,12 @@
         "transfersIn": 247,
         "transfersOut": 608,
         "net": -184
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 277,
+        "transfersOut": 822,
+        "net": -368
       }
     ],
     "571": [
@@ -15160,6 +18598,12 @@
         "transfersIn": 21,
         "transfersOut": 504,
         "net": -137
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 32,
+        "transfersOut": 627,
+        "net": -249
       }
     ],
     "572": [
@@ -15180,6 +18624,12 @@
         "transfersIn": 66211,
         "transfersOut": 5742,
         "net": 24770
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 89332,
+        "transfersOut": 8169,
+        "net": 45464
       }
     ],
     "573": [
@@ -15200,6 +18650,12 @@
         "transfersIn": 84,
         "transfersOut": 507,
         "net": -140
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 99,
+        "transfersOut": 625,
+        "net": -243
       }
     ],
     "574": [
@@ -15220,6 +18676,12 @@
         "transfersIn": 93,
         "transfersOut": 329,
         "net": -99
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 104,
+        "transfersOut": 418,
+        "net": -177
       }
     ],
     "575": [
@@ -15240,6 +18702,12 @@
         "transfersIn": 205,
         "transfersOut": 885,
         "net": -244
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 261,
+        "transfersOut": 1092,
+        "net": -395
       }
     ],
     "576": [
@@ -15260,6 +18728,12 @@
         "transfersIn": 216,
         "transfersOut": 345,
         "net": -69
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 260,
+        "transfersOut": 429,
+        "net": -109
       }
     ],
     "577": [
@@ -15280,6 +18754,12 @@
         "transfersIn": 331,
         "transfersOut": 676,
         "net": -146
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 390,
+        "transfersOut": 826,
+        "net": -237
       }
     ],
     "578": [
@@ -15300,6 +18780,12 @@
         "transfersIn": 61,
         "transfersOut": 310,
         "net": -108
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 68,
+        "transfersOut": 381,
+        "net": -172
       }
     ],
     "579": [
@@ -15320,6 +18806,12 @@
         "transfersIn": 3896,
         "transfersOut": 23553,
         "net": -6053
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4534,
+        "transfersOut": 28275,
+        "net": -10137
       }
     ],
     "580": [
@@ -15340,6 +18832,12 @@
         "transfersIn": 77,
         "transfersOut": 259,
         "net": -73
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 99,
+        "transfersOut": 324,
+        "net": -116
       }
     ],
     "581": [
@@ -15360,6 +18858,12 @@
         "transfersIn": 979,
         "transfersOut": 4084,
         "net": -1060
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1165,
+        "transfersOut": 5006,
+        "net": -1796
       }
     ],
     "582": [
@@ -15380,6 +18884,12 @@
         "transfersIn": 251,
         "transfersOut": 2564,
         "net": -745
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 329,
+        "transfersOut": 3032,
+        "net": -1135
       }
     ],
     "583": [
@@ -15400,6 +18910,12 @@
         "transfersIn": 220,
         "transfersOut": 813,
         "net": -377
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 250,
+        "transfersOut": 1065,
+        "net": -599
       }
     ],
     "584": [
@@ -15420,6 +18936,12 @@
         "transfersIn": 58,
         "transfersOut": 466,
         "net": -133
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 74,
+        "transfersOut": 612,
+        "net": -263
       }
     ],
     "585": [
@@ -15440,6 +18962,12 @@
         "transfersIn": 678,
         "transfersOut": 987,
         "net": -68
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 880,
+        "transfersOut": 1239,
+        "net": -118
       }
     ],
     "586": [
@@ -15460,6 +18988,12 @@
         "transfersIn": 51739,
         "transfersOut": 13575,
         "net": 5333
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 60682,
+        "transfersOut": 17228,
+        "net": 10623
       }
     ],
     "587": [
@@ -15480,6 +19014,12 @@
         "transfersIn": 25,
         "transfersOut": 87,
         "net": -15
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 33,
+        "transfersOut": 102,
+        "net": -22
       }
     ],
     "588": [
@@ -15500,6 +19040,12 @@
         "transfersIn": 649,
         "transfersOut": 248,
         "net": 97
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 733,
+        "transfersOut": 314,
+        "net": 115
       }
     ],
     "589": [
@@ -15520,6 +19066,12 @@
         "transfersIn": 51,
         "transfersOut": 75,
         "net": 0
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 72,
+        "transfersOut": 93,
+        "net": 3
       }
     ],
     "590": [
@@ -15540,6 +19092,12 @@
         "transfersIn": 220,
         "transfersOut": 192,
         "net": -4
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 286,
+        "transfersOut": 237,
+        "net": 17
       }
     ],
     "591": [
@@ -15560,6 +19118,12 @@
         "transfersIn": 3755,
         "transfersOut": 1394,
         "net": 1055
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 5922,
+        "transfersOut": 2029,
+        "net": 2587
       }
     ],
     "592": [
@@ -15580,6 +19144,12 @@
         "transfersIn": 677,
         "transfersOut": 1257,
         "net": -259
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 968,
+        "transfersOut": 1660,
+        "net": -371
       }
     ],
     "593": [
@@ -15600,6 +19170,12 @@
         "transfersIn": 37163,
         "transfersOut": 2588,
         "net": 15068
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 51848,
+        "transfersOut": 3998,
+        "net": 28343
       }
     ],
     "594": [
@@ -15620,6 +19196,12 @@
         "transfersIn": 988,
         "transfersOut": 1220,
         "net": -264
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1167,
+        "transfersOut": 1552,
+        "net": -417
       }
     ],
     "595": [
@@ -15640,6 +19222,12 @@
         "transfersIn": 34,
         "transfersOut": 45,
         "net": -9
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 45,
+        "transfersOut": 59,
+        "net": -12
       }
     ],
     "596": [
@@ -15660,6 +19248,12 @@
         "transfersIn": 222,
         "transfersOut": 245,
         "net": -34
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 289,
+        "transfersOut": 301,
+        "net": -23
       }
     ],
     "597": [
@@ -15680,6 +19274,12 @@
         "transfersIn": 2378,
         "transfersOut": 1757,
         "net": 289
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3001,
+        "transfersOut": 2230,
+        "net": 439
       }
     ],
     "598": [
@@ -15700,6 +19300,12 @@
         "transfersIn": 92,
         "transfersOut": 75,
         "net": 8
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 127,
+        "transfersOut": 109,
+        "net": 9
       }
     ],
     "599": [
@@ -15720,6 +19326,12 @@
         "transfersIn": 535,
         "transfersOut": 499,
         "net": -5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 714,
+        "transfersOut": 636,
+        "net": 37
       }
     ],
     "600": [
@@ -15740,6 +19352,12 @@
         "transfersIn": 61,
         "transfersOut": 49,
         "net": 6
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 85,
+        "transfersOut": 61,
+        "net": 18
       }
     ],
     "601": [
@@ -15760,6 +19378,12 @@
         "transfersIn": 1066,
         "transfersOut": 457,
         "net": 192
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1459,
+        "transfersOut": 615,
+        "net": 427
       }
     ],
     "602": [
@@ -15780,6 +19404,12 @@
         "transfersIn": 509,
         "transfersOut": 182,
         "net": 117
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 681,
+        "transfersOut": 259,
+        "net": 212
       }
     ],
     "603": [
@@ -15800,6 +19430,12 @@
         "transfersIn": 418,
         "transfersOut": 230,
         "net": 75
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 622,
+        "transfersOut": 312,
+        "net": 197
       }
     ],
     "604": [
@@ -15820,6 +19456,12 @@
         "transfersIn": 1246,
         "transfersOut": 381,
         "net": 265
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1698,
+        "transfersOut": 539,
+        "net": 559
       }
     ],
     "605": [
@@ -15840,6 +19482,12 @@
         "transfersIn": 10779,
         "transfersOut": 984,
         "net": 9058
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 25211,
+        "transfersOut": 2540,
+        "net": 21934
       }
     ],
     "606": [
@@ -15860,6 +19508,12 @@
         "transfersIn": 1212,
         "transfersOut": 290,
         "net": 330
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1683,
+        "transfersOut": 385,
+        "net": 706
       }
     ],
     "607": [
@@ -15880,6 +19534,12 @@
         "transfersIn": 1052,
         "transfersOut": 467,
         "net": 204
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1440,
+        "transfersOut": 630,
+        "net": 429
       }
     ],
     "608": [
@@ -15900,6 +19560,12 @@
         "transfersIn": 1035,
         "transfersOut": 400,
         "net": 142
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1326,
+        "transfersOut": 506,
+        "net": 327
       }
     ],
     "609": [
@@ -15920,6 +19586,12 @@
         "transfersIn": 2308,
         "transfersOut": 603,
         "net": 573
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3170,
+        "transfersOut": 792,
+        "net": 1246
       }
     ],
     "610": [
@@ -15940,6 +19612,12 @@
         "transfersIn": 589,
         "transfersOut": 443,
         "net": 78
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 799,
+        "transfersOut": 547,
+        "net": 184
       }
     ],
     "611": [
@@ -15960,6 +19638,12 @@
         "transfersIn": 1451,
         "transfersOut": 268,
         "net": 335
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1857,
+        "transfersOut": 350,
+        "net": 659
       }
     ],
     "612": [
@@ -15980,6 +19664,12 @@
         "transfersIn": 27,
         "transfersOut": 18,
         "net": 5
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 34,
+        "transfersOut": 21,
+        "net": 9
       }
     ],
     "613": [
@@ -16000,6 +19690,12 @@
         "transfersIn": 3702,
         "transfersOut": 785,
         "net": 906
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4963,
+        "transfersOut": 1128,
+        "net": 1824
       }
     ],
     "614": [
@@ -16020,6 +19716,12 @@
         "transfersIn": 746,
         "transfersOut": 104,
         "net": 103
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 818,
+        "transfersOut": 138,
+        "net": 141
       }
     ],
     "615": [
@@ -16040,6 +19742,12 @@
         "transfersIn": 358,
         "transfersOut": 101,
         "net": 76
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 453,
+        "transfersOut": 123,
+        "net": 149
       }
     ],
     "616": [
@@ -16060,6 +19768,12 @@
         "transfersIn": 3395,
         "transfersOut": 699,
         "net": 578
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3964,
+        "transfersOut": 877,
+        "net": 969
       }
     ],
     "617": [
@@ -16080,6 +19794,12 @@
         "transfersIn": 167,
         "transfersOut": 37,
         "net": 39
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 218,
+        "transfersOut": 49,
+        "net": 78
       }
     ],
     "618": [
@@ -16100,6 +19820,12 @@
         "transfersIn": 1037,
         "transfersOut": 130,
         "net": 188
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 1196,
+        "transfersOut": 168,
+        "net": 309
       }
     ],
     "619": [
@@ -16120,6 +19846,12 @@
         "transfersIn": 492,
         "transfersOut": 65,
         "net": 106
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 578,
+        "transfersOut": 93,
+        "net": 164
       }
     ],
     "620": [
@@ -16140,6 +19872,12 @@
         "transfersIn": 3746,
         "transfersOut": 782,
         "net": 423
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 4316,
+        "transfersOut": 969,
+        "net": 806
       }
     ],
     "621": [
@@ -16160,6 +19898,12 @@
         "transfersIn": 1674,
         "transfersOut": 312,
         "net": 566
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2512,
+        "transfersOut": 532,
+        "net": 1184
       }
     ],
     "622": [
@@ -16180,6 +19924,12 @@
         "transfersIn": 1458,
         "transfersOut": 260,
         "net": 548
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 2231,
+        "transfersOut": 394,
+        "net": 1187
       }
     ],
     "623": [
@@ -16200,6 +19950,36 @@
         "transfersIn": 1948,
         "transfersOut": 137,
         "net": 1400
+      },
+      {
+        "time": 1788120277457,
+        "transfersIn": 3499,
+        "transfersOut": 290,
+        "net": 2798
+      }
+    ],
+    "624": [
+      {
+        "time": 1788120277457,
+        "transfersIn": 2,
+        "transfersOut": 0,
+        "net": 2
+      }
+    ],
+    "625": [
+      {
+        "time": 1788120277457,
+        "transfersIn": 240,
+        "transfersOut": 7,
+        "net": 233
+      }
+    ],
+    "626": [
+      {
+        "time": 1788120277457,
+        "transfersIn": 395,
+        "transfersOut": 47,
+        "net": 348
       }
     ]
   },
