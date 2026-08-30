@@ -33,21 +33,22 @@ jobs:
         with:
           node-version: 20
 
-      - name: Run Price Tracking, Odds & Momentum Engine
+      - name: Run Price Tracking, Odds, Momentum & EO Engine
         run: |
           node scripts/track_fpl_prices.js
           node scripts/sync_betting_odds.js
           node scripts/sync_form_momentum.js
+          node scripts/sync_top10k_eo.js
 
-      - name: Commit & Push Updated Snapshots, Odds & Momentum
+      - name: Commit & Push Updated Snapshots, Odds, Momentum & EO
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/price_snapshots.json src/data/match_odds.json src/data/player_form_momentum.json
+          git add src/data/price_snapshots.json src/data/match_odds.json src/data/player_form_momentum.json src/data/top10k_ownership.json
           if git diff --staged --quiet; then
             echo "No telemetry delta changes to commit."
           else
-            git commit -m "📊 [FPL Data Tracker] Auto-update price baselines, velocity, odds & momentum"
+            git commit -m "📊 [FPL Data Tracker] Auto-update price baselines, velocity, odds, momentum & Top 10k EO"
             git push origin main
           fi
 

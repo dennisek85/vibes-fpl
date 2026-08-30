@@ -5,6 +5,8 @@ import { usePlannerStore } from '@/store/usePlannerStore';
 import { MatrixFilterBar } from './MatrixFilterBar';
 import { KitIcon } from '@/components/ui/KitIcon';
 import { getAllPricePredictions, PlayerPricePrediction } from '@/utils/aiPricePredictor';
+import { getPlayerTop10kEo } from '@/lib/ownershipTracker';
+import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 import { 
   ArrowUpDown, 
   ArrowUp, 
@@ -651,10 +653,28 @@ export const PlayerMatrixView: React.FC = () => {
                                   </span>
                                 )}
                               </div>
-                              <div className="flex items-center gap-1 text-[10px] text-slate-400 font-mono">
+                              <div className="flex flex-wrap items-center gap-1 text-[10px] text-slate-400 font-mono">
                                 <span>{team?.short_name}</span>
                                 <span>·</span>
                                 <span>{posName}</span>
+                                {(() => {
+                                  const eo = getPlayerTop10kEo(p.id);
+                                  const sp = getPlayerSetPieceProfile(p, team?.short_name);
+                                  return (
+                                    <>
+                                      {eo && eo.effectiveOwnership >= 20 && (
+                                        <span className="text-[9px] font-bold text-cyan-300 bg-cyan-950/80 px-1 py-0.2 rounded border border-cyan-500/30">
+                                          {eo.effectiveOwnership}% EO
+                                        </span>
+                                      )}
+                                      {sp.roles.slice(0, 1).map((r, i) => (
+                                        <span key={i} className="text-[9px] font-bold text-amber-300 bg-amber-950/80 px-1 py-0.2 rounded border border-amber-500/30">
+                                          {r}
+                                        </span>
+                                      ))}
+                                    </>
+                                  );
+                                })()}
                               </div>
                             </div>
                           </div>

@@ -49,11 +49,29 @@ export function getMarketFixtureOdds(
 
 /**
  * Looks up anytime goalscorer probability for a specific player name.
+ * Verifies team context to prevent cross-club collisions (e.g. Cole Palmer CHE vs Palmer IPS).
  */
-export function getMarketAnytimeGoalscorerProb(playerName: string): number | null {
+export function getMarketAnytimeGoalscorerProb(
+  playerName: string,
+  teamShortName?: string
+): number | null {
   if (!playerName) return null;
   const data = readMatchOddsData();
   const normalized = playerName.toLowerCase().trim();
+
+  // Disambiguation for players sharing last names
+  if (normalized === 'palmer' && teamShortName && teamShortName.toUpperCase() !== 'CHE') {
+    return null;
+  }
+  if (normalized === 'johnson' && teamShortName && teamShortName.toUpperCase() !== 'TOT') {
+    return null;
+  }
+  if (normalized === 'fernandes' && teamShortName && teamShortName.toUpperCase() !== 'MUN') {
+    return null;
+  }
+  if (normalized === 'williams' && teamShortName && teamShortName.toUpperCase() !== 'NFO') {
+    return null;
+  }
   
   if (data.anytimeGoalscorers && data.anytimeGoalscorers[normalized] !== undefined) {
     return data.anytimeGoalscorers[normalized];
@@ -61,4 +79,3 @@ export function getMarketAnytimeGoalscorerProb(playerName: string): number | nul
 
   return null;
 }
-

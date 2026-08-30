@@ -37,14 +37,21 @@ export function getPlayerSetPieceProfile(
 
   if (!player) return result;
 
+  // Goalkeepers do not take outfield corners or direct free kicks
+  const isGK = player.element_type === 1;
+
   const normalized = normalizePlayerName(player);
   const webName = (player.web_name || '').toLowerCase().trim();
 
-  // Search across teams (or specific team if provided)
+  // Search strictly within the player's team if available
   const teamsMap = setPieceData.teams as Record<string, { penalties: string[]; corners: string[]; directFreeKicks: string[]; indirectFreeKicks: string[] }>;
   const relevantTeams = teamShortName && teamsMap[teamShortName.toUpperCase()]
     ? [teamsMap[teamShortName.toUpperCase()]]
-    : Object.values(teamsMap);
+    : [];
+
+  if (relevantTeams.length === 0) {
+    return result;
+  }
 
   for (const teamSet of relevantTeams) {
     // 1. Penalties
@@ -59,6 +66,8 @@ export function getPlayerSetPieceProfile(
         result.addedXg += 0.05;
       }
     }
+
+    if (isGK) continue; // Goalkeepers do not take corners or free-kicks
 
     // 2. Corners (Primary Crossers)
     if (teamSet.corners && teamSet.corners.length > 0) {
@@ -89,4 +98,3 @@ export function getPlayerSetPieceProfile(
 
   return result;
 }
-

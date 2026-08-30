@@ -211,9 +211,16 @@ export function calculatePlayerOddsXp(
     pSub = 0.75;
   } else {
     // Unproven / 0 mins
-    expectedMins = 60.0;
-    p60Mins = 0.60;
-    pSub = 0.30;
+    if (pos === 1) {
+      // Backup / unproven GK gets 0 mins
+      expectedMins = 0.0;
+      p60Mins = 0.0;
+      pSub = 0.0;
+    } else {
+      expectedMins = 20.0;
+      p60Mins = 0.10;
+      pSub = 0.40;
+    }
   }
 
   // FPL Points: 60+ mins = 2 pts, 1-59 mins = 1 pt, 0 mins = 0 pts
@@ -251,8 +258,8 @@ export function calculatePlayerOddsXp(
   let matchXG = Math.max(0.0, (impliedGoalsScored * effectiveXgShare * minsScale) + setPieceXG);
   let matchXA = Math.max(0.0, (impliedGoalsScored * effectiveXaShare * minsScale) + setPieceXA);
 
-  // 5. Market Anytime Goalscorer Odds Integration (When Available)
-  const marketGoalProb = getMarketAnytimeGoalscorerProb(player.web_name);
+  // 6. Market Anytime Goalscorer Odds Integration (When Available for Outfield Players)
+  const marketGoalProb = (pos >= 2) ? getMarketAnytimeGoalscorerProb(player.web_name, playerTeam?.short_name) : null;
   if (marketGoalProb !== null && marketGoalProb > 0) {
     // Bookmaker anytime goalscorer probability converted to expected goals λ = -ln(1 - P)
     const impliedMarketXg = -Math.log(Math.max(0.01, 1.0 - marketGoalProb)) * minsScale;

@@ -664,225 +664,218 @@ export const AiScoutModal: React.FC = () => {
 
           {/* TAB 5: STRONGEST SQUAD (BUDGET SOLVER) */}
           {activeTab === 'optimal_squad' && (
-            <div className="space-y-4">
-              {/* Header Stats Bar */}
-              <div className="p-4 rounded-3xl bg-gradient-to-r from-teal-950 via-slate-900 to-emerald-950 border border-emerald-500/40 shadow-2xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-                <div className="flex items-center gap-3.5">
-                  <div className="p-3 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-lg shadow-emerald-950/60 shrink-0">
-                    <Wand2 className="w-6 h-6 animate-pulse" />
+            <div className="space-y-3">
+              {/* Header Controls Bar */}
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-teal-950 via-slate-900 to-emerald-950 border border-emerald-500/40 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-md shrink-0">
+                    <Wand2 className="w-5 h-5 animate-pulse" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-base sm:text-lg font-black text-white">
-                        Strongest Possible 15-Man Squad
+                      <h3 className="text-xs sm:text-sm font-black text-white">
+                        Strongest 15-Man Team
                       </h3>
-                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/40">
+                      <span className="text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.2 rounded border border-emerald-500/40">
                         {optimalSquad?.formation || 'Optimal'}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-300 mt-0.5">
-                      Maximized expected points within your exact budget of <strong className="text-emerald-400 font-mono">{formatMoney(totalAvailableBudget, true)}</strong>.
+                    <p className="text-[11px] text-slate-300">
+                      Budget: <strong className="text-emerald-400 font-mono">{formatMoney(totalAvailableBudget, true)}</strong>
+                      {optimalSquad && (
+                        <span> · Cost: <strong className="text-white font-mono">{formatMoney(optimalSquad.totalCost, true)}</strong> ({formatMoney(optimalSquad.remainingBank, true)} ITB)</span>
+                      )}
                     </p>
                   </div>
                 </div>
 
-                {/* Horizon Switcher */}
-                <div className="flex items-center gap-2 bg-slate-950/80 p-1.5 rounded-2xl border border-white/10 shrink-0 self-start md:self-auto">
-                  <span className="text-xs text-slate-400 font-bold px-2 flex items-center gap-1">
-                    <Layers className="w-3.5 h-3.5 text-cyan-400" />
-                    Target:
-                  </span>
-                  {(['1gw', '3gw', '5gw'] as const).map(hz => (
+                {/* Right Controls: Horizon Switcher + Apply Button */}
+                <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                  <div className="flex items-center bg-slate-950/90 p-1 rounded-xl border border-white/10 text-xs font-black">
+                    {(['1gw', '3gw', '5gw'] as const).map(hz => (
+                      <button
+                        key={hz}
+                        onClick={() => setHorizon(hz)}
+                        className={`px-2.5 py-1 rounded-lg transition-all text-[11px] font-black ${
+                          horizon === hz
+                            ? 'bg-emerald-600 text-white shadow-md'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        {hz === '1gw' ? '1 GW' : hz === '3gw' ? '3 GWs' : '5 GWs'}
+                      </button>
+                    ))}
+                  </div>
+
+                  {optimalSquad && !isLocked && (
                     <button
-                      key={hz}
-                      onClick={() => setHorizon(hz)}
-                      className={`px-3 py-1 text-xs font-black rounded-xl transition-all ${
-                        horizon === hz
-                          ? 'bg-emerald-600 text-white shadow-md'
-                          : 'text-slate-400 hover:text-white'
-                      }`}
+                      onClick={handleApplyOptimalSquad}
+                      className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:brightness-110 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-1.5 shadow-lg active:scale-95 transition-all shrink-0"
                     >
-                      {hz === '1gw' ? '1 GW' : hz === '3gw' ? '3 GWs' : '5 GWs'}
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Apply Team</span>
+                      <span className="text-[10px] bg-slate-950/20 px-1.5 py-0.2 rounded font-mono font-bold">
+                        +{optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} xP
+                      </span>
                     </button>
-                  ))}
+                  )}
                 </div>
               </div>
 
-              {/* Metrics Grid */}
-              {optimalSquad && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                  <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
-                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">Total Cost / Bank</span>
-                    <span className="text-sm sm:text-base font-black text-white font-mono">
-                      {formatMoney(optimalSquad.totalCost, true)} <span className="text-xs text-slate-400">({formatMoney(optimalSquad.remainingBank, true)} ITB)</span>
-                    </span>
-                  </div>
+              {/* Main Pitch & Side Bench Body */}
+              {optimalSquad && (() => {
+                const gkStarters = optimalSquad.starters.filter(s => s.player.element_type === 1);
+                const defStarters = optimalSquad.starters.filter(s => s.player.element_type === 2);
+                const midStarters = optimalSquad.starters.filter(s => s.player.element_type === 3);
+                const fwdStarters = optimalSquad.starters.filter(s => s.player.element_type === 4);
 
-                  <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
-                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">
-                      {horizon === '1gw' ? 'Projected Score' : `Total Score (${horizon === '3gw' ? '3 GWs' : '5 GWs'})`}
-                    </span>
-                    <span className="text-sm sm:text-base font-black text-emerald-400 font-mono">
-                      {horizon === '1gw' 
-                        ? `${optimalSquad.totalProjectedPoints} pts` 
-                        : `${optimalSquad.cumulativePoints} pts`}
-                    </span>
-                    {horizon !== '1gw' && (
-                      <span className="text-[10px] text-slate-400 font-mono block">
-                        ({optimalSquad.totalProjectedPoints} pts/GW avg)
-                      </span>
-                    )}
-                  </div>
+                const renderPitchCard = ({ player, xp, isCaptain, isViceCaptain }: { player: any; xp: number; isCaptain: boolean; isViceCaptain: boolean }) => {
+                  const team = teamMap.get(player.team);
+                  const isGK = player.element_type === 1;
 
-                  <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
-                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">
-                      {horizon === '1gw' ? 'Expected Gain' : `Total Gain (${horizon === '3gw' ? '3 GWs' : '5 GWs'})`}
-                    </span>
-                    <span className="text-sm sm:text-base font-black text-cyan-400 font-mono flex items-center justify-center gap-1">
-                      <TrendingUp className="w-3.5 h-3.5" />
-                      +{horizon === '1gw' 
-                        ? `${optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} pts` 
-                        : `${Math.round((optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0) * (horizon === '3gw' ? 3 : 5) * 10) / 10} pts`}
-                    </span>
-                    {horizon !== '1gw' && (
-                      <span className="text-[10px] text-slate-400 font-mono block">
-                        (+{optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} / GW)
-                      </span>
-                    )}
-                  </div>
+                  return (
+                    <div
+                      key={player.id}
+                      className="relative flex flex-col items-center group cursor-pointer transition-transform hover:scale-105 select-none w-20 sm:w-24 md:w-28 shrink-0"
+                    >
+                      {/* Captain / Vice Captain Badge */}
+                      {(isCaptain || isViceCaptain) && (
+                        <div className={`absolute -top-1 -left-1 sm:top-0 sm:left-1 w-5 h-5 rounded-full flex items-center justify-center font-black text-[10px] shadow-lg border z-20 ${
+                          isCaptain 
+                            ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-500/50' 
+                            : 'bg-slate-900 text-white border-slate-300'
+                        }`}>
+                          {isCaptain ? 'C' : 'V'}
+                        </div>
+                      )}
 
-                  <div className="p-3 rounded-2xl bg-slate-950/80 border border-white/10 text-center">
-                    <span className="text-[10.5px] font-bold text-slate-400 uppercase block">Transfers from Current</span>
-                    <span className="text-sm sm:text-base font-black text-amber-400 font-mono">
-                      {optimalSquad.transfersCount} / 15 players
-                    </span>
-                  </div>
-                </div>
-              )}
+                      {/* Official Team Kit Jersey */}
+                      <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center filter drop-shadow-xl">
+                        <KitIcon
+                          teamCode={team?.code}
+                          teamShortName={team?.short_name}
+                          isGoalkeeper={isGK}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
 
-              {/* Apply Button */}
-              {optimalSquad && !isLocked && (
-                <button
-                  onClick={handleApplyOptimalSquad}
-                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:brightness-110 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-xl shadow-emerald-950/60 transition active:scale-98 border border-emerald-400/40"
-                >
-                  <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
-                  <span>⚡ Apply Strongest 15-Man Team to GW {selectedGameweek}</span>
-                  <span className="text-xs bg-emerald-950/80 px-2 py-0.5 rounded-lg border border-emerald-400/30">
-                    +{optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} xP
-                  </span>
-                </button>
-              )}
+                      {/* Name and Price Bar */}
+                      <div className="w-full mt-1 flex flex-col items-center bg-slate-950/95 backdrop-blur-md rounded-xl border border-white/20 shadow-xl overflow-hidden text-center">
+                        <div className="w-full px-1.5 py-0.5 sm:py-1 bg-slate-900/90 border-b border-white/10 flex items-center justify-between gap-1 text-xs sm:text-sm">
+                          <span className="font-extrabold text-white truncate text-center flex-1">
+                            {player.web_name}
+                          </span>
+                          <span className="font-bold text-[10px] sm:text-xs text-slate-400 shrink-0 font-mono">
+                            {formatMoney(player.now_cost, true)}
+                          </span>
+                        </div>
 
-              {/* Lineup Visual Grid */}
-              {optimalSquad && (
-                <div className="space-y-3 pt-2">
-                  {/* Starters Section */}
-                  <div className="p-4 rounded-3xl bg-slate-950/70 border border-white/10">
-                    <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/10">
-                      <span className="text-xs sm:text-sm font-black text-white uppercase tracking-wider flex items-center gap-1.5">
-                        <Crown className="w-4 h-4 text-amber-400" />
-                        Starting XI ({optimalSquad.formation}) · {optimalSquad.captain.web_name} (C) · {optimalSquad.viceCaptain.web_name} (V)
-                      </span>
-                      <span className="text-xs text-emerald-400 font-mono font-bold">11 Starters</span>
+                        {/* Expected Points Badge Bar */}
+                        <div className="w-full py-0.5 sm:py-1 px-1 bg-emerald-950/90 text-emerald-300 font-mono font-black text-[10px] sm:text-xs text-center flex items-center justify-center">
+                          <span>{xp.toFixed(1)} xP{horizon !== '1gw' ? '/GW' : ''}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                };
+
+                return (
+                  <div className="flex flex-col lg:flex-row items-stretch gap-3">
+                    {/* Stadium Pitch */}
+                    <div className="flex-1 relative rounded-3xl overflow-hidden shadow-2xl border-2 border-emerald-500/40 bg-gradient-to-b from-[#0c2e17] via-[#0f4422] to-[#071f0f] p-3 sm:p-5 flex flex-col justify-between gap-3 min-h-[540px] sm:min-h-[600px]">
+                      {/* Grass Pattern Stripes */}
+                      <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.06)_0px,rgba(0,0,0,0.06)_50px,transparent_50px,transparent_100px)] pointer-events-none" />
+
+                      {/* Pitch Lines */}
+                      <div className="absolute inset-3 border-2 border-white/20 rounded-2xl pointer-events-none">
+                        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-white/20 -translate-y-1/2" />
+                        <div className="absolute top-1/2 left-1/2 w-36 sm:w-52 h-36 sm:h-52 border-2 border-white/20 rounded-full -translate-x-1/2 -translate-y-1/2" />
+                      </div>
+
+                      {/* Over-Pitch Floating Telemetry Bar */}
+                      <div className="relative z-10 flex flex-wrap items-center justify-between px-4 py-2 bg-slate-950/85 backdrop-blur-md rounded-2xl border border-white/15 text-xs sm:text-sm font-mono gap-3 shrink-0 shadow-lg">
+                        <div className="flex items-center gap-2">
+                          <Crown className="w-4 h-4 text-amber-400" />
+                          <span className="text-white font-bold font-sans">
+                            Starting XI: <strong className="text-amber-300">{optimalSquad.captain.web_name} (C)</strong> · <strong className="text-slate-300">{optimalSquad.viceCaptain.web_name} (V)</strong>
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span>Projected: <strong className="text-emerald-400 font-black text-xs sm:text-sm">{optimalSquad.totalProjectedPoints} pts/GW</strong></span>
+                          <span>Gain: <strong className="text-cyan-300 font-black text-xs sm:text-sm">+{optimalSquad.xpGain > 0 ? optimalSquad.xpGain : 0} /GW</strong></span>
+                          <span>Transfers: <strong className="text-amber-400 font-bold">{optimalSquad.transfersCount} / 15</strong></span>
+                        </div>
+                      </div>
+
+                      {/* 1. Goalkeeper Line */}
+                      <div className="relative z-10 flex items-center justify-center">
+                        {gkStarters.map(renderPitchCard)}
+                      </div>
+
+                      {/* 2. Defenders Line */}
+                      <div className="relative z-10 flex items-center justify-around gap-2 sm:gap-4 max-w-4xl mx-auto w-full">
+                        {defStarters.map(renderPitchCard)}
+                      </div>
+
+                      {/* 3. Midfielders Line */}
+                      <div className="relative z-10 flex items-center justify-around gap-2 sm:gap-4 max-w-4xl mx-auto w-full">
+                        {midStarters.map(renderPitchCard)}
+                      </div>
+
+                      {/* 4. Forwards Line */}
+                      <div className="relative z-10 flex items-center justify-around gap-3 sm:gap-6 max-w-2xl mx-auto w-full">
+                        {fwdStarters.map(renderPitchCard)}
+                      </div>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                      {optimalSquad.starters.map(({ player, xp, isCaptain, isViceCaptain }) => {
-                        const team = teamMap.get(player.team);
-                        const isGK = player.element_type === 1;
+                    {/* Right: Vertical Substitutes Bench Column */}
+                    <aside className="w-full lg:w-48 xl:w-52 bg-slate-950/90 rounded-3xl border border-white/10 p-3 sm:p-3.5 flex flex-col justify-between shrink-0 shadow-xl gap-3">
+                      <div className="pb-2 border-b border-white/10 text-center">
+                        <span className="text-xs sm:text-sm font-black text-slate-200 uppercase tracking-wider block">Substitutes</span>
+                        <span className="text-[10px] sm:text-[11px] text-slate-400 font-mono">Auto-Sub Order</span>
+                      </div>
 
-                        return (
-                          <div
-                            key={player.id}
-                            className="relative p-2.5 rounded-2xl bg-slate-900 border border-white/10 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center group"
-                          >
-                            {/* Captain / Vice Captain Badge */}
-                            {(isCaptain || isViceCaptain) && (
-                              <div className={`absolute top-1.5 left-1.5 w-5 h-5 rounded-full flex items-center justify-center font-black text-[10px] shadow border ${
-                                isCaptain 
-                                  ? 'bg-black text-amber-300 border-amber-300' 
-                                  : 'bg-black text-white border-slate-300'
-                              }`}>
-                                {isCaptain ? 'C' : 'V'}
+                      <div className="flex-1 flex flex-col justify-around gap-2">
+                        {optimalSquad.bench.map(({ player, xp }, idx) => {
+                          const team = teamMap.get(player.team);
+                          const isGK = player.element_type === 1;
+                          const label = idx === 0 ? 'GK' : `Sub ${idx}`;
+
+                          return (
+                            <div
+                              key={player.id}
+                              className="p-2 sm:p-2.5 rounded-2xl bg-slate-900/90 border border-white/10 flex items-center gap-2.5 group hover:border-emerald-500/40 transition-all shadow"
+                            >
+                              <div className="relative shrink-0">
+                                <span className="absolute -top-1 -left-1 text-[8px] sm:text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded font-bold border border-white/10 uppercase">{label}</span>
+                                <KitIcon
+                                  teamCode={team?.code}
+                                  teamShortName={team?.short_name}
+                                  isGoalkeeper={isGK}
+                                  className="w-10 h-10 sm:w-11 sm:h-11"
+                                />
                               </div>
-                            )}
-
-                            {/* Kit Icon */}
-                            <KitIcon
-                              teamCode={team?.code}
-                              teamShortName={team?.short_name}
-                              isGoalkeeper={isGK}
-                              className="w-12 h-12 mb-1 group-hover:scale-105 transition-transform"
-                            />
-
-                            <span className="text-xs font-black text-white truncate max-w-full block leading-tight">
-                              {player.web_name}
-                            </span>
-                            <span className="text-[10px] text-slate-400 font-mono">
-                              {team?.short_name} · {formatMoney(player.now_cost, true)}
-                            </span>
-
-                            <div className="mt-1.5 px-2 py-0.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-[10.5px] font-black text-emerald-300 font-mono text-center">
-                              {horizon === '1gw' ? (
-                                <span>{isCaptain ? `${(xp * 2).toFixed(1)} xP (2x)` : `${xp.toFixed(1)} xP`}</span>
-                              ) : (
-                                <div className="leading-tight">
-                                  <span>{isCaptain ? `${(xp * 2 * (horizon === '3gw' ? 3 : 5)).toFixed(1)} xP` : `${(xp * (horizon === '3gw' ? 3 : 5)).toFixed(1)} xP`}</span>
-                                  <span className="text-[9px] text-emerald-400/70 block">({isCaptain ? `${(xp * 2).toFixed(1)}/GW` : `${xp.toFixed(1)}/GW`})</span>
+                              <div className="min-w-0 flex-1">
+                                <span className="text-xs sm:text-sm font-black text-white truncate block leading-tight">
+                                  {player.web_name}
+                                </span>
+                                <div className="flex items-center justify-between text-[10px] sm:text-xs text-slate-400 font-mono mt-0.5">
+                                  <span>{formatMoney(player.now_cost, true)}</span>
+                                  <span className="text-emerald-400 font-bold">{xp.toFixed(1)} xP</span>
                                 </div>
-                              )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                          );
+                        })}
+                      </div>
+
+                      <div className="pt-2 border-t border-white/10 text-center text-[10px] sm:text-xs text-slate-400 font-mono">
+                        <span>Bench Cost: <strong className="text-slate-200">{formatMoney(optimalSquad.bench.reduce((s, b) => s + b.player.now_cost, 0), true)}</strong></span>
+                      </div>
+                    </aside>
                   </div>
-
-                  {/* Bench Section */}
-                  <div className="p-4 rounded-3xl bg-slate-950/70 border border-white/10">
-                    <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/10">
-                      <span className="text-xs sm:text-sm font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                        <ShieldAlert className="w-4 h-4 text-emerald-400" />
-                        Substitutes Bench
-                      </span>
-                      <span className="text-xs text-slate-400 font-mono font-bold">4 Bench</span>
-                    </div>
-
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      {optimalSquad.bench.map(({ player, xp }, idx) => {
-                        const team = teamMap.get(player.team);
-                        const isGK = player.element_type === 1;
-                        const label = idx === 0 ? 'GK' : `Bench ${idx}`;
-
-                        return (
-                          <div
-                            key={player.id}
-                            className="p-2.5 rounded-2xl bg-slate-900/80 border border-white/10 flex flex-col items-center text-center"
-                          >
-                            <span className="text-[10px] font-bold text-slate-400 uppercase mb-0.5">{label}</span>
-                            <KitIcon
-                              teamCode={team?.code}
-                              teamShortName={team?.short_name}
-                              isGoalkeeper={isGK}
-                              className="w-10 h-10 mb-1"
-                            />
-                            <span className="text-xs font-black text-white truncate max-w-full block leading-tight">
-                              {player.web_name}
-                            </span>
-                            <span className="text-[10px] text-slate-400 font-mono">
-                              {team?.short_name} · {formatMoney(player.now_cost, true)}
-                            </span>
-                            <div className="mt-1 px-2 py-0.5 rounded-lg bg-slate-950 border border-white/10 text-[10px] font-bold text-slate-300 font-mono">
-                              {xp.toFixed(1)} xP
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              )}
+                );
+              })()}
             </div>
           )}
 

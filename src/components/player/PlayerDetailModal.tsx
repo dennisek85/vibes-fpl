@@ -11,6 +11,8 @@ import {
   Loader2 
 } from 'lucide-react';
 import { getPlayerSetPieceProfile } from '@/lib/setPieces';
+import { getPlayerTop10kEo } from '@/lib/ownershipTracker';
+import { getPlayerFormMomentum } from '@/lib/formTracker';
 
 export const PlayerDetailModal: React.FC = () => {
   const { 
@@ -238,6 +240,46 @@ export const PlayerDetailModal: React.FC = () => {
             <span className="text-lg sm:text-2xl md:text-3xl font-black text-purple-300 font-mono mt-0.5 block">{player.selected_by_percent || '0'}%</span>
           </div>
         </div>
+
+        {/* Elite Intelligence Bar: Top 10k Effective Ownership (EO) & Form Momentum */}
+        {(() => {
+          const eo = getPlayerTop10kEo(player.id);
+          const mom = getPlayerFormMomentum(player.id);
+          if (!eo && !mom) return null;
+
+          return (
+            <div className="px-6 py-3 bg-slate-950 border-b border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
+              {eo && (
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400 font-bold uppercase tracking-wider">Top 10k EO:</span>
+                  <strong className="text-white font-mono text-sm">{eo.effectiveOwnership}%</strong>
+                  <span className="text-[10px] text-slate-400 font-mono">({eo.ownership}% own · {eo.captaincy}% cap)</span>
+                  <span className={`px-2 py-0.5 rounded-full font-black text-[10px] uppercase font-mono ${
+                    eo.tier === 'essential' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' :
+                    eo.tier === 'popular' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                    'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                  }`}>
+                    {eo.riskLabel}
+                  </span>
+                </div>
+              )}
+
+              {mom && (
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400 font-bold uppercase tracking-wider">Rolling 3-Match:</span>
+                  <span className="font-mono text-slate-300">xG90: <strong className="text-cyan-300">{mom.rolling3Xg90}</strong> · xA90: <strong className="text-purple-300">{mom.rolling3Xa90}</strong></span>
+                  <span className={`px-2 py-0.5 rounded-full font-black text-[10px] uppercase font-mono ${
+                    mom.trend === 'rising' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                    mom.trend === 'cooling' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' :
+                    'bg-slate-800 text-slate-300 border border-white/10'
+                  }`}>
+                    {mom.trend === 'rising' ? '📈 Rising Form' : mom.trend === 'cooling' ? '📉 Cooling' : '⚖️ Stable Form'}
+                  </span>
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* 3. Middle Section: Recent Form & Next 5 Fixtures */}
         <div className="p-5 sm:p-6 border-b border-white/10 bg-slate-900/60 grid grid-cols-1 lg:grid-cols-2 gap-5">
