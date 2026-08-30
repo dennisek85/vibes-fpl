@@ -16,7 +16,7 @@ export async function GET() {
     const [bootstrapRes, fixturesRes] = await Promise.all([
       fetch('https://fantasy.premierleague.com/api/bootstrap-static/', {
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner-OpenFPL/2.0' },
-        next: { revalidate: 900 },
+        cache: 'no-store',
       }),
       fetch('https://fantasy.premierleague.com/api/fixtures/', {
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner-OpenFPL/2.0' },

@@ -3,7 +3,7 @@ import { updateAndGetPriceTelemetry } from '@/lib/priceTracker';
 
 let cachedData: any = null;
 let lastFetchTime = 0;
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes cache for fresh transfer tracking
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes in-memory cache for fast, warning-free delivery
 
 export async function GET() {
   const now = Date.now();
@@ -20,7 +20,7 @@ export async function GET() {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       },
-      next: { revalidate: 300 },
+      cache: 'no-store',
     });
 
     if (!res.ok) {
