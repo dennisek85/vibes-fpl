@@ -91,7 +91,7 @@ export const StrategyDock: React.FC<StrategyDockProps> = ({ onOpenOverrides }) =
   };
 
   return (
-    <div className="w-full max-w-7xl px-2 sm:px-4 mt-3 mb-4">
+    <div className="w-full max-w-7xl px-1 sm:px-4 mt-4 sm:mt-6 mb-8">
       {/* Mobile Slide Controls */}
       <div className="flex md:hidden items-center justify-between mb-2 px-1">
         <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">

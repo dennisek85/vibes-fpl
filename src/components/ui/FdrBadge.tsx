@@ -24,22 +24,22 @@ export const FdrFixtureCell: React.FC<FdrFixtureCellProps> = ({ fixture, totalCo
     bgClass = 'bg-[#6a041d] text-rose-100 font-black';
   }
 
-  // Adaptive font and spacing classes based on number of columns
-  const heightClass = totalCount <= 1 ? 'py-2' : totalCount <= 3 ? 'py-1.5' : 'py-1 sm:py-1.5';
+  // Adaptive font and spacing classes based on number of columns and screen size
+  const heightClass = totalCount <= 1 ? 'py-1 sm:py-2' : totalCount <= 3 ? 'py-0.5 sm:py-1.5' : 'py-0.5 sm:py-1';
   
   const oppText = totalCount === 5 ? `${opp}${loc}` : `${opp} ${loc}`;
 
   const oppFontClass = totalCount === 1 
-    ? 'text-[14px] sm:text-[16px] md:text-[17px] lg:text-[18.5px] tracking-tight'
+    ? 'text-[10px] sm:text-[16px] md:text-[17px] lg:text-[18.5px] tracking-tight'
     : totalCount <= 3 
-    ? 'text-[12px] sm:text-[13.5px] md:text-[14.5px] lg:text-[15.5px] tracking-tight'
-    : 'text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] tracking-tighter';
+    ? 'text-[7.5px] sm:text-[12px] md:text-[13.5px] lg:text-[15.5px] tracking-tight'
+    : 'text-[6.5px] sm:text-[10px] md:text-[11px] lg:text-[12px] tracking-tighter';
 
   const xpFontClass = totalCount === 1 
-    ? 'text-[13px] sm:text-[14.5px] md:text-[15.5px] lg:text-[17px]'
+    ? 'text-[9px] sm:text-[14.5px] md:text-[15.5px] lg:text-[17px]'
     : totalCount <= 3 
-    ? 'text-[11px] sm:text-[12.5px] md:text-[13.5px] lg:text-[14.5px]'
-    : 'text-[9px] sm:text-[10px] md:text-[11px] lg:text-[12px] tracking-tighter';
+    ? 'text-[7px] sm:text-[11px] md:text-[12.5px] lg:text-[14.5px]'
+    : 'text-[6px] sm:text-[9px] md:text-[10px] lg:text-[11px] tracking-tighter';
 
   return (
     <div
@@ -47,11 +47,14 @@ export const FdrFixtureCell: React.FC<FdrFixtureCellProps> = ({ fixture, totalCo
       title={`Gameweek ${fixture.event}: vs ${opp} ${loc} (Difficulty: ${diff}${showAiPredictions && fixture.xP !== undefined ? ` · ${fixture.xP.toFixed(1)} xP` : ''})`}
     >
       <span className={`${oppFontClass} font-black leading-tight uppercase truncate max-w-full`}>
-        {oppText}
+        {/* On ultra-compact screens show short name without (H)/(A) if cramped */}
+        <span className="sm:hidden">{opp}</span>
+        <span className="hidden sm:inline">{oppText}</span>
       </span>
       {showAiPredictions && fixture.xP !== undefined && (
         <span className={`${xpFontClass} opacity-95 font-extrabold leading-none mt-0.5 truncate max-w-full`}>
-          {totalCount === 5 ? `${fixture.xP.toFixed(1)}` : `${fixture.xP.toFixed(1)} xP`}
+          <span className="sm:hidden">{fixture.xP.toFixed(1)}</span>
+          <span className="hidden sm:inline">{totalCount === 5 ? `${fixture.xP.toFixed(1)}` : `${fixture.xP.toFixed(1)} xP`}</span>
         </span>
       )}
     </div>

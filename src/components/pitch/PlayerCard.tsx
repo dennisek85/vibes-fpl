@@ -76,7 +76,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
             selectSlotForSwap(pick.position);
           }
         }}
-        className={`relative w-[112px] sm:w-[134px] md:w-[160px] lg:w-[185px] xl:w-[210px] 2xl:w-[225px] rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden transition-all duration-200 ${
+        className={`relative w-[68px] min-w-[58px] max-w-[78px] sm:w-[134px] sm:min-w-0 sm:max-w-none md:w-[160px] lg:w-[185px] xl:w-[210px] 2xl:w-[225px] rounded-xl sm:rounded-3xl shadow-xl overflow-hidden transition-all duration-200 ${
           isDark 
             ? 'bg-slate-900/90 backdrop-blur-md border border-white/20 text-white shadow-2xl shadow-slate-950/80' 
             : 'bg-white text-slate-900 border border-slate-200/90'
@@ -84,17 +84,17 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
           isLocked ? 'cursor-default' : 'cursor-pointer'
         } ${
           isTransferSelected
-            ? 'ring-4 ring-emerald-500 scale-102 shadow-2xl'
+            ? 'ring-2 sm:ring-4 ring-emerald-500 scale-102 shadow-2xl'
             : isSwapSelected
-            ? 'ring-4 ring-amber-400 animate-pulse scale-102 shadow-2xl'
+            ? 'ring-2 sm:ring-4 ring-amber-400 animate-pulse scale-102 shadow-2xl'
             : ''
         }`}
       >
         {/* Top-Left Corner: Captain / Vice Captain Badge */}
-        <div className="absolute top-2 left-2 z-20">
+        <div className="absolute top-1 left-1 sm:top-2 sm:left-2 z-20">
           {pick.is_captain && (
             <div
-              className="bg-black text-amber-300 font-black text-xs sm:text-sm w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center border-2 border-amber-300 shadow"
+              className="bg-black text-amber-300 font-black text-[9px] sm:text-xs md:text-sm w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center border sm:border-2 border-amber-300 shadow"
               title="Captain"
             >
               C
@@ -102,7 +102,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
           )}
           {pick.is_vice_captain && !pick.is_captain && (
             <div
-              className="bg-black text-white font-black text-xs sm:text-sm w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center border-2 border-slate-300 shadow"
+              className="bg-black text-white font-black text-[9px] sm:text-xs md:text-sm w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center border sm:border-2 border-slate-300 shadow"
               title="Vice Captain"
             >
               V
@@ -110,7 +110,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
           )}
           {!isLocked && isDoubtfulOrInjured && !pick.is_captain && !pick.is_vice_captain && (
             <span 
-              className="bg-amber-500 text-slate-950 text-[9px] sm:text-[10px] font-black px-1.5 py-0.2 rounded-full flex items-center shadow"
+              className="bg-amber-500 text-slate-950 text-[7.5px] sm:text-[10px] font-black px-1 sm:px-1.5 py-0.2 rounded-full flex items-center shadow"
               title={player.news || 'Status alert'}
             >
               <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5" />
@@ -121,23 +121,23 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
 
         {/* Top-Right Corner: Circular Dark '✕' Sell Button (Only for unlocked future gameweeks) */}
         {!isLocked && (
-          <div className="absolute top-2 right-2 z-20">
+          <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20">
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 openTransferDrawer(player.id);
               }}
-              className="bg-slate-950 hover:bg-rose-600 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 lg:w-6.5 lg:h-6.5 flex items-center justify-center shadow border border-white/20 transition-all hover:scale-110 active:scale-95"
+              className="bg-slate-950 hover:bg-rose-600 text-white rounded-full w-4 h-4 sm:w-6 sm:h-6 lg:w-6.5 lg:h-6.5 flex items-center justify-center shadow border border-white/20 transition-all hover:scale-110 active:scale-95"
               title={`Sell / Transfer ${player.web_name}`}
             >
-              <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
+              <X className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-white" />
             </button>
           </div>
         )}
 
         {/* 1. Top Section: Centered Kit */}
-        <div className={`pt-2.5 pb-1 px-2 flex items-center justify-center min-h-[78px] sm:min-h-[90px] md:min-h-[105px] lg:min-h-[120px] xl:min-h-[130px] transition-colors ${
+        <div className={`pt-1.5 sm:pt-2.5 pb-0.5 sm:pb-1 px-1 sm:px-2 flex items-center justify-center min-h-[50px] sm:min-h-[90px] md:min-h-[105px] lg:min-h-[120px] xl:min-h-[130px] transition-colors ${
           isDark 
             ? 'bg-slate-950/70' 
             : 'bg-gradient-to-b from-slate-50 to-white'
@@ -156,32 +156,32 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
               teamCode={team?.code} 
               teamShortName={team?.short_name} 
               isGoalkeeper={isGK} 
-              className="w-13 h-13 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-26 xl:h-26" 
+              className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-26 xl:h-26" 
             />
           </div>
         </div>
 
-        {/* 2. Middle Section: Player Surname + Price */}
+        {/* 2. Middle Section: Player Surname + Price (Stacked on mobile for full name width, side-by-side on desktop) */}
         <div 
           onClick={(e) => {
             e.stopPropagation();
             openPlayerDetail(player.id);
           }}
-          className={`px-2.5 sm:px-3 py-1 sm:py-1.5 flex items-baseline justify-between gap-1 cursor-pointer transition-colors group/name ${
+          className={`px-1 sm:px-3 py-0.5 sm:py-1.5 flex flex-col sm:flex-row items-center sm:items-baseline justify-center sm:justify-between gap-0 sm:gap-1 cursor-pointer transition-colors group/name text-center sm:text-left ${
             isDark 
               ? 'bg-slate-900 hover:bg-slate-800' 
               : 'bg-white hover:bg-slate-100'
           }`}
           title={`Click to view ${player.web_name} full match statistics & fixtures`}
         >
-          <span className={`font-black text-xs sm:text-sm md:text-[15px] lg:text-[16.5px] xl:text-[18px] truncate leading-tight tracking-tight transition-colors ${
+          <span className={`w-full sm:w-auto font-black text-[10.5px] sm:text-sm md:text-[15px] lg:text-[16.5px] xl:text-[18px] truncate leading-tight tracking-tight transition-colors ${
             isDark 
               ? 'text-white group-hover/name:text-emerald-400' 
               : 'text-slate-900 group-hover/name:text-emerald-700'
           }`}>
             {player.web_name}
           </span>
-          <span className={`font-bold text-[11px] sm:text-xs md:text-[13px] lg:text-[14.5px] xl:text-[15.5px] leading-tight shrink-0 font-mono ${
+          <span className={`font-bold text-[9px] sm:text-xs md:text-[13px] lg:text-[14.5px] xl:text-[15.5px] leading-tight shrink-0 font-mono ${
             isDark ? 'text-emerald-400' : 'text-slate-600'
           }`}>
             {formatMoney(player.now_cost, true)}
@@ -193,20 +193,20 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
 
         {/* 4. Bottom Section: If Locked -> Show Official Points Bar! If Future -> Show Upcoming Fixture Cells */}
         {isLocked ? (
-          <div className={`py-2 px-3 text-center flex items-center justify-center gap-1.5 font-mono ${
+          <div className={`py-1 sm:py-2 px-1 sm:px-3 text-center flex items-center justify-center gap-1 sm:gap-1.5 font-mono ${
             pick.is_captain 
               ? 'bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-black shadow-inner' 
               : finalScore >= 6 
               ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-black' 
               : 'bg-slate-900 text-slate-200 font-bold'
           }`}>
-            <Trophy className={`w-3.5 h-3.5 ${pick.is_captain ? 'text-slate-950' : 'text-amber-400'}`} />
-            <span className="text-sm sm:text-base tracking-tight font-black">
-              {finalScore} <span className="text-[11px] font-sans uppercase font-bold">pts</span>
+            <Trophy className={`w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 ${pick.is_captain ? 'text-slate-950' : 'text-amber-400'}`} />
+            <span className="text-xs sm:text-base tracking-tight font-black">
+              {finalScore} <span className="text-[9px] sm:text-[11px] font-sans uppercase font-bold">pts</span>
             </span>
             {pick.multiplier > 1 && (
-              <span className="text-[10px] bg-black/20 px-1 rounded font-sans font-bold">
-                ({actualPoints} × {pick.multiplier})
+              <span className="text-[8px] sm:text-[10px] bg-black/20 px-0.5 sm:px-1 rounded font-sans font-bold hidden xs:inline">
+                ({actualPoints}×{pick.multiplier})
               </span>
             )}
           </div>
@@ -216,16 +216,16 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false })
               <FdrFixtureCell key={`${fix.event}-${idx}`} fixture={fix} totalCount={fixtureHorizon} />
             ))}
             {fixtures.length === 0 && (
-              <div className="py-2 text-center text-xs text-slate-400 w-full bg-slate-100 font-medium">
+              <div className="py-1 sm:py-2 text-center text-[8px] sm:text-xs text-slate-400 w-full bg-slate-100 font-medium">
                 No Fixt.
               </div>
             )}
           </div>
         )}
 
-        {/* Subtle Sub/Role Trigger Bar (Hidden if Gameweek is locked) */}
+        {/* Desktop-Only Sub/Role Trigger Bar (Hidden on compact mobile screens to keep cards sleek) */}
         {!isLocked && (
-          <div className={`flex items-center justify-between px-3 py-1 text-[11px] transition-colors ${
+          <div className={`hidden sm:flex items-center justify-between px-3 py-1 text-[11px] transition-colors ${
             isDark 
               ? 'bg-slate-950 text-slate-400 border-t border-white/10' 
               : 'bg-slate-50 text-slate-500 border-t border-slate-200'

@@ -82,7 +82,7 @@ export const FootballPitch: React.FC = () => {
   return (
     <div className="w-full flex-1 h-full flex flex-col items-center min-h-0">
       {/* Football Pitch Graphic Container */}
-      <div className="relative w-full h-full flex-1 rounded-3xl overflow-hidden shadow-2xl border-2 border-emerald-500/40 bg-gradient-to-b from-[#0c2e17] via-[#0f4422] to-[#071f0f] flex flex-col justify-around py-2 sm:py-3 px-2 sm:px-6">
+      <div className="relative w-full min-h-[500px] sm:min-h-[580px] md:min-h-0 md:h-full flex-1 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 border-emerald-500/40 bg-gradient-to-b from-[#0c2e17] via-[#0f4422] to-[#071f0f] flex flex-col justify-around py-3 sm:py-4 px-1 sm:px-6">
         {/* Grass Pattern Stripes */}
         <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.06)_0px,rgba(0,0,0,0.06)_60px,transparent_60px,transparent_120px)] pointer-events-none" />
 
@@ -101,15 +101,15 @@ export const FootballPitch: React.FC = () => {
           <div className="absolute bottom-0 left-1/2 w-72 sm:w-96 md:w-[480px] h-24 sm:h-32 border-t-2 border-x-2 border-white/35 rounded-t-2xl -translate-x-1/2" />
         </div>
 
-        {/* Secret Football Easter Egg Trigger (Discrete Background Element) */}
-        <div className="absolute top-16 left-32 sm:left-48 md:left-52 z-30 select-none">
+        {/* Secret Football Easter Egg Trigger (Discrete Background Element - Off to the left) */}
+        <div className="absolute top-3 left-3 sm:top-6 sm:left-6 md:top-8 md:left-8 z-30 select-none">
           <div
             onMouseDown={startLongPress}
             onMouseUp={cancelLongPress}
             onMouseLeave={cancelLongPress}
             onTouchStart={startLongPress}
             onTouchEnd={cancelLongPress}
-            className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center cursor-default"
+            className="relative w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center cursor-default opacity-85 hover:opacity-100 transition-opacity"
           >
             {/* Football Graphic (Natural Pitch Ball) */}
             <div className="w-full h-full rounded-full bg-white shadow-md border border-slate-300/80 flex items-center justify-center overflow-hidden drop-shadow-md">
@@ -141,7 +141,7 @@ export const FootballPitch: React.FC = () => {
         )}
 
         {/* In-Pitch Top Right Bar: Quick AI Optimize (Only when AI mode is unlocked) + Formation Badge */}
-        <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 flex items-center gap-1.5 sm:gap-2">
           {!isLocked && showAiPredictions && (
             <button
               onClick={() => {
@@ -152,42 +152,42 @@ export const FootballPitch: React.FC = () => {
                   setTimeout(() => setShowUnlockToast(false), 4000);
                 }
               }}
-              className="bg-slate-950/80 hover:bg-emerald-600 text-emerald-300 hover:text-white font-black px-3 py-1.5 rounded-full border border-emerald-500/40 text-xs backdrop-blur-md shadow-lg transition-all flex items-center gap-1.5 active:scale-95 group animate-in fade-in"
+              className="bg-slate-950/80 hover:bg-emerald-600 text-emerald-300 hover:text-white font-black px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-emerald-500/40 text-[10px] sm:text-xs backdrop-blur-md shadow-lg transition-all flex items-center gap-1 sm:gap-1.5 active:scale-95 group animate-in fade-in"
               title="Auto-optimize starting XI and captain for highest expected points"
             >
-              <Wand2 className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform" />
+              <Wand2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 group-hover:rotate-12 transition-transform" />
               <span>AI Optimize</span>
             </button>
           )}
 
-          <span className="bg-slate-950/75 text-emerald-300 font-black px-3 py-1.5 rounded-full border border-emerald-500/40 text-xs backdrop-blur-md shadow-lg pointer-events-none">
+          <span className="bg-slate-950/75 text-emerald-300 font-black px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-emerald-500/40 text-[10px] sm:text-xs backdrop-blur-md shadow-lg pointer-events-none">
             {formationString}
           </span>
         </div>
 
         {/* 1. Goalkeeper Row */}
-        <div className="relative z-10 w-full flex justify-center items-center py-1">
+        <div className="relative z-10 w-full flex justify-center items-center py-0.5 sm:py-1 px-1">
           {gks.map(pick => (
             <PlayerCard key={pick.position} pick={pick} />
           ))}
         </div>
 
         {/* 2. Defenders Row */}
-        <div className="relative z-10 w-full flex justify-around items-center py-1">
+        <div className="relative z-10 w-full flex justify-around items-center py-0.5 sm:py-1 px-0.5 sm:px-2">
           {defs.map(pick => (
             <PlayerCard key={pick.position} pick={pick} />
           ))}
         </div>
 
         {/* 3. Midfielders Row */}
-        <div className="relative z-10 w-full flex justify-around items-center py-1">
+        <div className="relative z-10 w-full flex justify-around items-center py-0.5 sm:py-1 px-0.5 sm:px-2">
           {mids.map(pick => (
             <PlayerCard key={pick.position} pick={pick} />
           ))}
         </div>
 
         {/* 4. Forwards Row */}
-        <div className="relative z-10 w-full flex justify-around items-center py-1">
+        <div className="relative z-10 w-full flex justify-around items-center py-0.5 sm:py-1 px-0.5 sm:px-2">
           {fwds.map(pick => (
             <PlayerCard key={pick.position} pick={pick} />
           ))}
