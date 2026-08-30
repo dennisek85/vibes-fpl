@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-30T21:48:58.581Z",
+  "lastUpdated": "2026-08-30T23:56:32.337Z",
   "season": "2026/27",
   "players": {
     "1": {
@@ -665,16 +665,6 @@
     "76": {
       "playerId": 76,
       "rolling3Mins": 8,
-      "rolling3Xg90": 0,
-      "rolling3Xa90": 0,
-      "rolling5Xg90": 0,
-      "rolling5Xa90": 0,
-      "momentumMultiplier": 1,
-      "trend": "stable"
-    },
-    "77": {
-      "playerId": 77,
-      "rolling3Mins": 0,
       "rolling3Xg90": 0,
       "rolling3Xa90": 0,
       "rolling5Xg90": 0,
@@ -1552,16 +1542,6 @@
       "momentumMultiplier": 1,
       "trend": "stable"
     },
-    "187": {
-      "playerId": 187,
-      "rolling3Mins": 0,
-      "rolling3Xg90": 0,
-      "rolling3Xa90": 0,
-      "rolling5Xg90": 0,
-      "rolling5Xa90": 0,
-      "momentumMultiplier": 1,
-      "trend": "stable"
-    },
     "188": {
       "playerId": 188,
       "rolling3Mins": 24,
@@ -1879,26 +1859,6 @@
       "rolling3Xa90": 0.01,
       "rolling5Xg90": 0.05,
       "rolling5Xa90": 0.01,
-      "momentumMultiplier": 1,
-      "trend": "stable"
-    },
-    "231": {
-      "playerId": 231,
-      "rolling3Mins": 0,
-      "rolling3Xg90": 0,
-      "rolling3Xa90": 0,
-      "rolling5Xg90": 0,
-      "rolling5Xa90": 0,
-      "momentumMultiplier": 1,
-      "trend": "stable"
-    },
-    "232": {
-      "playerId": 232,
-      "rolling3Mins": 0,
-      "rolling3Xg90": 0,
-      "rolling3Xa90": 0,
-      "rolling5Xg90": 0,
-      "rolling5Xa90": 0,
       "momentumMultiplier": 1,
       "trend": "stable"
     },
@@ -2745,11 +2705,11 @@
     "347": {
       "playerId": 347,
       "rolling3Mins": 11,
-      "rolling3Xg90": 0.27,
+      "rolling3Xg90": 0.33,
       "rolling3Xa90": 0,
-      "rolling5Xg90": 0.16,
+      "rolling5Xg90": 0.2,
       "rolling5Xa90": 0,
-      "momentumMultiplier": 1.11,
+      "momentumMultiplier": 1.15,
       "trend": "rising"
     },
     "348": {
