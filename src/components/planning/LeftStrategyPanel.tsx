@@ -5,7 +5,6 @@ import {
   Zap, 
   Sparkles, 
   Lightbulb, 
-  Eye, 
   EyeOff, 
   RotateCcw,
   Layers,
@@ -176,61 +175,61 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
           {/* AI-Only: Squad Power Rating (0-100% vs Dream XI) */}
           {squadRating && (
             <div className="p-2.5 rounded-2xl bg-slate-950/90 border border-white/10 flex flex-col gap-2 shadow-inner animate-in fade-in">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Gauge className="w-3.5 h-3.5 text-emerald-400" />
-                Team Rating
-              </span>
-              <span className={`text-base font-black font-mono px-2 py-0.5 rounded-lg border ${
-                squadRating.overallPercentage >= 85 
-                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' 
-                  : squadRating.overallPercentage >= 75 
-                  ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40' 
-                  : 'bg-amber-950/80 text-amber-300 border-amber-500/40'
-              }`}>
-                {squadRating.overallPercentage}%
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Gauge className="w-3.5 h-3.5 text-emerald-400" />
+                  Team Rating
+                </span>
+                <span className={`text-base font-black font-mono px-2 py-0.5 rounded-lg border ${
+                  squadRating.overallPercentage >= 85 
+                    ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' 
+                    : squadRating.overallPercentage >= 75 
+                    ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40' 
+                    : 'bg-amber-950/80 text-amber-300 border-amber-500/40'
+                }`}>
+                  {squadRating.overallPercentage}%
+                </span>
+              </div>
+
+              {/* Clean Sub-percentages */}
+              <div className="grid grid-cols-4 gap-1 text-center font-mono">
+                <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">DEF</span>
+                  <span className="text-xs font-black text-slate-200">{squadRating.defensePercentage}%</span>
+                </div>
+                <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">MID</span>
+                  <span className="text-xs font-black text-slate-200">{squadRating.midfieldPercentage}%</span>
+                </div>
+                <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">FWD</span>
+                  <span className="text-xs font-black text-slate-200">{squadRating.forwardPercentage}%</span>
+                </div>
+                <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">CAP</span>
+                  <span className="text-xs font-black text-amber-300">{squadRating.captainPercentage}%</span>
+                </div>
+              </div>
             </div>
+          )}
 
-            {/* Clean Sub-percentages */}
-            <div className="grid grid-cols-4 gap-1 text-center font-mono">
-              <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
-                <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">DEF</span>
-                <span className="text-xs font-black text-slate-200">{squadRating.defensePercentage}%</span>
-              </div>
-              <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
-                <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">MID</span>
-                <span className="text-xs font-black text-slate-200">{squadRating.midfieldPercentage}%</span>
-              </div>
-              <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
-                <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">FWD</span>
-                <span className="text-xs font-black text-slate-200">{squadRating.forwardPercentage}%</span>
-              </div>
-              <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
-                <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">CAP</span>
-                <span className="text-xs font-black text-amber-300">{squadRating.captainPercentage}%</span>
-              </div>
-            </div>
-          </div>
-        )}
+          <button
+            onClick={() => openScoutModal()}
+            className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-600 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 transition active:scale-98"
+          >
+            <Lightbulb className="w-4 h-4 text-amber-300" />
+            Open AI Transfer Radar
+          </button>
 
-        <button
-          onClick={() => openScoutModal()}
-          className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-600 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 transition active:scale-98"
-        >
-          <Lightbulb className="w-4 h-4 text-amber-300" />
-          Open AI Transfer Radar
-        </button>
-
-        {/* AI-Only: Strongest Team Solver Button */}
-        <button
-          onClick={() => openScoutModal(undefined, undefined, undefined, 'optimal_squad')}
-          className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-950/80 transition active:scale-98 border border-emerald-400/40 animate-in fade-in"
-          title="Compute the mathematically strongest 15-man squad within your exact budget"
-        >
-          <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
-          <span>🔮 Strongest Team Solver</span>
-        </button>
+          {/* AI-Only: Strongest Team Solver Button */}
+          <button
+            onClick={() => openScoutModal(undefined, undefined, undefined, 'optimal_squad')}
+            className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-950/80 transition active:scale-98 border border-emerald-400/40 animate-in fade-in"
+            title="Compute the mathematically strongest 15-man squad within your exact budget"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+            <span>🔮 Strongest Team Solver</span>
+          </button>
 
           {/* Fixture Horizon */}
           <div className="flex items-center justify-between pt-1 border-t border-white/10">
@@ -281,32 +280,31 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
           </p>
         )}
 
-        <button
-          onClick={onOpenOverrides}
-          className="w-full py-2 rounded-xl bg-slate-950 hover:bg-slate-800 border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5"
-        >
-          <Edit3 className="w-3.5 h-3.5 text-emerald-400" />
-          Edit Budget &amp; Free Transfers
-        </button>
+        <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
+          <button
+            onClick={onOpenOverrides}
+            className="w-full py-2 rounded-xl bg-slate-950 hover:bg-slate-800 border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center justify-center gap-1.5"
+          >
+            <Edit3 className="w-3.5 h-3.5 text-cyan-400" />
+            Edit Bank / FTs Overrides
+          </button>
 
-        {/* Reset All Confirm */}
-        <div className="pt-1.5 border-t border-white/10">
           {showResetAllConfirm ? (
-            <div className="bg-rose-950/80 border border-rose-500/40 p-2.5 rounded-xl flex flex-col gap-2 text-center animate-in fade-in">
-              <span className="text-xs text-rose-200 font-bold flex items-center justify-center gap-1">
-                <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
-                Reset all future GWs?
-              </span>
-              <div className="flex items-center justify-center gap-2">
+            <div className="p-2.5 rounded-xl bg-rose-950/80 border border-rose-500/50 flex flex-col gap-2 animate-in fade-in">
+              <div className="flex items-center gap-1.5 text-rose-300 text-xs font-bold">
+                <AlertCircle className="w-3.5 h-3.5 text-rose-400 flex-shrink-0" />
+                <span>Reset all future Gameweek plans to current squad?</span>
+              </div>
+              <div className="flex gap-2">
                 <button
                   onClick={handleResetAll}
-                  className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-black"
+                  className="flex-1 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-black text-xs transition"
                 >
                   Yes, Reset
                 </button>
                 <button
                   onClick={() => setShowResetAllConfirm(false)}
-                  className="px-3 py-1 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold"
+                  className="flex-1 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold text-xs border border-white/10 transition"
                 >
                   Cancel
                 </button>
@@ -326,4 +324,3 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
     </aside>
   );
 };
-
