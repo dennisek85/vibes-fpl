@@ -1,6 +1,4836 @@
 {
-  "lastUpdated": "2026-08-30T23:00:00.000Z",
+  "lastUpdated": "2026-08-30T21:07:13.172Z",
   "season": "2026/27",
-  "players": {}
+  "players": {
+    "1": {
+      "playerId": 1,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "2": {
+      "playerId": 2,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "3": {
+      "playerId": 3,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "4": {
+      "playerId": 4,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "5": {
+      "playerId": 5,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "6": {
+      "playerId": 6,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "7": {
+      "playerId": 7,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.11,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.11,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "8": {
+      "playerId": 8,
+      "rolling3Mins": 40,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.1,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.1,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "9": {
+      "playerId": 9,
+      "rolling3Mins": 5,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "10": {
+      "playerId": 10,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.18,
+      "rolling3Xa90": 0.21,
+      "rolling5Xg90": 0.18,
+      "rolling5Xa90": 0.21,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "11": {
+      "playerId": 11,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "12": {
+      "playerId": 12,
+      "rolling3Mins": 34,
+      "rolling3Xg90": 0.86,
+      "rolling3Xa90": 0.11,
+      "rolling5Xg90": 0.86,
+      "rolling5Xa90": 0.11,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "13": {
+      "playerId": 13,
+      "rolling3Mins": 34,
+      "rolling3Xg90": 0.09,
+      "rolling3Xa90": 0.11,
+      "rolling5Xg90": 0.09,
+      "rolling5Xa90": 0.11,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "14": {
+      "playerId": 14,
+      "rolling3Mins": 7,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "15": {
+      "playerId": 15,
+      "rolling3Mins": 38,
+      "rolling3Xg90": 0.25,
+      "rolling3Xa90": 0.12,
+      "rolling5Xg90": 0.25,
+      "rolling5Xa90": 0.12,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "16": {
+      "playerId": 16,
+      "rolling3Mins": 11,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.13,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.08,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "17": {
+      "playerId": 17,
+      "rolling3Mins": 7,
+      "rolling3Xg90": 0.47,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0.28,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "18": {
+      "playerId": 18,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "19": {
+      "playerId": 19,
+      "rolling3Mins": 11,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "20": {
+      "playerId": 20,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "21": {
+      "playerId": 21,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "22": {
+      "playerId": 22,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "23": {
+      "playerId": 23,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "24": {
+      "playerId": 24,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "25": {
+      "playerId": 25,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "26": {
+      "playerId": 26,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.26,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.26,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "27": {
+      "playerId": 27,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "28": {
+      "playerId": 28,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "29": {
+      "playerId": 29,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "32": {
+      "playerId": 32,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "33": {
+      "playerId": 33,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "34": {
+      "playerId": 34,
+      "rolling3Mins": 37,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "35": {
+      "playerId": 35,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "36": {
+      "playerId": 36,
+      "rolling3Mins": 41,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "37": {
+      "playerId": 37,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "40": {
+      "playerId": 40,
+      "rolling3Mins": 86,
+      "rolling3Xg90": 0.58,
+      "rolling3Xa90": 0.58,
+      "rolling5Xg90": 0.58,
+      "rolling5Xa90": 0.58,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "41": {
+      "playerId": 41,
+      "rolling3Mins": 43,
+      "rolling3Xg90": 0.14,
+      "rolling3Xa90": 0.1,
+      "rolling5Xg90": 0.14,
+      "rolling5Xa90": 0.1,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "42": {
+      "playerId": 42,
+      "rolling3Mins": 27,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "43": {
+      "playerId": 43,
+      "rolling3Mins": 78,
+      "rolling3Xg90": 0.35,
+      "rolling3Xa90": 0.13,
+      "rolling5Xg90": 0.35,
+      "rolling5Xa90": 0.13,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "44": {
+      "playerId": 44,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "45": {
+      "playerId": 45,
+      "rolling3Mins": 41,
+      "rolling3Xg90": 0.04,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "46": {
+      "playerId": 46,
+      "rolling3Mins": 37,
+      "rolling3Xg90": 0.12,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.12,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "47": {
+      "playerId": 47,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "48": {
+      "playerId": 48,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "49": {
+      "playerId": 49,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "51": {
+      "playerId": 51,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "52": {
+      "playerId": 52,
+      "rolling3Mins": 4,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "53": {
+      "playerId": 53,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "54": {
+      "playerId": 54,
+      "rolling3Mins": 20,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "55": {
+      "playerId": 55,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "56": {
+      "playerId": 56,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "57": {
+      "playerId": 57,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "60": {
+      "playerId": 60,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.37,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.37,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "61": {
+      "playerId": 61,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "62": {
+      "playerId": 62,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "63": {
+      "playerId": 63,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "64": {
+      "playerId": 64,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "67": {
+      "playerId": 67,
+      "rolling3Mins": 89,
+      "rolling3Xg90": 0.22,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.22,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "68": {
+      "playerId": 68,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.25,
+      "rolling3Xa90": 0.14,
+      "rolling5Xg90": 0.25,
+      "rolling5Xa90": 0.14,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "69": {
+      "playerId": 69,
+      "rolling3Mins": 88,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0.14,
+      "rolling5Xg90": 0.13,
+      "rolling5Xa90": 0.14,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "70": {
+      "playerId": 70,
+      "rolling3Mins": 77,
+      "rolling3Xg90": 0.42,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.42,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "71": {
+      "playerId": 71,
+      "rolling3Mins": 72,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "72": {
+      "playerId": 72,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "73": {
+      "playerId": 73,
+      "rolling3Mins": 18,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "74": {
+      "playerId": 74,
+      "rolling3Mins": 5,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "75": {
+      "playerId": 75,
+      "rolling3Mins": 2,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "76": {
+      "playerId": 76,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "77": {
+      "playerId": 77,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "78": {
+      "playerId": 78,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "79": {
+      "playerId": 79,
+      "rolling3Mins": 77,
+      "rolling3Xg90": 0.34,
+      "rolling3Xa90": 0.15,
+      "rolling5Xg90": 0.34,
+      "rolling5Xa90": 0.15,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "80": {
+      "playerId": 80,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "81": {
+      "playerId": 81,
+      "rolling3Mins": 5,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "82": {
+      "playerId": 82,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "84": {
+      "playerId": 84,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.22,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.22,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "85": {
+      "playerId": 85,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "86": {
+      "playerId": 86,
+      "rolling3Mins": 89,
+      "rolling3Xg90": 0.4,
+      "rolling3Xa90": 0.13,
+      "rolling5Xg90": 0.4,
+      "rolling5Xa90": 0.13,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "87": {
+      "playerId": 87,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "88": {
+      "playerId": 88,
+      "rolling3Mins": 81,
+      "rolling3Xg90": 0.29,
+      "rolling3Xa90": 0.11,
+      "rolling5Xg90": 0.29,
+      "rolling5Xa90": 0.11,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "89": {
+      "playerId": 89,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "90": {
+      "playerId": 90,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "91": {
+      "playerId": 91,
+      "rolling3Mins": 6,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "94": {
+      "playerId": 94,
+      "rolling3Mins": 89,
+      "rolling3Xg90": 0.39,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.39,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "95": {
+      "playerId": 95,
+      "rolling3Mins": 48,
+      "rolling3Xg90": 0.07,
+      "rolling3Xa90": 0.35,
+      "rolling5Xg90": 0.07,
+      "rolling5Xa90": 0.35,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "96": {
+      "playerId": 96,
+      "rolling3Mins": 41,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.26,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.26,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "97": {
+      "playerId": 97,
+      "rolling3Mins": 33,
+      "rolling3Xg90": 0.11,
+      "rolling3Xa90": 0.46,
+      "rolling5Xg90": 0.11,
+      "rolling5Xa90": 0.46,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "98": {
+      "playerId": 98,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.2,
+      "rolling3Xa90": 0.13,
+      "rolling5Xg90": 0.2,
+      "rolling5Xa90": 0.13,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "99": {
+      "playerId": 99,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "100": {
+      "playerId": 100,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "101": {
+      "playerId": 101,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "102": {
+      "playerId": 102,
+      "rolling3Mins": 22,
+      "rolling3Xg90": 0.08,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "103": {
+      "playerId": 103,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "104": {
+      "playerId": 104,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "105": {
+      "playerId": 105,
+      "rolling3Mins": 42,
+      "rolling3Xg90": 0.15,
+      "rolling3Xa90": 0.44,
+      "rolling5Xg90": 0.15,
+      "rolling5Xa90": 0.44,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "106": {
+      "playerId": 106,
+      "rolling3Mins": 86,
+      "rolling3Xg90": 0.91,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.91,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "108": {
+      "playerId": 108,
+      "rolling3Mins": 5,
+      "rolling3Xg90": 0.23,
+      "rolling3Xa90": 0.13,
+      "rolling5Xg90": 0.14,
+      "rolling5Xa90": 0.08,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "109": {
+      "playerId": 109,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "110": {
+      "playerId": 110,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "112": {
+      "playerId": 112,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "113": {
+      "playerId": 113,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "114": {
+      "playerId": 114,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.08,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.08,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "115": {
+      "playerId": 115,
+      "rolling3Mins": 84,
+      "rolling3Xg90": 0.81,
+      "rolling3Xa90": 0.14,
+      "rolling5Xg90": 0.81,
+      "rolling5Xa90": 0.14,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "116": {
+      "playerId": 116,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "119": {
+      "playerId": 119,
+      "rolling3Mins": 18,
+      "rolling3Xg90": 0.3,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.24,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.08,
+      "trend": "rising"
+    },
+    "120": {
+      "playerId": 120,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "121": {
+      "playerId": 121,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "122": {
+      "playerId": 122,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "123": {
+      "playerId": 123,
+      "rolling3Mins": 32,
+      "rolling3Xg90": 2.01,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 2.01,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "124": {
+      "playerId": 124,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.19,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.19,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "125": {
+      "playerId": 125,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.08,
+      "rolling3Xa90": 0.44,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.44,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "126": {
+      "playerId": 126,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "127": {
+      "playerId": 127,
+      "rolling3Mins": 88,
+      "rolling3Xg90": 0.29,
+      "rolling3Xa90": 0.33,
+      "rolling5Xg90": 0.29,
+      "rolling5Xa90": 0.33,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "128": {
+      "playerId": 128,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "129": {
+      "playerId": 129,
+      "rolling3Mins": 32,
+      "rolling3Xg90": 0.16,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0.16,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "130": {
+      "playerId": 130,
+      "rolling3Mins": 78,
+      "rolling3Xg90": 0.07,
+      "rolling3Xa90": 0.08,
+      "rolling5Xg90": 0.07,
+      "rolling5Xa90": 0.08,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "131": {
+      "playerId": 131,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "133": {
+      "playerId": 133,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "135": {
+      "playerId": 135,
+      "rolling3Mins": 6,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.1,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "136": {
+      "playerId": 136,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "137": {
+      "playerId": 137,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "138": {
+      "playerId": 138,
+      "rolling3Mins": 53,
+      "rolling3Xg90": 0.3,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.3,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "139": {
+      "playerId": 139,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "140": {
+      "playerId": 140,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "141": {
+      "playerId": 141,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "142": {
+      "playerId": 142,
+      "rolling3Mins": 56,
+      "rolling3Xg90": 0.08,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "143": {
+      "playerId": 143,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "144": {
+      "playerId": 144,
+      "rolling3Mins": 83,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "145": {
+      "playerId": 145,
+      "rolling3Mins": 34,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "148": {
+      "playerId": 148,
+      "rolling3Mins": 77,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "149": {
+      "playerId": 149,
+      "rolling3Mins": 81,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "151": {
+      "playerId": 151,
+      "rolling3Mins": 56,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "152": {
+      "playerId": 152,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "153": {
+      "playerId": 153,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "154": {
+      "playerId": 154,
+      "rolling3Mins": 86,
+      "rolling3Xg90": 0.49,
+      "rolling3Xa90": 0.17,
+      "rolling5Xg90": 0.49,
+      "rolling5Xa90": 0.17,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "155": {
+      "playerId": 155,
+      "rolling3Mins": 13,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "156": {
+      "playerId": 156,
+      "rolling3Mins": 41,
+      "rolling3Xg90": 0.49,
+      "rolling3Xa90": 0.44,
+      "rolling5Xg90": 0.49,
+      "rolling5Xa90": 0.44,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "157": {
+      "playerId": 157,
+      "rolling3Mins": 4,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "158": {
+      "playerId": 158,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "159": {
+      "playerId": 159,
+      "rolling3Mins": 7,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "160": {
+      "playerId": 160,
+      "rolling3Mins": 2,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "161": {
+      "playerId": 161,
+      "rolling3Mins": 66,
+      "rolling3Xg90": 0.52,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.52,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "162": {
+      "playerId": 162,
+      "rolling3Mins": 38,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.27,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.27,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "164": {
+      "playerId": 164,
+      "rolling3Mins": 4,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "165": {
+      "playerId": 165,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.93,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.93,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "166": {
+      "playerId": 166,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "167": {
+      "playerId": 167,
+      "rolling3Mins": 12,
+      "rolling3Xg90": 0.23,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.14,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "168": {
+      "playerId": 168,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "170": {
+      "playerId": 170,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "173": {
+      "playerId": 173,
+      "rolling3Mins": 84,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "175": {
+      "playerId": 175,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.1,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.1,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "176": {
+      "playerId": 176,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.09,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0.09,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "182": {
+      "playerId": 182,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "183": {
+      "playerId": 183,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.21,
+      "rolling3Xa90": 0.09,
+      "rolling5Xg90": 0.21,
+      "rolling5Xa90": 0.09,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "184": {
+      "playerId": 184,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "185": {
+      "playerId": 185,
+      "rolling3Mins": 16,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "186": {
+      "playerId": 186,
+      "rolling3Mins": 29,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.09,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.09,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "187": {
+      "playerId": 187,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "188": {
+      "playerId": 188,
+      "rolling3Mins": 24,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.23,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.23,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "190": {
+      "playerId": 190,
+      "rolling3Mins": 70,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.1,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.1,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "193": {
+      "playerId": 193,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "194": {
+      "playerId": 194,
+      "rolling3Mins": 51,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "195": {
+      "playerId": 195,
+      "rolling3Mins": 35,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "196": {
+      "playerId": 196,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "198": {
+      "playerId": 198,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "200": {
+      "playerId": 200,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.1,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.1,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "201": {
+      "playerId": 201,
+      "rolling3Mins": 27,
+      "rolling3Xg90": 0.38,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.38,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "202": {
+      "playerId": 202,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "203": {
+      "playerId": 203,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "204": {
+      "playerId": 204,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.09,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.09,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "206": {
+      "playerId": 206,
+      "rolling3Mins": 36,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "207": {
+      "playerId": 207,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "208": {
+      "playerId": 208,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "209": {
+      "playerId": 209,
+      "rolling3Mins": 17,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "210": {
+      "playerId": 210,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.16,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.16,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "211": {
+      "playerId": 211,
+      "rolling3Mins": 51,
+      "rolling3Xg90": 0.1,
+      "rolling3Xa90": 0.08,
+      "rolling5Xg90": 0.1,
+      "rolling5Xa90": 0.08,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "213": {
+      "playerId": 213,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "214": {
+      "playerId": 214,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.15,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.15,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "215": {
+      "playerId": 215,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "216": {
+      "playerId": 216,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "218": {
+      "playerId": 218,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "219": {
+      "playerId": 219,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "222": {
+      "playerId": 222,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.3,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.3,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "223": {
+      "playerId": 223,
+      "rolling3Mins": 31,
+      "rolling3Xg90": 1.02,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 1.02,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "224": {
+      "playerId": 224,
+      "rolling3Mins": 61,
+      "rolling3Xg90": 0.71,
+      "rolling3Xa90": 0.43,
+      "rolling5Xg90": 0.71,
+      "rolling5Xa90": 0.43,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "225": {
+      "playerId": 225,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "226": {
+      "playerId": 226,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "227": {
+      "playerId": 227,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "229": {
+      "playerId": 229,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.08,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "230": {
+      "playerId": 230,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "231": {
+      "playerId": 231,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "232": {
+      "playerId": 232,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "233": {
+      "playerId": 233,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "236": {
+      "playerId": 236,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.09,
+      "rolling3Xa90": 0.17,
+      "rolling5Xg90": 0.09,
+      "rolling5Xa90": 0.17,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "237": {
+      "playerId": 237,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0.2,
+      "rolling5Xg90": 0.13,
+      "rolling5Xa90": 0.2,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "238": {
+      "playerId": 238,
+      "rolling3Mins": 4,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "239": {
+      "playerId": 239,
+      "rolling3Mins": 36,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "240": {
+      "playerId": 240,
+      "rolling3Mins": 2,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "241": {
+      "playerId": 241,
+      "rolling3Mins": 42,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "242": {
+      "playerId": 242,
+      "rolling3Mins": 72,
+      "rolling3Xg90": 0.14,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.14,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "243": {
+      "playerId": 243,
+      "rolling3Mins": 3,
+      "rolling3Xg90": 0.17,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0.1,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "244": {
+      "playerId": 244,
+      "rolling3Mins": 88,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "245": {
+      "playerId": 245,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "246": {
+      "playerId": 246,
+      "rolling3Mins": 88,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "247": {
+      "playerId": 247,
+      "rolling3Mins": 53,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "248": {
+      "playerId": 248,
+      "rolling3Mins": 16,
+      "rolling3Xg90": 0.26,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.18,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.13,
+      "trend": "rising"
+    },
+    "249": {
+      "playerId": 249,
+      "rolling3Mins": 74,
+      "rolling3Xg90": 1.18,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 1.18,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "250": {
+      "playerId": 250,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "253": {
+      "playerId": 253,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "254": {
+      "playerId": 254,
+      "rolling3Mins": 86,
+      "rolling3Xg90": 0.07,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.07,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "255": {
+      "playerId": 255,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "257": {
+      "playerId": 257,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "258": {
+      "playerId": 258,
+      "rolling3Mins": 79,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.1,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.1,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "259": {
+      "playerId": 259,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "260": {
+      "playerId": 260,
+      "rolling3Mins": 55,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "261": {
+      "playerId": 261,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.22,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.22,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "262": {
+      "playerId": 262,
+      "rolling3Mins": 7,
+      "rolling3Xg90": 0.2,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0.12,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "263": {
+      "playerId": 263,
+      "rolling3Mins": 12,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.17,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.1,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "264": {
+      "playerId": 264,
+      "rolling3Mins": 67,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.18,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.18,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "265": {
+      "playerId": 265,
+      "rolling3Mins": 77,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.13,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.13,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "266": {
+      "playerId": 266,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "267": {
+      "playerId": 267,
+      "rolling3Mins": 81,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "268": {
+      "playerId": 268,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.32,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0.32,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "269": {
+      "playerId": 269,
+      "rolling3Mins": 20,
+      "rolling3Xg90": 0.12,
+      "rolling3Xa90": 0.28,
+      "rolling5Xg90": 0.1,
+      "rolling5Xa90": 0.24,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "271": {
+      "playerId": 271,
+      "rolling3Mins": 4,
+      "rolling3Xg90": 0.07,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "277": {
+      "playerId": 277,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "279": {
+      "playerId": 279,
+      "rolling3Mins": 77,
+      "rolling3Xg90": 0.31,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.31,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "280": {
+      "playerId": 280,
+      "rolling3Mins": 57,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "281": {
+      "playerId": 281,
+      "rolling3Mins": 33,
+      "rolling3Xg90": 0.07,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.07,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "282": {
+      "playerId": 282,
+      "rolling3Mins": 87,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.07,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "285": {
+      "playerId": 285,
+      "rolling3Mins": 13,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "286": {
+      "playerId": 286,
+      "rolling3Mins": 86,
+      "rolling3Xg90": 0.09,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.09,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "287": {
+      "playerId": 287,
+      "rolling3Mins": 25,
+      "rolling3Xg90": 1.04,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 1.04,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "289": {
+      "playerId": 289,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "290": {
+      "playerId": 290,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.23,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.23,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "292": {
+      "playerId": 292,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "293": {
+      "playerId": 293,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "295": {
+      "playerId": 295,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.08,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "296": {
+      "playerId": 296,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "304": {
+      "playerId": 304,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.04,
+      "rolling3Xa90": 0.09,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.09,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "305": {
+      "playerId": 305,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.25,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0.25,
+      "rolling5Xa90": 0.07,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "306": {
+      "playerId": 306,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "308": {
+      "playerId": 308,
+      "rolling3Mins": 9,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "309": {
+      "playerId": 309,
+      "rolling3Mins": 70,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "310": {
+      "playerId": 310,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "311": {
+      "playerId": 311,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "313": {
+      "playerId": 313,
+      "rolling3Mins": 10,
+      "rolling3Xg90": 0.33,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.2,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "314": {
+      "playerId": 314,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "315": {
+      "playerId": 315,
+      "rolling3Mins": 74,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.39,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.39,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "316": {
+      "playerId": 316,
+      "rolling3Mins": 55,
+      "rolling3Xg90": 0.67,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.67,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "317": {
+      "playerId": 317,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "318": {
+      "playerId": 318,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "319": {
+      "playerId": 319,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "320": {
+      "playerId": 320,
+      "rolling3Mins": 35,
+      "rolling3Xg90": 1.27,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 1.27,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "321": {
+      "playerId": 321,
+      "rolling3Mins": 5,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "322": {
+      "playerId": 322,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "323": {
+      "playerId": 323,
+      "rolling3Mins": 16,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "324": {
+      "playerId": 324,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "327": {
+      "playerId": 327,
+      "rolling3Mins": 68,
+      "rolling3Xg90": 0.07,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.07,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "328": {
+      "playerId": 328,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "329": {
+      "playerId": 329,
+      "rolling3Mins": 62,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "330": {
+      "playerId": 330,
+      "rolling3Mins": 79,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "332": {
+      "playerId": 332,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "334": {
+      "playerId": 334,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "335": {
+      "playerId": 335,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.09,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.09,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "336": {
+      "playerId": 336,
+      "rolling3Mins": 46,
+      "rolling3Xg90": 0.08,
+      "rolling3Xa90": 0.17,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.17,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "337": {
+      "playerId": 337,
+      "rolling3Mins": 63,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "338": {
+      "playerId": 338,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.07,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "339": {
+      "playerId": 339,
+      "rolling3Mins": 4,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "340": {
+      "playerId": 340,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "341": {
+      "playerId": 341,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "342": {
+      "playerId": 342,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "343": {
+      "playerId": 343,
+      "rolling3Mins": 11,
+      "rolling3Xg90": 0.7,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.42,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "344": {
+      "playerId": 344,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "345": {
+      "playerId": 345,
+      "rolling3Mins": 23,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "346": {
+      "playerId": 346,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.53,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.53,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "347": {
+      "playerId": 347,
+      "rolling3Mins": 11,
+      "rolling3Xg90": 0.27,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.16,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "348": {
+      "playerId": 348,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "350": {
+      "playerId": 350,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "351": {
+      "playerId": 351,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "356": {
+      "playerId": 356,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.13,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "357": {
+      "playerId": 357,
+      "rolling3Mins": 80,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "358": {
+      "playerId": 358,
+      "rolling3Mins": 80,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "359": {
+      "playerId": 359,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "360": {
+      "playerId": 360,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "362": {
+      "playerId": 362,
+      "rolling3Mins": 73,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "364": {
+      "playerId": 364,
+      "rolling3Mins": 10,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "366": {
+      "playerId": 366,
+      "rolling3Mins": 76,
+      "rolling3Xg90": 0.29,
+      "rolling3Xa90": 0.14,
+      "rolling5Xg90": 0.29,
+      "rolling5Xa90": 0.14,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "367": {
+      "playerId": 367,
+      "rolling3Mins": 80,
+      "rolling3Xg90": 0.17,
+      "rolling3Xa90": 0.45,
+      "rolling5Xg90": 0.17,
+      "rolling5Xa90": 0.45,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "368": {
+      "playerId": 368,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.51,
+      "rolling3Xa90": 0.22,
+      "rolling5Xg90": 0.51,
+      "rolling5Xa90": 0.22,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "369": {
+      "playerId": 369,
+      "rolling3Mins": 41,
+      "rolling3Xg90": 0.04,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "370": {
+      "playerId": 370,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "371": {
+      "playerId": 371,
+      "rolling3Mins": 48,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "372": {
+      "playerId": 372,
+      "rolling3Mins": 52,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.35,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.35,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "373": {
+      "playerId": 373,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "374": {
+      "playerId": 374,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "375": {
+      "playerId": 375,
+      "rolling3Mins": 7,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "376": {
+      "playerId": 376,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "377": {
+      "playerId": 377,
+      "rolling3Mins": 59,
+      "rolling3Xg90": 0.32,
+      "rolling3Xa90": 0.18,
+      "rolling5Xg90": 0.32,
+      "rolling5Xa90": 0.18,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "379": {
+      "playerId": 379,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 1.04,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 1.04,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "380": {
+      "playerId": 380,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "381": {
+      "playerId": 381,
+      "rolling3Mins": 6,
+      "rolling3Xg90": 0.1,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "383": {
+      "playerId": 383,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "384": {
+      "playerId": 384,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "385": {
+      "playerId": 385,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "387": {
+      "playerId": 387,
+      "rolling3Mins": 75,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.26,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.26,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "388": {
+      "playerId": 388,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.45,
+      "rolling3Xa90": 0.18,
+      "rolling5Xg90": 0.45,
+      "rolling5Xa90": 0.18,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "389": {
+      "playerId": 389,
+      "rolling3Mins": 17,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.11,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.08,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "390": {
+      "playerId": 390,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.36,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.36,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "391": {
+      "playerId": 391,
+      "rolling3Mins": 82,
+      "rolling3Xg90": 0.1,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.1,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "392": {
+      "playerId": 392,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "393": {
+      "playerId": 393,
+      "rolling3Mins": 89,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "394": {
+      "playerId": 394,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "395": {
+      "playerId": 395,
+      "rolling3Mins": 28,
+      "rolling3Xg90": 0.27,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.27,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "396": {
+      "playerId": 396,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "397": {
+      "playerId": 397,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.3,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.3,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "398": {
+      "playerId": 398,
+      "rolling3Mins": 86,
+      "rolling3Xg90": 0.52,
+      "rolling3Xa90": 0.45,
+      "rolling5Xg90": 0.52,
+      "rolling5Xa90": 0.45,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "399": {
+      "playerId": 399,
+      "rolling3Mins": 54,
+      "rolling3Xg90": 0.29,
+      "rolling3Xa90": 0.88,
+      "rolling5Xg90": 0.29,
+      "rolling5Xa90": 0.88,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "400": {
+      "playerId": 400,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "401": {
+      "playerId": 401,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.17,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0.17,
+      "rolling5Xa90": 0.07,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "402": {
+      "playerId": 402,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "403": {
+      "playerId": 403,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "404": {
+      "playerId": 404,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "405": {
+      "playerId": 405,
+      "rolling3Mins": 35,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.26,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.26,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "406": {
+      "playerId": 406,
+      "rolling3Mins": 21,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "407": {
+      "playerId": 407,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "408": {
+      "playerId": 408,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "410": {
+      "playerId": 410,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "411": {
+      "playerId": 411,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.7,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.7,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "412": {
+      "playerId": 412,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "415": {
+      "playerId": 415,
+      "rolling3Mins": 28,
+      "rolling3Xg90": 1,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 1,
+      "rolling5Xa90": 0.07,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "416": {
+      "playerId": 416,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "417": {
+      "playerId": 417,
+      "rolling3Mins": 42,
+      "rolling3Xg90": 0.18,
+      "rolling3Xa90": 0.13,
+      "rolling5Xg90": 0.18,
+      "rolling5Xa90": 0.13,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "418": {
+      "playerId": 418,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.04,
+      "rolling3Xa90": 0.21,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.21,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "419": {
+      "playerId": 419,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "420": {
+      "playerId": 420,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "421": {
+      "playerId": 421,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.12,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0.12,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "422": {
+      "playerId": 422,
+      "rolling3Mins": 48,
+      "rolling3Xg90": 0.21,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.21,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "423": {
+      "playerId": 423,
+      "rolling3Mins": 81,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.16,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.16,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "426": {
+      "playerId": 426,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 1.01,
+      "rolling3Xa90": 0.27,
+      "rolling5Xg90": 1.01,
+      "rolling5Xa90": 0.27,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "427": {
+      "playerId": 427,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 1.07,
+      "rolling3Xa90": 0.22,
+      "rolling5Xg90": 1.07,
+      "rolling5Xa90": 0.22,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "428": {
+      "playerId": 428,
+      "rolling3Mins": 79,
+      "rolling3Xg90": 0.2,
+      "rolling3Xa90": 0.21,
+      "rolling5Xg90": 0.2,
+      "rolling5Xa90": 0.21,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "429": {
+      "playerId": 429,
+      "rolling3Mins": 62,
+      "rolling3Xg90": 0.19,
+      "rolling3Xa90": 0.11,
+      "rolling5Xg90": 0.19,
+      "rolling5Xa90": 0.11,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "430": {
+      "playerId": 430,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "431": {
+      "playerId": 431,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "432": {
+      "playerId": 432,
+      "rolling3Mins": 51,
+      "rolling3Xg90": 0.19,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.19,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "433": {
+      "playerId": 433,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "434": {
+      "playerId": 434,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "435": {
+      "playerId": 435,
+      "rolling3Mins": 5,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "436": {
+      "playerId": 436,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "439": {
+      "playerId": 439,
+      "rolling3Mins": 17,
+      "rolling3Xg90": 0.11,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1.11,
+      "trend": "rising"
+    },
+    "440": {
+      "playerId": 440,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "442": {
+      "playerId": 442,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "445": {
+      "playerId": 445,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "446": {
+      "playerId": 446,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "447": {
+      "playerId": 447,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "449": {
+      "playerId": 449,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.33,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.33,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "450": {
+      "playerId": 450,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "452": {
+      "playerId": 452,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "453": {
+      "playerId": 453,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "454": {
+      "playerId": 454,
+      "rolling3Mins": 78,
+      "rolling3Xg90": 0.24,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.24,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "455": {
+      "playerId": 455,
+      "rolling3Mins": 82,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "456": {
+      "playerId": 456,
+      "rolling3Mins": 21,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0.3,
+      "rolling5Xg90": 0.12,
+      "rolling5Xa90": 0.28,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "457": {
+      "playerId": 457,
+      "rolling3Mins": 11,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.67,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.4,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "458": {
+      "playerId": 458,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "459": {
+      "playerId": 459,
+      "rolling3Mins": 83,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "460": {
+      "playerId": 460,
+      "rolling3Mins": 52,
+      "rolling3Xg90": 0.14,
+      "rolling3Xa90": 0.16,
+      "rolling5Xg90": 0.14,
+      "rolling5Xa90": 0.16,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "461": {
+      "playerId": 461,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "462": {
+      "playerId": 462,
+      "rolling3Mins": 37,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "463": {
+      "playerId": 463,
+      "rolling3Mins": 10,
+      "rolling3Xg90": 0.07,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "464": {
+      "playerId": 464,
+      "rolling3Mins": 86,
+      "rolling3Xg90": 0.71,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.71,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "465": {
+      "playerId": 465,
+      "rolling3Mins": 28,
+      "rolling3Xg90": 0.1,
+      "rolling3Xa90": 0.23,
+      "rolling5Xg90": 0.1,
+      "rolling5Xa90": 0.23,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "467": {
+      "playerId": 467,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "469": {
+      "playerId": 469,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.09,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.09,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "470": {
+      "playerId": 470,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "471": {
+      "playerId": 471,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.06,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "472": {
+      "playerId": 472,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.09,
+      "rolling3Xa90": 0.14,
+      "rolling5Xg90": 0.09,
+      "rolling5Xa90": 0.14,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "473": {
+      "playerId": 473,
+      "rolling3Mins": 79,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.3,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.3,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "474": {
+      "playerId": 474,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "478": {
+      "playerId": 478,
+      "rolling3Mins": 10,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "480": {
+      "playerId": 480,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.46,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.46,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "481": {
+      "playerId": 481,
+      "rolling3Mins": 72,
+      "rolling3Xg90": 0.04,
+      "rolling3Xa90": 0.3,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.3,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "482": {
+      "playerId": 482,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "483": {
+      "playerId": 483,
+      "rolling3Mins": 63,
+      "rolling3Xg90": 0.25,
+      "rolling3Xa90": 0.45,
+      "rolling5Xg90": 0.25,
+      "rolling5Xa90": 0.45,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "484": {
+      "playerId": 484,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "485": {
+      "playerId": 485,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "486": {
+      "playerId": 486,
+      "rolling3Mins": 82,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.18,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.18,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "487": {
+      "playerId": 487,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "488": {
+      "playerId": 488,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "490": {
+      "playerId": 490,
+      "rolling3Mins": 14,
+      "rolling3Xg90": 0.39,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.24,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "491": {
+      "playerId": 491,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.48,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.48,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "492": {
+      "playerId": 492,
+      "rolling3Mins": 55,
+      "rolling3Xg90": 0.76,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.76,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "493": {
+      "playerId": 493,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "496": {
+      "playerId": 496,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "498": {
+      "playerId": 498,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "499": {
+      "playerId": 499,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.33,
+      "rolling3Xa90": 0.1,
+      "rolling5Xg90": 0.33,
+      "rolling5Xa90": 0.1,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "500": {
+      "playerId": 500,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "501": {
+      "playerId": 501,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "502": {
+      "playerId": 502,
+      "rolling3Mins": 79,
+      "rolling3Xg90": 0.03,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.03,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "503": {
+      "playerId": 503,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "504": {
+      "playerId": 504,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.08,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "506": {
+      "playerId": 506,
+      "rolling3Mins": 13,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.7,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.42,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "512": {
+      "playerId": 512,
+      "rolling3Mins": 11,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "513": {
+      "playerId": 513,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "514": {
+      "playerId": 514,
+      "rolling3Mins": 79,
+      "rolling3Xg90": 0.11,
+      "rolling3Xa90": 0.05,
+      "rolling5Xg90": 0.11,
+      "rolling5Xa90": 0.05,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "515": {
+      "playerId": 515,
+      "rolling3Mins": 11,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "516": {
+      "playerId": 516,
+      "rolling3Mins": 68,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "517": {
+      "playerId": 517,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "519": {
+      "playerId": 519,
+      "rolling3Mins": 23,
+      "rolling3Xg90": 0.04,
+      "rolling3Xa90": 0.12,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.12,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "520": {
+      "playerId": 520,
+      "rolling3Mins": 23,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "521": {
+      "playerId": 521,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "522": {
+      "playerId": 522,
+      "rolling3Mins": 76,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "523": {
+      "playerId": 523,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0.4,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.4,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "525": {
+      "playerId": 525,
+      "rolling3Mins": 68,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.15,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.15,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "526": {
+      "playerId": 526,
+      "rolling3Mins": 19,
+      "rolling3Xg90": 0.66,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.54,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "527": {
+      "playerId": 527,
+      "rolling3Mins": 34,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "529": {
+      "playerId": 529,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "532": {
+      "playerId": 532,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "533": {
+      "playerId": 533,
+      "rolling3Mins": 45,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "534": {
+      "playerId": 534,
+      "rolling3Mins": 85,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.15,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.15,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "535": {
+      "playerId": 535,
+      "rolling3Mins": 12,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "536": {
+      "playerId": 536,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.15,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.15,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "539": {
+      "playerId": 539,
+      "rolling3Mins": 33,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "541": {
+      "playerId": 541,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.05,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0.05,
+      "rolling5Xa90": 0.07,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "542": {
+      "playerId": 542,
+      "rolling3Mins": 84,
+      "rolling3Xg90": 0.2,
+      "rolling3Xa90": 0.11,
+      "rolling5Xg90": 0.2,
+      "rolling5Xa90": 0.11,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "543": {
+      "playerId": 543,
+      "rolling3Mins": 14,
+      "rolling3Xg90": 0.1,
+      "rolling3Xa90": 0.51,
+      "rolling5Xg90": 0.06,
+      "rolling5Xa90": 0.32,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "544": {
+      "playerId": 544,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.22,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.22,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "545": {
+      "playerId": 545,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.04,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "547": {
+      "playerId": 547,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0.57,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.34,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "548": {
+      "playerId": 548,
+      "rolling3Mins": 9,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "549": {
+      "playerId": 549,
+      "rolling3Mins": 16,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "550": {
+      "playerId": 550,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "551": {
+      "playerId": 551,
+      "rolling3Mins": 61,
+      "rolling3Xg90": 0.11,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0.11,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "552": {
+      "playerId": 552,
+      "rolling3Mins": 65,
+      "rolling3Xg90": 0.23,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.23,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "553": {
+      "playerId": 553,
+      "rolling3Mins": 25,
+      "rolling3Xg90": 2.55,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 2.55,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "556": {
+      "playerId": 556,
+      "rolling3Mins": 3,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "557": {
+      "playerId": 557,
+      "rolling3Mins": 38,
+      "rolling3Xg90": 0.23,
+      "rolling3Xa90": 0.17,
+      "rolling5Xg90": 0.23,
+      "rolling5Xa90": 0.17,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "558": {
+      "playerId": 558,
+      "rolling3Mins": 53,
+      "rolling3Xg90": 0.04,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.04,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "559": {
+      "playerId": 559,
+      "rolling3Mins": 7,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "562": {
+      "playerId": 562,
+      "rolling3Mins": 76,
+      "rolling3Xg90": 0.39,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.39,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "563": {
+      "playerId": 563,
+      "rolling3Mins": 23,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "564": {
+      "playerId": 564,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "565": {
+      "playerId": 565,
+      "rolling3Mins": 83,
+      "rolling3Xg90": 0.16,
+      "rolling3Xa90": 0.2,
+      "rolling5Xg90": 0.16,
+      "rolling5Xa90": 0.2,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "566": {
+      "playerId": 566,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0.13,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "567": {
+      "playerId": 567,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "568": {
+      "playerId": 568,
+      "rolling3Mins": 4,
+      "rolling3Xg90": 0.13,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.08,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "569": {
+      "playerId": 569,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.5,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.5,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "570": {
+      "playerId": 570,
+      "rolling3Mins": 74,
+      "rolling3Xg90": 0.11,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0.11,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "571": {
+      "playerId": 571,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "572": {
+      "playerId": 572,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "574": {
+      "playerId": 574,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "575": {
+      "playerId": 575,
+      "rolling3Mins": 66,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.09,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.09,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "576": {
+      "playerId": 576,
+      "rolling3Mins": 64,
+      "rolling3Xg90": 0.01,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.01,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "577": {
+      "playerId": 577,
+      "rolling3Mins": 46,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.01,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.01,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "578": {
+      "playerId": 578,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "579": {
+      "playerId": 579,
+      "rolling3Mins": 17,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.11,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.08,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "580": {
+      "playerId": 580,
+      "rolling3Mins": 23,
+      "rolling3Xg90": 0.18,
+      "rolling3Xa90": 0.06,
+      "rolling5Xg90": 0.18,
+      "rolling5Xa90": 0.06,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "581": {
+      "playerId": 581,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "582": {
+      "playerId": 582,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "583": {
+      "playerId": 583,
+      "rolling3Mins": 22,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.04,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "584": {
+      "playerId": 584,
+      "rolling3Mins": 14,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.07,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.04,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "585": {
+      "playerId": 585,
+      "rolling3Mins": 29,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "586": {
+      "playerId": 586,
+      "rolling3Mins": 61,
+      "rolling3Xg90": 0.22,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.22,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "587": {
+      "playerId": 587,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "588": {
+      "playerId": 588,
+      "rolling3Mins": 55,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.13,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.13,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "589": {
+      "playerId": 589,
+      "rolling3Mins": 23,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.02,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "591": {
+      "playerId": 591,
+      "rolling3Mins": 80,
+      "rolling3Xg90": 0.35,
+      "rolling3Xa90": 0.35,
+      "rolling5Xg90": 0.35,
+      "rolling5Xa90": 0.35,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "592": {
+      "playerId": 592,
+      "rolling3Mins": 14,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "593": {
+      "playerId": 593,
+      "rolling3Mins": 90,
+      "rolling3Xg90": 0.02,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0.02,
+      "rolling5Xa90": 0.03,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "594": {
+      "playerId": 594,
+      "rolling3Mins": 5,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "595": {
+      "playerId": 595,
+      "rolling3Mins": 11,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "596": {
+      "playerId": 596,
+      "rolling3Mins": 4,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "597": {
+      "playerId": 597,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "598": {
+      "playerId": 598,
+      "rolling3Mins": 28,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "599": {
+      "playerId": 599,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "600": {
+      "playerId": 600,
+      "rolling3Mins": 14,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.19,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.12,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "605": {
+      "playerId": 605,
+      "rolling3Mins": 39,
+      "rolling3Xg90": 0.82,
+      "rolling3Xa90": 0.2,
+      "rolling5Xg90": 0.82,
+      "rolling5Xa90": 0.2,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "608": {
+      "playerId": 608,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0.33,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.2,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "616": {
+      "playerId": 616,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.4,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.24,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "617": {
+      "playerId": 617,
+      "rolling3Mins": 7,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "618": {
+      "playerId": 618,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "619": {
+      "playerId": 619,
+      "rolling3Mins": 28,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0.03,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0.02,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "621": {
+      "playerId": 621,
+      "rolling3Mins": 8,
+      "rolling3Xg90": 0.33,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0.2,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1.15,
+      "trend": "rising"
+    },
+    "622": {
+      "playerId": 622,
+      "rolling3Mins": 1,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    },
+    "624": {
+      "playerId": 624,
+      "rolling3Mins": 0,
+      "rolling3Xg90": 0,
+      "rolling3Xa90": 0,
+      "rolling5Xg90": 0,
+      "rolling5Xa90": 0,
+      "momentumMultiplier": 1,
+      "trend": "stable"
+    }
+  }
 }
-
