@@ -1,6 +1,7 @@
 import { FPLPlayer } from '@/types/fpl';
 import { getMarketFixtureOdds, getMarketAnytimeGoalscorerProb } from '@/lib/oddsTracker';
 import { getPlayerSetPieceProfile } from '@/lib/setPieces';
+import { getPlayerFormMomentum } from '@/lib/formTracker';
 
 export interface MatchExpectancy {
   homeTeamId: number;
@@ -233,16 +234,22 @@ export function calculatePlayerOddsXp(
   const playerXgShare = Math.min(0.42, (sampleConfidence * rawXgShare) + ((1.0 - sampleConfidence) * shares.xgShare));
   const playerXaShare = Math.min(0.25, (sampleConfidence * rawXaShare) + ((1.0 - sampleConfidence) * shares.xaShare));
 
-  // 3. Set-Piece & Penalty Hierarchy Duty (Corners, Penalties, Direct/Indirect Free-Kicks)
+  // 3. Rolling Form Momentum Factor (Short-term velocity over last 3 & 5 matches)
+  const momentum = getPlayerFormMomentum(player.id);
+  const momentumMult = momentum ? momentum.momentumMultiplier : 1.0;
+  const effectiveXgShare = Math.min(0.45, playerXgShare * momentumMult);
+  const effectiveXaShare = Math.min(0.30, playerXaShare * momentumMult);
+
+  // 4. Set-Piece & Penalty Hierarchy Duty (Corners, Penalties, Direct/Indirect Free-Kicks)
   const minsScale = expectedMins / 90.0;
   const setPieces = getPlayerSetPieceProfile(player, playerTeam?.short_name);
   const teamAttackScale = impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH;
   const setPieceXG = (setPieces.addedXg * teamAttackScale * minsScale);
   const setPieceXA = (setPieces.addedXa * teamAttackScale * minsScale);
 
-  // 4. Fixture-Adjusted Match xG and xA
-  let matchXG = Math.max(0.0, (impliedGoalsScored * playerXgShare * minsScale) + setPieceXG);
-  let matchXA = Math.max(0.0, (impliedGoalsScored * playerXaShare * minsScale) + setPieceXA);
+  // 5. Fixture-Adjusted Match xG and xA
+  let matchXG = Math.max(0.0, (impliedGoalsScored * effectiveXgShare * minsScale) + setPieceXG);
+  let matchXA = Math.max(0.0, (impliedGoalsScored * effectiveXaShare * minsScale) + setPieceXA);
 
   // 5. Market Anytime Goalscorer Odds Integration (When Available)
   const marketGoalProb = getMarketAnytimeGoalscorerProb(player.web_name);

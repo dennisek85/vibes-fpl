@@ -2,7 +2,7 @@
   "1234": {
     "pin": "1234",
     "teamId": 164332,
-    "updatedAt": "2026-08-29T22:02:59.014Z",
+    "updatedAt": "2026-08-30T20:56:34.786Z",
     "teamSummary": {
       "id": 164332,
       "joined_time": "2026-07-23T13:36:24.456711Z",
@@ -481,18 +481,18 @@
       },
       {
         "event": 2,
-        "points": 26,
-        "total_points": 105,
-        "rank": 5709025,
-        "rank_sort": 5712072,
-        "overall_rank": 451388,
-        "percentile_rank": 60,
-        "overall_rank_percentage": "5",
+        "points": 88,
+        "total_points": 167,
+        "rank": 1409751,
+        "rank_sort": 1412906,
+        "overall_rank": 155709,
+        "percentile_rank": 15,
+        "overall_rank_percentage": "2",
         "bank": 0,
         "value": 1002,
         "event_transfers": 0,
         "event_transfers_cost": 0,
-        "points_on_bench": 0
+        "points_on_bench": 7
       }
     ],
     "playedChips": [
@@ -641,7 +641,7 @@
     ],
     "showAiPredictions": true,
     "startGameweek": 1,
-    "selectedGameweek": 3,
+    "selectedGameweek": 2,
     "initialBank": 0,
     "initialFreeTransfers": 1,
     "gameweekPlans": {
@@ -6238,7 +6238,7 @@
   "fpl_user_164332_1234": {
     "pin": "1234",
     "teamId": 164332,
-    "updatedAt": "2026-08-29T22:02:59.014Z",
+    "updatedAt": "2026-08-30T20:56:34.786Z",
     "teamSummary": {
       "id": 164332,
       "joined_time": "2026-07-23T13:36:24.456711Z",
@@ -6717,18 +6717,18 @@
       },
       {
         "event": 2,
-        "points": 26,
-        "total_points": 105,
-        "rank": 5709025,
-        "rank_sort": 5712072,
-        "overall_rank": 451388,
-        "percentile_rank": 60,
-        "overall_rank_percentage": "5",
+        "points": 88,
+        "total_points": 167,
+        "rank": 1409751,
+        "rank_sort": 1412906,
+        "overall_rank": 155709,
+        "percentile_rank": 15,
+        "overall_rank_percentage": "2",
         "bank": 0,
         "value": 1002,
         "event_transfers": 0,
         "event_transfers_cost": 0,
-        "points_on_bench": 0
+        "points_on_bench": 7
       }
     ],
     "playedChips": [
@@ -6877,7 +6877,7 @@
     ],
     "showAiPredictions": true,
     "startGameweek": 1,
-    "selectedGameweek": 3,
+    "selectedGameweek": 2,
     "initialBank": 0,
     "initialFreeTransfers": 1,
     "gameweekPlans": {
