@@ -155,27 +155,27 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
         </button>
       </div>
 
-      {/* 2. AI Transfer Scout Radar & Horizon */}
-      <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3.5 shadow-xl flex flex-col gap-2.5">
-        <div className="flex items-center justify-between pb-2 border-b border-white/10">
-          <span className="text-sm xl:text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
-            AI Radar &amp; Scout
-          </span>
-          <button
-            onClick={toggleAiPredictions}
-            className="text-xs bg-slate-950 px-2.5 py-1 rounded-xl border border-white/10 text-slate-300 hover:text-white transition flex items-center gap-1.5"
-          >
-            {showAiPredictions ? <Eye className="w-3.5 h-3.5 text-emerald-400" /> : <EyeOff className="w-3.5 h-3.5 text-slate-500" />}
-            <span className={showAiPredictions ? 'text-emerald-400 font-black' : 'text-slate-500 font-bold'}>
-              {showAiPredictions ? 'ON' : 'OFF'}
+      {/* 2. AI Transfer Scout Radar & Horizon (Secret Easter Egg - Unlocked via football long-click) */}
+      {showAiPredictions && (
+        <div className="bg-slate-900/85 backdrop-blur-xl border border-emerald-500/40 rounded-2xl p-3.5 shadow-xl flex flex-col gap-2.5 animate-in fade-in">
+          <div className="flex items-center justify-between pb-2 border-b border-white/10">
+            <span className="text-sm xl:text-base font-black text-white uppercase tracking-wider flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
+              AI Radar &amp; Scout
             </span>
-          </button>
-        </div>
+            <button
+              onClick={toggleAiPredictions}
+              className="text-xs bg-slate-950 hover:bg-rose-950/80 px-2.5 py-1 rounded-xl border border-white/10 text-slate-400 hover:text-rose-300 transition flex items-center gap-1.5"
+              title="Deactivate AI Projections Mode"
+            >
+              <EyeOff className="w-3.5 h-3.5" />
+              <span>Hide</span>
+            </button>
+          </div>
 
-        {/* AI-Only: Squad Power Rating (0-100% vs Dream XI) */}
-        {showAiPredictions && squadRating && (
-          <div className="p-2.5 rounded-2xl bg-slate-950/90 border border-white/10 flex flex-col gap-2 shadow-inner animate-in fade-in">
+          {/* AI-Only: Squad Power Rating (0-100% vs Dream XI) */}
+          {squadRating && (
+            <div className="p-2.5 rounded-2xl bg-slate-950/90 border border-white/10 flex flex-col gap-2 shadow-inner animate-in fade-in">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Gauge className="w-3.5 h-3.5 text-emerald-400" />
@@ -223,40 +223,39 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
         </button>
 
         {/* AI-Only: Strongest Team Solver Button */}
-        {showAiPredictions && (
-          <button
-            onClick={() => openScoutModal(undefined, undefined, undefined, 'optimal_squad')}
-            className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-950/80 transition active:scale-98 border border-emerald-400/40 animate-in fade-in"
-            title="Compute the mathematically strongest 15-man squad within your exact budget"
-          >
-            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
-            <span>🔮 Strongest Team Solver</span>
-          </button>
-        )}
+        <button
+          onClick={() => openScoutModal(undefined, undefined, undefined, 'optimal_squad')}
+          className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-950/80 transition active:scale-98 border border-emerald-400/40 animate-in fade-in"
+          title="Compute the mathematically strongest 15-man squad within your exact budget"
+        >
+          <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+          <span>🔮 Strongest Team Solver</span>
+        </button>
 
-        {/* Fixture Horizon */}
-        <div className="flex items-center justify-between pt-1 border-t border-white/10">
-          <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-cyan-400" />
-            Horizon:
-          </span>
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-white/10">
-            {[1, 3, 5].map((hz) => (
-              <button
-                key={hz}
-                onClick={() => setFixtureHorizon(hz as 1 | 3 | 5)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-black transition ${
-                  fixtureHorizon === hz 
-                    ? 'bg-emerald-600 text-white shadow' 
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {hz}GW
-              </button>
-            ))}
+          {/* Fixture Horizon */}
+          <div className="flex items-center justify-between pt-1 border-t border-white/10">
+            <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-cyan-400" />
+              Horizon:
+            </span>
+            <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-white/10">
+              {[1, 3, 5].map((hz) => (
+                <button
+                  key={hz}
+                  onClick={() => setFixtureHorizon(hz as 1 | 3 | 5)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-black transition ${
+                    fixtureHorizon === hz 
+                      ? 'bg-emerald-600 text-white shadow' 
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {hz}GW
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* 3. Lineup Optimizer & Overrides */}
       <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3.5 shadow-xl flex flex-col gap-2.5">

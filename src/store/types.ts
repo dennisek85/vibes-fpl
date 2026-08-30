@@ -158,3 +158,4 @@ export interface AiOptimizerSlice {
 }
 
 export type PlannerState = CoreDataSlice & UiStateSlice & GameweekPlanSlice & PersistenceSlice & AiOptimizerSlice;
+

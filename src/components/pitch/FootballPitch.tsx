@@ -124,24 +124,52 @@ export const FootballPitch: React.FC = () => {
             onMouseLeave={cancelLongPress}
             onTouchStart={startLongPress}
             onTouchEnd={cancelLongPress}
-            className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center cursor-default"
+            className={`relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-200 ${
+              isPressing ? 'scale-110' : 'hover:scale-105'
+            }`}
+            title="Secret: Hold down on the football to toggle AI Projections Mode"
           >
+            {/* SVG Circular Progress Ring while long-pressing */}
+            {isPressing && (
+              <svg className="absolute -inset-1.5 w-[calc(100%+12px)] h-[calc(100%+12px)] -rotate-90 pointer-events-none z-10">
+                <circle
+                  cx="50%"
+                  cy="50%"
+                  r="44%"
+                  fill="transparent"
+                  stroke="#10b981"
+                  strokeWidth="3"
+                  strokeDasharray="100"
+                  strokeDashoffset={100 - pressProgress}
+                  strokeLinecap="round"
+                  className="transition-all duration-75"
+                />
+              </svg>
+            )}
+
+            {/* Glowing Aura when AI Mode is Active */}
+            {showAiPredictions && (
+              <div className="absolute inset-0 rounded-full bg-emerald-400/30 blur-sm animate-pulse pointer-events-none" />
+            )}
+
             {/* Football Graphic (Natural Pitch Ball) */}
-            <div className="w-full h-full rounded-full bg-white shadow-md border border-slate-300/80 flex items-center justify-center overflow-hidden drop-shadow-md">
+            <div className={`w-full h-full rounded-full bg-white shadow-md border flex items-center justify-center overflow-hidden drop-shadow-md transition-all ${
+              showAiPredictions ? 'border-emerald-400 ring-2 ring-emerald-400/50' : 'border-slate-300/80'
+            }`}>
               <svg viewBox="0 0 100 100" className="w-full h-full p-0.5">
                 {/* Center Pentagon */}
-                <polygon points="50,30 65,42 60,60 40,60 35,42" fill="#1e293b" />
+                <polygon points="50,30 65,42 60,60 40,60 35,42" fill={showAiPredictions ? '#065f46' : '#1e293b'} />
                 {/* Connecting Lines & Outer Pentagons */}
-                <line x1="50" y1="30" x2="50" y2="10" stroke="#1e293b" strokeWidth="4" />
-                <line x1="65" y1="42" x2="85" y2="35" stroke="#1e293b" strokeWidth="4" />
-                <line x1="60" y1="60" x2="75" y2="80" stroke="#1e293b" strokeWidth="4" />
-                <line x1="40" y1="60" x2="25" y2="80" stroke="#1e293b" strokeWidth="4" />
-                <line x1="35" y1="42" x2="15" y2="35" stroke="#1e293b" strokeWidth="4" />
-                <polygon points="50,10 38,0 62,0" fill="#1e293b" />
-                <polygon points="85,35 100,28 95,50" fill="#1e293b" />
-                <polygon points="75,80 88,95 65,100" fill="#1e293b" />
-                <polygon points="25,80 12,95 35,100" fill="#1e293b" />
-                <polygon points="15,35 0,28 5,50" fill="#1e293b" />
+                <line x1="50" y1="30" x2="50" y2="10" stroke={showAiPredictions ? '#065f46' : '#1e293b'} strokeWidth="4" />
+                <line x1="65" y1="42" x2="85" y2="35" stroke={showAiPredictions ? '#065f46' : '#1e293b'} strokeWidth="4" />
+                <line x1="60" y1="60" x2="75" y2="80" stroke={showAiPredictions ? '#065f46' : '#1e293b'} strokeWidth="4" />
+                <line x1="40" y1="60" x2="25" y2="80" stroke={showAiPredictions ? '#065f46' : '#1e293b'} strokeWidth="4" />
+                <line x1="35" y1="42" x2="15" y2="35" stroke={showAiPredictions ? '#065f46' : '#1e293b'} strokeWidth="4" />
+                <polygon points="50,10 38,0 62,0" fill={showAiPredictions ? '#065f46' : '#1e293b'} />
+                <polygon points="85,35 100,28 95,50" fill={showAiPredictions ? '#065f46' : '#1e293b'} />
+                <polygon points="75,80 88,95 65,100" fill={showAiPredictions ? '#065f46' : '#1e293b'} />
+                <polygon points="25,80 12,95 35,100" fill={showAiPredictions ? '#065f46' : '#1e293b'} />
+                <polygon points="15,35 0,28 5,50" fill={showAiPredictions ? '#065f46' : '#1e293b'} />
               </svg>
             </div>
           </div>
@@ -155,9 +183,9 @@ export const FootballPitch: React.FC = () => {
           </div>
         )}
 
-        {/* In-Pitch Top Right Bar: Quick AI Optimize + Formation Badge */}
+        {/* In-Pitch Top Right Bar: Quick AI Optimize (Only when AI mode is unlocked) + Formation Badge */}
         <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-          {!isLocked && (
+          {!isLocked && showAiPredictions && (
             <button
               onClick={() => {
                 const res = optimizeSquadLineup(selectedGameweek);
@@ -167,7 +195,7 @@ export const FootballPitch: React.FC = () => {
                   setTimeout(() => setShowUnlockToast(false), 4000);
                 }
               }}
-              className="bg-slate-950/80 hover:bg-emerald-600 text-emerald-300 hover:text-white font-black px-3 py-1.5 rounded-full border border-emerald-500/40 text-xs backdrop-blur-md shadow-lg transition-all flex items-center gap-1.5 active:scale-95 group"
+              className="bg-slate-950/80 hover:bg-emerald-600 text-emerald-300 hover:text-white font-black px-3 py-1.5 rounded-full border border-emerald-500/40 text-xs backdrop-blur-md shadow-lg transition-all flex items-center gap-1.5 active:scale-95 group animate-in fade-in"
               title="Auto-optimize starting XI and captain for highest expected points"
             >
               <Wand2 className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform" />
