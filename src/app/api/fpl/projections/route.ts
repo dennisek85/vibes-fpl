@@ -40,7 +40,7 @@ export async function GET() {
     const teamMap = new Map<number, any>();
     teams.forEach((t: any) => teamMap.set(t.id, t));
 
-    // Dynamic Live ML & Odds-Integrated Forecast Generator
+    // Dynamic Live ML & Odds-Integrated Forecast Generator (Bottom-Up xG/xA Model)
     const playerPredictions: Record<string, number> = {};
     const topProjectedList: Array<{ id: number; name: string; team: string; position: string; xP: number; now_cost: number }> = [];
 
@@ -50,60 +50,7 @@ export async function GET() {
       const posType = p.element_type; // 1=GK, 2=DEF, 3=MID, 4=FWD
       const posName = posType === 1 ? 'GK' : posType === 2 ? 'DEF' : posType === 3 ? 'MID' : 'FWD';
 
-      // 1. Availability probability from official FPL injury/fitness telemetry
-      let availabilityMultiplier = 1.0;
-      if (p.status === 'i' || p.status === 's' || p.status === 'u') {
-        availabilityMultiplier = 0.0;
-      } else if (p.chance_of_playing_next_round !== null && p.chance_of_playing_next_round !== undefined) {
-        availabilityMultiplier = p.chance_of_playing_next_round / 100.0;
-      } else if (p.status === 'd') {
-        availabilityMultiplier = 0.5;
-      }
-
-      // 2. Underlying Performance Base Features with Bayesian Sample Size Shrinkage
-      const minutesPlayed = parseFloat(p.minutes || '0');
-      const gamesPlayed = Math.max(1.0, minutesPlayed / 90.0);
-      const rawForm = parseFloat(p.form || '0');
-      const rawPpg = parseFloat(p.points_per_game || '0');
-      const epVal = parseFloat(p.ep_next || p.ep_this || '0');
-
-      // Bayesian Shrinkage Prior by Position (prevents 1-game 11.0 ppg anomalies)
-      const positionPrior = posType === 1 ? 3.4 : posType === 2 ? 3.2 : posType === 3 ? 4.2 : 4.5;
-      const sampleConfidence = Math.min(1.0, Math.max(0.15, minutesPlayed / 450.0)); // full confidence after ~5 starts
-      const formVal = (rawForm * sampleConfidence) + (positionPrior * (1.0 - sampleConfidence));
-      const ppgVal = (rawPpg * sampleConfidence) + (positionPrior * (1.0 - sampleConfidence));
-
-      const threatPer90 = (parseFloat(p.threat || '0') / gamesPlayed) / 100.0;
-      const creativityPer90 = (parseFloat(p.creativity || '0') / gamesPlayed) / 100.0;
-
-      // Minutes per start damping
-      let minutesDamping = 1.0;
-      const starts = p.starts || (minutesPlayed > 0 ? 1 : 0);
-      if (starts > 0) {
-        const minsPerStart = minutesPlayed / starts;
-        if (minsPerStart < 60) {
-          minutesDamping = Math.max(0.4, minsPerStart / 90.0);
-        }
-      }
-
-      // Position baseline points
-      let positionBaseline = 0;
-      if (posType === 1) {
-        positionBaseline = Math.max(2.0, (ppgVal * 0.35) + (formVal * 0.25) + 1.2);
-      } else if (posType === 2) {
-        positionBaseline = Math.max(1.8, (ppgVal * 0.30) + (formVal * 0.25) + (threatPer90 * 0.4) + 0.8);
-      } else if (posType === 3) {
-        positionBaseline = Math.max(2.2, (ppgVal * 0.35) + (formVal * 0.30) + (threatPer90 * 0.5) + (creativityPer90 * 0.2) + 0.5);
-      } else {
-        positionBaseline = Math.max(2.5, (ppgVal * 0.40) + (formVal * 0.30) + (threatPer90 * 0.6) + 0.5);
-      }
-
-      if (epVal > 0) {
-        const shrunkEp = (epVal * sampleConfidence) + (positionPrior * (1.0 - sampleConfidence));
-        positionBaseline = (positionBaseline * 0.55) + (shrunkEp * 0.45);
-      }
-
-      // 3. Multi-Gameweek Fixture Calculation with Exact Match Expectancy & Poisson Clean Sheet
+      // 1. Multi-Gameweek Fixture Calculation with Exact Match Expectancy & Poisson Clean Sheet
       for (let targetGw = currentGw; targetGw <= Math.min(38, currentGw + 10); targetGw++) {
         const gwFixtures = fixturesData.filter((f: any) => f.event === targetGw && (f.team_h === teamId || f.team_a === teamId));
 
@@ -145,8 +92,8 @@ export async function GET() {
           const oppId = isHome ? fix.team_a : fix.team_h;
           const oppTeam = teamMap.get(oppId);
 
-          const calculatedMatchXp = calculatePlayerOddsXp(p, isHome, pTeam, oppTeam, positionBaseline);
-          const finalMatchXp = Math.max(0.0, Math.round(calculatedMatchXp * availabilityMultiplier * minutesDamping * 10) / 10);
+          const calculatedMatchXp = calculatePlayerOddsXp(p, isHome, pTeam, oppTeam);
+          const finalMatchXp = Math.max(0.0, Math.round(calculatedMatchXp * availabilityMultiplier * 10) / 10);
           totalFixtureXp += finalMatchXp;
         }
 
@@ -169,9 +116,9 @@ export async function GET() {
     topProjectedList.sort((a, b) => b.xP - a.xP);
 
     const payload = {
-      model: 'OpenFPL-LiveOdds-ML',
-      version: '3.0.0',
-      source: 'Live Official FPL Telemetry & Poisson Implied Match Odds',
+      model: 'OpenFPL-Benchmark-xG-xP',
+      version: '3.1.0',
+      source: 'Live Official FPL Telemetry & Calibrated Bottom-Up xG/xA Expectancy',
       generatedAt: new Date().toISOString(),
       currentGameweek: currentGw,
       totalPlayersAnalyzed: elements.length,

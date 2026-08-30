@@ -37,6 +37,8 @@ export interface FPLPlayer {
   ict_index?: string;
   bps?: number;
   goals_conceded?: number;
+  yellow_cards?: number;
+  red_cards?: number;
   photo?: string;
   transfers_in_event?: number;
   transfers_out_event?: number;
@@ -44,6 +46,13 @@ export interface FPLPlayer {
   transfers_out?: number;
   cost_change_event?: number;
   cost_change_start?: number;
+  priceTelemetry?: {
+    netToday: number;
+    inToday: number;
+    outToday: number;
+    hourlyVelocity: number;
+    isPriceLocked: boolean;
+  };
 }
 
 export interface FPLTeam {

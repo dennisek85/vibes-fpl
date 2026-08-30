@@ -45,9 +45,11 @@ export function calculatePlayerPricePrediction(
   const costChangeStart = player.cost_change_start || 0;
   const seasonDelta = Math.round(costChangeStart * 10) / 10;
 
-  const transfersInToday = (player as any).transfers_in_event || 0;
-  const transfersOutToday = (player as any).transfers_out_event || 0;
-  const rawNetTransfers = transfersInToday - transfersOutToday;
+  // Use persistent daily delta telemetry if attached by server tracker
+  const telemetry = player.priceTelemetry;
+  const transfersInToday = telemetry ? telemetry.inToday : ((player as any).transfers_in_event || 0);
+  const transfersOutToday = telemetry ? telemetry.outToday : ((player as any).transfers_out_event || 0);
+  const rawNetTransfers = telemetry ? telemetry.netToday : (transfersInToday - transfersOutToday);
 
   // 1. Starting Ownership Base (Total managers who owned player at start of cycle)
   const ownershipPercent = parseFloat(player.selected_by_percent || '1.0');
@@ -58,7 +60,7 @@ export function calculatePlayerPricePrediction(
   const isCostChangeLocked = (player as any).cost_change_event_fall !== undefined && (player as any).cost_change_event_fall > 0;
   const hasMaxWeeklyChanges = Math.abs((player as any).cost_change_event || 0) >= 3;
   const hasChangedThisGw = (player as any).cost_change_event !== undefined && (player as any).cost_change_event !== 0;
-  const isLocked = player.status === 'u' || isCostChangeLocked || hasMaxWeeklyChanges || hasChangedThisGw;
+  const isLocked = telemetry?.isPriceLocked || player.status === 'u' || isCostChangeLocked || hasMaxWeeklyChanges;
 
   // 3. Selective Wildcard / Free Hit exclusion for high-ownership template assets
   const wcFactor = ownershipPercent > 10.0 ? NON_WILDCARD_FACTOR : 1.0;
@@ -125,8 +127,8 @@ export function calculatePlayerPricePrediction(
     targetProgress = -Math.round(rawRatio * 10) / 10;
   }
 
-  // 7. Hourly Transfer Velocity (%/hr over active trading window)
-  const hourlyNet = Math.round(effectiveNet / 18.0);
+  // 7. Hourly Transfer Velocity (%/hr over active trading window from time-series)
+  const hourlyNet = telemetry ? telemetry.hourlyVelocity : Math.round(effectiveNet / 18.0);
   const rawHourlyVelocity = thresholdUsed > 0 ? (hourlyNet / thresholdUsed) * 100 : 0;
   const hourlyVelocity = Math.round(rawHourlyVelocity * 100) / 100;
   const hourlyVelocityText = hourlyVelocity > 0 ? `+${hourlyVelocity.toFixed(2)}%/hr` : hourlyVelocity < 0 ? `${hourlyVelocity.toFixed(2)}%/hr` : '0.00%/hr';

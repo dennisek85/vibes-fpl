@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
+import { updateAndGetPriceTelemetry } from '@/lib/priceTracker';
 
 let cachedData: any = null;
 let lastFetchTime = 0;
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour (FPL prices only change once daily)
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes cache for fresh transfer tracking
 
 export async function GET() {
   const now = Date.now();
   if (cachedData && now - lastFetchTime < CACHE_TTL_MS) {
     return NextResponse.json(cachedData, {
       headers: {
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200',
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
       },
     });
   }
@@ -19,7 +20,7 @@ export async function GET() {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       },
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 },
     });
 
     if (!res.ok) {
@@ -27,6 +28,17 @@ export async function GET() {
     }
 
     const data = await res.json();
+
+    // Process live elements through the persistent price baseline tracker
+    if (Array.isArray(data.elements)) {
+      const { dailyDeltas } = updateAndGetPriceTelemetry(data.elements);
+      data.elements.forEach((p: any) => {
+        if (dailyDeltas[p.id]) {
+          p.priceTelemetry = dailyDeltas[p.id];
+        }
+      });
+    }
+
     cachedData = data;
     lastFetchTime = now;
 

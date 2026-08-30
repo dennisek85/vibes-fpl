@@ -11,7 +11,7 @@ export interface MatchExpectancy {
 
 const LEAGUE_AVG_GOALS_PER_MATCH = 1.38;
 
-// Primary Premier League penalty takers registry (0.79 xG conversion equity)
+// Primary Premier League penalty takers registry
 const PRIMARY_PENALTY_TAKERS = new Set([
   'haaland',
   'salah',
@@ -43,6 +43,19 @@ export function isDesignatedPenaltyTaker(player: FPLPlayer): boolean {
 }
 
 /**
+ * Normalizes team strength reliably from official FPL team objects.
+ * Handles both 1-5 scale (current season) and 1000-1380 scale.
+ */
+function parseTeamStrength(team: any, isHome: boolean): number {
+  if (!team) return 1.0;
+  const raw = isHome ? (team.strength_overall_home || team.strength) : (team.strength_overall_away || team.strength);
+  const num = typeof raw === 'number' ? raw : parseFloat(`${raw || 3}`);
+  if (num > 100) return num / 1150.0;
+  // On 1-5 scale, 3.0 represents average strength (1.0 factor)
+  return Math.max(1.0, Math.min(5.0, num)) / 3.0;
+}
+
+/**
  * Calculates Poisson-derived Implied Team Goals & Clean Sheet Probabilities for any fixture:
  * - Implied Team Goals (λ) from relative attack/defense strengths + home venue boost.
  * - Poisson Clean Sheet Probability: P(CS = 0 conceded) = e^(-λ_opponent)
@@ -55,27 +68,23 @@ export function calculateMatchExpectancy(
     return {
       homeTeamId: 0,
       awayTeamId: 0,
-      homeImpliedGoals: 1.5,
-      awayImpliedGoals: 1.2,
-      homeCleanSheetProb: 0.30,
-      awayCleanSheetProb: 0.22,
+      homeImpliedGoals: 1.45,
+      awayImpliedGoals: 1.15,
+      homeCleanSheetProb: 0.32,
+      awayCleanSheetProb: 0.23,
     };
   }
 
-  // Official FPL team attack/defense strength (typical scale 1000 - 1380)
-  const homeAttack = (homeTeam.strength_attack_home || homeTeam.strength_overall_home || 1150) / 1150;
-  const homeDefense = (homeTeam.strength_defence_home || homeTeam.strength_overall_home || 1150) / 1150;
+  const homeStr = parseTeamStrength(homeTeam, true);
+  const awayStr = parseTeamStrength(awayTeam, false);
 
-  const awayAttack = (awayTeam.strength_attack_away || awayTeam.strength_overall_away || 1150) / 1150;
-  const awayDefense = (awayTeam.strength_defence_away || awayTeam.strength_overall_away || 1150) / 1150;
-
-  // Implied Goals with Home Advantage (~+18% home attack, -15% away attack)
-  const homeImplied = Math.max(0.4, Math.min(3.6, LEAGUE_AVG_GOALS_PER_MATCH * homeAttack * (1.0 / awayDefense) * 1.18));
-  const awayImplied = Math.max(0.3, Math.min(3.2, LEAGUE_AVG_GOALS_PER_MATCH * awayAttack * (1.0 / homeDefense) * 0.85));
+  // Implied Goals with Home Advantage (~+15% home attack, -12% away attack)
+  const homeImplied = Math.max(0.6, Math.min(2.8, LEAGUE_AVG_GOALS_PER_MATCH * (homeStr / awayStr) * 1.15));
+  const awayImplied = Math.max(0.4, Math.min(2.4, LEAGUE_AVG_GOALS_PER_MATCH * (awayStr / homeStr) * 0.88));
 
   // Poisson Clean Sheet Probabilities: P(0) = e^(-λ)
-  const homeCleanSheetProb = Math.max(0.05, Math.min(0.65, Math.exp(-awayImplied)));
-  const awayCleanSheetProb = Math.max(0.04, Math.min(0.55, Math.exp(-homeImplied)));
+  const homeCleanSheetProb = Math.max(0.06, Math.min(0.60, Math.exp(-awayImplied)));
+  const awayCleanSheetProb = Math.max(0.05, Math.min(0.50, Math.exp(-homeImplied)));
 
   return {
     homeTeamId: homeTeam.id,
@@ -88,61 +97,55 @@ export function calculateMatchExpectancy(
 }
 
 /**
- * Calculates BPS (Bonus Point System) Statistical Regression:
- * - Defenders/GKs earn bonus points in low-scoring clean sheets.
- * - Talisman attackers earn 2-3 bonus points when scoring in match wins.
+ * Returns player team goal involvement share (xG share, xA share) & card penalty by price tier.
+ * Calibrated against historical Opta & Premier League team goal distribution models.
  */
-export function calculateBpsBonusExpectancy(
-  player: FPLPlayer,
-  cleanSheetProb: number,
-  impliedGoalsScored: number
-): number {
-  if (!player) return 0.2;
+function getPlayerInvolvementShare(pos: number, cost: number): { xgShare: number; xaShare: number; cardPen: number } {
+  const price = cost / 10.0;
 
-  const pos = player.element_type;
-  const rawBps = player.bps || 0;
-  const minutes = player.minutes || 90;
-  const bpsPer90 = minutes > 0 ? (rawBps / (minutes / 90.0)) : 18.0;
-
-  if (pos === 1) {
-    // Goalkeeper: BPS bonus when keeping clean sheets and making high saves
-    return Math.min(0.85, cleanSheetProb * 0.70 + (bpsPer90 > 22 ? 0.25 : 0.05));
+  if (pos === 4) { // Forwards
+    if (price >= 13.0) return { xgShare: 0.38, xaShare: 0.08, cardPen: 0.08 }; // Haaland
+    if (price >= 8.5) return { xgShare: 0.28, xaShare: 0.12, cardPen: 0.10 };  // Isak, Watkins, Solanke
+    if (price >= 6.5) return { xgShare: 0.22, xaShare: 0.08, cardPen: 0.12 };  // Wood, Mateta, Welbeck
+    return { xgShare: 0.15, xaShare: 0.06, cardPen: 0.12 };                    // Budget forwards
   }
 
-  if (pos === 2) {
-    // Defender: CBI & high passing accuracy bonus in clean sheet matches
-    const passingCbiBonus = bpsPer90 > 24 ? 0.45 : bpsPer90 > 20 ? 0.30 : 0.15;
-    return Math.min(0.95, (cleanSheetProb * 0.65) + passingCbiBonus);
+  if (pos === 3) { // Midfielders
+    if (price >= 10.0) return { xgShare: 0.22, xaShare: 0.18, cardPen: 0.08 }; // Salah, Palmer, Saka, Son, Foden
+    if (price >= 7.5) return { xgShare: 0.16, xaShare: 0.14, cardPen: 0.12 };  // Fernandes, Diaz, Eze, Gordon, Mbeumo
+    if (price >= 6.0) return { xgShare: 0.12, xaShare: 0.10, cardPen: 0.15 };  // Mitoma, Bailey, Rogers, Semenyo
+    return { xgShare: 0.05, xaShare: 0.06, cardPen: 0.22 };                    // Defensive / Budget midfielders
   }
 
-  if (pos === 3 || pos === 4) {
-    // Attackers: Match-winning goal & penalty bonus probability
-    const xg = parseFloat(player.expected_goals || '0');
-    const threatRate = parseFloat(player.threat || '0');
-    const hasPens = isDesignatedPenaltyTaker(player);
-    const attackWeight = (impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH);
-    const talismanFactor = (threatRate > 35 || xg > 2.0 || bpsPer90 > 22 || hasPens) ? 0.60 : 0.20;
-    return Math.min(1.25, talismanFactor * attackWeight + (hasPens ? 0.20 : 0));
+  if (pos === 2) { // Defenders
+    if (price >= 6.0) return { xgShare: 0.04, xaShare: 0.10, cardPen: 0.12 };  // Trent, Gvardiol, Gabriel, Saliba
+    if (price >= 5.0) return { xgShare: 0.03, xaShare: 0.05, cardPen: 0.15 };  // Starting top-6 defenders
+    return { xgShare: 0.02, xaShare: 0.03, cardPen: 0.18 };                    // Budget defenders
   }
 
-  return 0.2;
+  // Goalkeepers
+  return { xgShare: 0.0, xaShare: 0.0, cardPen: 0.04 };
 }
 
 /**
- * Calculates player fixture equity based on:
- * 1. Exact Implied Team Goals & Poisson Clean Sheet Odds.
- * 2. Designated Penalty Taker Conversion Equity (+0.75-0.90 xP).
- * 3. Goalkeeper Save Volume vs Conceded Goals Offset.
- * 4. BPS Statistical Regression.
+ * Calculates bottom-up statistical Expected Points (xP) using industry benchmark solver methodology:
+ * 1. 60-Minute FPL Appearance Step Function: P(>=60m)*2 + P(1-59m)*1
+ * 2. Team Implied Goal Share Allocation (xG / xA) with Bayesian blending
+ * 3. Exact Poisson Implied Match Goals & Clean Sheet Odds
+ * 4. Disciplinary Deductions (Yellow/Red Card Expectancy)
+ * 5. BPS Statistical Regression
  */
 export function calculatePlayerOddsXp(
   player: FPLPlayer,
   isHome: boolean,
   playerTeam: any,
   oppTeam: any,
-  baseXp: number
+  baseXp?: number
 ): number {
-  if (!player || !playerTeam || !oppTeam) return baseXp;
+  if (!player || !playerTeam || !oppTeam) return baseXp || 3.5;
+
+  const pos = player.element_type; // 1=GK, 2=DEF, 3=MID, 4=FWD
+  const cost = player.now_cost || 50;
 
   const expectancy = calculateMatchExpectancy(
     isHome ? playerTeam : oppTeam,
@@ -153,54 +156,116 @@ export function calculatePlayerOddsXp(
   const impliedGoalsConceded = isHome ? expectancy.awayImpliedGoals : expectancy.homeImpliedGoals;
   const cleanSheetProb = isHome ? expectancy.homeCleanSheetProb : expectancy.awayCleanSheetProb;
 
-  // BPS Bonus Expectancy from regression
-  const xBps = calculateBpsBonusExpectancy(player, cleanSheetProb, impliedGoalsScored);
+  // 1. Pro FPL 60-Minute Appearance Step Function
+  const minutesPlayed = typeof player.minutes === 'number' ? player.minutes : parseFloat(`${player.minutes || 0}`) || 0;
+  const starts = player.starts || (minutesPlayed > 0 ? 1 : 0);
+  
+  let p60Mins = 0.92;  // Probability of playing 60+ minutes
+  let pSub = 0.06;     // Probability of playing 1-59 minutes
+  let expectedMins = 85.0;
 
-  // Penalty duty equity (0.79 xG * conversion rate)
+  if (starts > 0) {
+    const minsPerStart = minutesPlayed / starts;
+    expectedMins = Math.max(25.0, Math.min(90.0, minsPerStart));
+    if (minsPerStart >= 75) {
+      p60Mins = 0.94;
+      pSub = 0.04;
+    } else if (minsPerStart >= 60) {
+      p60Mins = 0.75;
+      pSub = 0.20;
+    } else {
+      p60Mins = 0.35;
+      pSub = 0.55;
+    }
+  } else if (minutesPlayed > 0) {
+    // Regular impact substitute
+    expectedMins = 30.0;
+    p60Mins = 0.15;
+    pSub = 0.75;
+  } else {
+    // Unproven / 0 mins
+    expectedMins = 60.0;
+    p60Mins = 0.60;
+    pSub = 0.30;
+  }
+
+  // FPL Points: 60+ mins = 2 pts, 1-59 mins = 1 pt, 0 mins = 0 pts
+  const appearancePts = (p60Mins * 2.0) + (pSub * 1.0);
+
+  // 2. Underlying Rate Metrics & Goal Share Allocation
+  const shares = getPlayerInvolvementShare(pos, cost);
+  const sampleConfidence = minutesPlayed / (minutesPlayed + 720.0);
+  const gamesPlayed = Math.max(1.0, minutesPlayed / 90.0);
+
+  const rawXG = typeof player.expected_goals === 'number' ? player.expected_goals : parseFloat(`${player.expected_goals || 0}`) || 0;
+  const rawXA = typeof player.expected_assists === 'number' ? player.expected_assists : parseFloat(`${player.expected_assists || 0}`) || 0;
+
+  // Individual goal share blended with price-tier prior
+  const rawXgShare = rawXG > 0 ? (rawXG / gamesPlayed) / LEAGUE_AVG_GOALS_PER_MATCH : shares.xgShare;
+  const rawXaShare = rawXA > 0 ? (rawXA / gamesPlayed) / LEAGUE_AVG_GOALS_PER_MATCH : shares.xaShare;
+
+  const playerXgShare = Math.min(0.42, (sampleConfidence * rawXgShare) + ((1.0 - sampleConfidence) * shares.xgShare));
+  const playerXaShare = Math.min(0.25, (sampleConfidence * rawXaShare) + ((1.0 - sampleConfidence) * shares.xaShare));
+
+  // 3. Penalty Duty Equity (Designated penalty taker adds ~+0.14 xG per match)
   const isPenTaker = isDesignatedPenaltyTaker(player);
-  const penEquity = isPenTaker ? 0.75 * (impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH) : 0;
+  const penXG = isPenTaker ? (0.14 * (impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH)) : 0.0;
 
-  const pos = player.element_type;
+  // 4. Fixture-Adjusted Match xG and xA
+  const minsScale = expectedMins / 90.0;
+  const matchXG = Math.max(0.0, (impliedGoalsScored * playerXgShare * minsScale) + penXG);
+  const matchXA = Math.max(0.0, impliedGoalsScored * playerXaShare * minsScale);
 
+  // 5. Disciplinary Deductions (Yellow/Red Card Expectancy)
+  const expectedCardPenalty = shares.cardPen;
+
+  // 6. Position-Specific Expected Points
   if (pos === 1) {
-    // Goalkeeper: Save volume mathematically offsets conceded goals (+1 pt per 3 saves)
-    // When opponent goals are high, shots on target are high (~2.8x opponent goals)
-    const expectedShotsFaced = impliedGoalsConceded * 2.8;
-    const expectedSaves = Math.max(1.5, expectedShotsFaced - impliedGoalsConceded);
-    const savePoints = (expectedSaves / 3.0) * 1.0; // FPL: 1 pt per 3 saves
-    const csEquity = cleanSheetProb * 4.0;
-    const goalsConcededPenalty = Math.max(0, (impliedGoalsConceded - 1) * 0.5);
-    
-    // Net Goalkeeper Score with robust save floor buffer
-    const gkScore = 2.0 + savePoints + csEquity + xBps - goalsConcededPenalty;
-    return Math.max(2.8, Math.round((baseXp * 0.35 + gkScore * 0.65) * 10) / 10);
+    // Goalkeeper: Appearance + (4 * P(CS)) + Save Points - Conceded Penalty + BPS - Card Deduction
+    const csPts = cleanSheetProb * 4.0;
+    const savePoints = Math.min(1.8, Math.max(0.6, impliedGoalsConceded * 0.70));
+    const concededPen = Math.max(0.0, (impliedGoalsConceded - 0.7) * 0.40);
+    const xBps = Math.min(0.6, cleanSheetProb * 0.50 + 0.10);
+
+    const totalGkXp = appearancePts + csPts + savePoints + xBps - concededPen - expectedCardPenalty;
+    return Math.max(2.0, Math.round(totalGkXp * 10) / 10);
   }
 
   if (pos === 2) {
-    // Defender: 2 pts appearance + attacking threat + (4 * P(CS)) + BPS Bonus - goals conceded penalty
-    const xg = parseFloat(player.expected_goals || '0');
-    const xa = parseFloat(player.expected_assists || '0');
-    const attackEquity = (xg * 6.0 + xa * 3.0) * (impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH);
-    const csEquity = cleanSheetProb * 4.0;
-    const goalsConcededPenalty = Math.max(0, (impliedGoalsConceded - 1) * 0.5);
-    const defScore = 2.0 + attackEquity + penEquity + csEquity + xBps - goalsConcededPenalty;
-    return Math.max(1.5, Math.round((baseXp * 0.35 + defScore * 0.65) * 10) / 10);
+    // Defender: Appearance + (4 * P(CS)) + (xG * 6) + (xA * 3) - Conceded Penalty + BPS - Card Deduction
+    // Sub-off clean sheet retention boost for early substitutions (e.g. min 65-70)
+    const csRetentionBoost = expectedMins < 75 && expectedMins >= 60 ? 0.04 : 0.0;
+    const effectiveCsProb = Math.min(0.65, cleanSheetProb + csRetentionBoost);
+
+    const csPts = effectiveCsProb * 4.0;
+    const attackPts = (matchXG * 6.0) + (matchXA * 3.0);
+    const concededPen = Math.max(0.0, (impliedGoalsConceded - 0.7) * 0.40);
+    const xBps = Math.min(0.9, (effectiveCsProb * 0.60) + (matchXG * 0.50) + 0.12);
+
+    const totalDefXp = appearancePts + csPts + attackPts + xBps - concededPen - expectedCardPenalty;
+    return Math.max(1.5, Math.round(totalDefXp * 10) / 10);
   }
 
   if (pos === 3) {
-    // Midfielder: 2 pts appearance + (xGI * 5.0 * (Implied Goals / Avg)) + Pen Equity + (1 * P(CS)) + BPS Bonus
-    const attackRatio = Math.max(0.5, impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH);
-    const midCsEquity = cleanSheetProb * 1.0;
-    const midScore = (baseXp - 0.5) * attackRatio + penEquity + midCsEquity + xBps;
-    return Math.max(1.8, Math.round(midScore * 10) / 10);
+    // Midfielder: Appearance + (1 * P(CS)) + (xG * 5) + (xA * 3) + BPS - Card Deduction
+    const csPts = cleanSheetProb * 1.0;
+    const goalPts = matchXG * 5.0;
+    const assistPts = matchXA * 3.0;
+    const xBps = Math.min(1.3, 0.15 + (matchXG * 0.75) + (matchXA * 0.40) + (cleanSheetProb * 0.20));
+
+    const totalMidXp = appearancePts + csPts + goalPts + assistPts + xBps - expectedCardPenalty;
+    return Math.max(1.8, Math.round(totalMidXp * 10) / 10);
   }
 
   if (pos === 4) {
-    // Forward: 2 pts appearance + (xGI * 4.0 * (Implied Goals / Avg)) + Pen Equity + BPS Bonus
-    const attackRatio = Math.max(0.5, impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH);
-    const fwdScore = baseXp * attackRatio + penEquity + xBps;
-    return Math.max(2.0, Math.round(fwdScore * 10) / 10);
+    // Forward: Appearance + (xG * 4) + (xA * 3) + BPS - Card Deduction
+    const goalPts = matchXG * 4.0;
+    const assistPts = matchXA * 3.0;
+    const xBps = Math.min(1.4, 0.20 + (matchXG * 0.85) + (matchXA * 0.35));
+
+    const totalFwdXp = appearancePts + goalPts + assistPts + xBps - expectedCardPenalty;
+    return Math.max(2.0, Math.round(totalFwdXp * 10) / 10);
   }
 
-  return baseXp;
+  return 3.5;
 }
