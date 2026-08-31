@@ -15,6 +15,7 @@ import { PinAuthModal } from '@/components/ui/PinAuthModal';
 import { AiScoutModal } from '@/components/modals/AiScoutModal';
 import { MobileMenuDrawer } from '@/components/modals/MobileMenuDrawer';
 import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
+import { AiPerformanceView } from '@/components/analytics/AiPerformanceView';
 import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
 import { logoutPin, isPinVerified } from '@/lib/auth';
 import { formatMoney } from '@/lib/fpl-rules';
@@ -26,13 +27,14 @@ import {
   Save, 
   ShoppingBag, 
   Lock, 
-  CheckCircle2,
-  Loader2,
-  ChevronLeft,
-  ChevronRight,
-  LayoutGrid,
-  TableProperties,
-  Menu
+  CheckCircle2, 
+  Loader2, 
+  ChevronLeft, 
+  ChevronRight, 
+  LayoutGrid, 
+  TableProperties, 
+  TrendingUp,
+  Menu 
 } from 'lucide-react';
 
 export default function PlannerPage() {
@@ -147,13 +149,13 @@ export default function PlannerPage() {
           <div className="flex items-center gap-1 sm:gap-2">
             {/* Minimalist Gameweek Arrow Stepper */}
             <div className={`flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner transition-all ${
-              currentView === 'matrix' ? 'opacity-35 pointer-events-none select-none' : ''
+              currentView !== 'pitch' ? 'opacity-35 pointer-events-none select-none' : ''
             }`}>
               <button
-                disabled={currentView === 'matrix' || selectedGameweek <= 1}
+                disabled={currentView !== 'pitch' || selectedGameweek <= 1}
                 onClick={() => selectGameweek(selectedGameweek - 1)}
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-                title={currentView === 'matrix' ? UI_TEXT.gameweekStepper.matrixDisabledTooltip : UI_TEXT.gameweekStepper.prevTooltip}
+                title={currentView !== 'pitch' ? UI_TEXT.gameweekStepper.matrixDisabledTooltip : UI_TEXT.gameweekStepper.prevTooltip}
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -168,21 +170,21 @@ export default function PlannerPage() {
                   )}
                 </div>
                 <span className="text-[9px] sm:text-[10px] text-slate-400 font-mono block leading-none">
-                  {currentView === 'matrix' ? UI_TEXT.gameweekStepper.global : isLocked ? UI_TEXT.gameweekStepper.completed : UI_TEXT.gameweekStepper.planned}
+                  {currentView === 'matrix' ? UI_TEXT.gameweekStepper.global : currentView === 'analytics' ? 'All-Time' : isLocked ? UI_TEXT.gameweekStepper.completed : UI_TEXT.gameweekStepper.planned}
                 </span>
               </div>
 
               <button
-                disabled={currentView === 'matrix' || selectedGameweek >= 38}
+                disabled={currentView !== 'pitch' || selectedGameweek >= 38}
                 onClick={() => selectGameweek(selectedGameweek + 1)}
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-                title={currentView === 'matrix' ? UI_TEXT.gameweekStepper.matrixDisabledTooltip : UI_TEXT.gameweekStepper.nextTooltip}
+                title={currentView !== 'pitch' ? UI_TEXT.gameweekStepper.matrixDisabledTooltip : UI_TEXT.gameweekStepper.nextTooltip}
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* View Switcher: Pitch View vs Matrix Table View */}
+            {/* View Switcher: Pitch View vs Matrix Table View vs AI Analytics View */}
             <div className="flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner">
               <button
                 onClick={() => setCurrentView('pitch')}
@@ -208,6 +210,19 @@ export default function PlannerPage() {
               >
                 <TableProperties className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span className="hidden md:inline">{UI_TEXT.app.views.matrix}</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentView('analytics')}
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
+                  currentView === 'analytics'
+                    ? 'bg-emerald-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title={UI_TEXT.app.views.analyticsTooltip}
+              >
+                <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <span className="hidden md:inline">{UI_TEXT.app.views.analytics}</span>
               </button>
             </div>
           </div>
@@ -400,10 +415,15 @@ export default function PlannerPage() {
             <VerticalBenchBar benchPicks={benchPicks} />
           </aside>
         </div>
-      ) : (
+      ) : currentView === 'matrix' ? (
         /* Player Projections & Metrics Matrix View */
         <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-2 animate-in fade-in duration-200">
           <PlayerMatrixView />
+        </div>
+      ) : (
+        /* AI Performance & Backtesting View */
+        <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-3 animate-in fade-in duration-200">
+          <AiPerformanceView />
         </div>
       )}
 

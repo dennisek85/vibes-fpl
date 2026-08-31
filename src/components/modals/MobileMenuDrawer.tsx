@@ -11,8 +11,9 @@ import {
   Search, 
   Save, 
   Lock, 
-  TableProperties, 
   LayoutGrid, 
+  TableProperties,
+  TrendingUp,
   X,
   Layers
 } from 'lucide-react';
@@ -155,20 +156,20 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
           {/* 2. Navigation & Views */}
           <div className="flex flex-col gap-1.5">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">Views</span>
-            <div className="grid grid-cols-2 gap-1.5">
+            <div className="grid grid-cols-3 gap-1.5">
               <button
                 onClick={() => {
                   setCurrentView('pitch');
                   onClose();
                 }}
-                className={`flex items-center justify-center gap-1.5 p-2 rounded-xl border text-xs font-black transition ${
+                className={`flex items-center justify-center gap-1 p-2 rounded-xl border text-[11px] font-black transition ${
                   currentView === 'pitch'
                     ? 'bg-emerald-600 border-emerald-400 text-white shadow-md'
                     : 'bg-slate-950 border-white/10 text-slate-300 hover:text-white'
                 }`}
               >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                <span>Pitch View</span>
+                <LayoutGrid className="w-3 h-3" />
+                <span>Pitch</span>
               </button>
 
               <button
@@ -176,14 +177,29 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
                   setCurrentView('matrix');
                   onClose();
                 }}
-                className={`flex items-center justify-center gap-1.5 p-2 rounded-xl border text-xs font-black transition ${
+                className={`flex items-center justify-center gap-1 p-2 rounded-xl border text-[11px] font-black transition ${
                   currentView === 'matrix'
                     ? 'bg-emerald-600 border-emerald-400 text-white shadow-md'
                     : 'bg-slate-950 border-white/10 text-slate-300 hover:text-white'
                 }`}
               >
-                <TableProperties className="w-3.5 h-3.5" />
-                <span>Stats Matrix</span>
+                <TableProperties className="w-3 h-3" />
+                <span>Matrix</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setCurrentView('analytics');
+                  onClose();
+                }}
+                className={`flex items-center justify-center gap-1 p-2 rounded-xl border text-[11px] font-black transition ${
+                  currentView === 'analytics'
+                    ? 'bg-emerald-600 border-emerald-400 text-white shadow-md'
+                    : 'bg-slate-950 border-white/10 text-slate-300 hover:text-white'
+                }`}
+              >
+                <TrendingUp className="w-3 h-3" />
+                <span>AI Alpha</span>
               </button>
             </div>
           </div>

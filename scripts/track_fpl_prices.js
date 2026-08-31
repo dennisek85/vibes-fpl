@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { saveToRedis, loadFromRedis } = require('./redis_helper');
 
 const FPL_BOOTSTRAP_URL = 'https://fantasy.premierleague.com/api/bootstrap-static/';
 const DATA_DIR = path.join(__dirname, '..', 'src', 'data');
