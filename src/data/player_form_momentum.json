@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-31T07:39:07.766Z",
+  "lastUpdated": "2026-08-31T11:51:12.749Z",
   "season": "2026/27",
   "players": {
     "1": {
@@ -385,9 +385,9 @@
     "43": {
       "playerId": 43,
       "rolling3Mins": 78,
-      "rolling3Xg90": 0.35,
+      "rolling3Xg90": 0.29,
       "rolling3Xa90": 0.13,
-      "rolling5Xg90": 0.35,
+      "rolling5Xg90": 0.29,
       "rolling5Xa90": 0.13,
       "momentumMultiplier": 1,
       "trend": "stable"
@@ -2345,9 +2345,9 @@
     "305": {
       "playerId": 305,
       "rolling3Mins": 90,
-      "rolling3Xg90": 0.25,
+      "rolling3Xg90": 0.27,
       "rolling3Xa90": 0.07,
-      "rolling5Xg90": 0.25,
+      "rolling5Xg90": 0.27,
       "rolling5Xa90": 0.07,
       "momentumMultiplier": 1,
       "trend": "stable"
@@ -3245,9 +3245,9 @@
     "415": {
       "playerId": 415,
       "rolling3Mins": 28,
-      "rolling3Xg90": 1,
+      "rolling3Xg90": 1.06,
       "rolling3Xa90": 0.07,
-      "rolling5Xg90": 1,
+      "rolling5Xg90": 1.06,
       "rolling5Xa90": 0.07,
       "momentumMultiplier": 1,
       "trend": "stable"
@@ -3265,9 +3265,9 @@
     "417": {
       "playerId": 417,
       "rolling3Mins": 42,
-      "rolling3Xg90": 0.18,
+      "rolling3Xg90": 0.16,
       "rolling3Xa90": 0.13,
-      "rolling5Xg90": 0.18,
+      "rolling5Xg90": 0.16,
       "rolling5Xa90": 0.13,
       "momentumMultiplier": 1,
       "trend": "stable"
@@ -3335,19 +3335,19 @@
     "426": {
       "playerId": 426,
       "rolling3Mins": 90,
-      "rolling3Xg90": 1.01,
-      "rolling3Xa90": 0.27,
-      "rolling5Xg90": 1.01,
-      "rolling5Xa90": 0.27,
+      "rolling3Xg90": 1.05,
+      "rolling3Xa90": 0.37,
+      "rolling5Xg90": 1.05,
+      "rolling5Xa90": 0.37,
       "momentumMultiplier": 1,
       "trend": "stable"
     },
     "427": {
       "playerId": 427,
       "rolling3Mins": 90,
-      "rolling3Xg90": 1.07,
+      "rolling3Xg90": 1.13,
       "rolling3Xa90": 0.22,
-      "rolling5Xg90": 1.07,
+      "rolling5Xg90": 1.13,
       "rolling5Xa90": 0.22,
       "momentumMultiplier": 1,
       "trend": "stable"
@@ -3396,9 +3396,9 @@
       "playerId": 432,
       "rolling3Mins": 51,
       "rolling3Xg90": 0.19,
-      "rolling3Xa90": 0.05,
+      "rolling3Xa90": 0.25,
       "rolling5Xg90": 0.19,
-      "rolling5Xa90": 0.05,
+      "rolling5Xa90": 0.25,
       "momentumMultiplier": 1,
       "trend": "stable"
     },
@@ -4335,9 +4335,9 @@
     "562": {
       "playerId": 562,
       "rolling3Mins": 76,
-      "rolling3Xg90": 0.39,
+      "rolling3Xg90": 0.4,
       "rolling3Xa90": 0.01,
-      "rolling5Xg90": 0.39,
+      "rolling5Xg90": 0.4,
       "rolling5Xa90": 0.01,
       "momentumMultiplier": 1,
       "trend": "stable"
@@ -4356,9 +4356,9 @@
       "playerId": 564,
       "rolling3Mins": 90,
       "rolling3Xg90": 0,
-      "rolling3Xa90": 0,
+      "rolling3Xa90": 0.01,
       "rolling5Xg90": 0,
-      "rolling5Xa90": 0,
+      "rolling5Xa90": 0.01,
       "momentumMultiplier": 1,
       "trend": "stable"
     },

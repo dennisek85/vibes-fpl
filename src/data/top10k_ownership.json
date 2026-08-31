@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2026-08-31T07:39:07.966Z",
+  "lastUpdated": "2026-08-31T11:51:12.980Z",
   "gameweek": 3,
   "sampleSize": 10000,
   "players": {
     "1": {
       "playerId": 1,
-      "ownership": 58.1,
+      "ownership": 58,
       "captaincy": 0,
-      "effectiveOwnership": 58.1,
+      "effectiveOwnership": 58,
       "tier": "popular",
       "riskLabel": "Core Template"
     },
@@ -29,9 +29,9 @@
     },
     "4": {
       "playerId": 4,
-      "ownership": 46,
+      "ownership": 45.9,
       "captaincy": 0,
-      "effectiveOwnership": 46,
+      "effectiveOwnership": 45.9,
       "tier": "popular",
       "riskLabel": "Core Template"
     },
@@ -45,9 +45,9 @@
     },
     "6": {
       "playerId": 6,
-      "ownership": 16.3,
+      "ownership": 16.2,
       "captaincy": 0,
-      "effectiveOwnership": 16.3,
+      "effectiveOwnership": 16.2,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -85,25 +85,25 @@
     },
     "11": {
       "playerId": 11,
-      "ownership": 5.5,
+      "ownership": 5.4,
       "captaincy": 0,
-      "effectiveOwnership": 5.5,
+      "effectiveOwnership": 5.4,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
     "12": {
       "playerId": 12,
-      "ownership": 25.2,
+      "ownership": 25.1,
       "captaincy": 12,
-      "effectiveOwnership": 37.2,
+      "effectiveOwnership": 37.1,
       "tier": "popular",
       "riskLabel": "Core Template"
     },
     "13": {
       "playerId": 13,
-      "ownership": 10.5,
+      "ownership": 10.4,
       "captaincy": 0,
-      "effectiveOwnership": 10.5,
+      "effectiveOwnership": 10.4,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -197,9 +197,9 @@
     },
     "25": {
       "playerId": 25,
-      "ownership": 6.2,
+      "ownership": 6.1,
       "captaincy": 0,
-      "effectiveOwnership": 6.2,
+      "effectiveOwnership": 6.1,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -461,9 +461,9 @@
     },
     "58": {
       "playerId": 58,
-      "ownership": 3.2,
+      "ownership": 3.3,
       "captaincy": 0,
-      "effectiveOwnership": 3.2,
+      "effectiveOwnership": 3.3,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -877,9 +877,9 @@
     },
     "110": {
       "playerId": 110,
-      "ownership": 1.2,
+      "ownership": 1.1,
       "captaincy": 0,
-      "effectiveOwnership": 1.2,
+      "effectiveOwnership": 1.1,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -893,17 +893,17 @@
     },
     "112": {
       "playerId": 112,
-      "ownership": 8.8,
+      "ownership": 8.7,
       "captaincy": 0,
-      "effectiveOwnership": 8.8,
+      "effectiveOwnership": 8.7,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
     "113": {
       "playerId": 113,
-      "ownership": 2.2,
+      "ownership": 2.1,
       "captaincy": 0,
-      "effectiveOwnership": 2.2,
+      "effectiveOwnership": 2.1,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -917,9 +917,9 @@
     },
     "115": {
       "playerId": 115,
-      "ownership": 15.8,
+      "ownership": 16.1,
       "captaincy": 0,
-      "effectiveOwnership": 15.8,
+      "effectiveOwnership": 16.1,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -989,9 +989,9 @@
     },
     "124": {
       "playerId": 124,
-      "ownership": 17.6,
+      "ownership": 17.7,
       "captaincy": 0,
-      "effectiveOwnership": 17.6,
+      "effectiveOwnership": 17.7,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -1013,9 +1013,9 @@
     },
     "127": {
       "playerId": 127,
-      "ownership": 4,
+      "ownership": 4.1,
       "captaincy": 0,
-      "effectiveOwnership": 4,
+      "effectiveOwnership": 4.1,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -1133,9 +1133,9 @@
     },
     "142": {
       "playerId": 142,
-      "ownership": 9.4,
+      "ownership": 9.3,
       "captaincy": 0,
-      "effectiveOwnership": 9.4,
+      "effectiveOwnership": 9.3,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -1229,9 +1229,9 @@
     },
     "154": {
       "playerId": 154,
-      "ownership": 37.7,
+      "ownership": 37.8,
       "captaincy": 18,
-      "effectiveOwnership": 55.7,
+      "effectiveOwnership": 55.8,
       "tier": "popular",
       "riskLabel": "Core Template"
     },
@@ -1397,9 +1397,9 @@
     },
     "175": {
       "playerId": 175,
-      "ownership": 12.6,
+      "ownership": 12.5,
       "captaincy": 0,
-      "effectiveOwnership": 12.6,
+      "effectiveOwnership": 12.5,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -1693,9 +1693,9 @@
     },
     "212": {
       "playerId": 212,
-      "ownership": 10.3,
+      "ownership": 10.2,
       "captaincy": 0,
-      "effectiveOwnership": 10.3,
+      "effectiveOwnership": 10.2,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -1781,9 +1781,9 @@
     },
     "223": {
       "playerId": 223,
-      "ownership": 3.9,
+      "ownership": 3.8,
       "captaincy": 0,
-      "effectiveOwnership": 3.9,
+      "effectiveOwnership": 3.8,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -1829,9 +1829,9 @@
     },
     "229": {
       "playerId": 229,
-      "ownership": 13,
+      "ownership": 13.1,
       "captaincy": 0,
-      "effectiveOwnership": 13,
+      "effectiveOwnership": 13.1,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -1893,9 +1893,9 @@
     },
     "237": {
       "playerId": 237,
-      "ownership": 20.7,
+      "ownership": 20.5,
       "captaincy": 0,
-      "effectiveOwnership": 20.7,
+      "effectiveOwnership": 20.5,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -2077,9 +2077,9 @@
     },
     "260": {
       "playerId": 260,
-      "ownership": 5.1,
+      "ownership": 5,
       "captaincy": 0,
-      "effectiveOwnership": 5.1,
+      "effectiveOwnership": 5,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -2213,9 +2213,9 @@
     },
     "277": {
       "playerId": 277,
-      "ownership": 3.9,
+      "ownership": 4.1,
       "captaincy": 0,
-      "effectiveOwnership": 3.9,
+      "effectiveOwnership": 4.1,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -2229,9 +2229,9 @@
     },
     "279": {
       "playerId": 279,
-      "ownership": 6.5,
+      "ownership": 6.8,
       "captaincy": 0,
-      "effectiveOwnership": 6.5,
+      "effectiveOwnership": 6.8,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -2525,9 +2525,9 @@
     },
     "316": {
       "playerId": 316,
-      "ownership": 2,
+      "ownership": 1.9,
       "captaincy": 0,
-      "effectiveOwnership": 2,
+      "effectiveOwnership": 1.9,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -2629,9 +2629,9 @@
     },
     "329": {
       "playerId": 329,
-      "ownership": 3.4,
+      "ownership": 3.3,
       "captaincy": 0,
-      "effectiveOwnership": 3.4,
+      "effectiveOwnership": 3.3,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -2925,9 +2925,9 @@
     },
     "366": {
       "playerId": 366,
-      "ownership": 10.7,
+      "ownership": 10.6,
       "captaincy": 0,
-      "effectiveOwnership": 10.7,
+      "effectiveOwnership": 10.6,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -2941,9 +2941,9 @@
     },
     "368": {
       "playerId": 368,
-      "ownership": 57.2,
+      "ownership": 57.1,
       "captaincy": 0,
-      "effectiveOwnership": 57.2,
+      "effectiveOwnership": 57.1,
       "tier": "popular",
       "riskLabel": "Core Template"
     },
@@ -3093,9 +3093,9 @@
     },
     "387": {
       "playerId": 387,
-      "ownership": 13,
+      "ownership": 12.9,
       "captaincy": 0,
-      "effectiveOwnership": 13,
+      "effectiveOwnership": 12.9,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3125,9 +3125,9 @@
     },
     "391": {
       "playerId": 391,
-      "ownership": 21.9,
+      "ownership": 22,
       "captaincy": 0,
-      "effectiveOwnership": 21.9,
+      "effectiveOwnership": 22,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3173,9 +3173,9 @@
     },
     "397": {
       "playerId": 397,
-      "ownership": 22.3,
+      "ownership": 22.1,
       "captaincy": 0,
-      "effectiveOwnership": 22.3,
+      "effectiveOwnership": 22.1,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3189,9 +3189,9 @@
     },
     "399": {
       "playerId": 399,
-      "ownership": 33.8,
+      "ownership": 34.2,
       "captaincy": 4,
-      "effectiveOwnership": 37.8,
+      "effectiveOwnership": 38.2,
       "tier": "popular",
       "riskLabel": "Core Template"
     },
@@ -3285,17 +3285,17 @@
     },
     "411": {
       "playerId": 411,
-      "ownership": 91.4,
+      "ownership": 91.5,
       "captaincy": 45,
-      "effectiveOwnership": 136.4,
+      "effectiveOwnership": 136.5,
       "tier": "essential",
       "riskLabel": "High Rank Shield"
     },
     "412": {
       "playerId": 412,
-      "ownership": 14.9,
+      "ownership": 14.8,
       "captaincy": 0,
-      "effectiveOwnership": 14.9,
+      "effectiveOwnership": 14.8,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3333,17 +3333,17 @@
     },
     "417": {
       "playerId": 417,
-      "ownership": 2.4,
+      "ownership": 2.3,
       "captaincy": 0,
-      "effectiveOwnership": 2.4,
+      "effectiveOwnership": 2.3,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
     "418": {
       "playerId": 418,
-      "ownership": 16.1,
+      "ownership": 16,
       "captaincy": 0,
-      "effectiveOwnership": 16.1,
+      "effectiveOwnership": 16,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3381,9 +3381,9 @@
     },
     "423": {
       "playerId": 423,
-      "ownership": 11.9,
+      "ownership": 11.8,
       "captaincy": 0,
-      "effectiveOwnership": 11.9,
+      "effectiveOwnership": 11.8,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3405,25 +3405,25 @@
     },
     "426": {
       "playerId": 426,
-      "ownership": 64,
+      "ownership": 64.3,
       "captaincy": 0,
-      "effectiveOwnership": 64,
+      "effectiveOwnership": 64.3,
       "tier": "popular",
       "riskLabel": "Core Template"
     },
     "427": {
       "playerId": 427,
-      "ownership": 50.5,
+      "ownership": 50.3,
       "captaincy": 5,
-      "effectiveOwnership": 55.5,
+      "effectiveOwnership": 55.3,
       "tier": "popular",
       "riskLabel": "Core Template"
     },
     "428": {
       "playerId": 428,
-      "ownership": 8.8,
+      "ownership": 8.7,
       "captaincy": 0,
-      "effectiveOwnership": 8.8,
+      "effectiveOwnership": 8.7,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3445,9 +3445,9 @@
     },
     "431": {
       "playerId": 431,
-      "ownership": 0.8,
+      "ownership": 0.7,
       "captaincy": 0,
-      "effectiveOwnership": 0.8,
+      "effectiveOwnership": 0.7,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -3589,9 +3589,9 @@
     },
     "449": {
       "playerId": 449,
-      "ownership": 8,
+      "ownership": 8.1,
       "captaincy": 0,
-      "effectiveOwnership": 8,
+      "effectiveOwnership": 8.1,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3629,9 +3629,9 @@
     },
     "454": {
       "playerId": 454,
-      "ownership": 7.2,
+      "ownership": 7.3,
       "captaincy": 0,
-      "effectiveOwnership": 7.2,
+      "effectiveOwnership": 7.3,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3701,17 +3701,17 @@
     },
     "463": {
       "playerId": 463,
-      "ownership": 1.5,
+      "ownership": 1.4,
       "captaincy": 0,
-      "effectiveOwnership": 1.5,
+      "effectiveOwnership": 1.4,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
     "464": {
       "playerId": 464,
-      "ownership": 9.5,
+      "ownership": 9.7,
       "captaincy": 0,
-      "effectiveOwnership": 9.5,
+      "effectiveOwnership": 9.7,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3965,9 +3965,9 @@
     },
     "496": {
       "playerId": 496,
-      "ownership": 14,
+      "ownership": 13.9,
       "captaincy": 0,
-      "effectiveOwnership": 14,
+      "effectiveOwnership": 13.9,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -3981,9 +3981,9 @@
     },
     "498": {
       "playerId": 498,
-      "ownership": 6.8,
+      "ownership": 6.7,
       "captaincy": 0,
-      "effectiveOwnership": 6.8,
+      "effectiveOwnership": 6.7,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -4197,9 +4197,9 @@
     },
     "525": {
       "playerId": 525,
-      "ownership": 15.5,
+      "ownership": 15.4,
       "captaincy": 15,
-      "effectiveOwnership": 30.5,
+      "effectiveOwnership": 30.4,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -4213,9 +4213,9 @@
     },
     "527": {
       "playerId": 527,
-      "ownership": 2.4,
+      "ownership": 2.3,
       "captaincy": 0,
-      "effectiveOwnership": 2.4,
+      "effectiveOwnership": 2.3,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -4253,9 +4253,9 @@
     },
     "532": {
       "playerId": 532,
-      "ownership": 4.7,
+      "ownership": 4.6,
       "captaincy": 0,
-      "effectiveOwnership": 4.7,
+      "effectiveOwnership": 4.6,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -4333,9 +4333,9 @@
     },
     "542": {
       "playerId": 542,
-      "ownership": 7.6,
+      "ownership": 7.5,
       "captaincy": 0,
-      "effectiveOwnership": 7.6,
+      "effectiveOwnership": 7.5,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -4413,9 +4413,9 @@
     },
     "552": {
       "playerId": 552,
-      "ownership": 11.5,
+      "ownership": 11.4,
       "captaincy": 0,
-      "effectiveOwnership": 11.5,
+      "effectiveOwnership": 11.4,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -4517,9 +4517,9 @@
     },
     "565": {
       "playerId": 565,
-      "ownership": 14.2,
+      "ownership": 14.3,
       "captaincy": 0,
-      "effectiveOwnership": 14.2,
+      "effectiveOwnership": 14.3,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -4573,9 +4573,9 @@
     },
     "572": {
       "playerId": 572,
-      "ownership": 16.9,
+      "ownership": 17,
       "captaincy": 0,
-      "effectiveOwnership": 16.9,
+      "effectiveOwnership": 17,
       "tier": "differential",
       "riskLabel": "High Leverage"
     },
@@ -4725,9 +4725,9 @@
     },
     "591": {
       "playerId": 591,
-      "ownership": 0.5,
+      "ownership": 0.6,
       "captaincy": 0,
-      "effectiveOwnership": 0.5,
+      "effectiveOwnership": 0.6,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -4741,9 +4741,9 @@
     },
     "593": {
       "playerId": 593,
-      "ownership": 1.5,
+      "ownership": 1.6,
       "captaincy": 0,
-      "effectiveOwnership": 1.5,
+      "effectiveOwnership": 1.6,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -4837,9 +4837,9 @@
     },
     "605": {
       "playerId": 605,
-      "ownership": 0.5,
+      "ownership": 0.6,
       "captaincy": 0,
-      "effectiveOwnership": 0.5,
+      "effectiveOwnership": 0.6,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     },
@@ -5005,9 +5005,9 @@
     },
     "626": {
       "playerId": 626,
-      "ownership": 0,
+      "ownership": 0.1,
       "captaincy": 0,
-      "effectiveOwnership": 0,
+      "effectiveOwnership": 0.1,
       "tier": "ultra_differential",
       "riskLabel": "Rank Booster"
     }
