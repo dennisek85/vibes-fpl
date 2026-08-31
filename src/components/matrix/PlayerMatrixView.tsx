@@ -4,29 +4,24 @@ import React, { useMemo } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { MatrixFilterBar } from './MatrixFilterBar';
 import { KitIcon } from '@/components/ui/KitIcon';
-import { getAllPricePredictions, PlayerPricePrediction } from '@/utils/aiPricePredictor';
+import { getAllPricePredictions } from '@/utils/aiPricePredictor';
 import { getPlayerTop10kEo } from '@/lib/ownershipTracker';
 import { getPlayerSetPieceProfile } from '@/lib/setPieces';
+import { UI_TEXT } from '@/lib/ui-text';
 import { 
   ArrowUpDown, 
   ArrowUp, 
-  ArrowDown, 
-  ShoppingBag, 
-  TrendingUp, 
-  Sparkles, 
-  Shield, 
-  Target, 
-  Flame, 
-  Zap,
-  Snowflake,
+  ArrowDown,
   Lock,
-  Star
+  Flame,
+  Snowflake,
+  Zap,
+  ShoppingBag
 } from 'lucide-react';
 
 export const PlayerMatrixView: React.FC = () => {
   const {
     players,
-    playerMap,
     teamMap,
     matrixSearch,
     matrixPosition,
@@ -257,38 +252,38 @@ export const PlayerMatrixView: React.FC = () => {
     teamMap
   ]);
 
-// Comprehensive tooltip explanations for all matrix metrics
-const COLUMN_TOOLTIPS: Record<string, string> = {
-  name: 'Player Name, Position and Club',
-  pos: 'Player Position (GKP, DEF, MID, FWD)',
-  price: 'Current player market price in millions (£m)',
-  mins: 'Total minutes played on pitch this season',
-  xG: 'Expected Goals — statistical measure of the quality and probability of scoring chances',
-  threat: 'Official FPL Threat — gauge of player goal threat and penalty box danger',
-  goals: 'Total actual goals scored this season',
-  xGI: 'Expected Goal Involvement — combined probability of scoring or assisting (xG + xA)',
-  total_points: 'Total official FPL points scored so far this season',
-  xA: 'Expected Assists — probability that a pass will lead directly to a goal',
-  creativity: 'Official FPL Creativity — frequency and quality of chance creation for teammates',
-  assists: 'Total actual assists awarded this season',
-  xGC: 'Expected Goals Conceded — defensive metric measuring opponent scoring danger',
-  cs: 'Clean Sheets — matches where the team conceded 0 goals (while player played 60+ minutes)',
-  xP: 'AI Projected Points for the selected Gameweek (OpenFPL Machine Learning)',
-  horizonXp: 'Cumulative AI Projected Points across the selected Gameweek horizon',
-  form: 'Official FPL Form — average points scored per match over the last 30 days',
-  bps: 'Bonus Points System score — match activity metric determining 3, 2, 1 bonus points',
-  transfers_today: 'Net transfers in/out during the current 24-hour daily cycle',
-  velocity: 'Hourly transfer rate speed (% progress per hour towards price threshold)',
-  target_progress: 'Percentage progress towards overnight price rise (+100%) or fall (-100%) threshold',
-  timing: 'Estimated timing when price change is forecasted to trigger (e.g. Tonight, Tomorrow)',
-  prediction: 'AI Price prediction status (Rising, Falling, Approaching, Stable)',
-  action: 'Quick transfer scout and detail actions',
+// Matrix column header tooltip mapping from centralized UI_TEXT single source of truth
+const SORT_KEY_TO_TOOLTIP: Record<string, string> = {
+  name: UI_TEXT.tooltips.player,
+  pos: UI_TEXT.tooltips.pos,
+  price: UI_TEXT.tooltips.price,
+  mins: UI_TEXT.tooltips.mins,
+  xG: UI_TEXT.tooltips.xg,
+  threat: UI_TEXT.tooltips.threat,
+  goals: UI_TEXT.tooltips.goals,
+  xGI: UI_TEXT.tooltips.xgi,
+  total_points: UI_TEXT.tooltips.points,
+  xA: UI_TEXT.tooltips.xa,
+  creativity: UI_TEXT.tooltips.creativity,
+  assists: UI_TEXT.tooltips.assists,
+  xGC: UI_TEXT.tooltips.xgc,
+  cs: UI_TEXT.tooltips.cs,
+  xP: UI_TEXT.tooltips.xp,
+  horizonXp: UI_TEXT.tooltips.horizonXp,
+  form: UI_TEXT.tooltips.form,
+  bps: UI_TEXT.tooltips.bps,
+  transfers_today: UI_TEXT.tooltips.transfersToday,
+  velocity: UI_TEXT.tooltips.velocity,
+  target_progress: UI_TEXT.tooltips.targetProgress,
+  timing: UI_TEXT.tooltips.timing,
+  prediction: UI_TEXT.tooltips.prediction,
+  action: UI_TEXT.tooltips.action,
 };
 
   const renderSortHeader = (label: string, sortKey: string, align: 'left' | 'center' | 'right' = 'center', customTooltip?: string) => {
     const isActive = matrixSortBy === sortKey;
     const alignClass = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center';
-    const tooltipText = customTooltip || COLUMN_TOOLTIPS[sortKey] || label;
+    const tooltipText = customTooltip || SORT_KEY_TO_TOOLTIP[sortKey] || label;
 
     return (
       <button
@@ -348,7 +343,7 @@ const COLUMN_TOOLTIPS: Record<string, string> = {
                     <th className="py-3.5 px-4 min-w-[210px]">
                       {renderSortHeader('Player', 'name', 'left')}
                     </th>
-                    <th className="py-3.5 px-3 text-center w-16" title={COLUMN_TOOLTIPS.pos}>
+                    <th className="py-3.5 px-3 text-center w-16" title={UI_TEXT.tooltips.pos}>
                       <span className="cursor-help">Pos</span>
                     </th>
                     <th className="py-3.5 px-3 text-right w-20">
@@ -357,19 +352,19 @@ const COLUMN_TOOLTIPS: Record<string, string> = {
                     <th className="py-3.5 px-3 text-right w-32">
                       {renderSortHeader('Transfers Today', 'transfers_today', 'right')}
                     </th>
-                    <th className="py-3.5 px-3 text-right w-28" title={COLUMN_TOOLTIPS.velocity}>
+                    <th className="py-3.5 px-3 text-right w-28" title={UI_TEXT.tooltips.velocity}>
                       <span className="cursor-help">Velocity</span>
                     </th>
                     <th className="py-3.5 px-4 text-center min-w-[180px]">
                       {renderSortHeader('Target Progress', 'target_progress')}
                     </th>
-                    <th className="py-3.5 px-3 text-center w-28" title={COLUMN_TOOLTIPS.timing}>
+                    <th className="py-3.5 px-3 text-center w-28" title={UI_TEXT.tooltips.timing}>
                       <span className="cursor-help">Timing</span>
                     </th>
-                    <th className="py-3.5 px-4 text-center w-36" title={COLUMN_TOOLTIPS.prediction}>
+                    <th className="py-3.5 px-4 text-center w-36" title={UI_TEXT.tooltips.prediction}>
                       <span className="cursor-help">Prediction</span>
                     </th>
-                    <th className="py-3.5 px-4 text-right w-20" title={COLUMN_TOOLTIPS.action}>
+                    <th className="py-3.5 px-4 text-right w-20" title={UI_TEXT.tooltips.action}>
                       <span className="cursor-help">Action</span>
                     </th>
                   </tr>
@@ -554,31 +549,31 @@ const COLUMN_TOOLTIPS: Record<string, string> = {
               <table className="w-full text-left border-collapse min-w-[1100px]">
                 <thead>
                   <tr className="bg-slate-950/80 border-b border-white/10 text-[10px] font-black tracking-widest text-slate-400 uppercase">
-                    <th colSpan={3} className="py-2.5 px-4 text-left border-r border-white/10" title="Player identity, club, position, pricing and match minutes">
+                    <th colSpan={3} className="py-2.5 px-4 text-left border-r border-white/10" title={UI_TEXT.tooltips.categories.playerInfo}>
                       <span className="cursor-help">Player Information</span>
                     </th>
-                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-rose-950/20 text-rose-300" title="Underlying attacking shooting metrics, expected goals & goal conversion">
+                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-rose-950/20 text-rose-300" title={UI_TEXT.tooltips.categories.goalThreat}>
                       <span className="cursor-help">Goal Threat</span>
                     </th>
-                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-amber-950/20 text-amber-300" title="Overall offensive involvement (xG + xA) and total season points">
+                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-amber-950/20 text-amber-300" title={UI_TEXT.tooltips.categories.involvement}>
                       <span className="cursor-help">Involvement</span>
                     </th>
-                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-blue-950/20 text-blue-300" title="Key passes, expected assists, and chance creation for teammates">
+                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-blue-950/20 text-blue-300" title={UI_TEXT.tooltips.categories.creativity}>
                       <span className="cursor-help">Creativity</span>
                     </th>
-                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-indigo-950/20 text-indigo-300" title="Defensive security, expected goals conceded (xGC) and clean sheet equity">
+                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-indigo-950/20 text-indigo-300" title={UI_TEXT.tooltips.categories.defensive}>
                       <span className="cursor-help">Defensive</span>
                     </th>
                     {showAiPredictions ? (
-                      <th colSpan={3} className="py-2.5 px-4 text-center bg-emerald-950/30 text-emerald-300" title="OpenFPL Bayesian Expected Points (xP) ML projections">
+                      <th colSpan={3} className="py-2.5 px-4 text-center bg-emerald-950/30 text-emerald-300" title={UI_TEXT.tooltips.categories.aiProjections}>
                         <span className="cursor-help">AI Projections</span>
                       </th>
                     ) : (
-                      <th colSpan={1} className="py-2.5 px-3 text-center border-r border-white/10 text-slate-300" title="Average points scored per match over the last 30 days">
+                      <th colSpan={1} className="py-2.5 px-3 text-center border-r border-white/10 text-slate-300" title={UI_TEXT.tooltips.categories.form}>
                         <span className="cursor-help">Form</span>
                       </th>
                     )}
-                    <th className="py-2.5 px-3 text-center" title="Direct transfer scout and player detail modal actions">
+                    <th className="py-2.5 px-3 text-center" title={UI_TEXT.tooltips.categories.action}>
                       <span className="cursor-help">Action</span>
                     </th>
                   </tr>

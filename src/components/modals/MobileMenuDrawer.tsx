@@ -14,8 +14,7 @@ import {
   TableProperties, 
   LayoutGrid, 
   X,
-  Layers,
-  Gauge
+  Layers
 } from 'lucide-react';
 import { useSquadRating } from '@/hooks/useSquadRating';
 
@@ -57,9 +56,6 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
     setFixtureHorizon,
     showAiPredictions,
     openScoutModal,
-    players,
-    playerMap,
-    getPlayerGameweekXp,
     activePin,
     isSaving
   } = usePlannerStore();

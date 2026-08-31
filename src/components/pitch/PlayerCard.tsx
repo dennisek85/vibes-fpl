@@ -8,10 +8,9 @@ import { X, Crown, ArrowLeftRight, AlertTriangle, Trophy } from 'lucide-react';
 
 interface PlayerCardProps {
   pick: SquadPick;
-  isBench?: boolean;
 }
 
-export const PlayerCard: React.FC<PlayerCardProps> = ({ pick, isBench = false }) => {
+export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
   const { 
     playerMap, 
     teamMap, 

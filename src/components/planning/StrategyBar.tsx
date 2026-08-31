@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { formatMoney } from '@/lib/fpl-rules';
-import { RotateCcw, Edit3, PoundSterling, ArrowRightLeft, Sparkles } from 'lucide-react';
+import { RotateCcw, Edit3, PoundSterling, ArrowRightLeft } from 'lucide-react';
 
 interface StrategyBarProps {
   onOpenOverrides: () => void;

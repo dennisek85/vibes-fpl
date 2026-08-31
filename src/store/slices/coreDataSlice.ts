@@ -94,8 +94,6 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
       const nextEvent = events.find(e => e.is_next) || events.find(e => e.is_current) || events[0];
       const nextGwId = nextEvent ? nextEvent.id : 3;
 
-      const currentEvent = events.find(e => e.is_current);
-
       set({
         players: bootstrapData.elements || [],
         teams: bootstrapData.teams || [],

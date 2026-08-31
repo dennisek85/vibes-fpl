@@ -8,7 +8,6 @@ import {
   getChipRadarRecommendations,
   analyzeTransferHit,
   TransferRecommendation,
-  DreamTargetPick,
   DoubleTransferHitCombo
 } from '@/utils/aiTransferScout';
 import { solveOptimalSquad, OptimalSquadResult } from '@/utils/aiOptimalSquadSolver';
@@ -24,8 +23,6 @@ import {
   Flame, 
   ShieldAlert,
   Wand2,
-  TrendingUp,
-  Layers,
   Crown
 } from 'lucide-react';
 import { formatMoney } from '@/lib/fpl-rules';

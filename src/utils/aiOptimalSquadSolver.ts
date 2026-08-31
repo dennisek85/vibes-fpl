@@ -27,7 +27,7 @@ export interface OptimalSquadResult {
  */
 export function solveOptimalSquad(
   allPlayers: FPLPlayer[],
-  playerMap: Map<number, FPLPlayer>,
+  _playerMap: Map<number, FPLPlayer>,
   totalBudget: number, // in tenths, e.g. 1005 = £100.5m
   gameweek: number,
   getXp: (playerId: number, gw: number) => number,

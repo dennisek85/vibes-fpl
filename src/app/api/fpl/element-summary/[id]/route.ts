@@ -9,7 +9,7 @@ const summaryCache = new Map<number, ElementSummaryCache>();
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour cache
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {

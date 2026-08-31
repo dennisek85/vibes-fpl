@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { ChipType } from '@/types/fpl';
 import { 

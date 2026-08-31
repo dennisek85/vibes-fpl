@@ -1,15 +1,12 @@
 import React from 'react';
 import { SquadPick } from '@/types/fpl';
 import { PlayerCard } from './PlayerCard';
-import { usePlannerStore } from '@/store/usePlannerStore';
 
 interface BenchBarProps {
   benchPicks: SquadPick[];
 }
 
 export const BenchBar: React.FC<BenchBarProps> = ({ benchPicks }) => {
-  const { playerMap } = usePlannerStore();
-
   return (
     <div className="w-full max-w-5xl mx-auto mt-2 sm:mt-4 p-2.5 sm:p-4 bg-slate-950/85 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-white/15 shadow-2xl">
       <div className="flex items-center justify-between mb-1.5 px-2">
@@ -31,7 +28,7 @@ export const BenchBar: React.FC<BenchBarProps> = ({ benchPicks }) => {
                 <span className="sm:hidden">{posLabel}</span>
                 <span className="hidden sm:inline">{idx === 0 ? 'GK' : `Bench ${idx}`}</span>
               </span>
-              <PlayerCard pick={pick} isBench />
+              <PlayerCard pick={pick} />
             </div>
           );
         })}

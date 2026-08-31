@@ -13,7 +13,6 @@ import {
   ShoppingBag, 
   Sparkles, 
   Zap,
-  TrendingUp,
   ArrowLeftRight,
   UserCheck,
   RotateCcw
@@ -35,7 +34,6 @@ export const PlayerMarketDrawer: React.FC = () => {
     marketPosition,
     setMarketPosition,
     marketTeamId,
-    setMarketTeamId,
     marketMinPrice,
     marketMaxPrice,
     marketAffordableOnly,
@@ -56,11 +54,6 @@ export const PlayerMarketDrawer: React.FC = () => {
   
   const squadPicks = useMemo(() => currentPlan?.squad || [], [currentPlan?.squad]);
   const squadIds = useMemo(() => new Set(squadPicks.map(p => p.element)), [squadPicks]);
-
-  const outPick = useMemo(() => {
-    if (!selectedPlayerForTransfer || !currentPlan) return null;
-    return currentPlan.squad.find(p => p.element === selectedPlayerForTransfer) || null;
-  }, [selectedPlayerForTransfer, currentPlan]);
 
   const sellValue = playerOut ? playerOut.now_cost : 0;
   const maxAffordablePrice = playerOut ? (currentBank + sellValue) : (currentBank + 155);
@@ -579,7 +572,6 @@ export const PlayerMarketDrawer: React.FC = () => {
               {filteredPlayers.slice(0, 100).map((player) => {
                 const team = teamMap.get(player.team);
                 const fixtures = getPlayerUpcomingFixtures(player.id, fixtureHorizon);
-                const isAffordable = playerOut ? (player.now_cost <= maxAffordablePrice) : true;
                 const isGK = player.element_type === 1;
 
                 return (
@@ -683,7 +675,7 @@ export const PlayerMarketDrawer: React.FC = () => {
 
               {/* Squad Players List */}
               <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
-                {matchingSquadPlayers.map(({ pick, player, sellingPrice, isAffordable, wouldExceedClub, netBank }) => {
+                {matchingSquadPlayers.map(({ player, sellingPrice, isAffordable, wouldExceedClub, netBank }) => {
                   const team = teamMap.get(player.team);
                   const isGK = player.element_type === 1;
 

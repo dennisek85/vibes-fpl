@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const cache: Record<number, { data: any; time: number }> = {};
 const CACHE_TTL = 60 * 1000; // 60 seconds (1 minute) for live match updates
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ gw: string }> }
 ) {
   const { gw } = await params;

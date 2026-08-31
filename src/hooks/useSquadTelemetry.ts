@@ -31,7 +31,6 @@ export function useSquadTelemetry(): SquadTelemetryResult {
   const isGameweekLocked = usePlannerStore(state => state.isGameweekLocked);
   const teamHistoryCurrent = usePlannerStore(state => state.teamHistoryCurrent);
   const teamSummary = usePlannerStore(state => state.teamSummary);
-  const showAiPredictions = usePlannerStore(state => state.showAiPredictions);
   const squadRating = useSquadRating();
 
   const currentChip = currentPlan?.chip || 'none';

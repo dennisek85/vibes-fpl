@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { ChipType } from '@/types/fpl';
 import { 
@@ -12,7 +12,6 @@ import {
   Edit3,
   ChevronLeft,
   ChevronRight,
-  Eye,
   EyeOff,
   Gauge,
   Layers
@@ -39,7 +38,6 @@ export const StrategyDock: React.FC<StrategyDockProps> = ({ onOpenOverrides }) =
     fixtureHorizon,
     setFixtureHorizon,
     resetCurrentGameweek,
-    resetAllFutureGameweeks,
     isGameweekLocked,
     showAiPredictions,
     toggleAiPredictions,

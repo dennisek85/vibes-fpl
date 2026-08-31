@@ -119,7 +119,6 @@ export function calculateSquadRating(
   let yourCapXp = 0;
   let yourViceCapXp = 0;
   let yourCaptainPlayer: FPLPlayer | null = null;
-  let yourViceCaptainPlayer: FPLPlayer | null = null;
   let yourStartersSum = 0;
 
   let defCount = 0;
@@ -156,7 +155,6 @@ export function calculateSquadRating(
       yourCaptainPlayer = player;
     } else if (pick.is_vice_captain) {
       yourViceCapXp = xp;
-      yourViceCaptainPlayer = player;
     }
   }
 
@@ -170,7 +168,6 @@ export function calculateSquadRating(
     }
     if (sorted[1]?.player) {
       yourViceCapXp = sorted[1].xp;
-      yourViceCaptainPlayer = sorted[1].player;
     }
   }
 

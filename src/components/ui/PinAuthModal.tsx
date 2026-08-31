@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
-import { Lock, ShieldAlert, KeyRound, Delete, Loader2, User, Hash } from 'lucide-react';
+import { Lock, ShieldAlert, KeyRound, Delete, Loader2, Hash } from 'lucide-react';
 
 interface PinAuthModalProps {
   onSuccess: (isNewUser: boolean) => void;
