@@ -182,7 +182,7 @@ export const AiScoutModal: React.FC = () => {
       onClick={closeScoutModal}
     >
       <div 
-        className="relative w-full max-w-6xl sm:max-w-7xl max-h-[92vh] bg-slate-900 border border-white/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-100 cursor-default"
+        className="relative w-full max-w-6xl sm:max-w-7xl h-[88vh] min-h-[580px] max-h-[900px] bg-slate-900 border border-white/20 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-100 cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
