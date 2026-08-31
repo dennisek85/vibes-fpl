@@ -379,7 +379,7 @@ export default function PlannerPage() {
         </div>
       ) : (
         /* Player Projections & Metrics Matrix View */
-        <div className="w-full max-w-[99vw] px-2 sm:px-4 py-2 animate-in fade-in duration-200">
+        <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-2 animate-in fade-in duration-200">
           <PlayerMatrixView />
         </div>
       )}

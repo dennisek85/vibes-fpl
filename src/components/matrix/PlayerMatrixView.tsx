@@ -283,7 +283,7 @@ export const PlayerMatrixView: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl px-3 sm:px-6 py-6 flex flex-col gap-6">
+    <div className="w-full max-w-7xl 2xl:max-w-[1600px] mx-auto px-2 sm:px-4 py-4 flex flex-col gap-5">
       {/* 1. Filter and Control Bar */}
       <MatrixFilterBar />
 
