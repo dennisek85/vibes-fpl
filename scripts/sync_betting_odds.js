@@ -120,9 +120,6 @@ async function syncBettingOdds() {
     const targetPath = path.join(__dirname, '..', 'src', 'data', 'match_odds.json');
     fs.writeFileSync(targetPath, JSON.stringify(payload, null, 2), 'utf-8');
 
-    const { saveToRedis } = require('./redis_helper');
-    await saveToRedis('fpl:match_odds', payload);
-
     console.log(`[Odds Sync] Successfully updated ${targetPath} with ${Object.keys(oddsFixtures).length} gameweeks of match odds!`);
   } catch (err) {
     console.error('[Odds Sync] Error syncing match odds:', err);

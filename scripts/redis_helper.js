@@ -60,3 +60,4 @@ module.exports = {
   saveToRedis,
   loadFromRedis
 };
+

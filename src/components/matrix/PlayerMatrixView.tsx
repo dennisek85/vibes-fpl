@@ -153,6 +153,14 @@ export const PlayerMatrixView: React.FC = () => {
       return true;
     });
 
+    // Performance Optimization: Pre-calculate complex sort values once O(N) instead of O(N log N) inside comparator
+    const sortValCache = new Map<number, number>();
+    if (matrixSortBy === 'xP' || !matrixSortBy) {
+      list.forEach(p => sortValCache.set(p.id, getPlayerGameweekXp(p.id, selectedGameweek)));
+    } else if (matrixSortBy === 'horizonXp') {
+      list.forEach(p => sortValCache.set(p.id, getPlayerHorizonXp(p.id, matrixHorizon)));
+    }
+
     return list.sort((a, b) => {
       let valA: number = 0;
       let valB: number = 0;
@@ -211,12 +219,12 @@ export const PlayerMatrixView: React.FC = () => {
           valB = b.clean_sheets || 0;
           break;
         case 'xP':
-          valA = getPlayerGameweekXp(a.id, selectedGameweek);
-          valB = getPlayerGameweekXp(b.id, selectedGameweek);
+          valA = sortValCache.get(a.id) ?? 0;
+          valB = sortValCache.get(b.id) ?? 0;
           break;
         case 'horizonXp':
-          valA = getPlayerHorizonXp(a.id, matrixHorizon);
-          valB = getPlayerHorizonXp(b.id, matrixHorizon);
+          valA = sortValCache.get(a.id) ?? 0;
+          valB = sortValCache.get(b.id) ?? 0;
           break;
         case 'form':
           valA = parseFloat(a.form || '0');
@@ -231,8 +239,8 @@ export const PlayerMatrixView: React.FC = () => {
           valB = b.total_points || 0;
           break;
         default:
-          valA = getPlayerGameweekXp(a.id, selectedGameweek);
-          valB = getPlayerGameweekXp(b.id, selectedGameweek);
+          valA = sortValCache.get(a.id) ?? 0;
+          valB = sortValCache.get(b.id) ?? 0;
       }
 
       return matrixSortDirection === 'asc' ? valA - valB : valB - valA;

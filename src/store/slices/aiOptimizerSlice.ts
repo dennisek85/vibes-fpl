@@ -5,6 +5,9 @@ import { optimizeLineup, autoOrderBench } from '@/utils/aiOptimizer';
 import { calculatePlayerOddsXp } from '@/utils/aiOddsEngine';
 import { recalculateMultiGameweekPlans } from './gameweekPlanSlice';
 
+// Module-level calculation cache for O(1) instant xP lookups across the UI
+const xpCalculationCache = new Map<string, number>();
+
 export const createAiOptimizerSlice: StateCreator<PlannerState, [], [], AiOptimizerSlice> = (set, get) => ({
   getPlayerHorizonXp: (playerId, count) => {
     const fixtures = get().getPlayerUpcomingFixtures(playerId, count);
@@ -212,6 +215,11 @@ export const createAiOptimizerSlice: StateCreator<PlannerState, [], [], AiOptimi
     const p = playerMap.get(playerId);
     const currentNextGw = nextGameweekId || 3;
 
+    // Check O(1) calculation cache
+    const cacheKey = `${playerId}_${gameweek}_${p?.now_cost}_${p?.chance_of_playing_next_round}_${p?.status}_${currentNextGw}`;
+    const cached = xpCalculationCache.get(cacheKey);
+    if (cached !== undefined) return cached;
+
     // 1. Availability probability factor with progressive injury recovery horizon
     let availabilityFactor = 1.0;
     if (p) {
@@ -240,7 +248,10 @@ export const createAiOptimizerSlice: StateCreator<PlannerState, [], [], AiOptimi
       }
     }
 
-    if (availabilityFactor === 0) return 0.0;
+    if (availabilityFactor === 0) {
+      xpCalculationCache.set(cacheKey, 0.0);
+      return 0.0;
+    }
 
     // 2. Base Expected Points from Machine Learning model or Form
     let rawXp = 3.0;
@@ -280,7 +291,9 @@ export const createAiOptimizerSlice: StateCreator<PlannerState, [], [], AiOptimi
     }
 
     const calculated = (rawXp + setPieceBonus) * availabilityFactor * minutesFactor;
-    return Math.max(p?.element_type === 1 ? gkSaveFloor * availabilityFactor : 0.0, Math.round(calculated * 10) / 10);
+    const finalResult = Math.max(p?.element_type === 1 ? gkSaveFloor * availabilityFactor : 0.0, Math.round(calculated * 10) / 10);
+    xpCalculationCache.set(cacheKey, finalResult);
+    return finalResult;
   },
 
   getPlayerGameweekActualPoints: (playerId: number, gameweek: number): number | null => {

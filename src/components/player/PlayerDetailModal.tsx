@@ -14,6 +14,22 @@ import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 import { getPlayerTop10kEo } from '@/lib/ownershipTracker';
 import { getPlayerFormMomentum } from '@/lib/formTracker';
 
+// Client-side in-memory cache for instant 0ms player detail modal opening
+const clientSummaryCache = new Map<number, any>();
+
+export async function prefetchElementSummary(playerId: number): Promise<void> {
+  if (!playerId || clientSummaryCache.has(playerId)) return;
+  try {
+    const res = await fetch(`/api/fpl/element-summary/${playerId}`);
+    if (res.ok) {
+      const data = await res.json();
+      clientSummaryCache.set(playerId, data);
+    }
+  } catch {
+    // Ignore background prefetch errors
+  }
+}
+
 export const PlayerDetailModal: React.FC = () => {
   const { 
     selectedPlayerForDetail, 
@@ -45,10 +61,19 @@ export const PlayerDetailModal: React.FC = () => {
       return;
     }
 
+    // 1. Check in-memory cache for instant 0ms load
+    const cached = clientSummaryCache.get(selectedPlayerForDetail);
+    if (cached) {
+      setSummaryData(cached);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     fetch(`/api/fpl/element-summary/${selectedPlayerForDetail}`)
       .then(res => res.json())
       .then(data => {
+        clientSummaryCache.set(selectedPlayerForDetail, data);
         setSummaryData(data);
         setLoading(false);
       })
