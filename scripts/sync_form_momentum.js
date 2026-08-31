@@ -102,6 +102,9 @@ async function syncFormMomentum() {
     const targetPath = path.join(__dirname, '..', 'src', 'data', 'player_form_momentum.json');
     fs.writeFileSync(targetPath, JSON.stringify(payload, null, 2), 'utf-8');
 
+    const { saveToRedis } = require('./redis_helper');
+    await saveToRedis('fpl:form_momentum', payload);
+
     console.log(`[Momentum Sync] Successfully updated ${targetPath} with ${Object.keys(momentumMap).length} players!`);
   } catch (err) {
     console.error('[Momentum Sync] Error syncing form momentum:', err);

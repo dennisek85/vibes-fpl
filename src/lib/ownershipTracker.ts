@@ -16,8 +16,16 @@ export interface Top10kEoDataset {
   players: Record<string, PlayerTop10kEo>;
 }
 
+let runtimeEoData: Top10kEoDataset | null = null;
+
+export function setCustomTop10kData(data: Top10kEoDataset) {
+  if (data && data.players) {
+    runtimeEoData = data;
+  }
+}
+
 export function readTop10kEoData(): Top10kEoDataset {
-  return bundledEoData as Top10kEoDataset;
+  return runtimeEoData || (bundledEoData as Top10kEoDataset);
 }
 
 export function getPlayerTop10kEo(playerId: number): PlayerTop10kEo | null {

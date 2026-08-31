@@ -17,8 +17,16 @@ export interface FormMomentumDataset {
   players: Record<string, PlayerRollingMomentum>;
 }
 
+let runtimeMomentumData: FormMomentumDataset | null = null;
+
+export function setCustomFormMomentumData(data: FormMomentumDataset) {
+  if (data && data.players) {
+    runtimeMomentumData = data;
+  }
+}
+
 export function readFormMomentumData(): FormMomentumDataset {
-  return bundledMomentumData as FormMomentumDataset;
+  return runtimeMomentumData || (bundledMomentumData as FormMomentumDataset);
 }
 
 export function getPlayerFormMomentum(playerId: number): PlayerRollingMomentum | null {

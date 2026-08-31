@@ -18,8 +18,16 @@ export interface MatchOddsDataset {
   anytimeGoalscorers: Record<string, number>;
 }
 
+let runtimeOddsData: MatchOddsDataset | null = null;
+
+export function setCustomMatchOddsData(data: MatchOddsDataset) {
+  if (data && data.fixtures) {
+    runtimeOddsData = data;
+  }
+}
+
 export function readMatchOddsData(): MatchOddsDataset {
-  return bundledOddsData as MatchOddsDataset;
+  return runtimeOddsData || (bundledOddsData as MatchOddsDataset);
 }
 
 /**

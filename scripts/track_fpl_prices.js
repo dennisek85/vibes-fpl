@@ -50,7 +50,12 @@ function fetchJson(url) {
   });
 }
 
-function loadExistingSnapshots() {
+async function loadExistingSnapshots() {
+  const redisData = await loadFromRedis('fpl:price_snapshots');
+  if (redisData && redisData.baselines) {
+    return redisData;
+  }
+
   for (const f of [OUTPUT_FILE, LOCAL_DATA_FILE]) {
     if (fs.existsSync(f)) {
       try {
@@ -80,7 +85,7 @@ async function main() {
     process.exit(1);
   }
 
-  const snapshotData = loadExistingSnapshots();
+  const snapshotData = await loadExistingSnapshots();
   const currentUkDay = getTodayUkDateString();
   const nowMs = Date.now();
 
@@ -103,49 +108,32 @@ async function main() {
     const currentOut = p.transfers_out_event || 0;
 
     let baseline = snapshotData.baselines[pId];
-
-    if (baseline) {
-      const prevCost = baseline.cost || currentCost;
-      if (currentCost !== prevCost) {
-        const netAtChange = (currentIn - (baseline.transfersIn || 0)) - (currentOut - (baseline.transfersOut || 0));
-        const changeType = currentCost > prevCost ? 'rise' : 'fall';
-        const obsKey = `${changeType}_${pId}_${currentUkDay}`;
-        snapshotData.observedThresholds[obsKey] = Math.abs(netAtChange);
-
-        const deltaSign = currentCost > prevCost ? '+' : '-';
-        const diff = Math.abs(currentCost - prevCost) / 10.0;
-        console.log(`⚡ Price Change Detected: ${p.web_name} (${deltaSign}£${diff.toFixed(1)}m) | Recorded Trigger Net: ${netAtChange}`);
-        changesDetected.push(`${p.web_name} (${deltaSign}£${diff.toFixed(1)}m)`);
-
-        baseline = {
-          cost: currentCost,
-          transfersIn: currentIn,
-          transfersOut: currentOut,
-          timestamp: nowMs,
-          lastCostChangeDate: currentUkDay
+    if (!baseline || baseline.cost !== currentCost || isNewDay) {
+      if (baseline && baseline.cost !== currentCost) {
+        changesDetected.push(`${p.web_name || pId}: ${baseline.cost / 10}m -> ${currentCost / 10}m`);
+        const direction = currentCost > baseline.cost ? 'rise' : 'fall';
+        const netAtChange = currentIn - currentOut;
+        snapshotData.observedThresholds[pId] = {
+          date: currentUkDay,
+          direction,
+          netTransfers: netAtChange,
+          ownership: p.selected_by_percent || '0'
         };
-        snapshotData.baselines[pId] = baseline;
       }
-    } else {
-      const costChangeEvent = p.cost_change_event || 0;
-      const hasChangedThisGw = costChangeEvent !== 0;
-      baseline = {
+      snapshotData.baselines[pId] = {
         cost: currentCost,
-        transfersIn: hasChangedThisGw ? currentIn : 0,
-        transfersOut: hasChangedThisGw ? currentOut : 0,
-        timestamp: nowMs,
-        lastCostChangeDate: hasChangedThisGw ? currentUkDay : undefined
+        transfersIn: currentIn,
+        transfersOut: currentOut,
+        timestamp: nowMs
       };
-      snapshotData.baselines[pId] = baseline;
+      baseline = snapshotData.baselines[pId];
     }
 
-    const inToday = Math.max(0, currentIn - (baseline.transfersIn || 0));
-    const outToday = Math.max(0, currentOut - (baseline.transfersOut || 0));
-    const netToday = inToday - outToday;
-
+    const netToday = (currentIn - baseline.transfersIn) - (currentOut - baseline.transfersOut);
     if (!snapshotData.hourlyHistory[pId]) {
       snapshotData.hourlyHistory[pId] = [];
     }
+
     const history = snapshotData.hourlyHistory[pId];
     const lastPt = history[history.length - 1];
 
@@ -173,6 +161,8 @@ async function main() {
   if (fs.existsSync(localDir)) {
     fs.writeFileSync(LOCAL_DATA_FILE, JSON.stringify(snapshotData, null, 2), 'utf-8');
   }
+
+  await saveToRedis('fpl:price_snapshots', snapshotData);
 
   console.log(`✅ Successfully updated price snapshots for ${elements.length} players.`);
   if (changesDetected.length) {

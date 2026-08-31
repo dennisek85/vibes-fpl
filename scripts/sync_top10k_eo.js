@@ -102,6 +102,9 @@ async function syncTop10kEo() {
     const targetPath = path.join(__dirname, '..', 'src', 'data', 'top10k_ownership.json');
     fs.writeFileSync(targetPath, JSON.stringify(payload, null, 2), 'utf-8');
 
+    const { saveToRedis } = require('./redis_helper');
+    await saveToRedis('fpl:top10k_eo', payload);
+
     console.log(`[EO Sync] Successfully updated ${targetPath} with Top 10k EO telemetry for ${Object.keys(eoMap).length} players!`);
   } catch (err) {
     console.error('[EO Sync] Error syncing Top 10k EO:', err);

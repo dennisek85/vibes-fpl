@@ -3,6 +3,10 @@ import { PlannerState, CoreDataSlice } from '../types';
 import { FPLPlayer, FPLTeam, FPLEvent } from '@/types/fpl';
 import { getActivePin } from '@/lib/auth';
 
+import { setCustomMatchOddsData } from '@/lib/oddsTracker';
+import { setCustomFormMomentumData } from '@/lib/formTracker';
+import { setCustomTop10kData } from '@/lib/ownershipTracker';
+
 export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSlice> = (set, get) => ({
   isLoading: false,
   isSaving: false,
@@ -40,15 +44,27 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
   initFPLData: async () => {
     set({ isLoading: true, error: null });
     try {
-      const [bootstrapRes, fixturesRes, projectionsRes] = await Promise.all([
+      const [bootstrapRes, fixturesRes, projectionsRes, telemetryRes] = await Promise.all([
         fetch('/api/fpl/bootstrap'),
         fetch('/api/fpl/fixtures'),
         fetch('/api/fpl/projections').catch(() => null),
+        fetch('/api/fpl/telemetry').catch(() => null),
       ]);
 
       if (!bootstrapRes.ok) throw new Error('Failed to load FPL core data');
       const bootstrapData = await bootstrapRes.json();
       const fixturesData = fixturesRes.ok ? await fixturesRes.json() : [];
+
+      if (telemetryRes && telemetryRes.ok) {
+        try {
+          const telemetryData = await telemetryRes.json();
+          if (telemetryData.matchOdds) setCustomMatchOddsData(telemetryData.matchOdds);
+          if (telemetryData.formMomentum) setCustomFormMomentumData(telemetryData.formMomentum);
+          if (telemetryData.top10kOwnership) setCustomTop10kData(telemetryData.top10kOwnership);
+        } catch (e) {
+          console.warn('Telemetry hydration note:', e);
+        }
+      }
 
       const aiProjectionsMap = new Map<string, number>();
       if (projectionsRes && projectionsRes.ok) {
