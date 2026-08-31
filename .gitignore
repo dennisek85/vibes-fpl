@@ -35,3 +35,6 @@ next-env.d.ts
 # local agent rules & configs
 .agents/
 GEMINI.md
+AGENTS.md
+README.md
+docs/

@@ -392,7 +392,7 @@ export const AiScoutModal: React.FC = () => {
                               {horizon.toUpperCase()} Gain
                             </span>
                             <span className="text-sm font-black text-emerald-400 font-mono">
-                              +{gain > 0 ? gain.toFixed(1) : '0.0'} xP
+                              +{gain.toFixed(1)} xP
                             </span>
                           </div>
 

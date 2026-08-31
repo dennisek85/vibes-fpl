@@ -388,7 +388,7 @@ export const PlayerMarketDrawer: React.FC = () => {
               </div>
               <span className="text-xs font-bold text-emerald-400 bg-emerald-950/70 px-2.5 py-1 rounded-full border border-emerald-500/30">
                 {playerOut 
-                  ? (showAiPredictions ? 'Ranked by +xP Gain' : 'Ranked by Form')
+                  ? (showAiPredictions ? 'Ranked by 3-GW xP' : 'Ranked by Form')
                   : (showAiPredictions ? 'Top Projected 3-GW xP' : 'Top In-Form Players')}
               </span>
             </div>
@@ -437,14 +437,22 @@ export const PlayerMarketDrawer: React.FC = () => {
                         {showAiPredictions ? (
                           playerOut ? (
                             <>
-                              <span className="text-xs sm:text-sm text-emerald-400 block font-black uppercase">
-                                +{rec.gain3 > 0 ? rec.gain3.toFixed(1) : '0.0'} xP
+                              <span className="text-xs sm:text-sm text-emerald-400 block font-black uppercase font-mono">
+                                {rec.xp3.toFixed(1)} xP
                               </span>
-                              <span className="text-xs text-slate-400 block font-semibold">3-GW Swing</span>
+                              <span className={`text-[11px] block font-bold font-mono ${
+                                rec.gain3 > 0 
+                                  ? 'text-emerald-400' 
+                                  : rec.gain3 === 0 
+                                  ? 'text-slate-400' 
+                                  : 'text-amber-400/90'
+                              }`}>
+                                {rec.gain3 > 0 ? `+${rec.gain3.toFixed(1)}` : rec.gain3.toFixed(1)} vs {playerOut.web_name}
+                              </span>
                             </>
                           ) : (
                             <>
-                              <span className="text-xs sm:text-sm text-emerald-400 block font-black uppercase">
+                              <span className="text-xs sm:text-sm text-emerald-400 block font-black uppercase font-mono">
                                 {rec.xp3.toFixed(1)} xP
                               </span>
                               <span className="text-xs text-slate-400 block font-semibold">Next 3 GWs</span>
