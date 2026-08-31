@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const cache: Record<number, { data: any; time: number }> = {};
-const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
-
+const CACHE_TTL = 60 * 1000; // 60 seconds (1 minute) for live match updates
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ gw: string }> }
@@ -24,9 +23,8 @@ export async function GET(
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner/1.0',
       },
-      next: { revalidate: 600 },
+      next: { revalidate: 60 },
     });
-
     if (!res.ok) {
       return NextResponse.json({ elements: [] });
     }

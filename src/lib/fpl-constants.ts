@@ -46,5 +46,6 @@ export const TEAM_STYLES: Record<string, { primary: string; secondary: string; t
 
 export const MAX_SAVED_FREE_TRANSFERS = 5; // 2026/27 Rule
 export const HIT_COST_POINTS = 4;
-export const CURRENT_PL_SEASON_BUCKET = 'premierleague25';
 
+// Official Premier League 2024/25+ photoshoot CDN bucket
+export const CURRENT_PL_SEASON_BUCKET = 'premierleague25';

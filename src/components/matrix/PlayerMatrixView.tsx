@@ -257,18 +257,48 @@ export const PlayerMatrixView: React.FC = () => {
     teamMap
   ]);
 
-  const renderSortHeader = (label: string, sortKey: string, align: 'left' | 'center' | 'right' = 'center') => {
+// Comprehensive tooltip explanations for all matrix metrics
+const COLUMN_TOOLTIPS: Record<string, string> = {
+  name: 'Player Name, Position and Club',
+  pos: 'Player Position (GKP, DEF, MID, FWD)',
+  price: 'Current player market price in millions (£m)',
+  mins: 'Total minutes played on pitch this season',
+  xG: 'Expected Goals — statistical measure of the quality and probability of scoring chances',
+  threat: 'Official FPL Threat — gauge of player goal threat and penalty box danger',
+  goals: 'Total actual goals scored this season',
+  xGI: 'Expected Goal Involvement — combined probability of scoring or assisting (xG + xA)',
+  total_points: 'Total official FPL points scored so far this season',
+  xA: 'Expected Assists — probability that a pass will lead directly to a goal',
+  creativity: 'Official FPL Creativity — frequency and quality of chance creation for teammates',
+  assists: 'Total actual assists awarded this season',
+  xGC: 'Expected Goals Conceded — defensive metric measuring opponent scoring danger',
+  cs: 'Clean Sheets — matches where the team conceded 0 goals (while player played 60+ minutes)',
+  xP: 'AI Projected Points for the selected Gameweek (OpenFPL Machine Learning)',
+  horizonXp: 'Cumulative AI Projected Points across the selected Gameweek horizon',
+  form: 'Official FPL Form — average points scored per match over the last 30 days',
+  bps: 'Bonus Points System score — match activity metric determining 3, 2, 1 bonus points',
+  transfers_today: 'Net transfers in/out during the current 24-hour daily cycle',
+  velocity: 'Hourly transfer rate speed (% progress per hour towards price threshold)',
+  target_progress: 'Percentage progress towards overnight price rise (+100%) or fall (-100%) threshold',
+  timing: 'Estimated timing when price change is forecasted to trigger (e.g. Tonight, Tomorrow)',
+  prediction: 'AI Price prediction status (Rising, Falling, Approaching, Stable)',
+  action: 'Quick transfer scout and detail actions',
+};
+
+  const renderSortHeader = (label: string, sortKey: string, align: 'left' | 'center' | 'right' = 'center', customTooltip?: string) => {
     const isActive = matrixSortBy === sortKey;
     const alignClass = align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center';
+    const tooltipText = customTooltip || COLUMN_TOOLTIPS[sortKey] || label;
 
     return (
       <button
         onClick={() => setMatrixSort(sortKey)}
-        className={`flex items-center gap-1 w-full text-[11px] font-black uppercase tracking-wider transition-colors select-none ${alignClass} ${
+        title={tooltipText}
+        className={`group flex items-center gap-1 w-full text-[11px] font-black uppercase tracking-wider transition-colors select-none cursor-pointer ${alignClass} ${
           isActive ? 'text-emerald-400 font-black' : 'text-slate-400 hover:text-white'
         }`}
       >
-        <span>{label}</span>
+        <span title={tooltipText}>{label}</span>
         {isActive ? (
           matrixSortDirection === 'asc' ? (
             <ArrowUp className="w-3 h-3 text-emerald-400" />
@@ -318,8 +348,8 @@ export const PlayerMatrixView: React.FC = () => {
                     <th className="py-3.5 px-4 min-w-[210px]">
                       {renderSortHeader('Player', 'name', 'left')}
                     </th>
-                    <th className="py-3.5 px-3 text-center w-16">
-                      <span>Pos</span>
+                    <th className="py-3.5 px-3 text-center w-16" title={COLUMN_TOOLTIPS.pos}>
+                      <span className="cursor-help">Pos</span>
                     </th>
                     <th className="py-3.5 px-3 text-right w-20">
                       {renderSortHeader('Price', 'price', 'right')}
@@ -327,20 +357,20 @@ export const PlayerMatrixView: React.FC = () => {
                     <th className="py-3.5 px-3 text-right w-32">
                       {renderSortHeader('Transfers Today', 'transfers_today', 'right')}
                     </th>
-                    <th className="py-3.5 px-3 text-right w-28">
-                      <span>Velocity</span>
+                    <th className="py-3.5 px-3 text-right w-28" title={COLUMN_TOOLTIPS.velocity}>
+                      <span className="cursor-help">Velocity</span>
                     </th>
                     <th className="py-3.5 px-4 text-center min-w-[180px]">
                       {renderSortHeader('Target Progress', 'target_progress')}
                     </th>
-                    <th className="py-3.5 px-3 text-center w-28">
-                      <span>Timing</span>
+                    <th className="py-3.5 px-3 text-center w-28" title={COLUMN_TOOLTIPS.timing}>
+                      <span className="cursor-help">Timing</span>
                     </th>
-                    <th className="py-3.5 px-4 text-center w-36">
-                      <span>Prediction</span>
+                    <th className="py-3.5 px-4 text-center w-36" title={COLUMN_TOOLTIPS.prediction}>
+                      <span className="cursor-help">Prediction</span>
                     </th>
-                    <th className="py-3.5 px-4 text-right w-20">
-                      <span>Action</span>
+                    <th className="py-3.5 px-4 text-right w-20" title={COLUMN_TOOLTIPS.action}>
+                      <span className="cursor-help">Action</span>
                     </th>
                   </tr>
                 </thead>
@@ -524,32 +554,32 @@ export const PlayerMatrixView: React.FC = () => {
               <table className="w-full text-left border-collapse min-w-[1100px]">
                 <thead>
                   <tr className="bg-slate-950/80 border-b border-white/10 text-[10px] font-black tracking-widest text-slate-400 uppercase">
-                    <th colSpan={3} className="py-2.5 px-4 text-left border-r border-white/10">
-                      Player Information
+                    <th colSpan={3} className="py-2.5 px-4 text-left border-r border-white/10" title="Player identity, club, position, pricing and match minutes">
+                      <span className="cursor-help">Player Information</span>
                     </th>
-                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-rose-950/20 text-rose-300">
-                      Goal Threat
+                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-rose-950/20 text-rose-300" title="Underlying attacking shooting metrics, expected goals & goal conversion">
+                      <span className="cursor-help">Goal Threat</span>
                     </th>
-                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-amber-950/20 text-amber-300">
-                      Involvement
+                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-amber-950/20 text-amber-300" title="Overall offensive involvement (xG + xA) and total season points">
+                      <span className="cursor-help">Involvement</span>
                     </th>
-                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-blue-950/20 text-blue-300">
-                      Creativity
+                    <th colSpan={3} className="py-2.5 px-3 text-center border-r border-white/10 bg-blue-950/20 text-blue-300" title="Key passes, expected assists, and chance creation for teammates">
+                      <span className="cursor-help">Creativity</span>
                     </th>
-                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-indigo-950/20 text-indigo-300">
-                      Defensive
+                    <th colSpan={2} className="py-2.5 px-3 text-center border-r border-white/10 bg-indigo-950/20 text-indigo-300" title="Defensive security, expected goals conceded (xGC) and clean sheet equity">
+                      <span className="cursor-help">Defensive</span>
                     </th>
                     {showAiPredictions ? (
-                      <th colSpan={3} className="py-2.5 px-4 text-center bg-emerald-950/30 text-emerald-300">
-                        AI Projections
+                      <th colSpan={3} className="py-2.5 px-4 text-center bg-emerald-950/30 text-emerald-300" title="OpenFPL Bayesian Expected Points (xP) ML projections">
+                        <span className="cursor-help">AI Projections</span>
                       </th>
                     ) : (
-                      <th colSpan={1} className="py-2.5 px-3 text-center border-r border-white/10 text-slate-300">
-                        Form
+                      <th colSpan={1} className="py-2.5 px-3 text-center border-r border-white/10 text-slate-300" title="Average points scored per match over the last 30 days">
+                        <span className="cursor-help">Form</span>
                       </th>
                     )}
-                    <th className="py-2.5 px-3 text-center">
-                      Action
+                    <th className="py-2.5 px-3 text-center" title="Direct transfer scout and player detail modal actions">
+                      <span className="cursor-help">Action</span>
                     </th>
                   </tr>
 

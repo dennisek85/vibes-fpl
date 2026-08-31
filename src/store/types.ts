@@ -43,7 +43,7 @@ export interface CoreDataSlice {
   nextGameweekId: number;
 
   initFPLData: () => Promise<void>;
-  fetchLivePointsForGameweek: (gw: number) => Promise<void>;
+  fetchLivePointsForGameweek: (gw: number, forceRefresh?: boolean) => Promise<void>;
   isGameweekLocked: (gameweek?: number) => boolean;
 }
 

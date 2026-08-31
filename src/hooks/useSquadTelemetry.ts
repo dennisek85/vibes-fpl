@@ -6,6 +6,8 @@ import { ChipType } from '@/types/fpl';
 
 export interface SquadTelemetryResult {
   totalProjectedXp: number;
+  gameweekActualPoints: number | null;
+  totalSeasonPoints: number | null;
   squadFormSum: number;
   squadValue: number;
   bank: number;
@@ -25,6 +27,10 @@ export function useSquadTelemetry(): SquadTelemetryResult {
   const currentPlan = usePlannerStore(state => state.gameweekPlans[selectedGameweek]);
   const playerMap = usePlannerStore(state => state.playerMap);
   const getPlayerGameweekXp = usePlannerStore(state => state.getPlayerGameweekXp);
+  const getPlayerGameweekActualPoints = usePlannerStore(state => state.getPlayerGameweekActualPoints);
+  const isGameweekLocked = usePlannerStore(state => state.isGameweekLocked);
+  const teamHistoryCurrent = usePlannerStore(state => state.teamHistoryCurrent);
+  const teamSummary = usePlannerStore(state => state.teamSummary);
   const showAiPredictions = usePlannerStore(state => state.showAiPredictions);
   const squadRating = useSquadRating();
 
@@ -33,6 +39,40 @@ export function useSquadTelemetry(): SquadTelemetryResult {
   const availableFT = currentPlan?.availableTransfers || 1;
   const currentTransfers = currentPlan?.transfersUsed || 0;
   const hits = currentPlan?.transferCost || 0;
+  const isLocked = isGameweekLocked(selectedGameweek);
+
+  // 1. Calculate dynamic live score from starting XI players + captaincy multipliers
+  let livePointsSum = 0;
+  let hasLivePlayerPoints = false;
+  if (currentPlan?.squad) {
+    const isTripleCaptain = currentChip === '3xc';
+    const isBenchBoost = currentChip === 'bboost';
+
+    currentPlan.squad.forEach(pick => {
+      const isStarting = pick.position <= 11;
+      const rawPoints = getPlayerGameweekActualPoints(pick.element, selectedGameweek);
+      if (rawPoints !== null) {
+        hasLivePlayerPoints = true;
+        const mult = isStarting ? (pick.is_captain ? (isTripleCaptain ? 3 : 2) : 1) : (isBenchBoost ? 1 : 0);
+        livePointsSum += rawPoints * mult;
+      }
+    });
+  }
+
+  // 2. Check official history table as fallback
+  const gwHistory = teamHistoryCurrent.find(h => h.event === selectedGameweek);
+  const historyPoints = gwHistory ? gwHistory.points : null;
+
+  // Use live player sum if available; otherwise use official history or entry summary
+  const gameweekActualPoints = hasLivePlayerPoints
+    ? Math.max(0, livePointsSum - hits)
+    : historyPoints !== null
+    ? historyPoints
+    : (isLocked && selectedGameweek === teamSummary?.current_event && teamSummary?.summary_overall_points)
+    ? teamSummary.summary_overall_points
+    : null;
+
+  const totalSeasonPoints = teamSummary?.summary_overall_points ?? null;
 
   const { totalProjectedXp, squadFormSum, squadValue } = useMemo(() => {
     let xpSum = 0;
@@ -73,6 +113,7 @@ export function useSquadTelemetry(): SquadTelemetryResult {
     });
 
     const netXp = Math.round((xpSum - hits) * 10) / 10;
+
     return {
       totalProjectedXp: netXp,
       squadFormSum: Math.round(formSum * 10) / 10,
@@ -82,6 +123,8 @@ export function useSquadTelemetry(): SquadTelemetryResult {
 
   return {
     totalProjectedXp,
+    gameweekActualPoints,
+    totalSeasonPoints,
     squadFormSum,
     squadValue,
     bank,

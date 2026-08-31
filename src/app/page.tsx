@@ -57,7 +57,9 @@ export default function PlannerPage() {
     openTransferDrawer,
     activePin,
     isSaving,
-    lastSavedTime
+    lastSavedTime,
+    events,
+    fetchLivePointsForGameweek
   } = usePlannerStore();
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -70,6 +72,21 @@ export default function PlannerPage() {
     initFPLData();
     setIsAuthenticated(isPinVerified());
   }, [initFPLData]);
+
+  // Smart in-view live match poller (every 60s when viewing an ongoing gameweek)
+  useEffect(() => {
+    const currentEvent = events.find(e => e.is_current);
+    const isViewingOngoingGw = currentEvent && selectedGameweek === currentEvent.id && !currentEvent.finished;
+    if (!isViewingOngoingGw) return;
+
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        fetchLivePointsForGameweek(selectedGameweek, true);
+      }
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [selectedGameweek, events, fetchLivePointsForGameweek]);
 
   const handleLogout = () => {
     logoutPin();
@@ -92,6 +109,8 @@ export default function PlannerPage() {
 
   const {
     totalProjectedXp,
+    gameweekActualPoints,
+    totalSeasonPoints,
     squadFormSum,
     bank,
     availableFT,
@@ -136,12 +155,14 @@ export default function PlannerPage() {
           {/* Center: Gameweek Arrow Stepper & View Switcher */}
           <div className="flex items-center gap-1 sm:gap-2">
             {/* Minimalist Gameweek Arrow Stepper */}
-            <div className="flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner">
+            <div className={`flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner transition-all ${
+              currentView === 'matrix' ? 'opacity-35 pointer-events-none select-none' : ''
+            }`}>
               <button
-                disabled={selectedGameweek <= 1}
+                disabled={currentView === 'matrix' || selectedGameweek <= 1}
                 onClick={() => selectGameweek(selectedGameweek - 1)}
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-                title="Previous Gameweek"
+                title={currentView === 'matrix' ? 'Gameweek selection disabled in Stats Matrix' : 'Previous Gameweek'}
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -156,15 +177,15 @@ export default function PlannerPage() {
                   )}
                 </div>
                 <span className="text-[9px] sm:text-[10px] text-slate-400 font-mono block leading-none">
-                  {isLocked ? 'Completed' : 'Planned'}
+                  {currentView === 'matrix' ? 'Global' : isLocked ? 'Completed' : 'Planned'}
                 </span>
               </div>
 
               <button
-                disabled={selectedGameweek >= 38}
+                disabled={currentView === 'matrix' || selectedGameweek >= 38}
                 onClick={() => selectGameweek(selectedGameweek + 1)}
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-                title="Next Gameweek"
+                title={currentView === 'matrix' ? 'Gameweek selection disabled in Stats Matrix' : 'Next Gameweek'}
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -288,6 +309,9 @@ export default function PlannerPage() {
               <div className="flex items-center gap-1">
                 <span className="text-slate-400 font-bold font-sans">xP:</span>
                 <strong className="text-cyan-300">{showAiPredictions ? `${totalProjectedXp}` : `${squadFormSum.toFixed(1)}`}</strong>
+                {gameweekActualPoints !== null && (
+                  <span className="text-[10px] text-emerald-400 font-bold">({gameweekActualPoints} pts)</span>
+                )}
               </div>
               <div className="flex items-center gap-1 font-sans">
                 <span className="text-slate-400 font-bold">Chip:</span>
@@ -317,7 +341,7 @@ export default function PlannerPage() {
                 <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm sm:text-base">💰</div>
               </div>
 
-              {/* Forecast xP & Rating */}
+              {/* Forecast xP & Gameweek Points Card */}
               <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
                   <div className="flex items-center gap-1.5">
@@ -334,11 +358,19 @@ export default function PlannerPage() {
                     <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-cyan-400 font-mono">
                       {showAiPredictions ? `${totalProjectedXp} pts` : `${squadFormSum.toFixed(1)} avg`}
                     </span>
-                    {showAiPredictions && squadRating && (
+                    {gameweekActualPoints !== null ? (
+                      <span className="text-[10.5px] xl:text-[11.5px] font-bold text-emerald-400 font-mono">
+                        (Actual: {gameweekActualPoints} pts)
+                      </span>
+                    ) : totalSeasonPoints !== null ? (
+                      <span className="text-[10px] text-slate-400 font-mono hidden 2xl:inline">
+                        (Season Total: {totalSeasonPoints} pts)
+                      </span>
+                    ) : showAiPredictions && squadRating ? (
                       <span className="text-[10px] text-slate-400 font-mono hidden 2xl:inline">
                         (D:{squadRating.defensePercentage}% M:{squadRating.midfieldPercentage}% F:{squadRating.forwardPercentage}%)
                       </span>
-                    )}
+                    ) : null}
                   </div>
                 </div>
                 <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 text-sm sm:text-base">📈</div>

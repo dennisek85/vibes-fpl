@@ -120,7 +120,6 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
     } else {
       set({ selectedGameweek: gw, selectedSlotForSwap: null, selectedPlayerForTransfer: null, isMarketOpen: false });
     }
-    get().saveCurrentPlanToServer();
   },
 
   setCaptain: (elementId: number) => {

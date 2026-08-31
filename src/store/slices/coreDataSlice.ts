@@ -27,8 +27,8 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
     return gw < get().nextGameweekId;
   },
 
-  fetchLivePointsForGameweek: async (gw: number) => {
-    if (get().liveEventPoints[gw]) return;
+  fetchLivePointsForGameweek: async (gw: number, forceRefresh = false) => {
+    if (!forceRefresh && get().liveEventPoints[gw]) return;
     try {
       const res = await fetch(`/api/fpl/event/${gw}/live`);
       if (res.ok) {
@@ -93,6 +93,8 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
       const events: FPLEvent[] = bootstrapData.events || [];
       const nextEvent = events.find(e => e.is_next) || events.find(e => e.is_current) || events[0];
       const nextGwId = nextEvent ? nextEvent.id : 3;
+
+      const currentEvent = events.find(e => e.is_current);
 
       set({
         players: bootstrapData.elements || [],
