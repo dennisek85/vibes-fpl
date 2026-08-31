@@ -13,6 +13,7 @@ import {
 import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 import { getPlayerTop10kEo } from '@/lib/ownershipTracker';
 import { getPlayerFormMomentum } from '@/lib/formTracker';
+import { CURRENT_PL_SEASON_BUCKET } from '@/lib/fpl-constants';
 
 // Client-side in-memory cache for instant 0ms player detail modal opening
 const clientSummaryCache = new Map<number, any>();
@@ -145,9 +146,11 @@ export const PlayerDetailModal: React.FC = () => {
                   player.element_type === 2 ? 'Defender' :
                   player.element_type === 3 ? 'Midfielder' : 'Forward';
 
-  // Photo URL from official Premier League CDN
-  const photoCode = player.photo ? player.photo.replace('.jpg', '.png') : null;
-  const photoUrl = photoCode ? `https://resources.premierleague.com/premierleague/photos/players/250x250/p${photoCode}` : null;
+  // Photo URL from official Premier League CDN (configured in fpl-constants)
+  const cleanPhotoCode = player.photo ? player.photo.replace('.jpg', '.png').replace(/^p/, '') : null;
+  const photoUrl = cleanPhotoCode 
+    ? `https://resources.premierleague.com/${CURRENT_PL_SEASON_BUCKET}/photos/players/110x140/${cleanPhotoCode}` 
+    : null;
 
   const upcomingNext5 = getPlayerUpcomingFixtures(player.id, 5);
 
