@@ -39,4 +39,5 @@ jobs:
           node scripts/sync_betting_odds.js
           node scripts/sync_form_momentum.js
           node scripts/sync_top10k_eo.js
-          echo "✅ All live FPL datasets successfully scraped and synced to Upstash Redis!"
+          node scripts/sync_model_calibration.js
+          echo "✅ All live FPL datasets and model calibration snapshots successfully scraped and synced to Upstash Redis!"
