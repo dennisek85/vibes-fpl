@@ -107,11 +107,6 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
         selectedGameweek: nextGwId,
       });
 
-      // Fetch live points for past GWs
-      for (let g = 1; g < nextGwId; g++) {
-        get().fetchLivePointsForGameweek(g);
-      }
-
       const savedPin = getActivePin();
       if (savedPin) {
         await get().loadUserPlanByPin(savedPin);

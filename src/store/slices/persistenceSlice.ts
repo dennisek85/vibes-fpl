@@ -91,11 +91,6 @@ export const createPersistenceSlice: StateCreator<PlannerState, [], [], Persiste
           localStorage.setItem('fpl_plan_' + pin, JSON.stringify(p));
         }
       } catch {}
-
-      // Pre-fetch live points for past gameweeks
-      for (let g = 1; g < get().nextGameweekId; g++) {
-        get().fetchLivePointsForGameweek(g);
-      }
     };
 
     try {
@@ -287,10 +282,6 @@ export const createPersistenceSlice: StateCreator<PlannerState, [], [], Persiste
         gameweekPlans: plans,
         isLoading: false,
       });
-
-      for (let g = 1; g < nextGw; g++) {
-        get().fetchLivePointsForGameweek(g);
-      }
 
       get().saveCurrentPlanToServer();
       return true;

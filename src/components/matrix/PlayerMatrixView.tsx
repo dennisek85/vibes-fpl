@@ -153,14 +153,6 @@ export const PlayerMatrixView: React.FC = () => {
       return true;
     });
 
-    // Performance Optimization: Pre-calculate complex sort values once O(N) instead of O(N log N) inside comparator
-    const sortValCache = new Map<number, number>();
-    if (matrixSortBy === 'xP' || !matrixSortBy) {
-      list.forEach(p => sortValCache.set(p.id, getPlayerGameweekXp(p.id, selectedGameweek)));
-    } else if (matrixSortBy === 'horizonXp') {
-      list.forEach(p => sortValCache.set(p.id, getPlayerHorizonXp(p.id, matrixHorizon)));
-    }
-
     return list.sort((a, b) => {
       let valA: number = 0;
       let valB: number = 0;
@@ -221,14 +213,10 @@ export const PlayerMatrixView: React.FC = () => {
         case 'xP':
           valA = sortValCache.get(a.id) ?? 0;
           valB = sortValCache.get(b.id) ?? 0;
-          break;
-        case 'horizonXp':
           valA = sortValCache.get(a.id) ?? 0;
           valB = sortValCache.get(b.id) ?? 0;
           break;
         case 'form':
-          valA = parseFloat(a.form || '0');
-          valB = parseFloat(b.form || '0');
           break;
         case 'bps':
           valA = a.bps || 0;
@@ -245,8 +233,6 @@ export const PlayerMatrixView: React.FC = () => {
 
       return matrixSortDirection === 'asc' ? valA - valB : valB - valA;
     });
-  }, [
-    players, 
     matrixPosition, 
     matrixTeamId, 
     matrixMinPrice, 
