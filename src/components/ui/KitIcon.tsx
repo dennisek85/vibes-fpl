@@ -29,6 +29,7 @@ export const KitIcon: React.FC<KitIconProps> = ({
       <img
         src={cdnUrl}
         alt={`${teamShortName} kit`}
+        referrerPolicy="no-referrer"
         className={`${className} object-contain drop-shadow-md select-none`}
         loading="lazy"
         onError={() => setImgError(true)}

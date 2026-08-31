@@ -178,6 +178,7 @@ export const PlayerDetailModal: React.FC = () => {
                 <img 
                   src={photoUrl} 
                   alt={player.web_name} 
+                  referrerPolicy="no-referrer"
                   className="w-full h-full object-cover object-top scale-110"
                   onError={() => setImgError(true)}
                 />

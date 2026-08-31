@@ -153,6 +153,13 @@ export const PlayerMatrixView: React.FC = () => {
       return true;
     });
 
+    const sortValCache = new Map<number, number>();
+    if (matrixSortBy === 'xP' || !matrixSortBy) {
+      list.forEach(p => sortValCache.set(p.id, getPlayerGameweekXp(p.id, selectedGameweek)));
+    } else if (matrixSortBy === 'horizonXp') {
+      list.forEach(p => sortValCache.set(p.id, getPlayerHorizonXp(p.id, matrixHorizon)));
+    }
+
     return list.sort((a, b) => {
       let valA: number = 0;
       let valB: number = 0;
@@ -233,6 +240,8 @@ export const PlayerMatrixView: React.FC = () => {
 
       return matrixSortDirection === 'asc' ? valA - valB : valB - valA;
     });
+  }, [
+    players,
     matrixPosition, 
     matrixTeamId, 
     matrixMinPrice, 
