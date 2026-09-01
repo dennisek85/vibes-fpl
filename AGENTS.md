@@ -12,8 +12,7 @@ Official FPL API ──> Next.js Proxies (/api/fpl/*) ──> Zustand (usePlanne
 
 ## ⚡ Core Engineering Rules
 1. **PowerShell 5.1**: ALWAYS use `;` to chain commands (never `&&` / `||`). Use `$env:VAR="val"; cmd` for env vars.
-2. **Git Push**: Standard `git push origin main`.
-3. **JSON Imports**: NEVER use Node `fs.readFileSync` in `src/lib/` or `src/utils/`. Always use ES static imports (`import data from '@/data/...'`).
+2. **No Automatic Git Push**: NEVER automatically run `git push`. Always verify locally first (`npm run check`), keep changes in your local working tree for the user to test and verify in the browser, and ONLY push to Git when the user explicitly instructs you to push.
 4. **Disambiguation**: Verify `player.element_type` and `teamShortName` when matching odds/set-pieces (e.g. Cole Palmer CHE vs backup GK Palmer IPS).
 5. **Verification**: Always run `npm run check` before completing work.
 6. **Communication**: ALWAYS explain WHAT you are doing and WHY before executing changes or running commands.
