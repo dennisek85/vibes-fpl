@@ -1,8 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { Lock, ShieldAlert, KeyRound, Delete, Loader2, Hash } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import {
+  Lock,
+  ShieldAlert,
+  KeyRound,
+  Delete,
+  Loader2,
+  Hash,
+} from "lucide-react";
 
 interface PinAuthModalProps {
   onSuccess: (isNewUser: boolean) => void;
@@ -10,16 +17,16 @@ interface PinAuthModalProps {
 
 export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
   const { loadUserPlanByPin, importTeam } = usePlannerStore();
-  const [teamIdInput, setTeamIdInput] = useState('');
-  const [pin, setPin] = useState('');
+  const [teamIdInput, setTeamIdInput] = useState("");
+  const [pin, setPin] = useState("");
   const [isChecking, setIsChecking] = useState(false);
   const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     try {
-      if (typeof window !== 'undefined') {
-        const savedTeamId = localStorage.getItem('fpl_last_team_id');
+      if (typeof window !== "undefined") {
+        const savedTeamId = localStorage.getItem("fpl_last_team_id");
         if (savedTeamId) setTeamIdInput(savedTeamId);
       }
     } catch {}
@@ -39,7 +46,7 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
 
   const handleBackspace = () => {
     if (!isChecking) {
-      setPin(prev => prev.slice(0, -1));
+      setPin((prev) => prev.slice(0, -1));
       setError(false);
     }
   };
@@ -47,22 +54,24 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
   const submitPin = async (inputPin: string) => {
     if (inputPin.trim().length < 4) {
       setError(true);
-      setErrorMessage('Please enter at least 4 digits.');
+      setErrorMessage("Please enter at least 4 digits.");
       return;
     }
 
     setIsChecking(true);
     setError(false);
     try {
-      const parsedTeamId = teamIdInput.trim() ? parseInt(teamIdInput.trim(), 10) : null;
+      const parsedTeamId = teamIdInput.trim()
+        ? parseInt(teamIdInput.trim(), 10)
+        : null;
       if (parsedTeamId && !isNaN(parsedTeamId)) {
         try {
-          localStorage.setItem('fpl_last_team_id', String(parsedTeamId));
+          localStorage.setItem("fpl_last_team_id", String(parsedTeamId));
         } catch {}
       }
 
       const result = await loadUserPlanByPin(inputPin, parsedTeamId);
-      
+
       // If team wasn't loaded from PIN but user provided a Team ID, auto-import that team!
       if (!result.teamLoaded && parsedTeamId && !isNaN(parsedTeamId)) {
         await importTeam(parsedTeamId);
@@ -76,7 +85,7 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
     } catch {
       setIsChecking(false);
       setError(true);
-      setErrorMessage('Could not load plan. Please try again.');
+      setErrorMessage("Could not load plan. Please try again.");
     }
   };
 
@@ -99,7 +108,10 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
         <div className="w-full max-w-[260px] mb-4">
           <label className="text-[11px] font-bold text-slate-400 block text-left mb-1 flex items-center gap-1">
             <Hash className="w-3.5 h-3.5 text-emerald-400" />
-            FPL Team ID <span className="text-[10px] text-slate-500 font-normal">(Optional)</span>
+            FPL Team ID{" "}
+            <span className="text-[10px] text-slate-500 font-normal">
+              (Optional)
+            </span>
           </label>
           <input
             type="number"
@@ -111,14 +123,16 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
         </div>
 
         {/* PIN Dot Indicators */}
-        <div className={`flex items-center gap-3 mb-5 ${error ? 'animate-shake' : ''}`}>
-          {[0, 1, 2, 3].map(idx => (
+        <div
+          className={`flex items-center gap-3 mb-5 ${error ? "animate-shake" : ""}`}
+        >
+          {[0, 1, 2, 3].map((idx) => (
             <div
               key={idx}
               className={`w-3.5 h-3.5 rounded-full transition-all duration-200 border-2 ${
                 pin.length > idx
-                  ? 'bg-emerald-400 border-emerald-400 scale-110 shadow-md shadow-emerald-500/50'
-                  : 'bg-slate-950 border-slate-700'
+                  ? "bg-emerald-400 border-emerald-400 scale-110 shadow-md shadow-emerald-500/50"
+                  : "bg-slate-950 border-slate-700"
               }`}
             />
           ))}
@@ -127,13 +141,13 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
         {error && (
           <div className="mb-3 text-xs font-bold text-rose-400 bg-rose-950/80 px-3 py-1.5 rounded-xl border border-rose-500/40 flex items-center gap-1.5">
             <ShieldAlert className="w-4 h-4" />
-            {errorMessage || 'Please enter at least 4 digits.'}
+            {errorMessage || "Please enter at least 4 digits."}
           </div>
         )}
 
         {/* Keypad */}
         <div className="grid grid-cols-3 gap-2 w-full max-w-[260px] mb-3.5">
-          {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(num => (
+          {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
             <button
               key={num}
               type="button"
@@ -147,7 +161,10 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
           <button
             type="button"
             disabled={isChecking}
-            onClick={() => { setPin(''); setError(false); }}
+            onClick={() => {
+              setPin("");
+              setError(false);
+            }}
             className="py-2.5 rounded-2xl bg-slate-950/40 hover:bg-slate-800 text-slate-400 font-bold text-xs border border-white/5 transition-all select-none"
           >
             Clear
@@ -155,7 +172,7 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
           <button
             type="button"
             disabled={isChecking}
-            onClick={() => handleDigit('0')}
+            onClick={() => handleDigit("0")}
             className="py-2.5 rounded-2xl bg-slate-950/80 hover:bg-slate-800 text-white font-bold text-base border border-white/10 shadow transition-all active:scale-90 select-none disabled:opacity-50"
           >
             0
@@ -195,8 +212,8 @@ export const PinAuthModal: React.FC<PinAuthModalProps> = ({ onSuccess }) => {
             type="button"
             disabled={isChecking}
             onClick={async () => {
-              setPin('1234');
-              await submitPin('1234');
+              setPin("1234");
+              await submitPin("1234");
             }}
             className="w-full py-2 rounded-xl bg-slate-950 hover:bg-slate-800 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 hover:text-white font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow"
           >

@@ -1,32 +1,29 @@
-import React, { useState } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { SquadPick } from '@/types/fpl';
-import { KitIcon } from '@/components/ui/KitIcon';
-import { formatMoney } from '@/lib/fpl-rules';
-import { 
-  Wand2, 
-  Edit3, 
-  Trash2, 
-  AlertCircle,
-  ShieldAlert
-} from 'lucide-react';
+import React, { useState } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { SquadPick } from "@/types/fpl";
+import { KitIcon } from "@/components/ui/KitIcon";
+import { formatMoney } from "@/lib/fpl-rules";
+import { Wand2, Edit3, Trash2, AlertCircle, ShieldAlert } from "lucide-react";
 
 interface RightActionsPanelProps {
   benchPicks: SquadPick[];
   onOpenOverrides: () => void;
 }
 
-export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({ benchPicks, onOpenOverrides }) => {
-  const { 
-    selectedGameweek, 
-    playerMap, 
-    teamMap, 
+export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({
+  benchPicks,
+  onOpenOverrides,
+}) => {
+  const {
+    selectedGameweek,
+    playerMap,
+    teamMap,
     optimizeSquadLineup,
     resetAllFutureGameweeks,
     openPlayerDetail,
     selectedSlotForSwap,
     selectSlotForSwap,
-    isGameweekLocked
+    isGameweekLocked,
   } = usePlannerStore();
 
   const [optResult, setOptResult] = useState<any | null>(null);
@@ -62,13 +59,14 @@ export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({ benchPicks
           onClick={handleAutoOptimize}
           className="w-full py-2.5 px-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-white/15 text-slate-200 hover:text-white font-black text-xs flex items-center justify-center gap-1.5 transition active:scale-98"
         >
-          <Wand2 className="w-3.5 h-3.5 text-amber-400" />
-          ⚡ Auto-Optimize (11 &amp; C)
+          <Wand2 className="w-3.5 h-3.5 text-amber-400" />⚡ Auto-Optimize (11
+          &amp; C)
         </button>
 
         {optResult && (
           <p className="text-[10.5px] text-emerald-400 font-bold text-center py-0.5 animate-in fade-in leading-tight">
-            ✨ {optResult.formation} · {optResult.captainName} (C) · {optResult.totalProjectedPoints} xP
+            ✨ {optResult.formation} · {optResult.captainName} (C) ·{" "}
+            {optResult.totalProjectedPoints} xP
           </p>
         )}
 
@@ -110,22 +108,27 @@ export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({ benchPicks
                   }
                 }}
                 className={`p-1.5 rounded-xl bg-slate-950/80 border border-white/10 flex items-center justify-between gap-2 cursor-pointer hover:border-emerald-500/50 transition-all ${
-                  isSwapSelected ? 'ring-2 ring-amber-400 animate-pulse bg-amber-950/30' : ''
+                  isSwapSelected
+                    ? "ring-2 ring-amber-400 animate-pulse bg-amber-950/30"
+                    : ""
                 }`}
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <KitIcon 
-                    teamCode={team?.code} 
-                    teamShortName={team?.short_name} 
-                    isGoalkeeper={isGK} 
-                    className="w-7 h-7 flex-shrink-0" 
+                  <KitIcon
+                    teamCode={team?.code}
+                    teamShortName={team?.short_name}
+                    isGoalkeeper={isGK}
+                    className="w-7 h-7 flex-shrink-0"
                   />
                   <div className="min-w-0">
                     <span className="text-xs font-black text-white truncate block leading-tight">
                       {player.web_name}
                     </span>
                     <span className="text-[10px] text-slate-400 font-mono">
-                      {player.element_type === 1 ? 'GK' : `B${pick.position - 11}`} · {formatMoney(player.now_cost, true)}
+                      {player.element_type === 1
+                        ? "GK"
+                        : `B${pick.position - 11}`}{" "}
+                      · {formatMoney(player.now_cost, true)}
                     </span>
                   </div>
                 </div>
@@ -137,9 +140,9 @@ export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({ benchPicks
                       selectSlotForSwap(pick.position);
                     }}
                     className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border transition ${
-                      isSwapSelected 
-                        ? 'bg-amber-400 text-slate-950 border-amber-300 font-black' 
-                        : 'bg-slate-900 border-white/10 text-slate-300 hover:text-white'
+                      isSwapSelected
+                        ? "bg-amber-400 text-slate-950 border-amber-300 font-black"
+                        : "bg-slate-900 border-white/10 text-slate-300 hover:text-white"
                     }`}
                   >
                     Sub
@@ -187,4 +190,3 @@ export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({ benchPicks
     </aside>
   );
 };
-

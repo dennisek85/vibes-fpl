@@ -1,4 +1,4 @@
-import hyperparameters from '@/data/model_hyperparameters.json';
+import hyperparameters from "@/data/model_hyperparameters.json";
 
 export interface AdaptiveModelParameters {
   bayesianHalfLifeMinutes: number;
@@ -12,7 +12,7 @@ export interface AdaptiveModelParameters {
   };
   bpsCoefficients: typeof hyperparameters.parameters.bps_coefficients;
   appearanceProbabilities: typeof hyperparameters.parameters.appearance_probabilities;
-  phase: 'cold_start' | 'transition' | 'mature';
+  phase: "cold_start" | "transition" | "mature";
 }
 
 /**
@@ -20,7 +20,9 @@ export interface AdaptiveModelParameters {
  * Dynamically adjusts weights between sharp bookmaker odds and underlying Understat xG
  * based on the number of completed gameweeks.
  */
-export function getAdaptiveModelParameters(gameweek: number): AdaptiveModelParameters {
+export function getAdaptiveModelParameters(
+  gameweek: number,
+): AdaptiveModelParameters {
   const base = hyperparameters.parameters;
 
   // 1. Cold-Start Phase (GW 1-4): Prioritize sharp market odds over small sample noise
@@ -33,29 +35,31 @@ export function getAdaptiveModelParameters(gameweek: number): AdaptiveModelParam
       setPieceWeights: {
         penaltyXg: base.set_piece_weights.penalty_xg,
         cornerXa: base.set_piece_weights.corner_xa,
-        directFreeKickXg: base.set_piece_weights.direct_free_kick_xg
+        directFreeKickXg: base.set_piece_weights.direct_free_kick_xg,
       },
       bpsCoefficients: base.bps_coefficients,
       appearanceProbabilities: base.appearance_probabilities,
-      phase: 'cold_start'
+      phase: "cold_start",
     };
   }
 
   // 2. Transition Phase (GW 5-12): Sample size grows; ramp up underlying xG/xA
   if (gameweek <= 12) {
     return {
-      bayesianHalfLifeMinutes: Math.round(base.bayesian_half_life_minutes * 0.9),
+      bayesianHalfLifeMinutes: Math.round(
+        base.bayesian_half_life_minutes * 0.9,
+      ),
       oddsWeight: 0.52,
       modelXgWeight: 0.48,
       homeAdvantageMultiplier: base.home_advantage_multiplier,
       setPieceWeights: {
         penaltyXg: base.set_piece_weights.penalty_xg,
         cornerXa: base.set_piece_weights.corner_xa,
-        directFreeKickXg: base.set_piece_weights.direct_free_kick_xg
+        directFreeKickXg: base.set_piece_weights.direct_free_kick_xg,
       },
       bpsCoefficients: base.bps_coefficients,
       appearanceProbabilities: base.appearance_probabilities,
-      phase: 'transition'
+      phase: "transition",
     };
   }
 
@@ -68,11 +72,10 @@ export function getAdaptiveModelParameters(gameweek: number): AdaptiveModelParam
     setPieceWeights: {
       penaltyXg: base.set_piece_weights.penalty_xg,
       cornerXa: base.set_piece_weights.corner_xa,
-      directFreeKickXg: base.set_piece_weights.direct_free_kick_xg
+      directFreeKickXg: base.set_piece_weights.direct_free_kick_xg,
     },
     bpsCoefficients: base.bps_coefficients,
     appearanceProbabilities: base.appearance_probabilities,
-    phase: 'mature'
+    phase: "mature",
   };
 }
-

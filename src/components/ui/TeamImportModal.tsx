@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { X, Search, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
+import React, { useState } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { X, Search, Sparkles, AlertCircle, Loader2 } from "lucide-react";
 
 interface TeamImportModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const TeamImportModal: React.FC<TeamImportModalProps> = ({ isOpen, onClose }) => {
+export const TeamImportModal: React.FC<TeamImportModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const { importTeam, loadDemoTeam, isLoading, error } = usePlannerStore();
-  const [teamIdInput, setTeamIdInput] = useState('');
+  const [teamIdInput, setTeamIdInput] = useState("");
   const [localError, setLocalError] = useState<string | null>(null);
 
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") onClose();
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -28,7 +31,7 @@ export const TeamImportModal: React.FC<TeamImportModalProps> = ({ isOpen, onClos
     setLocalError(null);
     const id = parseInt(teamIdInput.trim(), 10);
     if (isNaN(id) || id <= 0) {
-      setLocalError('Please enter a valid FPL Team ID (numeric number).');
+      setLocalError("Please enter a valid FPL Team ID (numeric number).");
       return;
     }
 
@@ -44,11 +47,11 @@ export const TeamImportModal: React.FC<TeamImportModalProps> = ({ isOpen, onClos
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in cursor-pointer"
       onClick={onClose}
     >
-      <div 
+      <div
         className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
@@ -58,11 +61,18 @@ export const TeamImportModal: React.FC<TeamImportModalProps> = ({ isOpen, onClos
               <Search className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">Import FPL Team</h3>
-              <p className="text-xs text-slate-400">Enter your official FPL ID number</p>
+              <h3 className="text-base font-bold text-white">
+                Import FPL Team
+              </h3>
+              <p className="text-xs text-slate-400">
+                Enter your official FPL ID number
+              </p>
             </div>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-1">
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white p-1"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -89,8 +99,12 @@ export const TeamImportModal: React.FC<TeamImportModalProps> = ({ isOpen, onClos
               autoFocus
             />
             <p className="text-[11px] text-slate-400 mt-1.5">
-              ?? You can find your Team ID in the URL on fantasy.premierleague.com under &quot;Points&quot; tab: 
-              <span className="font-mono text-slate-300"> /entry/<strong>[Team ID]</strong>/event/...</span>
+              ?? You can find your Team ID in the URL on
+              fantasy.premierleague.com under &quot;Points&quot; tab:
+              <span className="font-mono text-slate-300">
+                {" "}
+                /entry/<strong>[Team ID]</strong>/event/...
+              </span>
             </p>
           </div>
 
@@ -106,7 +120,7 @@ export const TeamImportModal: React.FC<TeamImportModalProps> = ({ isOpen, onClos
                   Loading Squad...
                 </>
               ) : (
-                'Import Squad'
+                "Import Squad"
               )}
             </button>
 

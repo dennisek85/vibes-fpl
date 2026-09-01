@@ -1,37 +1,48 @@
-import { StateCreator } from 'zustand';
-import { PlannerState, UiStateSlice } from '../types';
-import { canSwapSquadSlots } from '@/lib/fpl-rules';
-import { recalculateMultiGameweekPlans } from './gameweekPlanSlice';
+import { StateCreator } from "zustand";
+import { PlannerState, UiStateSlice } from "../types";
+import { canSwapSquadSlots } from "@/lib/fpl-rules";
+import { recalculateMultiGameweekPlans } from "./gameweekPlanSlice";
 
-export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice> = (set, get) => ({
+export const createUiStateSlice: StateCreator<
+  PlannerState,
+  [],
+  [],
+  UiStateSlice
+> = (set, get) => ({
   fixtureHorizon: 3,
-  cardTheme: (typeof window !== 'undefined' && localStorage.getItem('fpl_card_theme') as any) || 'dark',
-  setCardTheme: (theme: 'classic' | 'dark') => {
-    if (typeof window !== 'undefined') {
-      try { localStorage.setItem('fpl_card_theme', theme); } catch {}
+  cardTheme:
+    (typeof window !== "undefined" &&
+      (localStorage.getItem("fpl_card_theme") as any)) ||
+    "dark",
+  setCardTheme: (theme: "classic" | "dark") => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("fpl_card_theme", theme);
+      } catch {}
     }
     set({ cardTheme: theme });
     get().saveCurrentPlanToServer();
   },
-  currentView: 'pitch',
+  currentView: "pitch",
   setCurrentView: (view) => set({ currentView: view }),
 
-  matrixSearch: '',
+  matrixSearch: "",
   matrixPosition: null,
   matrixTeamId: null,
   matrixMinPrice: 35,
   matrixMaxPrice: 155,
   matrixHorizon: 3,
   matrixPer90: false,
-  matrixSortBy: 'xP',
-  matrixSortDirection: 'desc',
-  matrixViewTab: 'stats',
-  matrixPriceFilter: 'all',
+  matrixSortBy: "xP",
+  matrixSortDirection: "desc",
+  matrixViewTab: "stats",
+  matrixPriceFilter: "all",
 
   setMatrixSearch: (query) => set({ matrixSearch: query }),
   setMatrixPosition: (pos) => set({ matrixPosition: pos }),
   setMatrixTeamId: (teamId) => set({ matrixTeamId: teamId }),
-  setMatrixPriceRange: (min, max) => set({ matrixMinPrice: min, matrixMaxPrice: max }),
+  setMatrixPriceRange: (min, max) =>
+    set({ matrixMinPrice: min, matrixMaxPrice: max }),
   setMatrixHorizon: (h) => set({ matrixHorizon: h }),
   setMatrixPer90: (val) => set({ matrixPer90: val }),
   setMatrixViewTab: (tab) => set({ matrixViewTab: tab }),
@@ -40,9 +51,9 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
     const current = get().matrixSortBy;
     const currentDir = get().matrixSortDirection;
     if (current === col) {
-      set({ matrixSortDirection: currentDir === 'asc' ? 'desc' : 'asc' });
+      set({ matrixSortDirection: currentDir === "asc" ? "desc" : "asc" });
     } else {
-      set({ matrixSortBy: col, matrixSortDirection: 'desc' });
+      set({ matrixSortBy: col, matrixSortDirection: "desc" });
     }
   },
 
@@ -64,28 +75,30 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
   scoutPlayerIn: null,
   scoutGain: 0,
   scoutInitialTab: null,
-  openScoutModal: (pOut, pIn, gain, initialTab) => set({ 
-    isScoutModalOpen: true, 
-    scoutPlayerOut: pOut || null, 
-    scoutPlayerIn: pIn || null, 
-    scoutGain: gain || 0, 
-    scoutInitialTab: initialTab || null 
-  }),
-  closeScoutModal: () => set({ 
-    isScoutModalOpen: false, 
-    scoutPlayerOut: null, 
-    scoutPlayerIn: null, 
-    scoutInitialTab: null 
-  }),
+  openScoutModal: (pOut, pIn, gain, initialTab) =>
+    set({
+      isScoutModalOpen: true,
+      scoutPlayerOut: pOut || null,
+      scoutPlayerIn: pIn || null,
+      scoutGain: gain || 0,
+      scoutInitialTab: initialTab || null,
+    }),
+  closeScoutModal: () =>
+    set({
+      isScoutModalOpen: false,
+      scoutPlayerOut: null,
+      scoutPlayerIn: null,
+      scoutInitialTab: null,
+    }),
 
-  marketSearch: '',
+  marketSearch: "",
   marketPosition: null,
   marketTeamId: null,
   marketMinPrice: 35,
   marketMaxPrice: 155,
   marketAffordableOnly: false,
-  marketSortBy: 'now_cost',
-  marketSortOrder: 'desc',
+  marketSortBy: "now_cost",
+  marketSortOrder: "desc",
 
   setFixtureHorizon: (count: 1 | 3 | 5) => set({ fixtureHorizon: count }),
 
@@ -98,7 +111,7 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
       selectedPlayerForTransfer: playerOutId || null,
       isMarketOpen: true,
       marketPosition: playerOut ? playerOut.element_type : null,
-      marketSearch: '',
+      marketSearch: "",
     });
   },
 
@@ -112,7 +125,13 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
       return;
     }
 
-    const { selectedSlotForSwap, selectedGameweek, gameweekPlans, playerMap, isGameweekLocked } = get();
+    const {
+      selectedSlotForSwap,
+      selectedGameweek,
+      gameweekPlans,
+      playerMap,
+      isGameweekLocked,
+    } = get();
     if (isGameweekLocked(selectedGameweek)) return;
 
     const currentPlan = gameweekPlans[selectedGameweek];
@@ -128,22 +147,32 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
       return;
     }
 
-    const validation = canSwapSquadSlots(selectedSlotForSwap, slot, currentPlan.squad, playerMap);
+    const validation = canSwapSquadSlots(
+      selectedSlotForSwap,
+      slot,
+      currentPlan.squad,
+      playerMap,
+    );
     if (!validation.canSwap) {
-      alert(validation.reason || 'Invalid substitution! Check formation constraints.');
+      alert(
+        validation.reason ||
+          "Invalid substitution! Check formation constraints.",
+      );
       set({ selectedSlotForSwap: null });
       return;
     }
 
-    const pickA = currentPlan.squad.find(p => p.position === selectedSlotForSwap);
-    const pickB = currentPlan.squad.find(p => p.position === slot);
+    const pickA = currentPlan.squad.find(
+      (p) => p.position === selectedSlotForSwap,
+    );
+    const pickB = currentPlan.squad.find((p) => p.position === slot);
     if (!pickA || !pickB) return;
 
     const isStarterA = selectedSlotForSwap <= 11;
     const isStarterB = slot <= 11;
-    const isTripleCaptain = currentPlan.chip === '3xc';
+    const isTripleCaptain = currentPlan.chip === "3xc";
 
-    const newSquad = currentPlan.squad.map(p => {
+    const newSquad = currentPlan.squad.map((p) => {
       if (p.position === selectedSlotForSwap) {
         // Player A moves to slot B
         const goingToBench = isStarterA && !isStarterB;
@@ -152,7 +181,7 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
           position: slot,
           is_captain: goingToBench ? false : p.is_captain,
           is_vice_captain: goingToBench ? false : p.is_vice_captain,
-          multiplier: goingToBench ? 0 : p.multiplier
+          multiplier: goingToBench ? 0 : p.multiplier,
         };
       }
       if (p.position === slot) {
@@ -165,9 +194,23 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
         return {
           ...p,
           position: selectedSlotForSwap,
-          is_captain: inheritsCaptain ? true : goingToBench ? false : p.is_captain,
-          is_vice_captain: inheritsVice ? true : goingToBench ? false : p.is_vice_captain,
-          multiplier: inheritsCaptain ? (isTripleCaptain ? 3 : 2) : goingToBench ? 0 : p.multiplier
+          is_captain: inheritsCaptain
+            ? true
+            : goingToBench
+              ? false
+              : p.is_captain,
+          is_vice_captain: inheritsVice
+            ? true
+            : goingToBench
+              ? false
+              : p.is_vice_captain,
+          multiplier: inheritsCaptain
+            ? isTripleCaptain
+              ? 3
+              : 2
+            : goingToBench
+              ? 0
+              : p.multiplier,
         };
       }
       return p;
@@ -177,7 +220,7 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
     if (!isStarterA && isStarterB) {
       const inheritsCaptain = pickB.is_captain;
       const inheritsVice = pickB.is_vice_captain;
-      newSquad.forEach(p => {
+      newSquad.forEach((p) => {
         if (p.element === pickA.element) {
           if (inheritsCaptain) {
             p.is_captain = true;
@@ -204,16 +247,16 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
   setMarketSearch: (query: string) => set({ marketSearch: query }),
   setMarketPosition: (pos: number | null) => set({ marketPosition: pos }),
   setMarketTeamId: (teamId: number | null) => set({ marketTeamId: teamId }),
-  setMarketPriceRange: (min: number, max: number) => set({ marketMinPrice: min, marketMaxPrice: max }),
+  setMarketPriceRange: (min: number, max: number) =>
+    set({ marketMinPrice: min, marketMaxPrice: max }),
   setMarketAffordableOnly: (val: boolean) => set({ marketAffordableOnly: val }),
   setMarketSort: (sortBy) => {
     const currentSort = get().marketSortBy;
     const currentOrder = get().marketSortOrder;
     if (currentSort === sortBy) {
-      set({ marketSortOrder: currentOrder === 'asc' ? 'desc' : 'asc' });
+      set({ marketSortOrder: currentOrder === "asc" ? "desc" : "asc" });
     } else {
-      set({ marketSortBy: sortBy, marketSortOrder: 'desc' });
+      set({ marketSortBy: sortBy, marketSortOrder: "desc" });
     }
   },
 });
-

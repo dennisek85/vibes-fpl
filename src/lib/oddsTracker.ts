@@ -1,4 +1,4 @@
-import bundledOddsData from '@/data/match_odds.json';
+import bundledOddsData from "@/data/match_odds.json";
 
 export interface FixtureMarketOdds {
   homeTeamId: number;
@@ -37,7 +37,7 @@ export function readMatchOddsData(): MatchOddsDataset {
 export function getMarketFixtureOdds(
   homeTeamId: number,
   awayTeamId: number,
-  gameweek: number
+  gameweek: number,
 ): FixtureMarketOdds | null {
   const data = readMatchOddsData();
   const gwKey = `gw${gameweek}`;
@@ -48,8 +48,9 @@ export function getMarketFixtureOdds(
   }
 
   const match = gwFixtures.find(
-    f => (f.homeTeamId === homeTeamId && f.awayTeamId === awayTeamId) ||
-         (f.homeTeamId === awayTeamId && f.awayTeamId === homeTeamId)
+    (f) =>
+      (f.homeTeamId === homeTeamId && f.awayTeamId === awayTeamId) ||
+      (f.homeTeamId === awayTeamId && f.awayTeamId === homeTeamId),
   );
 
   return match || null;
@@ -61,27 +62,46 @@ export function getMarketFixtureOdds(
  */
 export function getMarketAnytimeGoalscorerProb(
   playerName: string,
-  teamShortName?: string
+  teamShortName?: string,
 ): number | null {
   if (!playerName) return null;
   const data = readMatchOddsData();
   const normalized = playerName.toLowerCase().trim();
 
   // Disambiguation for players sharing last names
-  if (normalized === 'palmer' && teamShortName && teamShortName.toUpperCase() !== 'CHE') {
+  if (
+    normalized === "palmer" &&
+    teamShortName &&
+    teamShortName.toUpperCase() !== "CHE"
+  ) {
     return null;
   }
-  if (normalized === 'johnson' && teamShortName && teamShortName.toUpperCase() !== 'TOT') {
+  if (
+    normalized === "johnson" &&
+    teamShortName &&
+    teamShortName.toUpperCase() !== "TOT"
+  ) {
     return null;
   }
-  if (normalized === 'fernandes' && teamShortName && teamShortName.toUpperCase() !== 'MUN') {
+  if (
+    normalized === "fernandes" &&
+    teamShortName &&
+    teamShortName.toUpperCase() !== "MUN"
+  ) {
     return null;
   }
-  if (normalized === 'williams' && teamShortName && teamShortName.toUpperCase() !== 'NFO') {
+  if (
+    normalized === "williams" &&
+    teamShortName &&
+    teamShortName.toUpperCase() !== "NFO"
+  ) {
     return null;
   }
-  
-  if (data.anytimeGoalscorers && data.anytimeGoalscorers[normalized] !== undefined) {
+
+  if (
+    data.anytimeGoalscorers &&
+    data.anytimeGoalscorers[normalized] !== undefined
+  ) {
     return data.anytimeGoalscorers[normalized];
   }
 

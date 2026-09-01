@@ -1,60 +1,78 @@
-import { StateCreator } from 'zustand';
-import { PlannerState, GameweekPlanSlice } from '../types';
-import { FPLPlayer, SquadPick, ChipType, PlannedGameweek } from '@/types/fpl';
-import { calculateGameweekFinancials, validateClubLimit } from '@/lib/fpl-rules';
+import { StateCreator } from "zustand";
+import { PlannerState, GameweekPlanSlice } from "../types";
+import { FPLPlayer, SquadPick, ChipType, PlannedGameweek } from "@/types/fpl";
+import {
+  calculateGameweekFinancials,
+  validateClubLimit,
+} from "@/lib/fpl-rules";
 
 export function recalculateMultiGameweekPlans(
   get: () => PlannerState,
-  set: (state: Partial<PlannerState>) => void
+  set: (state: Partial<PlannerState>) => void,
 ) {
-  const { initialBank, initialFreeTransfers, gameweekPlans, playerMap, baseImportedPicks } = get();
+  const {
+    initialBank,
+    initialFreeTransfers,
+    gameweekPlans,
+    playerMap,
+    baseImportedPicks,
+  } = get();
   const maxGw = 38;
 
   // 1. Calculate Base Total Team Value: Sum of costs of base imported squad + initial bank
   let baseSquadCost = 0;
   if (baseImportedPicks.length > 0) {
-    baseImportedPicks.forEach(p => {
+    baseImportedPicks.forEach((p) => {
       const pl = playerMap.get(p.element);
-      baseSquadCost += pl ? pl.now_cost : (p.selling_price || 50);
+      baseSquadCost += pl ? pl.now_cost : p.selling_price || 50;
     });
   } else {
-    const firstSquad = (Object.values(gameweekPlans) as PlannedGameweek[]).find(p => p?.squad?.length > 0)?.squad || [];
-    firstSquad.forEach(p => {
+    const firstSquad =
+      (Object.values(gameweekPlans) as PlannedGameweek[]).find(
+        (p) => p?.squad?.length > 0,
+      )?.squad || [];
+    firstSquad.forEach((p) => {
       const pl = playerMap.get(p.element);
-      baseSquadCost += pl ? pl.now_cost : (p.selling_price || 50);
+      baseSquadCost += pl ? pl.now_cost : p.selling_price || 50;
     });
   }
   const totalTeamValue = baseSquadCost + initialBank;
 
   let rollingFT = initialFreeTransfers;
   const allPlansList = Object.values(gameweekPlans) as PlannedGameweek[];
-  let rollingSquad: SquadPick[] = allPlansList.find(p => p && p.squad && p.squad.length > 0)?.squad || baseImportedPicks;
+  let rollingSquad: SquadPick[] =
+    allPlansList.find((p) => p && p.squad && p.squad.length > 0)?.squad ||
+    baseImportedPicks;
 
   const newPlans: Record<number, PlannedGameweek> = {};
 
   for (let gw = 1; gw <= maxGw; gw++) {
     const existing = gameweekPlans[gw];
     const squad = existing ? existing.squad : [...rollingSquad];
-    const chip = existing ? existing.chip : 'none';
+    const chip = existing ? existing.chip : "none";
     const bankOverride = existing?.bankOverride;
     const ftOverride = existing?.freeTransfersOverride;
 
     // Calculate current squad cost
     let currentSquadCost = 0;
-    squad.forEach(pick => {
+    squad.forEach((pick) => {
       const pl = playerMap.get(pick.element);
-      currentSquadCost += pl ? pl.now_cost : (pick.selling_price || 50);
+      currentSquadCost += pl ? pl.now_cost : pick.selling_price || 50;
     });
 
     // Invariant: Bank is Total Team Value - Current Squad Cost
     const currentBank = Math.max(0, totalTeamValue - currentSquadCost);
 
     // Calculate transfers relative to previous gameweek squad (or base squad)
-    const prevSquadIds = new Set(rollingSquad.map(p => p.element));
-    const currSquadIds = new Set(squad.map(p => p.element));
-    
-    const derivedTransfersIn = squad.filter(p => !prevSquadIds.has(p.element)).map(p => p.element);
-    const derivedTransfersOut = rollingSquad.filter(p => !currSquadIds.has(p.element)).map(p => p.element);
+    const prevSquadIds = new Set(rollingSquad.map((p) => p.element));
+    const currSquadIds = new Set(squad.map((p) => p.element));
+
+    const derivedTransfersIn = squad
+      .filter((p) => !prevSquadIds.has(p.element))
+      .map((p) => p.element);
+    const derivedTransfersOut = rollingSquad
+      .filter((p) => !currSquadIds.has(p.element))
+      .map((p) => p.element);
     const transfersCount = derivedTransfersIn.length;
 
     const financials = calculateGameweekFinancials({
@@ -87,7 +105,12 @@ export function recalculateMultiGameweekPlans(
   set({ gameweekPlans: newPlans });
 }
 
-export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], GameweekPlanSlice> = (set, get) => ({
+export const createGameweekPlanSlice: StateCreator<
+  PlannerState,
+  [],
+  [],
+  GameweekPlanSlice
+> = (set, get) => ({
   startGameweek: 1,
   selectedGameweek: 3,
   gameweekPlans: {},
@@ -101,24 +124,41 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
       get().fetchLivePointsForGameweek(gw);
     }
 
-    if (!gameweekPlans[gw] || !gameweekPlans[gw].squad || gameweekPlans[gw].squad.length === 0) {
+    if (
+      !gameweekPlans[gw] ||
+      !gameweekPlans[gw].squad ||
+      gameweekPlans[gw].squad.length === 0
+    ) {
       const allPlansList = Object.values(gameweekPlans) as PlannedGameweek[];
-      const baseSquad = allPlansList.find(p => p && p.squad && p.squad.length > 0)?.squad || [];
+      const baseSquad =
+        allPlansList.find((p) => p && p.squad && p.squad.length > 0)?.squad ||
+        [];
       const updatedPlans = { ...gameweekPlans };
       updatedPlans[gw] = {
         gameweek: gw,
         squad: [...baseSquad],
         transfersIn: [],
         transfersOut: [],
-        chip: 'none',
+        chip: "none",
         calculatedBank: 0,
         availableTransfers: 1,
         transfersUsed: 0,
         transferCost: 0,
       };
-      set({ gameweekPlans: updatedPlans, selectedGameweek: gw, selectedSlotForSwap: null, selectedPlayerForTransfer: null, isMarketOpen: false });
+      set({
+        gameweekPlans: updatedPlans,
+        selectedGameweek: gw,
+        selectedSlotForSwap: null,
+        selectedPlayerForTransfer: null,
+        isMarketOpen: false,
+      });
     } else {
-      set({ selectedGameweek: gw, selectedSlotForSwap: null, selectedPlayerForTransfer: null, isMarketOpen: false });
+      set({
+        selectedGameweek: gw,
+        selectedSlotForSwap: null,
+        selectedPlayerForTransfer: null,
+        isMarketOpen: false,
+      });
     }
   },
 
@@ -129,27 +169,27 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
     const currentPlan = gameweekPlans[selectedGameweek];
     if (!currentPlan) return;
 
-    const targetPick = currentPlan.squad.find(p => p.element === elementId);
+    const targetPick = currentPlan.squad.find((p) => p.element === elementId);
     if (!targetPick) return;
 
     const wasTargetViceCaptain = targetPick.is_vice_captain;
-    const isTripleCaptain = currentPlan.chip === '3xc';
+    const isTripleCaptain = currentPlan.chip === "3xc";
 
-    const newSquad = currentPlan.squad.map(p => {
+    const newSquad = currentPlan.squad.map((p) => {
       if (p.element === elementId) {
-        return { 
-          ...p, 
-          is_captain: true, 
-          is_vice_captain: false, 
-          multiplier: isTripleCaptain ? 3 : 2 
+        return {
+          ...p,
+          is_captain: true,
+          is_vice_captain: false,
+          multiplier: isTripleCaptain ? 3 : 2,
         };
       }
       if (p.is_captain) {
-        return { 
-          ...p, 
-          is_captain: false, 
-          is_vice_captain: wasTargetViceCaptain ? true : p.is_vice_captain, 
-          multiplier: 1 
+        return {
+          ...p,
+          is_captain: false,
+          is_vice_captain: wasTargetViceCaptain ? true : p.is_vice_captain,
+          multiplier: 1,
         };
       }
       return p;
@@ -168,27 +208,31 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
     const currentPlan = gameweekPlans[selectedGameweek];
     if (!currentPlan) return;
 
-    const targetPick = currentPlan.squad.find(p => p.element === elementId);
+    const targetPick = currentPlan.squad.find((p) => p.element === elementId);
     if (!targetPick) return;
 
     const wasTargetCaptain = targetPick.is_captain;
-    const isTripleCaptain = currentPlan.chip === '3xc';
+    const isTripleCaptain = currentPlan.chip === "3xc";
 
-    const newSquad = currentPlan.squad.map(p => {
+    const newSquad = currentPlan.squad.map((p) => {
       if (p.element === elementId) {
-        return { 
-          ...p, 
-          is_vice_captain: true, 
-          is_captain: false, 
-          multiplier: 1 
+        return {
+          ...p,
+          is_vice_captain: true,
+          is_captain: false,
+          multiplier: 1,
         };
       }
       if (p.is_vice_captain) {
-        return { 
-          ...p, 
-          is_vice_captain: false, 
-          is_captain: wasTargetCaptain ? true : p.is_captain, 
-          multiplier: wasTargetCaptain ? (isTripleCaptain ? 3 : 2) : p.multiplier 
+        return {
+          ...p,
+          is_vice_captain: false,
+          is_captain: wasTargetCaptain ? true : p.is_captain,
+          multiplier: wasTargetCaptain
+            ? isTripleCaptain
+              ? 3
+              : 2
+            : p.multiplier,
         };
       }
       return p;
@@ -200,28 +244,43 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
     get().saveCurrentPlanToServer();
   },
 
-  executeTransfer: (playerIn: FPLPlayer, explicitPlayerOutId?: number | null) => {
-    const { selectedPlayerForTransfer, selectedGameweek, gameweekPlans, playerMap, isGameweekLocked } = get();
+  executeTransfer: (
+    playerIn: FPLPlayer,
+    explicitPlayerOutId?: number | null,
+  ) => {
+    const {
+      selectedPlayerForTransfer,
+      selectedGameweek,
+      gameweekPlans,
+      playerMap,
+      isGameweekLocked,
+    } = get();
     if (isGameweekLocked(selectedGameweek)) return false;
 
     const currentPlan = gameweekPlans[selectedGameweek];
     if (!currentPlan) return false;
 
-    const isAlreadyIn = currentPlan.squad.some(p => p.element === playerIn.id);
+    const isAlreadyIn = currentPlan.squad.some(
+      (p) => p.element === playerIn.id,
+    );
     if (isAlreadyIn) {
       alert(`${playerIn.web_name} is already in your squad!`);
       return false;
     }
 
     const targetOutId = explicitPlayerOutId ?? selectedPlayerForTransfer;
-    let outPick = targetOutId 
-      ? currentPlan.squad.find(p => p.element === targetOutId) 
+    let outPick = targetOutId
+      ? currentPlan.squad.find((p) => p.element === targetOutId)
       : null;
 
     if (!outPick) {
-      const matchingPicks = currentPlan.squad.filter(p => playerMap.get(p.element)?.element_type === playerIn.element_type);
+      const matchingPicks = currentPlan.squad.filter(
+        (p) => playerMap.get(p.element)?.element_type === playerIn.element_type,
+      );
       if (matchingPicks.length === 0) {
-        alert(`No players found in your squad matching ${playerIn.web_name}'s position.`);
+        alert(
+          `No players found in your squad matching ${playerIn.web_name}'s position.`,
+        );
         return false;
       }
       outPick = matchingPicks.sort((a, b) => {
@@ -237,7 +296,9 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
     if (!playerOut) return false;
 
     if (playerOut.element_type !== playerIn.element_type) {
-      alert(`Cannot replace ${playerOut.web_name} with ${playerIn.web_name}. Positions must match.`);
+      alert(
+        `Cannot replace ${playerOut.web_name} with ${playerIn.web_name}. Positions must match.`,
+      );
       return false;
     }
 
@@ -246,7 +307,10 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
     const priceDiff = sellPrice - buyPrice;
 
     if (currentPlan.calculatedBank + priceDiff < 0) {
-      const deficit = ((buyPrice - sellPrice - currentPlan.calculatedBank) / 10).toFixed(1);
+      const deficit = (
+        (buyPrice - sellPrice - currentPlan.calculatedBank) /
+        10
+      ).toFixed(1);
       alert(`Transfer unaffordable! Requires £${deficit}m more in the bank.`);
       return false;
     }
@@ -261,12 +325,18 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
       selling_price: buyPrice,
     };
 
-    const newSquad = currentPlan.squad.map(p => p.element === playerOut.id ? newPick : p);
+    const newSquad = currentPlan.squad.map((p) =>
+      p.element === playerOut.id ? newPick : p,
+    );
 
     const clubValidation = validateClubLimit(newSquad, playerMap);
     if (!clubValidation.isValid) {
-      const offendingTeam = get().teamMap.get(clubValidation.violations[0].teamId);
-      alert(`Club limit exceeded! You cannot have more than 3 players from ${offendingTeam?.name || 'the same club'}.`);
+      const offendingTeam = get().teamMap.get(
+        clubValidation.violations[0].teamId,
+      );
+      alert(
+        `Club limit exceeded! You cannot have more than 3 players from ${offendingTeam?.name || "the same club"}.`,
+      );
       return false;
     }
 
@@ -299,17 +369,26 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
   },
 
   resetCurrentGameweek: () => {
-    const { selectedGameweek, gameweekPlans, nextGameweekId, baseImportedPicks, isGameweekLocked } = get();
+    const {
+      selectedGameweek,
+      gameweekPlans,
+      nextGameweekId,
+      baseImportedPicks,
+      isGameweekLocked,
+    } = get();
     if (isGameweekLocked(selectedGameweek)) return;
 
     let targetSquad: SquadPick[] = [];
     if (selectedGameweek === nextGameweekId) {
-      targetSquad = baseImportedPicks.length > 0 
-        ? baseImportedPicks.map(p => ({ ...p })) 
-        : (gameweekPlans[nextGameweekId]?.squad || []);
+      targetSquad =
+        baseImportedPicks.length > 0
+          ? baseImportedPicks.map((p) => ({ ...p }))
+          : gameweekPlans[nextGameweekId]?.squad || [];
     } else {
       const prevGw = selectedGameweek - 1;
-      targetSquad = gameweekPlans[prevGw]?.squad ? gameweekPlans[prevGw].squad.map(p => ({ ...p })) : baseImportedPicks;
+      targetSquad = gameweekPlans[prevGw]?.squad
+        ? gameweekPlans[prevGw].squad.map((p) => ({ ...p }))
+        : baseImportedPicks;
     }
 
     const updatedPlans = { ...gameweekPlans };
@@ -319,23 +398,34 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
         squad: targetSquad,
         transfersIn: [],
         transfersOut: [],
-        chip: 'none',
+        chip: "none",
         bankOverride: null,
         freeTransfersOverride: null,
       };
     }
 
-    set({ gameweekPlans: updatedPlans, isMarketOpen: false, selectedPlayerForTransfer: null });
+    set({
+      gameweekPlans: updatedPlans,
+      isMarketOpen: false,
+      selectedPlayerForTransfer: null,
+    });
     recalculateMultiGameweekPlans(get, set);
     get().saveCurrentPlanToServer();
   },
 
   resetAllFutureGameweeks: () => {
-    const { nextGameweekId, gameweekPlans, baseImportedPicks, initialBank, initialFreeTransfers } = get();
-    
-    const baseSquad = baseImportedPicks.length > 0 
-      ? baseImportedPicks.map(p => ({ ...p })) 
-      : (gameweekPlans[nextGameweekId]?.squad || []);
+    const {
+      nextGameweekId,
+      gameweekPlans,
+      baseImportedPicks,
+      initialBank,
+      initialFreeTransfers,
+    } = get();
+
+    const baseSquad =
+      baseImportedPicks.length > 0
+        ? baseImportedPicks.map((p) => ({ ...p }))
+        : gameweekPlans[nextGameweekId]?.squad || [];
 
     const updatedPlans: Record<number, PlannedGameweek> = {};
 
@@ -353,15 +443,15 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
         currentBank: rollingBank,
         availableFreeTransfers: rollingFT,
         transfersCount: 0,
-        chip: 'none',
+        chip: "none",
       });
 
       updatedPlans[gw] = {
         gameweek: gw,
-        squad: baseSquad.map(p => ({ ...p })),
+        squad: baseSquad.map((p) => ({ ...p })),
         transfersIn: [],
         transfersOut: [],
-        chip: 'none',
+        chip: "none",
         calculatedBank: fin.effectiveBank,
         availableTransfers: fin.availableTransfers,
         transfersUsed: 0,
@@ -382,26 +472,32 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
   },
 
   setChip: (chip: ChipType) => {
-    const { selectedGameweek, gameweekPlans, playedChips, isGameweekLocked } = get();
+    const { selectedGameweek, gameweekPlans, playedChips, isGameweekLocked } =
+      get();
     if (isGameweekLocked(selectedGameweek)) return;
 
     const currentPlan = gameweekPlans[selectedGameweek];
     if (!currentPlan) return;
 
-    if (chip !== 'none') {
-      const alreadyPlayedOfficial = playedChips.find(c => c.name === chip);
-      if (alreadyPlayedOfficial && alreadyPlayedOfficial.event !== selectedGameweek) {
-        alert(`The ${chip.toUpperCase()} chip was already played in Gameweek ${alreadyPlayedOfficial.event}!`);
+    if (chip !== "none") {
+      const alreadyPlayedOfficial = playedChips.find((c) => c.name === chip);
+      if (
+        alreadyPlayedOfficial &&
+        alreadyPlayedOfficial.event !== selectedGameweek
+      ) {
+        alert(
+          `The ${chip.toUpperCase()} chip was already played in Gameweek ${alreadyPlayedOfficial.event}!`,
+        );
         return;
       }
     }
 
     const updatedPlans = { ...gameweekPlans };
-    if (chip !== 'none') {
-      Object.keys(updatedPlans).forEach(gwKey => {
+    if (chip !== "none") {
+      Object.keys(updatedPlans).forEach((gwKey) => {
         const gw = parseInt(gwKey, 10);
         if (gw !== selectedGameweek && updatedPlans[gw].chip === chip) {
-          updatedPlans[gw] = { ...updatedPlans[gw], chip: 'none' };
+          updatedPlans[gw] = { ...updatedPlans[gw], chip: "none" };
         }
       });
     }
@@ -440,4 +536,3 @@ export const createGameweekPlanSlice: StateCreator<PlannerState, [], [], Gamewee
     get().saveCurrentPlanToServer();
   },
 });
-

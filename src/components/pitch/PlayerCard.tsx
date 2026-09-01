@@ -1,23 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { SquadPick } from '@/types/fpl';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { KitIcon } from '@/components/ui/KitIcon';
-import { FdrFixtureCell } from '@/components/ui/FdrBadge';
-import { formatMoney, canSwapSquadSlots } from '@/lib/fpl-rules';
-import { X, Crown, ArrowLeftRight, AlertTriangle, Trophy } from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import { SquadPick } from "@/types/fpl";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { KitIcon } from "@/components/ui/KitIcon";
+import { FdrFixtureCell } from "@/components/ui/FdrBadge";
+import { formatMoney, canSwapSquadSlots } from "@/lib/fpl-rules";
+import { X, Crown, ArrowLeftRight, AlertTriangle, Trophy } from "lucide-react";
 
 interface PlayerCardProps {
   pick: SquadPick;
 }
 
 export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
-  const { 
-    playerMap, 
-    teamMap, 
-    selectedSlotForSwap, 
-    selectSlotForSwap, 
-    setCaptain, 
-    setViceCaptain, 
+  const {
+    playerMap,
+    teamMap,
+    selectedSlotForSwap,
+    selectSlotForSwap,
+    setCaptain,
+    setViceCaptain,
     openTransferDrawer,
     selectedPlayerForTransfer,
     getPlayerUpcomingFixtures,
@@ -28,7 +28,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
     gameweekPlans,
     isGameweekLocked,
     openPlayerDetail,
-    getPlayerLineupRisk
+    getPlayerLineupRisk,
   } = usePlannerStore();
 
   const [showRoleMenu, setShowRoleMenu] = useState(false);
@@ -39,15 +39,18 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
   useEffect(() => {
     if (!showRoleMenu) return;
     const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
-      if (roleMenuRef.current && !roleMenuRef.current.contains(e.target as Node)) {
+      if (
+        roleMenuRef.current &&
+        !roleMenuRef.current.contains(e.target as Node)
+      ) {
         setShowRoleMenu(false);
       }
     };
-    window.addEventListener('mousedown', handleOutsideClick);
-    window.addEventListener('touchstart', handleOutsideClick);
+    window.addEventListener("mousedown", handleOutsideClick);
+    window.addEventListener("touchstart", handleOutsideClick);
     return () => {
-      window.removeEventListener('mousedown', handleOutsideClick);
-      window.removeEventListener('touchstart', handleOutsideClick);
+      window.removeEventListener("mousedown", handleOutsideClick);
+      window.removeEventListener("touchstart", handleOutsideClick);
     };
   }, [showRoleMenu]);
 
@@ -60,29 +63,40 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
   const isLocked = isGameweekLocked(selectedGameweek);
   const fixtures = getPlayerUpcomingFixtures(player.id, fixtureHorizon);
   const isGK = player.element_type === 1;
-  const isDark = cardTheme === 'dark';
+  const isDark = cardTheme === "dark";
   const rotationRisk = getPlayerLineupRisk(player.id);
 
   const currentSquad = gameweekPlans[selectedGameweek]?.squad || [];
-  const isAnotherSlotSelected = selectedSlotForSwap !== null && selectedSlotForSwap !== pick.position;
-  const isValidDropTarget = isAnotherSlotSelected && canSwapSquadSlots(selectedSlotForSwap, pick.position, currentSquad, playerMap).canSwap;
+  const isAnotherSlotSelected =
+    selectedSlotForSwap !== null && selectedSlotForSwap !== pick.position;
+  const isValidDropTarget =
+    isAnotherSlotSelected &&
+    canSwapSquadSlots(
+      selectedSlotForSwap,
+      pick.position,
+      currentSquad,
+      playerMap,
+    ).canSwap;
   const isInvalidDropTarget = isAnotherSlotSelected && !isValidDropTarget;
 
   // Get actual official score if this is a locked/completed gameweek
-  const rawActualPoints = getPlayerGameweekActualPoints(player.id, selectedGameweek);
+  const rawActualPoints = getPlayerGameweekActualPoints(
+    player.id,
+    selectedGameweek,
+  );
   const actualPoints = rawActualPoints !== null ? rawActualPoints : 0;
   const mult = pick.multiplier > 0 ? pick.multiplier : 1;
   const finalScore = actualPoints * mult;
 
   return (
-    <div 
+    <div
       className="relative flex flex-col items-center select-none group"
       draggable={!isLocked}
       onDragStart={(e) => {
         if (isLocked) return;
         setIsDragging(true);
-        e.dataTransfer.setData('text/fpl-slot', String(pick.position));
-        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData("text/fpl-slot", String(pick.position));
+        e.dataTransfer.effectAllowed = "move";
         selectSlotForSwap(pick.position);
       }}
       onDragEnd={() => {
@@ -93,7 +107,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
       onDragOver={(e) => {
         if (isValidDropTarget) {
           e.preventDefault();
-          e.dataTransfer.dropEffect = 'move';
+          e.dataTransfer.dropEffect = "move";
         }
       }}
       onDragEnter={(e) => {
@@ -108,9 +122,19 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
       onDrop={(e) => {
         e.preventDefault();
         setIsDragOver(false);
-        const sourceSlot = parseInt(e.dataTransfer.getData('text/fpl-slot'), 10);
+        const sourceSlot = parseInt(
+          e.dataTransfer.getData("text/fpl-slot"),
+          10,
+        );
         if (sourceSlot && sourceSlot !== pick.position) {
-          if (canSwapSquadSlots(sourceSlot, pick.position, currentSquad, playerMap).canSwap) {
+          if (
+            canSwapSquadSlots(
+              sourceSlot,
+              pick.position,
+              currentSquad,
+              playerMap,
+            ).canSwap
+          ) {
             selectSlotForSwap(pick.position);
           }
         }
@@ -125,25 +149,23 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
           }
         }}
         className={`relative w-[68px] min-w-[58px] max-w-[78px] sm:w-[134px] sm:min-w-0 sm:max-w-none md:w-[160px] lg:w-[185px] xl:w-[210px] 2xl:w-[225px] rounded-xl sm:rounded-3xl shadow-xl overflow-hidden transition-all duration-200 ${
-          isDark 
-            ? 'bg-slate-900/90 backdrop-blur-md border border-white/20 text-white shadow-2xl shadow-slate-950/80' 
-            : 'bg-white text-slate-900 border border-slate-200/90'
-        } ${
-          isLocked ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'
-        } ${
+          isDark
+            ? "bg-slate-900/90 backdrop-blur-md border border-white/20 text-white shadow-2xl shadow-slate-950/80"
+            : "bg-white text-slate-900 border border-slate-200/90"
+        } ${isLocked ? "cursor-default" : "cursor-grab active:cursor-grabbing"} ${
           isDragging
-            ? 'opacity-30 scale-95 ring-2 ring-dashed ring-amber-400'
+            ? "opacity-30 scale-95 ring-2 ring-dashed ring-amber-400"
             : isDragOver && isValidDropTarget
-            ? 'scale-105 ring-4 ring-emerald-400 shadow-2xl shadow-emerald-500/50 z-30'
-            : isValidDropTarget
-            ? 'ring-2 ring-emerald-400 bg-emerald-950/30 animate-pulse'
-            : isInvalidDropTarget
-            ? 'opacity-30 cursor-not-allowed'
-            : isTransferSelected
-            ? 'ring-2 sm:ring-4 ring-emerald-500 scale-102 shadow-2xl'
-            : isSwapSelected
-            ? 'ring-2 sm:ring-4 ring-amber-400 animate-pulse scale-102 shadow-2xl'
-            : ''
+              ? "scale-105 ring-4 ring-emerald-400 shadow-2xl shadow-emerald-500/50 z-30"
+              : isValidDropTarget
+                ? "ring-2 ring-emerald-400 bg-emerald-950/30 animate-pulse"
+                : isInvalidDropTarget
+                  ? "opacity-30 cursor-not-allowed"
+                  : isTransferSelected
+                    ? "ring-2 sm:ring-4 ring-emerald-500 scale-102 shadow-2xl"
+                    : isSwapSelected
+                      ? "ring-2 sm:ring-4 ring-amber-400 animate-pulse scale-102 shadow-2xl"
+                      : ""
         }`}
       >
         {/* Top-Left Corner: Captain / Vice Captain Badge */}
@@ -164,19 +186,24 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
               V
             </div>
           )}
-          {!isLocked && rotationRisk.riskLevel !== 'safe' && !pick.is_captain && !pick.is_vice_captain && (
-            <span 
-              className={`text-[7.5px] sm:text-[10px] font-black px-1 sm:px-1.5 py-0.2 rounded-full flex items-center shadow border ${
-                rotationRisk.riskLevel === 'high' ? 'bg-rose-600 text-white border-rose-400' :
-                rotationRisk.riskLevel === 'fatigue' ? 'bg-purple-600 text-white border-purple-400' :
-                'bg-amber-500 text-slate-950 border-amber-300'
-              }`}
-              title={`${rotationRisk.startProbability}% Start Chance: ${rotationRisk.humanReason}`}
-            >
-              <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 shrink-0" />
-              {rotationRisk.startProbability}%
-            </span>
-          )}
+          {!isLocked &&
+            rotationRisk.riskLevel !== "safe" &&
+            !pick.is_captain &&
+            !pick.is_vice_captain && (
+              <span
+                className={`text-[7.5px] sm:text-[10px] font-black px-1 sm:px-1.5 py-0.2 rounded-full flex items-center shadow border ${
+                  rotationRisk.riskLevel === "high"
+                    ? "bg-rose-600 text-white border-rose-400"
+                    : rotationRisk.riskLevel === "fatigue"
+                      ? "bg-purple-600 text-white border-purple-400"
+                      : "bg-amber-500 text-slate-950 border-amber-300"
+                }`}
+                title={`${rotationRisk.startProbability}% Start Chance: ${rotationRisk.humanReason}`}
+              >
+                <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 shrink-0" />
+                {rotationRisk.startProbability}%
+              </span>
+            )}
         </div>
 
         {/* Top-Right Corner: Circular Dark '✕' Sell Button (Only for unlocked future gameweeks) */}
@@ -197,72 +224,95 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
         )}
 
         {/* 1. Top Section: Centered Kit */}
-        <div className={`pt-1.5 sm:pt-2.5 pb-0.5 sm:pb-1 px-1 sm:px-2 flex items-center justify-center min-h-[50px] sm:min-h-[90px] md:min-h-[105px] lg:min-h-[120px] xl:min-h-[130px] transition-colors ${
-          isDark 
-            ? 'bg-slate-950/70' 
-            : 'bg-gradient-to-b from-slate-50 to-white'
-        }`}>
-          <div 
+        <div
+          className={`pt-1.5 sm:pt-2.5 pb-0.5 sm:pb-1 px-1 sm:px-2 flex items-center justify-center min-h-[50px] sm:min-h-[90px] md:min-h-[105px] lg:min-h-[120px] xl:min-h-[130px] transition-colors ${
+            isDark
+              ? "bg-slate-950/70"
+              : "bg-gradient-to-b from-slate-50 to-white"
+          }`}
+        >
+          <div
             onClick={(e) => {
               if (!isLocked) {
                 e.stopPropagation();
                 openTransferDrawer(player.id);
               }
             }}
-            className={isLocked ? 'cursor-default' : 'cursor-pointer hover:scale-105 transition-transform'}
-            title={!isLocked ? `Click jersey to transfer / replace ${player.web_name}` : undefined}
+            className={
+              isLocked
+                ? "cursor-default"
+                : "cursor-pointer hover:scale-105 transition-transform"
+            }
+            title={
+              !isLocked
+                ? `Click jersey to transfer / replace ${player.web_name}`
+                : undefined
+            }
           >
-            <KitIcon 
-              teamCode={team?.code} 
-              teamShortName={team?.short_name} 
-              isGoalkeeper={isGK} 
-              className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-26 xl:h-26" 
+            <KitIcon
+              teamCode={team?.code}
+              teamShortName={team?.short_name}
+              isGoalkeeper={isGK}
+              className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-26 xl:h-26"
             />
           </div>
         </div>
 
         {/* 2. Middle Section: Player Surname + Price (Stacked on mobile for full name width, side-by-side on desktop) */}
-        <div 
+        <div
           onClick={(e) => {
             e.stopPropagation();
             openPlayerDetail(player.id);
           }}
           className={`px-1 sm:px-3 py-0.5 sm:py-1.5 flex flex-col sm:flex-row items-center sm:items-baseline justify-center sm:justify-between gap-0 sm:gap-1 cursor-pointer transition-colors group/name text-center sm:text-left ${
-            isDark 
-              ? 'bg-slate-900 hover:bg-slate-800' 
-              : 'bg-white hover:bg-slate-100'
+            isDark
+              ? "bg-slate-900 hover:bg-slate-800"
+              : "bg-white hover:bg-slate-100"
           }`}
           title={`Click to view ${player.web_name} full match statistics & fixtures`}
         >
-          <span className={`w-full sm:w-auto font-black text-[10.5px] sm:text-sm md:text-[15px] lg:text-[16.5px] xl:text-[18px] truncate leading-tight tracking-tight transition-colors ${
-            isDark 
-              ? 'text-white group-hover/name:text-emerald-400' 
-              : 'text-slate-900 group-hover/name:text-emerald-700'
-          }`}>
+          <span
+            className={`w-full sm:w-auto font-black text-[10.5px] sm:text-sm md:text-[15px] lg:text-[16.5px] xl:text-[18px] truncate leading-tight tracking-tight transition-colors ${
+              isDark
+                ? "text-white group-hover/name:text-emerald-400"
+                : "text-slate-900 group-hover/name:text-emerald-700"
+            }`}
+          >
             {player.web_name}
           </span>
-          <span className={`font-bold text-[9px] sm:text-xs md:text-[13px] lg:text-[14.5px] xl:text-[15.5px] leading-tight shrink-0 font-mono ${
-            isDark ? 'text-emerald-400' : 'text-slate-600'
-          }`}>
+          <span
+            className={`font-bold text-[9px] sm:text-xs md:text-[13px] lg:text-[14.5px] xl:text-[15.5px] leading-tight shrink-0 font-mono ${
+              isDark ? "text-emerald-400" : "text-slate-600"
+            }`}
+          >
             {formatMoney(player.now_cost, true)}
           </span>
         </div>
 
         {/* 3. Thin Divider Line */}
-        <div className={`w-full h-[1px] ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
+        <div
+          className={`w-full h-[1px] ${isDark ? "bg-white/10" : "bg-slate-200"}`}
+        />
 
         {/* 4. Bottom Section: If Locked -> Show Official Points Bar! If Future -> Show Upcoming Fixture Cells */}
         {isLocked ? (
-          <div className={`py-1 sm:py-2 px-1 sm:px-3 text-center flex items-center justify-center gap-1 sm:gap-1.5 font-mono ${
-            pick.is_captain 
-              ? 'bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-black shadow-inner' 
-              : finalScore >= 6 
-              ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-black' 
-              : 'bg-slate-900 text-slate-200 font-bold'
-          }`}>
-            <Trophy className={`w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 ${pick.is_captain ? 'text-slate-950' : 'text-amber-400'}`} />
+          <div
+            className={`py-1 sm:py-2 px-1 sm:px-3 text-center flex items-center justify-center gap-1 sm:gap-1.5 font-mono ${
+              pick.is_captain
+                ? "bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-black shadow-inner"
+                : finalScore >= 6
+                  ? "bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-black"
+                  : "bg-slate-900 text-slate-200 font-bold"
+            }`}
+          >
+            <Trophy
+              className={`w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 ${pick.is_captain ? "text-slate-950" : "text-amber-400"}`}
+            />
             <span className="text-xs sm:text-base tracking-tight font-black">
-              {finalScore} <span className="text-[9px] sm:text-[11px] font-sans uppercase font-bold">pts</span>
+              {finalScore}{" "}
+              <span className="text-[9px] sm:text-[11px] font-sans uppercase font-bold">
+                pts
+              </span>
             </span>
             {pick.multiplier > 1 && (
               <span className="text-[8px] sm:text-[10px] bg-black/20 px-0.5 sm:px-1 rounded font-sans font-bold hidden xs:inline">
@@ -271,9 +321,15 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
             )}
           </div>
         ) : (
-          <div className={`flex w-full overflow-hidden divide-x ${isDark ? 'divide-slate-950' : 'divide-slate-300'}`}>
+          <div
+            className={`flex w-full overflow-hidden divide-x ${isDark ? "divide-slate-950" : "divide-slate-300"}`}
+          >
             {fixtures.map((fix, idx) => (
-              <FdrFixtureCell key={`${fix.event}-${idx}`} fixture={fix} totalCount={fixtureHorizon} />
+              <FdrFixtureCell
+                key={`${fix.event}-${idx}`}
+                fixture={fix}
+                totalCount={fixtureHorizon}
+              />
             ))}
             {fixtures.length === 0 && (
               <div className="py-1 sm:py-2 text-center text-[8px] sm:text-xs text-slate-400 w-full bg-slate-100 font-medium">
@@ -285,11 +341,13 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
 
         {/* Desktop-Only Sub/Role Trigger Bar (Hidden on compact mobile screens to keep cards sleek) */}
         {!isLocked && (
-          <div className={`hidden sm:flex items-center justify-between px-3 py-1 text-[11px] transition-colors ${
-            isDark 
-              ? 'bg-slate-950 text-slate-400 border-t border-white/10' 
-              : 'bg-slate-50 text-slate-500 border-t border-slate-200'
-          }`}>
+          <div
+            className={`hidden sm:flex items-center justify-between px-3 py-1 text-[11px] transition-colors ${
+              isDark
+                ? "bg-slate-950 text-slate-400 border-t border-white/10"
+                : "bg-slate-50 text-slate-500 border-t border-slate-200"
+            }`}
+          >
             <button
               type="button"
               onClick={(e) => {
@@ -297,11 +355,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
                 selectSlotForSwap(pick.position);
               }}
               className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${
-                isSwapSelected 
-                  ? 'bg-amber-400 text-slate-950 font-black shadow' 
-                  : isDark 
-                  ? 'hover:text-white font-bold' 
-                  : 'hover:text-slate-900 font-bold'
+                isSwapSelected
+                  ? "bg-amber-400 text-slate-950 font-black shadow"
+                  : isDark
+                    ? "hover:text-white font-bold"
+                    : "hover:text-slate-900 font-bold"
               }`}
             >
               <ArrowLeftRight className="w-3 h-3" />
@@ -324,7 +382,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
 
       {/* Role Popover (Only for unlocked future gameweeks) */}
       {!isLocked && showRoleMenu && (
-        <div 
+        <div
           ref={roleMenuRef}
           className="absolute top-16 z-50 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-2 flex flex-col gap-1 min-w-[150px] text-xs text-white animate-in fade-in zoom-in-95"
         >

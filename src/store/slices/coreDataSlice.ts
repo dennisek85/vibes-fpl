@@ -1,14 +1,22 @@
-import { StateCreator } from 'zustand';
-import { PlannerState, CoreDataSlice } from '../types';
-import { FPLPlayer, FPLTeam, FPLEvent } from '@/types/fpl';
-import { getActivePin } from '@/lib/auth';
+import { StateCreator } from "zustand";
+import { PlannerState, CoreDataSlice } from "../types";
+import { FPLPlayer, FPLTeam, FPLEvent } from "@/types/fpl";
+import { getActivePin } from "@/lib/auth";
 
-import { setCustomMatchOddsData } from '@/lib/oddsTracker';
-import { setCustomFormMomentumData } from '@/lib/formTracker';
-import { setCustomTop10kData } from '@/lib/ownershipTracker';
-import { evaluatePlayerRotationRisk, RotationRiskReport } from '@/utils/aiLineupRiskEngine';
+import { setCustomMatchOddsData } from "@/lib/oddsTracker";
+import { setCustomFormMomentumData } from "@/lib/formTracker";
+import { setCustomTop10kData } from "@/lib/ownershipTracker";
+import {
+  evaluatePlayerRotationRisk,
+  RotationRiskReport,
+} from "@/utils/aiLineupRiskEngine";
 
-export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSlice> = (set, get) => ({
+export const createCoreDataSlice: StateCreator<
+  PlannerState,
+  [],
+  [],
+  CoreDataSlice
+> = (set, get) => ({
   isLoading: false,
   isSaving: false,
   lastSavedTime: null,
@@ -36,18 +44,18 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
     if (!player) {
       return {
         playerId,
-        playerName: 'Player',
-        teamShort: 'EPL',
+        playerName: "Player",
+        teamShort: "EPL",
         startProbability: 100,
-        riskLevel: 'safe',
-        primaryReasonKey: 'defaultSafe',
-        humanReason: '',
-        officialNewsQuote: '',
+        riskLevel: "safe",
+        primaryReasonKey: "defaultSafe",
+        humanReason: "",
+        officialNewsQuote: "",
         isSubRisk: false,
-        expectedMinutes: 90
+        expectedMinutes: 90,
       };
     }
-    const teamShort = get().teamMap.get(player.team)?.short_name || 'EPL';
+    const teamShort = get().teamMap.get(player.team)?.short_name || "EPL";
     const evaluated = evaluatePlayerRotationRisk(player, teamShort);
     get().lineupRiskMap.set(playerId, evaluated);
     return evaluated;
@@ -70,25 +78,29 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
   initFPLData: async () => {
     set({ isLoading: true, error: null });
     try {
-      const [bootstrapRes, fixturesRes, projectionsRes, telemetryRes] = await Promise.all([
-        fetch('/api/fpl/bootstrap'),
-        fetch('/api/fpl/fixtures'),
-        fetch('/api/fpl/projections').catch(() => null),
-        fetch('/api/fpl/telemetry').catch(() => null),
-      ]);
+      const [bootstrapRes, fixturesRes, projectionsRes, telemetryRes] =
+        await Promise.all([
+          fetch("/api/fpl/bootstrap"),
+          fetch("/api/fpl/fixtures"),
+          fetch("/api/fpl/projections").catch(() => null),
+          fetch("/api/fpl/telemetry").catch(() => null),
+        ]);
 
-      if (!bootstrapRes.ok) throw new Error('Failed to load FPL core data');
+      if (!bootstrapRes.ok) throw new Error("Failed to load FPL core data");
       const bootstrapData = await bootstrapRes.json();
       const fixturesData = fixturesRes.ok ? await fixturesRes.json() : [];
 
       if (telemetryRes && telemetryRes.ok) {
         try {
           const telemetryData = await telemetryRes.json();
-          if (telemetryData.matchOdds) setCustomMatchOddsData(telemetryData.matchOdds);
-          if (telemetryData.formMomentum) setCustomFormMomentumData(telemetryData.formMomentum);
-          if (telemetryData.top10kOwnership) setCustomTop10kData(telemetryData.top10kOwnership);
+          if (telemetryData.matchOdds)
+            setCustomMatchOddsData(telemetryData.matchOdds);
+          if (telemetryData.formMomentum)
+            setCustomFormMomentumData(telemetryData.formMomentum);
+          if (telemetryData.top10kOwnership)
+            setCustomTop10kData(telemetryData.top10kOwnership);
         } catch (e) {
-          console.warn('Telemetry hydration note:', e);
+          console.warn("Telemetry hydration note:", e);
         }
       }
 
@@ -96,13 +108,16 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
       if (projectionsRes && projectionsRes.ok) {
         try {
           const projData = await projectionsRes.json();
-          if (projData.predictions && typeof projData.predictions === 'object') {
+          if (
+            projData.predictions &&
+            typeof projData.predictions === "object"
+          ) {
             for (const [key, val] of Object.entries(projData.predictions)) {
               aiProjectionsMap.set(key, Number(val));
             }
           }
         } catch (e) {
-          console.warn('OpenFPL projections parsing warning:', e);
+          console.warn("OpenFPL projections parsing warning:", e);
         }
       }
 
@@ -115,12 +130,15 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
       const lineupRiskMap = new Map<number, RotationRiskReport>();
       for (const p of bootstrapData.elements || []) {
         playerMap.set(p.id, p);
-        const teamShort = teamMap.get(p.team)?.short_name || 'EPL';
+        const teamShort = teamMap.get(p.team)?.short_name || "EPL";
         lineupRiskMap.set(p.id, evaluatePlayerRotationRisk(p, teamShort));
       }
 
       const events: FPLEvent[] = bootstrapData.events || [];
-      const nextEvent = events.find(e => e.is_next) || events.find(e => e.is_current) || events[0];
+      const nextEvent =
+        events.find((e) => e.is_next) ||
+        events.find((e) => e.is_current) ||
+        events[0];
       const nextGwId = nextEvent ? nextEvent.id : 3;
 
       set({
@@ -144,9 +162,11 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
         set({ isLoading: false });
       }
     } catch (err: any) {
-      console.error('initFPLData error:', err);
-      set({ error: err.message || 'Failed to initialize FPL data', isLoading: false });
+      console.error("initFPLData error:", err);
+      set({
+        error: err.message || "Failed to initialize FPL data",
+        isLoading: false,
+      });
     }
   },
 });
-

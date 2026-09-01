@@ -1,12 +1,14 @@
-import React from 'react';
-import { SquadPick } from '@/types/fpl';
-import { PlayerCard } from './PlayerCard';
+import React from "react";
+import { SquadPick } from "@/types/fpl";
+import { PlayerCard } from "./PlayerCard";
 
 interface VerticalBenchProps {
   benchPicks: SquadPick[];
 }
 
-export const VerticalBenchBar: React.FC<VerticalBenchProps> = ({ benchPicks }) => {
+export const VerticalBenchBar: React.FC<VerticalBenchProps> = ({
+  benchPicks,
+}) => {
   return (
     <aside className="hidden lg:flex flex-col bg-slate-900/85 backdrop-blur-xl p-3.5 rounded-3xl border border-white/15 shadow-xl w-52 sm:w-60 xl:w-68 2xl:w-76 flex-shrink-0 justify-between select-none">
       <div className="flex items-center justify-between pb-2 border-b border-white/10 flex-shrink-0">
@@ -21,10 +23,13 @@ export const VerticalBenchBar: React.FC<VerticalBenchProps> = ({ benchPicks }) =
 
       <div className="flex flex-col justify-around flex-1 py-1 gap-2">
         {benchPicks.map((pick, idx) => {
-          const posLabel = idx === 0 ? 'GK' : `Bench ${idx}`;
+          const posLabel = idx === 0 ? "GK" : `Bench ${idx}`;
 
           return (
-            <div key={pick.element || idx} className="flex flex-col items-center">
+            <div
+              key={pick.element || idx}
+              className="flex flex-col items-center"
+            >
               <span className="text-xs font-black text-slate-300 mb-0.5 uppercase tracking-wider">
                 {posLabel}
               </span>

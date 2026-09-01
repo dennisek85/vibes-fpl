@@ -72,7 +72,12 @@
       "penalties": ["salah", "szoboszlai", "gakpo", "mac allister"],
       "corners": ["trent", "alexander-arnold", "szoboszlai", "robertson"],
       "directFreeKicks": ["trent", "alexander-arnold", "szoboszlai", "salah"],
-      "indirectFreeKicks": ["trent", "alexander-arnold", "szoboszlai", "robertson"]
+      "indirectFreeKicks": [
+        "trent",
+        "alexander-arnold",
+        "szoboszlai",
+        "robertson"
+      ]
     },
     "MCI": {
       "penalties": ["haaland", "de bruyne", "foden"],
@@ -124,4 +129,3 @@
     }
   }
 }
-

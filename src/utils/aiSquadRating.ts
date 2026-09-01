@@ -1,6 +1,6 @@
-import { FPLPlayer, SquadPick } from '@/types/fpl';
-import { solveOptimalSquad } from '@/utils/aiOptimalSquadSolver';
-import { optimizeLineup } from '@/utils/aiOptimizer';
+import { FPLPlayer, SquadPick } from "@/types/fpl";
+import { solveOptimalSquad } from "@/utils/aiOptimalSquadSolver";
+import { optimizeLineup } from "@/utils/aiOptimizer";
 
 export interface SquadRatingResult {
   overallPercentage: number;
@@ -21,7 +21,12 @@ export interface SquadRatingResult {
  * Baseline floor for an average active team (~3.0 xP/player) = 68%
  * Optimal benchmark squad (~6.5-7.5 xP/player) = 99%
  */
-function calibratePercentile(actualXp: number, benchmarkXp: number, baselinePerPlayer: number, playerCount: number): number {
+function calibratePercentile(
+  actualXp: number,
+  benchmarkXp: number,
+  baselinePerPlayer: number,
+  playerCount: number,
+): number {
   if (benchmarkXp <= 0 || actualXp <= 0) return 65;
 
   const baselineXp = playerCount * baselinePerPlayer;
@@ -46,8 +51,8 @@ function calibratePercentile(actualXp: number, benchmarkXp: number, baselinePerP
 function getCaptaincyEffectiveValue(player: FPLPlayer, baseXp: number): number {
   if (!player) return baseXp;
 
-  const xg = parseFloat(player.expected_goals || '0');
-  const threat = parseFloat(player.threat || '0');
+  const xg = parseFloat(player.expected_goals || "0");
+  const threat = parseFloat(player.threat || "0");
   const pos = player.element_type;
 
   let multiGoalFactor = 0;
@@ -78,17 +83,19 @@ export function calculateSquadRating(
   getXp: (playerId: number, gw: number) => number,
   horizon: number = 3,
   totalBudget?: number,
-  availableFreeTransfers: number = 1
+  availableFreeTransfers: number = 1,
 ): SquadRatingResult | null {
-  if (!squad || squad.length === 0 || !allPlayers || allPlayers.length === 0) return null;
+  if (!squad || squad.length === 0 || !allPlayers || allPlayers.length === 0)
+    return null;
 
   // 1. Time-Decayed Horizon Evaluation (50% GW1, 30% GW2, 20% GW3)
   const effectiveHorizon = Math.max(1, horizon || 3);
-  const weights = effectiveHorizon === 1 
-    ? [1.0] 
-    : effectiveHorizon === 3 
-    ? [0.50, 0.30, 0.20] 
-    : [0.35, 0.25, 0.18, 0.12, 0.10];
+  const weights =
+    effectiveHorizon === 1
+      ? [1.0]
+      : effectiveHorizon === 3
+        ? [0.5, 0.3, 0.2]
+        : [0.35, 0.25, 0.18, 0.12, 0.1];
 
   const getDecayedHorizonXp = (pId: number): number => {
     let sum = 0;
@@ -105,13 +112,22 @@ export function calculateSquadRating(
 
   // 2. Evaluate Dynamic Starting Lineup for this Gameweek's Fixtures
   // (In future Gameweeks, top tools evaluate the squad's best 11 rather than penalizing if bench player has easier fixture)
-  const optimalLineupForGw = optimizeLineup(squad, playerMap, gameweek, getDecayedHorizonXp);
-  const evaluatedSquad = optimalLineupForGw ? optimalLineupForGw.optimizedSquad : squad;
+  const optimalLineupForGw = optimizeLineup(
+    squad,
+    playerMap,
+    gameweek,
+    getDecayedHorizonXp,
+  );
+  const evaluatedSquad = optimalLineupForGw
+    ? optimalLineupForGw.optimizedSquad
+    : squad;
 
-  const yourStarters = evaluatedSquad.filter(p => p.position <= 11);
+  const yourStarters = evaluatedSquad.filter((p) => p.position <= 11);
   if (yourStarters.length === 0) return null;
 
-  const benchPicks = evaluatedSquad.filter(p => p.position > 11).sort((a, b) => a.position - b.position);
+  const benchPicks = evaluatedSquad
+    .filter((p) => p.position > 11)
+    .sort((a, b) => a.position - b.position);
 
   let yourGkDefXp = 0;
   let yourMidXp = 0;
@@ -126,8 +142,10 @@ export function calculateSquadRating(
   let fwdCount = 0;
 
   // Check actual user captain pick from current squad
-  const userCaptainPick = squad.find(p => p.is_captain);
-  const userCapPlayer = userCaptainPick ? playerMap.get(userCaptainPick.element) : null;
+  const userCaptainPick = squad.find((p) => p.is_captain);
+  const userCapPlayer = userCaptainPick
+    ? playerMap.get(userCaptainPick.element)
+    : null;
 
   for (const pick of yourStarters) {
     const player = playerMap.get(pick.element);
@@ -160,7 +178,12 @@ export function calculateSquadRating(
 
   // Auto-pick captain if unset
   if (!yourCaptainPlayer && yourStarters.length > 0) {
-    const sorted = [...yourStarters].map(p => ({ pick: p, xp: getDecayedHorizonXp(p.element), player: playerMap.get(p.element) }))
+    const sorted = [...yourStarters]
+      .map((p) => ({
+        pick: p,
+        xp: getDecayedHorizonXp(p.element),
+        player: playerMap.get(p.element),
+      }))
       .sort((a, b) => b.xp - a.xp);
     if (sorted[0]?.player) {
       yourCapXp = sorted[0].xp;
@@ -172,7 +195,9 @@ export function calculateSquadRating(
   }
 
   // Calculate explosive captaincy return
-  const effectiveCapValue = yourCaptainPlayer ? getCaptaincyEffectiveValue(yourCaptainPlayer, yourCapXp) : yourCapXp;
+  const effectiveCapValue = yourCaptainPlayer
+    ? getCaptaincyEffectiveValue(yourCaptainPlayer, yourCapXp)
+    : yourCapXp;
 
   // Realistic Auto-Sub Bench Weighting + Bench Enabler Budget Efficiency Bonus
   let yourBenchXp = 0;
@@ -182,7 +207,8 @@ export function calculateSquadRating(
     const p = playerMap.get(bPick.element);
     if (!p) return;
     const bXp = getDecayedHorizonXp(p.id);
-    const weight = idx === 0 ? 0.03 : idx === 1 ? 0.12 : idx === 2 ? 0.06 : 0.02;
+    const weight =
+      idx === 0 ? 0.03 : idx === 1 ? 0.12 : idx === 2 ? 0.06 : 0.02;
     yourBenchXp += bXp * weight;
 
     if (p.now_cost <= 45) {
@@ -196,10 +222,22 @@ export function calculateSquadRating(
   // Stored Free Transfer Equity (+1.2 xP per accumulated FT beyond 1 in future rounds)
   const ftEquity = Math.max(0, (availableFreeTransfers - 1) * 1.2);
 
-  const yourTotalScore = Math.round((yourStartersSum + effectiveCapValue + yourBenchXp + benchEnablerSavings + viceCaptainContingency + ftEquity) * 10) / 10;
+  const yourTotalScore =
+    Math.round(
+      (yourStartersSum +
+        effectiveCapValue +
+        yourBenchXp +
+        benchEnablerSavings +
+        viceCaptainContingency +
+        ftEquity) *
+        10,
+    ) / 10;
 
   // 3. Benchmark against Budget-Feasible Optimal Squad
-  const squadValue = squad.reduce((sum, p) => sum + (playerMap.get(p.element)?.now_cost || 0), 0);
+  const squadValue = squad.reduce(
+    (sum, p) => sum + (playerMap.get(p.element)?.now_cost || 0),
+    0,
+  );
   const effectiveBudget = Math.max(1000, totalBudget || squadValue);
 
   const optimalResult = solveOptimalSquad(
@@ -209,25 +247,43 @@ export function calculateSquadRating(
     gameweek,
     getXp,
     squad,
-    effectiveHorizon
+    effectiveHorizon,
   );
 
   // Best Captain in squad & game
   const candidatesInSquad = yourStarters
-    .map(p => {
+    .map((p) => {
       const pl = playerMap.get(p.element);
       const rawXp = pl ? getDecayedHorizonXp(pl.id) : 0;
-      return { player: pl, xp: rawXp, effectiveVal: pl ? getCaptaincyEffectiveValue(pl, rawXp) : rawXp };
+      return {
+        player: pl,
+        xp: rawXp,
+        effectiveVal: pl ? getCaptaincyEffectiveValue(pl, rawXp) : rawXp,
+      };
     })
     .sort((a, b) => b.effectiveVal - a.effectiveVal);
 
-  const bestInSquadCaptain = candidatesInSquad[0] || { player: yourCaptainPlayer, xp: yourCapXp, effectiveVal: effectiveCapValue };
+  const bestInSquadCaptain = candidatesInSquad[0] || {
+    player: yourCaptainPlayer,
+    xp: yourCapXp,
+    effectiveVal: effectiveCapValue,
+  };
 
   const candidatesAll = allPlayers
-    .filter(p => (p.chance_of_playing_next_round === null || p.chance_of_playing_next_round >= 50) && p.status !== 'i' && p.status !== 's')
-    .map(p => {
+    .filter(
+      (p) =>
+        (p.chance_of_playing_next_round === null ||
+          p.chance_of_playing_next_round >= 50) &&
+        p.status !== "i" &&
+        p.status !== "s",
+    )
+    .map((p) => {
       const rawXp = getDecayedHorizonXp(p.id);
-      return { player: p, xp: rawXp, effectiveVal: getCaptaincyEffectiveValue(p, rawXp) };
+      return {
+        player: p,
+        xp: rawXp,
+        effectiveVal: getCaptaincyEffectiveValue(p, rawXp),
+      };
     })
     .sort((a, b) => b.effectiveVal - a.effectiveVal);
 
@@ -240,8 +296,9 @@ export function calculateSquadRating(
 
   if (optimalResult) {
     benchmarkScore = optimalResult.totalProjectedPoints;
-    optimalResult.starters.forEach(s => {
-      if (s.player.element_type === 1 || s.player.element_type === 2) benchmarkDefGkXp += s.xp;
+    optimalResult.starters.forEach((s) => {
+      if (s.player.element_type === 1 || s.player.element_type === 2)
+        benchmarkDefGkXp += s.xp;
       else if (s.player.element_type === 3) benchmarkMidXp += s.xp;
       else if (s.player.element_type === 4) benchmarkFwdXp += s.xp;
     });
@@ -253,13 +310,39 @@ export function calculateSquadRating(
   }
 
   // 4. Calibrate ratings to professional percentile curves
-  const overallPercentage = calibratePercentile(yourTotalScore, benchmarkScore, 3.1, 11);
-  const defensePercentage = calibratePercentile(yourGkDefXp, benchmarkDefGkXp, 2.5, defCount || 5);
-  const midfieldPercentage = calibratePercentile(yourMidXp, benchmarkMidXp, 3.2, midCount || 4);
-  const forwardPercentage = calibratePercentile(yourFwdXp, benchmarkFwdXp, 3.5, fwdCount || 2);
+  const overallPercentage = calibratePercentile(
+    yourTotalScore,
+    benchmarkScore,
+    3.1,
+    11,
+  );
+  const defensePercentage = calibratePercentile(
+    yourGkDefXp,
+    benchmarkDefGkXp,
+    2.5,
+    defCount || 5,
+  );
+  const midfieldPercentage = calibratePercentile(
+    yourMidXp,
+    benchmarkMidXp,
+    3.2,
+    midCount || 4,
+  );
+  const forwardPercentage = calibratePercentile(
+    yourFwdXp,
+    benchmarkFwdXp,
+    3.5,
+    fwdCount || 2,
+  );
 
-  const capRatio = bestInSquadCaptain.effectiveVal > 0 ? (effectiveCapValue / bestInSquadCaptain.effectiveVal) : 1.0;
-  const captainPercentage = Math.min(100, Math.max(15, Math.round(capRatio * 100)));
+  const capRatio =
+    bestInSquadCaptain.effectiveVal > 0
+      ? effectiveCapValue / bestInSquadCaptain.effectiveVal
+      : 1.0;
+  const captainPercentage = Math.min(
+    100,
+    Math.max(15, Math.round(capRatio * 100)),
+  );
 
   return {
     overallPercentage,
@@ -269,9 +352,9 @@ export function calculateSquadRating(
     captainPercentage,
     yourTotalXp: yourTotalScore,
     benchmarkTotalXp: benchmarkScore,
-    bestCaptainName: bestOverallCaptain.player?.web_name || 'Best Cap',
+    bestCaptainName: bestOverallCaptain.player?.web_name || "Best Cap",
     bestCaptainXp: bestOverallCaptain.xp,
-    yourCaptainName: yourCaptainPlayer ? yourCaptainPlayer.web_name : 'None',
-    yourCaptainXp: yourCapXp
+    yourCaptainName: yourCaptainPlayer ? yourCaptainPlayer.web_name : "None",
+    yourCaptainXp: yourCapXp,
   };
 }

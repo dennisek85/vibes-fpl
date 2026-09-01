@@ -1,62 +1,62 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { FootballPitch } from '@/components/pitch/FootballPitch';
-import { BenchBar } from '@/components/pitch/BenchBar';
-import { VerticalBenchBar } from '@/components/pitch/VerticalBenchBar';
-import { StrategyDock } from '@/components/planning/StrategyDock';
-import { LeftStrategyPanel } from '@/components/planning/LeftStrategyPanel';
-import { PlayerMarketDrawer } from '@/components/market/PlayerMarketDrawer';
-import { TeamImportModal } from '@/components/ui/TeamImportModal';
-import { OverridesModal } from '@/components/ui/OverridesModal';
-import { SavePlanModal } from '@/components/ui/SavePlanModal';
-import { PinAuthModal } from '@/components/ui/PinAuthModal';
-import { AiScoutModal } from '@/components/modals/AiScoutModal';
-import { MobileMenuDrawer } from '@/components/modals/MobileMenuDrawer';
-import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
-import { LineupRiskRadar } from '@/components/planning/LineupRiskRadar';
-import { AiPerformanceView } from '@/components/analytics/AiPerformanceView';
-import { MlLabView } from '@/components/analytics/MlLabView';
-import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
-import { logoutPin, isPinVerified } from '@/lib/auth';
-import { formatMoney } from '@/lib/fpl-rules';
-import { useSquadTelemetry } from '@/hooks/useSquadTelemetry';
-import { UI_TEXT } from '@/lib/ui-text';
-import { 
-  Trophy, 
-  Search, 
-  Save, 
-  ShoppingBag, 
-  Lock, 
-  CheckCircle2, 
-  Loader2, 
-  ChevronLeft, 
-  ChevronRight, 
-  LayoutGrid, 
-  TableProperties, 
+import React, { useEffect, useState } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { FootballPitch } from "@/components/pitch/FootballPitch";
+import { BenchBar } from "@/components/pitch/BenchBar";
+import { VerticalBenchBar } from "@/components/pitch/VerticalBenchBar";
+import { StrategyDock } from "@/components/planning/StrategyDock";
+import { LeftStrategyPanel } from "@/components/planning/LeftStrategyPanel";
+import { PlayerMarketDrawer } from "@/components/market/PlayerMarketDrawer";
+import { TeamImportModal } from "@/components/ui/TeamImportModal";
+import { OverridesModal } from "@/components/ui/OverridesModal";
+import { SavePlanModal } from "@/components/ui/SavePlanModal";
+import { PinAuthModal } from "@/components/ui/PinAuthModal";
+import { AiScoutModal } from "@/components/modals/AiScoutModal";
+import { MobileMenuDrawer } from "@/components/modals/MobileMenuDrawer";
+import { PlayerMatrixView } from "@/components/matrix/PlayerMatrixView";
+import { LineupRiskRadar } from "@/components/planning/LineupRiskRadar";
+import { AiPerformanceView } from "@/components/analytics/AiPerformanceView";
+import { MlLabView } from "@/components/analytics/MlLabView";
+import { PlayerDetailModal } from "@/components/player/PlayerDetailModal";
+import { logoutPin, isPinVerified } from "@/lib/auth";
+import { formatMoney } from "@/lib/fpl-rules";
+import { useSquadTelemetry } from "@/hooks/useSquadTelemetry";
+import { UI_TEXT } from "@/lib/ui-text";
+import {
+  Trophy,
+  Search,
+  Save,
+  ShoppingBag,
+  Lock,
+  CheckCircle2,
+  Loader2,
+  ChevronLeft,
+  ChevronRight,
+  LayoutGrid,
+  TableProperties,
   TrendingUp,
   AlertTriangle,
   Sparkles,
-  Menu 
-} from 'lucide-react';
+  Menu,
+} from "lucide-react";
 
 export default function PlannerPage() {
-  const { 
-    initFPLData, 
-    teamSummary, 
-    selectedGameweek, 
-    selectGameweek, 
-    isGameweekLocked, 
-    gameweekPlans, 
-    showAiPredictions, 
-    currentView, 
-    setCurrentView, 
-    openTransferDrawer, 
-    activePin, 
-    isSaving, 
-    events, 
-    fetchLivePointsForGameweek 
+  const {
+    initFPLData,
+    teamSummary,
+    selectedGameweek,
+    selectGameweek,
+    isGameweekLocked,
+    gameweekPlans,
+    showAiPredictions,
+    currentView,
+    setCurrentView,
+    openTransferDrawer,
+    activePin,
+    isSaving,
+    events,
+    fetchLivePointsForGameweek,
   } = usePlannerStore();
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -70,15 +70,18 @@ export default function PlannerPage() {
     initFPLData();
     setIsAuthenticated(isPinVerified());
 
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
-      const isLabParam = urlParams.get('lab') === '1' || urlParams.get('lab') === 'true' || urlParams.get('ml') === 'true';
-      const isStored = localStorage.getItem('vibes_lab_mode') === 'true';
+      const isLabParam =
+        urlParams.get("lab") === "1" ||
+        urlParams.get("lab") === "true" ||
+        urlParams.get("ml") === "true";
+      const isStored = localStorage.getItem("vibes_lab_mode") === "true";
 
       if (isLabParam) {
-        localStorage.setItem('vibes_lab_mode', 'true');
+        localStorage.setItem("vibes_lab_mode", "true");
         setIsLabUnlocked(true);
-        setCurrentView('lab');
+        setCurrentView("lab");
       } else if (isStored) {
         setIsLabUnlocked(true);
       }
@@ -87,12 +90,18 @@ export default function PlannerPage() {
 
   // Smart in-view live match poller (every 60s when viewing an ongoing gameweek)
   useEffect(() => {
-    const currentEvent = events.find(e => e.is_current);
-    const isViewingOngoingGw = currentEvent && selectedGameweek === currentEvent.id && !currentEvent.finished;
+    const currentEvent = events.find((e) => e.is_current);
+    const isViewingOngoingGw =
+      currentEvent &&
+      selectedGameweek === currentEvent.id &&
+      !currentEvent.finished;
     if (!isViewingOngoingGw) return;
 
     const interval = setInterval(() => {
-      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+      if (
+        typeof document !== "undefined" &&
+        document.visibilityState === "visible"
+      ) {
         fetchLivePointsForGameweek(selectedGameweek, true);
       }
     }, 60000);
@@ -115,7 +124,9 @@ export default function PlannerPage() {
 
   const currentPlan = gameweekPlans[selectedGameweek];
   const benchPicks = currentPlan?.squad
-    ? currentPlan.squad.filter(p => p.position > 11).sort((a, b) => a.position - b.position)
+    ? currentPlan.squad
+        .filter((p) => p.position > 11)
+        .sort((a, b) => a.position - b.position)
     : [];
   const isLocked = isGameweekLocked(selectedGameweek);
 
@@ -127,14 +138,12 @@ export default function PlannerPage() {
     availableFT,
     currentTransfers,
     currentChip,
-    squadRating
+    squadRating,
   } = useSquadTelemetry();
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col items-center">
-      {!isAuthenticated && (
-        <PinAuthModal onSuccess={handleAuthSuccess} />
-      )}
+      {!isAuthenticated && <PinAuthModal onSuccess={handleAuthSuccess} />}
 
       {/* Top Navigation Header with Centered Gameweek Stepper & View Switcher */}
       <header className="w-full bg-slate-950/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 px-2 sm:px-4 py-1.5 flex justify-center overflow-x-hidden">
@@ -155,10 +164,16 @@ export default function PlannerPage() {
               </div>
               {teamSummary ? (
                 <p className="hidden sm:block text-[10.5px] text-slate-400 truncate max-w-[130px] sm:max-w-[240px] leading-tight">
-                  {teamSummary.name} · <span className="text-slate-300">{teamSummary.player_first_name} {teamSummary.player_last_name}</span>
+                  {teamSummary.name} ·{" "}
+                  <span className="text-slate-300">
+                    {teamSummary.player_first_name}{" "}
+                    {teamSummary.player_last_name}
+                  </span>
                 </p>
               ) : (
-                <p className="hidden sm:block text-[10.5px] text-slate-400 leading-tight">{UI_TEXT.app.enterPinOrImport}</p>
+                <p className="hidden sm:block text-[10.5px] text-slate-400 leading-tight">
+                  {UI_TEXT.app.enterPinOrImport}
+                </p>
               )}
             </div>
           </div>
@@ -166,14 +181,22 @@ export default function PlannerPage() {
           {/* Center: Gameweek Arrow Stepper & View Switcher */}
           <div className="flex items-center gap-1 sm:gap-2">
             {/* Minimalist Gameweek Arrow Stepper */}
-            <div className={`flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner transition-all ${
-              currentView !== 'pitch' ? 'opacity-35 pointer-events-none select-none' : ''
-            }`}>
+            <div
+              className={`flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner transition-all ${
+                currentView !== "pitch"
+                  ? "opacity-35 pointer-events-none select-none"
+                  : ""
+              }`}
+            >
               <button
-                disabled={currentView !== 'pitch' || selectedGameweek <= 1}
+                disabled={currentView !== "pitch" || selectedGameweek <= 1}
                 onClick={() => selectGameweek(selectedGameweek - 1)}
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-                title={currentView !== 'pitch' ? UI_TEXT.gameweekStepper.matrixDisabledTooltip : UI_TEXT.gameweekStepper.prevTooltip}
+                title={
+                  currentView !== "pitch"
+                    ? UI_TEXT.gameweekStepper.matrixDisabledTooltip
+                    : UI_TEXT.gameweekStepper.prevTooltip
+                }
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -183,20 +206,28 @@ export default function PlannerPage() {
                   <span className="text-xs sm:text-sm font-black text-white uppercase tracking-wider font-mono">
                     {UI_TEXT.gameweekStepper.gwLabel(selectedGameweek)}
                   </span>
-                  {isLocked && (
-                    <Lock className="w-3 h-3 text-amber-400" />
-                  )}
+                  {isLocked && <Lock className="w-3 h-3 text-amber-400" />}
                 </div>
                 <span className="text-[9px] sm:text-[10px] text-slate-400 font-mono block leading-none">
-                  {currentView === 'matrix' ? UI_TEXT.gameweekStepper.global : currentView === 'analytics' ? 'All-Time' : isLocked ? UI_TEXT.gameweekStepper.completed : UI_TEXT.gameweekStepper.planned}
+                  {currentView === "matrix"
+                    ? UI_TEXT.gameweekStepper.global
+                    : currentView === "analytics"
+                      ? "All-Time"
+                      : isLocked
+                        ? UI_TEXT.gameweekStepper.completed
+                        : UI_TEXT.gameweekStepper.planned}
                 </span>
               </div>
 
               <button
-                disabled={currentView !== 'pitch' || selectedGameweek >= 38}
+                disabled={currentView !== "pitch" || selectedGameweek >= 38}
                 onClick={() => selectGameweek(selectedGameweek + 1)}
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
-                title={currentView !== 'pitch' ? UI_TEXT.gameweekStepper.matrixDisabledTooltip : UI_TEXT.gameweekStepper.nextTooltip}
+                title={
+                  currentView !== "pitch"
+                    ? UI_TEXT.gameweekStepper.matrixDisabledTooltip
+                    : UI_TEXT.gameweekStepper.nextTooltip
+                }
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -205,64 +236,72 @@ export default function PlannerPage() {
             {/* View Switcher: Pitch View vs Matrix Table View vs AI Analytics View */}
             <div className="flex items-center bg-slate-900/90 border border-white/10 rounded-2xl p-0.5 sm:p-1 shadow-inner">
               <button
-                onClick={() => setCurrentView('pitch')}
+                onClick={() => setCurrentView("pitch")}
                 className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
-                  currentView === 'pitch'
-                    ? 'bg-emerald-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200'
+                  currentView === "pitch"
+                    ? "bg-emerald-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-slate-200"
                 }`}
                 title={UI_TEXT.app.views.pitchTooltip}
               >
                 <LayoutGrid className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                <span className="hidden md:inline">{UI_TEXT.app.views.pitch}</span>
+                <span className="hidden md:inline">
+                  {UI_TEXT.app.views.pitch}
+                </span>
               </button>
 
               <button
-                onClick={() => setCurrentView('matrix')}
+                onClick={() => setCurrentView("matrix")}
                 className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
-                  currentView === 'matrix'
-                    ? 'bg-emerald-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200'
+                  currentView === "matrix"
+                    ? "bg-emerald-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-slate-200"
                 }`}
                 title={UI_TEXT.app.views.matrixTooltip}
               >
                 <TableProperties className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                <span className="hidden md:inline">{UI_TEXT.app.views.matrix}</span>
+                <span className="hidden md:inline">
+                  {UI_TEXT.app.views.matrix}
+                </span>
               </button>
 
               <button
-                onClick={() => setCurrentView('rotation')}
+                onClick={() => setCurrentView("rotation")}
                 className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
-                  currentView === 'rotation'
-                    ? 'bg-amber-500 text-slate-950 shadow-md font-extrabold'
-                    : 'text-slate-400 hover:text-slate-200'
+                  currentView === "rotation"
+                    ? "bg-amber-500 text-slate-950 shadow-md font-extrabold"
+                    : "text-slate-400 hover:text-slate-200"
                 }`}
                 title={UI_TEXT.app.views.rotationTooltip}
               >
                 <AlertTriangle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 group-hover:text-amber-300" />
-                <span className="hidden md:inline">{UI_TEXT.app.views.rotation}</span>
+                <span className="hidden md:inline">
+                  {UI_TEXT.app.views.rotation}
+                </span>
               </button>
 
               <button
-                onClick={() => setCurrentView('analytics')}
+                onClick={() => setCurrentView("analytics")}
                 className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
-                  currentView === 'analytics'
-                    ? 'bg-emerald-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200'
+                  currentView === "analytics"
+                    ? "bg-emerald-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-slate-200"
                 }`}
                 title={UI_TEXT.app.views.analyticsTooltip}
               >
                 <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                <span className="hidden md:inline">{UI_TEXT.app.views.analytics}</span>
+                <span className="hidden md:inline">
+                  {UI_TEXT.app.views.analytics}
+                </span>
               </button>
 
               {isLabUnlocked && (
                 <button
-                  onClick={() => setCurrentView('lab')}
+                  onClick={() => setCurrentView("lab")}
                   className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
-                    currentView === 'lab'
-                      ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/30'
-                      : 'text-purple-300/80 hover:text-purple-200 hover:bg-purple-950/40'
+                    currentView === "lab"
+                      ? "bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/30"
+                      : "text-purple-300/80 hover:text-purple-200 hover:bg-purple-950/40"
                   }`}
                   title="Private Quantitative ML Lab & A/B Shootout"
                 >
@@ -285,7 +324,12 @@ export default function PlannerPage() {
                 ) : (
                   <>
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>PIN: <strong className="font-mono text-white">{activePin}</strong></span>
+                    <span>
+                      PIN:{" "}
+                      <strong className="font-mono text-white">
+                        {activePin}
+                      </strong>
+                    </span>
                   </>
                 )}
               </div>
@@ -334,17 +378,21 @@ export default function PlannerPage() {
               title="Open Strategy & Tools Menu"
             >
               <Menu className="w-4 h-4 text-emerald-400" />
-              <span className="text-[11px] font-black hidden xs:inline">Menu</span>
+              <span className="text-[11px] font-black hidden xs:inline">
+                Menu
+              </span>
             </button>
           </div>
         </div>
       </header>
 
       {/* Main Content Area: Visual Pitch View vs Stats Matrix View */}
-      {currentView === 'pitch' ? (
+      {currentView === "pitch" ? (
         <div className="w-full max-w-full lg:max-w-[99vw] px-1 sm:px-2 py-1.5 flex flex-col lg:flex-row items-stretch justify-center gap-2.5 lg:h-[calc(100vh-62px)] lg:overflow-hidden animate-in fade-in duration-200">
           {/* Left Desktop Panel: Chips, AI Radar, Horizon, Optimizer & Overrides */}
-          <LeftStrategyPanel onOpenOverrides={() => setIsOverridesModalOpen(true)} />
+          <LeftStrategyPanel
+            onOpenOverrides={() => setIsOverridesModalOpen(true)}
+          />
 
           {/* Center Column: Telemetry Header, Stadium Pitch & Mobile Bench */}
           <section className="flex-1 flex flex-col items-center justify-between gap-1.5 min-w-0 max-w-full lg:h-full lg:overflow-hidden">
@@ -352,22 +400,36 @@ export default function PlannerPage() {
             <div className="w-full flex sm:hidden items-center justify-between px-3 py-1.5 bg-slate-900/90 border border-white/10 rounded-2xl text-[11px] font-mono shadow-md">
               <div className="flex items-center gap-1">
                 <span className="text-slate-400 font-bold font-sans">FT:</span>
-                <strong className="text-emerald-400">{Math.max(0, availableFT - currentTransfers)}/{availableFT}</strong>
+                <strong className="text-emerald-400">
+                  {Math.max(0, availableFT - currentTransfers)}/{availableFT}
+                </strong>
               </div>
               <div className="flex items-center gap-1">
-                <span className="text-slate-400 font-bold font-sans">Bank:</span>
-                <strong className="text-emerald-300">{formatMoney(bank)}</strong>
+                <span className="text-slate-400 font-bold font-sans">
+                  Bank:
+                </span>
+                <strong className="text-emerald-300">
+                  {formatMoney(bank)}
+                </strong>
               </div>
               <div className="flex items-center gap-1">
                 <span className="text-slate-400 font-bold font-sans">xP:</span>
-                <strong className="text-cyan-300">{showAiPredictions ? `${totalProjectedXp}` : `${squadFormSum.toFixed(1)}`}</strong>
+                <strong className="text-cyan-300">
+                  {showAiPredictions
+                    ? `${totalProjectedXp}`
+                    : `${squadFormSum.toFixed(1)}`}
+                </strong>
                 {gameweekActualPoints !== null && (
-                  <span className="text-[10px] text-emerald-400 font-bold">({gameweekActualPoints} pts)</span>
+                  <span className="text-[10px] text-emerald-400 font-bold">
+                    ({gameweekActualPoints} pts)
+                  </span>
                 )}
               </div>
               <div className="flex items-center gap-1 font-sans">
                 <span className="text-slate-400 font-bold">Chip:</span>
-                <strong className="text-purple-300 uppercase text-[10px]">{currentChip !== 'none' ? currentChip : 'None'}</strong>
+                <strong className="text-purple-300 uppercase text-[10px]">
+                  {currentChip !== "none" ? currentChip : "None"}
+                </strong>
               </div>
             </div>
 
@@ -376,21 +438,32 @@ export default function PlannerPage() {
               {/* Free Transfers */}
               <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">{UI_TEXT.telemetry.freeTransfers}</span>
+                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">
+                    {UI_TEXT.telemetry.freeTransfers}
+                  </span>
                   <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-emerald-400 font-mono">
-                    {Math.max(0, availableFT - currentTransfers)} / {availableFT}
+                    {Math.max(0, availableFT - currentTransfers)} /{" "}
+                    {availableFT}
                   </span>
                 </div>
-                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm sm:text-base">🔄</div>
+                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm sm:text-base">
+                  🔄
+                </div>
               </div>
 
               {/* Bank */}
               <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">{UI_TEXT.telemetry.inTheBank}</span>
-                  <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-white font-mono">{formatMoney(bank)}</span>
+                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">
+                    {UI_TEXT.telemetry.inTheBank}
+                  </span>
+                  <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-white font-mono">
+                    {formatMoney(bank)}
+                  </span>
                 </div>
-                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm sm:text-base">💰</div>
+                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm sm:text-base">
+                  💰
+                </div>
               </div>
 
               {/* Forecast xP & Gameweek Points Card */}
@@ -398,41 +471,61 @@ export default function PlannerPage() {
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">
-                      {showAiPredictions ? UI_TEXT.telemetry.gwProjectedXp : UI_TEXT.telemetry.projectedForm}
+                      {showAiPredictions
+                        ? UI_TEXT.telemetry.gwProjectedXp
+                        : UI_TEXT.telemetry.projectedForm}
                     </span>
                     {showAiPredictions && squadRating && (
                       <span className="text-[10px] xl:text-[11px] font-black text-emerald-300 bg-emerald-950/80 px-1.5 py-0.2 rounded-md border border-emerald-500/40 font-mono">
-                        {UI_TEXT.telemetry.ratingBadge(squadRating.overallPercentage)}
+                        {UI_TEXT.telemetry.ratingBadge(
+                          squadRating.overallPercentage,
+                        )}
                       </span>
                     )}
                   </div>
                   <div className="flex items-baseline gap-2">
                     <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-cyan-400 font-mono">
-                      {showAiPredictions ? `${totalProjectedXp} ${UI_TEXT.common.pointsShort}` : `${squadFormSum.toFixed(1)} ${UI_TEXT.common.avg}`}
+                      {showAiPredictions
+                        ? `${totalProjectedXp} ${UI_TEXT.common.pointsShort}`
+                        : `${squadFormSum.toFixed(1)} ${UI_TEXT.common.avg}`}
                     </span>
                     {isLocked && gameweekActualPoints !== null ? (
                       <span className="text-[10.5px] xl:text-[11.5px] font-bold text-emerald-400 font-mono">
-                        {UI_TEXT.telemetry.actualScoreBadge(gameweekActualPoints)}
+                        {UI_TEXT.telemetry.actualScoreBadge(
+                          gameweekActualPoints,
+                        )}
                       </span>
                     ) : showAiPredictions && squadRating ? (
                       <span className="text-[10px] text-slate-400 font-mono hidden 2xl:inline">
-                        {UI_TEXT.telemetry.detailedRating(squadRating.defensePercentage, squadRating.midfieldPercentage, squadRating.forwardPercentage)}
+                        {UI_TEXT.telemetry.detailedRating(
+                          squadRating.defensePercentage,
+                          squadRating.midfieldPercentage,
+                          squadRating.forwardPercentage,
+                        )}
                       </span>
                     ) : null}
                   </div>
                 </div>
-                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 text-sm sm:text-base">📈</div>
+                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 text-sm sm:text-base">
+                  📈
+                </div>
               </div>
 
               {/* Active Strategy / Chips */}
               <div className="bg-slate-900/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">{UI_TEXT.telemetry.strategy}</span>
+                  <span className="text-[11px] sm:text-xs xl:text-sm font-bold text-slate-400 uppercase tracking-wider block">
+                    {UI_TEXT.telemetry.strategy}
+                  </span>
                   <span className="text-xs sm:text-sm lg:text-base font-black text-slate-200 uppercase truncate block">
-                    {currentChip && currentChip !== 'none' ? `${currentChip}` : UI_TEXT.telemetry.noChipActive}
+                    {currentChip && currentChip !== "none"
+                      ? `${currentChip}`
+                      : UI_TEXT.telemetry.noChipActive}
                   </span>
                 </div>
-                <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 text-sm sm:text-base">⚡</div>
+                <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 text-sm sm:text-base">
+                  ⚡
+                </div>
               </div>
             </div>
 
@@ -448,7 +541,9 @@ export default function PlannerPage() {
 
             {/* Mobile Only: Bottom Strategy Carousel Dock */}
             <div className="w-full lg:hidden">
-              <StrategyDock onOpenOverrides={() => setIsOverridesModalOpen(true)} />
+              <StrategyDock
+                onOpenOverrides={() => setIsOverridesModalOpen(true)}
+              />
             </div>
           </section>
 
@@ -457,17 +552,17 @@ export default function PlannerPage() {
             <VerticalBenchBar benchPicks={benchPicks} />
           </aside>
         </div>
-      ) : currentView === 'matrix' ? (
+      ) : currentView === "matrix" ? (
         /* Player Projections & Metrics Matrix View */
         <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-2 animate-in fade-in duration-200">
           <PlayerMatrixView />
         </div>
-      ) : currentView === 'rotation' ? (
+      ) : currentView === "rotation" ? (
         /* Pre-Deadline Lineup & Rotation Risk Radar View */
         <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-3 animate-in fade-in duration-200">
           <LineupRiskRadar />
         </div>
-      ) : currentView === 'lab' ? (
+      ) : currentView === "lab" ? (
         /* Private Quantitative ML Lab & A/B Shootout View */
         <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-3 animate-in fade-in duration-200">
           <MlLabView />
@@ -481,18 +576,39 @@ export default function PlannerPage() {
 
       {/* Global Drawers & Modals */}
       <PlayerMarketDrawer />
-      <TeamImportModal isOpen={isImportModalOpen} onClose={() => setIsImportModalOpen(false)} />
-      <OverridesModal isOpen={isOverridesModalOpen} onClose={() => setIsOverridesModalOpen(false)} />
-      <SavePlanModal isOpen={isSaveModalOpen} onClose={() => setIsSaveModalOpen(false)} />
+      <TeamImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+      />
+      <OverridesModal
+        isOpen={isOverridesModalOpen}
+        onClose={() => setIsOverridesModalOpen(false)}
+      />
+      <SavePlanModal
+        isOpen={isSaveModalOpen}
+        onClose={() => setIsSaveModalOpen(false)}
+      />
       <AiScoutModal />
       <PlayerDetailModal />
       <MobileMenuDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        onOpenImport={() => { setIsMobileMenuOpen(false); setIsImportModalOpen(true); }}
-        onOpenSave={() => { setIsMobileMenuOpen(false); setIsSaveModalOpen(true); }}
-        onOpenOverrides={() => { setIsMobileMenuOpen(false); setIsOverridesModalOpen(true); }}
-        onLogout={() => { setIsMobileMenuOpen(false); handleLogout(); }}
+        onOpenImport={() => {
+          setIsMobileMenuOpen(false);
+          setIsImportModalOpen(true);
+        }}
+        onOpenSave={() => {
+          setIsMobileMenuOpen(false);
+          setIsSaveModalOpen(true);
+        }}
+        onOpenOverrides={() => {
+          setIsMobileMenuOpen(false);
+          setIsOverridesModalOpen(true);
+        }}
+        onLogout={() => {
+          setIsMobileMenuOpen(false);
+          handleLogout();
+        }}
       />
     </main>
   );

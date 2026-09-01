@@ -1,35 +1,42 @@
-import React, { useState } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { X, RotateCcw } from 'lucide-react';
+import React, { useState } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { X, RotateCcw } from "lucide-react";
 
 interface OverridesModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const OverridesModal: React.FC<OverridesModalProps> = ({ isOpen, onClose }) => {
-  const { 
-    selectedGameweek, 
-    gameweekPlans, 
-    setBankOverride, 
-    setFreeTransfersOverride 
+export const OverridesModal: React.FC<OverridesModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const {
+    selectedGameweek,
+    gameweekPlans,
+    setBankOverride,
+    setFreeTransfersOverride,
   } = usePlannerStore();
 
   const plan = gameweekPlans[selectedGameweek];
   const [bankInput, setBankInput] = useState<string>(
-    plan?.calculatedBank !== undefined ? (plan.calculatedBank / 10).toString() : '0.0'
+    plan?.calculatedBank !== undefined
+      ? (plan.calculatedBank / 10).toString()
+      : "0.0",
   );
   const [ftInput, setFtInput] = useState<string>(
-    plan?.availableTransfers !== undefined ? plan.availableTransfers.toString() : '1'
+    plan?.availableTransfers !== undefined
+      ? plan.availableTransfers.toString()
+      : "1",
   );
 
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") onClose();
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
   if (!isOpen || !plan) return null;
@@ -54,11 +61,11 @@ export const OverridesModal: React.FC<OverridesModalProps> = ({ isOpen, onClose 
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm cursor-pointer"
       onClick={onClose}
     >
-      <div 
+      <div
         className="w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl p-5 shadow-2xl animate-in zoom-in-95 cursor-default"
         onClick={(e) => e.stopPropagation()}
       >

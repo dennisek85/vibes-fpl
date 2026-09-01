@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { X, Save, FolderOpen, Check } from 'lucide-react';
-import { SavedPlan } from '@/types/fpl';
+import React, { useState, useEffect } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { X, Save, FolderOpen, Check } from "lucide-react";
+import { SavedPlan } from "@/types/fpl";
 
 interface SavePlanModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const SavePlanModal: React.FC<SavePlanModalProps> = ({ isOpen, onClose }) => {
+export const SavePlanModal: React.FC<SavePlanModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const { teamSummary, startGameweek, gameweekPlans } = usePlannerStore();
   const [plans, setPlans] = useState<SavedPlan[]>([]);
-  const [planName, setPlanName] = useState('');
+  const [planName, setPlanName] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -26,7 +29,7 @@ export const SavePlanModal: React.FC<SavePlanModalProps> = ({ isOpen, onClose })
 
   const fetchPlans = async () => {
     try {
-      const res = await fetch('/api/plans');
+      const res = await fetch("/api/plans");
       if (res.ok) {
         const data = await res.json();
         setPlans(data);
@@ -39,10 +42,10 @@ export const SavePlanModal: React.FC<SavePlanModalProps> = ({ isOpen, onClose })
   React.useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") onClose();
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -63,9 +66,9 @@ export const SavePlanModal: React.FC<SavePlanModalProps> = ({ isOpen, onClose })
         gameweekPlans,
       };
 
-      const res = await fetch('/api/plans', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/plans", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(planPayload),
       });
 
@@ -86,8 +89,8 @@ export const SavePlanModal: React.FC<SavePlanModalProps> = ({ isOpen, onClose })
       teamSummary: {
         id: plan.teamId,
         name: plan.teamName,
-        player_first_name: plan.managerName.split(' ')[0] || 'Manager',
-        player_last_name: plan.managerName.split(' ').slice(1).join(' ') || '',
+        player_first_name: plan.managerName.split(" ")[0] || "Manager",
+        player_last_name: plan.managerName.split(" ").slice(1).join(" ") || "",
         summary_overall_points: 0,
         summary_overall_rank: 0,
         current_event: plan.startGameweek,
@@ -100,11 +103,11 @@ export const SavePlanModal: React.FC<SavePlanModalProps> = ({ isOpen, onClose })
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in cursor-pointer"
       onClick={onClose}
     >
-      <div 
+      <div
         className="w-full max-w-md bg-slate-900 border border-white/15 rounded-3xl p-6 shadow-2xl cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
@@ -114,17 +117,27 @@ export const SavePlanModal: React.FC<SavePlanModalProps> = ({ isOpen, onClose })
               <FolderOpen className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">Save / Load Plans</h3>
-              <p className="text-xs text-slate-400">Manage saved strategies for your team</p>
+              <h3 className="text-base font-bold text-white">
+                Save / Load Plans
+              </h3>
+              <p className="text-xs text-slate-400">
+                Manage saved strategies for your team
+              </p>
             </div>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-1">
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white p-1"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Save Current Plan Section */}
-        <form onSubmit={handleSave} className="py-4 space-y-3 border-b border-white/10">
+        <form
+          onSubmit={handleSave}
+          className="py-4 space-y-3 border-b border-white/10"
+        >
           <div>
             <label className="block text-xs font-bold text-slate-200 mb-1">
               Plan Title
@@ -151,7 +164,7 @@ export const SavePlanModal: React.FC<SavePlanModalProps> = ({ isOpen, onClose })
             ) : (
               <>
                 <Save className="w-4 h-4" />
-                {isSaving ? 'Saving...' : 'Save Current Multi-GW Strategy'}
+                {isSaving ? "Saving..." : "Save Current Multi-GW Strategy"}
               </>
             )}
           </button>

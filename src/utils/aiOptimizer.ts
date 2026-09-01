@@ -1,4 +1,4 @@
-import { SquadPick, FPLPlayer } from '@/types/fpl';
+import { SquadPick, FPLPlayer } from "@/types/fpl";
 
 export interface OptimizationResult {
   optimizedSquad: SquadPick[];
@@ -29,7 +29,7 @@ export function optimizeLineup(
   squad: SquadPick[],
   playerMap: Map<number, FPLPlayer>,
   gameweek: number,
-  getXp: (playerId: number, gw: number) => number
+  getXp: (playerId: number, gw: number) => number,
 ): OptimizationResult | null {
   if (!squad || squad.length !== 15) return null;
 
@@ -51,16 +51,21 @@ export function optimizeLineup(
       pick: { ...pick },
       player,
       xp,
-      type: player.element_type
+      type: player.element_type,
     });
   }
 
-  const gks = enriched.filter(p => p.type === 1).sort((a, b) => b.xp - a.xp);
-  const defs = enriched.filter(p => p.type === 2).sort((a, b) => b.xp - a.xp);
-  const mids = enriched.filter(p => p.type === 3).sort((a, b) => b.xp - a.xp);
-  const fwds = enriched.filter(p => p.type === 4).sort((a, b) => b.xp - a.xp);
+  const gks = enriched.filter((p) => p.type === 1).sort((a, b) => b.xp - a.xp);
+  const defs = enriched.filter((p) => p.type === 2).sort((a, b) => b.xp - a.xp);
+  const mids = enriched.filter((p) => p.type === 3).sort((a, b) => b.xp - a.xp);
+  const fwds = enriched.filter((p) => p.type === 4).sort((a, b) => b.xp - a.xp);
 
-  if (gks.length !== 2 || defs.length !== 5 || mids.length !== 5 || fwds.length !== 3) {
+  if (
+    gks.length !== 2 ||
+    defs.length !== 5 ||
+    mids.length !== 5 ||
+    fwds.length !== 3
+  ) {
     return null; // Invalid squad structure
   }
 
@@ -82,22 +87,45 @@ export function optimizeLineup(
     const selectedFwds = fwds.slice(0, form.fwd);
     const benchFwds = fwds.slice(form.fwd);
 
-    const starters = [startingGk, ...selectedDefs, ...selectedMids, ...selectedFwds];
-    
+    const starters = [
+      startingGk,
+      ...selectedDefs,
+      ...selectedMids,
+      ...selectedFwds,
+    ];
+
     // Sort starters descending by xP to identify Captain & Vice-Captain
     const sortedStartersByXp = [...starters].sort((a, b) => b.xp - a.xp);
     const cap = sortedStartersByXp[0];
 
     // Total points = sum of all starters + 1x bonus for captain (since captain gets 2x)
     const baseSum = starters.reduce((acc, p) => acc + p.xp, 0);
-    const totalWithCap = baseSum + cap.xp;
+
+    // Defensive Covariance Discount (Modern Portfolio Theory):
+    let covarianceDiscount = 0;
+    const defClubCounts = new Map<number, number>();
+    for (const d of selectedDefs) {
+      defClubCounts.set(
+        d.player.team,
+        (defClubCounts.get(d.player.team) || 0) + 1,
+      );
+    }
+    for (const count of defClubCounts.values()) {
+      if (count >= 2) {
+        covarianceDiscount += (count - 1) * 0.35;
+      }
+    }
+
+    const totalWithCap = baseSum + cap.xp - covarianceDiscount;
 
     if (totalWithCap > bestScore) {
       bestScore = totalWithCap;
       bestFormation = form;
       bestStarters = starters;
       // All remaining outfielders sorted by xP descending for bench priority
-      bestBenchOutfield = [...benchDefs, ...benchMids, ...benchFwds].sort((a, b) => b.xp - a.xp);
+      bestBenchOutfield = [...benchDefs, ...benchMids, ...benchFwds].sort(
+        (a, b) => b.xp - a.xp,
+      );
     }
   }
 
@@ -115,11 +143,16 @@ export function optimizeLineup(
   // 13: Bench 1
   // 14: Bench 2
   // 15: Bench 3
-  const starterDefs = bestStarters.filter(p => p.type === 2);
-  const starterMids = bestStarters.filter(p => p.type === 3);
-  const starterFwds = bestStarters.filter(p => p.type === 4);
+  const starterDefs = bestStarters.filter((p) => p.type === 2);
+  const starterMids = bestStarters.filter((p) => p.type === 3);
+  const starterFwds = bestStarters.filter((p) => p.type === 4);
 
-  const orderedStartingPicks = [startingGk, ...starterDefs, ...starterMids, ...starterFwds];
+  const orderedStartingPicks = [
+    startingGk,
+    ...starterDefs,
+    ...starterMids,
+    ...starterFwds,
+  ];
   const orderedBenchPicks = [benchGk, ...bestBenchOutfield];
 
   const finalSquadPicks: SquadPick[] = [];
@@ -135,7 +168,7 @@ export function optimizeLineup(
       position: idx + 1,
       is_captain: isCap,
       is_vice_captain: isVc,
-      multiplier: isCap ? 2 : 1
+      multiplier: isCap ? 2 : 1,
     });
   });
 
@@ -147,7 +180,7 @@ export function optimizeLineup(
       position: 12 + idx,
       is_captain: false,
       is_vice_captain: false,
-      multiplier: 0
+      multiplier: 0,
     });
   });
 
@@ -161,8 +194,8 @@ export function optimizeLineup(
     startersCount: {
       def: bestFormation.def,
       mid: bestFormation.mid,
-      fwd: bestFormation.fwd
-    }
+      fwd: bestFormation.fwd,
+    },
   };
 }
 
@@ -174,15 +207,19 @@ export function autoOrderBench(
   squad: SquadPick[],
   playerMap: Map<number, FPLPlayer>,
   gameweek: number,
-  getXp: (playerId: number, gw: number) => number
+  getXp: (playerId: number, gw: number) => number,
 ): SquadPick[] {
   if (!squad || squad.length !== 15) return squad;
 
-  const starters = squad.filter(p => p.position <= 11);
-  const bench = squad.filter(p => p.position > 11);
+  const starters = squad.filter((p) => p.position <= 11);
+  const bench = squad.filter((p) => p.position > 11);
 
-  const benchGk = bench.find(p => playerMap.get(p.element)?.element_type === 1);
-  const benchOutfield = bench.filter(p => playerMap.get(p.element)?.element_type !== 1);
+  const benchGk = bench.find(
+    (p) => playerMap.get(p.element)?.element_type === 1,
+  );
+  const benchOutfield = bench.filter(
+    (p) => playerMap.get(p.element)?.element_type !== 1,
+  );
 
   const sortedOutfield = [...benchOutfield].sort((a, b) => {
     const xpA = getXp(a.element, gameweek);
@@ -193,7 +230,13 @@ export function autoOrderBench(
   const newSquad: SquadPick[] = [...starters];
 
   if (benchGk) {
-    newSquad.push({ ...benchGk, position: 12, multiplier: 0, is_captain: false, is_vice_captain: false });
+    newSquad.push({
+      ...benchGk,
+      position: 12,
+      multiplier: 0,
+      is_captain: false,
+      is_vice_captain: false,
+    });
   }
 
   sortedOutfield.forEach((pick, idx) => {
@@ -202,10 +245,9 @@ export function autoOrderBench(
       position: 13 + idx,
       multiplier: 0,
       is_captain: false,
-      is_vice_captain: false
+      is_vice_captain: false,
     });
   });
 
   return newSquad;
 }
-

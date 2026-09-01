@@ -1,5 +1,5 @@
-import { FPLPlayer, SquadPick } from '@/types/fpl';
-import { LEGAL_FORMATIONS } from '@/utils/aiOptimizer';
+import { FPLPlayer, SquadPick } from "@/types/fpl";
+import { LEGAL_FORMATIONS } from "@/utils/aiOptimizer";
 
 export interface OptimalSquadResult {
   squad: SquadPick[];
@@ -11,7 +11,12 @@ export interface OptimalSquadResult {
   captain: FPLPlayer;
   viceCaptain: FPLPlayer;
   formation: string;
-  starters: { player: FPLPlayer; xp: number; isCaptain: boolean; isViceCaptain: boolean }[];
+  starters: {
+    player: FPLPlayer;
+    xp: number;
+    isCaptain: boolean;
+    isViceCaptain: boolean;
+  }[];
   bench: { player: FPLPlayer; xp: number }[];
   xpGain: number;
   transfersCount: number;
@@ -32,7 +37,7 @@ export function solveOptimalSquad(
   gameweek: number,
   getXp: (playerId: number, gw: number) => number,
   currentSquad: SquadPick[] = [],
-  horizon: number = 1
+  horizon: number = 1,
 ): OptimalSquadResult | null {
   if (!allPlayers || allPlayers.length === 0) return null;
 
@@ -60,8 +65,12 @@ export function solveOptimalSquad(
 
   for (const p of allPlayers) {
     // Avoid red-flagged / unavailable players
-    if (p.chance_of_playing_next_round !== null && p.chance_of_playing_next_round < 50) continue;
-    if (p.status === 'i' || p.status === 's') continue;
+    if (
+      p.chance_of_playing_next_round !== null &&
+      p.chance_of_playing_next_round < 50
+    )
+      continue;
+    if (p.status === "i" || p.status === "s") continue;
 
     const xp = getHorizonXp(p.id);
     candidates.push({
@@ -70,23 +79,29 @@ export function solveOptimalSquad(
       pos: p.element_type,
       cost: p.now_cost,
       team: p.team,
-      xp
+      xp,
     });
   }
 
-  const gks = candidates.filter(c => c.pos === 1);
-  const defs = candidates.filter(c => c.pos === 2);
-  const mids = candidates.filter(c => c.pos === 3);
-  const fwds = candidates.filter(c => c.pos === 4);
+  const gks = candidates.filter((c) => c.pos === 1);
+  const defs = candidates.filter((c) => c.pos === 2);
+  const mids = candidates.filter((c) => c.pos === 3);
+  const fwds = candidates.filter((c) => c.pos === 4);
 
   // Group candidates into:
   // Top tier (high xP) & Enabler tier (lowest cost with decent xP)
-  const filterTopCandidates = (list: Candidate[], topCount: number, enablerCount: number): Candidate[] => {
+  const filterTopCandidates = (
+    list: Candidate[],
+    topCount: number,
+    enablerCount: number,
+  ): Candidate[] => {
     const byXp = [...list].sort((a, b) => b.xp - a.xp).slice(0, topCount);
-    const byCost = [...list].sort((a, b) => a.cost - b.cost || b.xp - a.xp).slice(0, enablerCount);
+    const byCost = [...list]
+      .sort((a, b) => a.cost - b.cost || b.xp - a.xp)
+      .slice(0, enablerCount);
     const map = new Map<number, Candidate>();
-    byXp.forEach(c => map.set(c.id, c));
-    byCost.forEach(c => map.set(c.id, c));
+    byXp.forEach((c) => map.set(c.id, c));
+    byCost.forEach((c) => map.set(c.id, c));
     return Array.from(map.values());
   };
 
@@ -96,20 +111,35 @@ export function solveOptimalSquad(
   const candidateFwds = filterTopCandidates(fwds, 16, 6);
 
   // Quick evaluation of a 15-man squad selection
-  const evaluate15 = (chosen: Candidate[]): { 
-    totalScore: number; 
-    starters: Candidate[]; 
-    bench: Candidate[]; 
-    captain: Candidate; 
-    viceCaptain: Candidate; 
-    formation: string 
+  const evaluate15 = (
+    chosen: Candidate[],
+  ): {
+    totalScore: number;
+    starters: Candidate[];
+    bench: Candidate[];
+    captain: Candidate;
+    viceCaptain: Candidate;
+    formation: string;
   } | null => {
-    const gksChosen = chosen.filter(c => c.pos === 1).sort((a, b) => b.xp - a.xp);
-    const defsChosen = chosen.filter(c => c.pos === 2).sort((a, b) => b.xp - a.xp);
-    const midsChosen = chosen.filter(c => c.pos === 3).sort((a, b) => b.xp - a.xp);
-    const fwdsChosen = chosen.filter(c => c.pos === 4).sort((a, b) => b.xp - a.xp);
+    const gksChosen = chosen
+      .filter((c) => c.pos === 1)
+      .sort((a, b) => b.xp - a.xp);
+    const defsChosen = chosen
+      .filter((c) => c.pos === 2)
+      .sort((a, b) => b.xp - a.xp);
+    const midsChosen = chosen
+      .filter((c) => c.pos === 3)
+      .sort((a, b) => b.xp - a.xp);
+    const fwdsChosen = chosen
+      .filter((c) => c.pos === 4)
+      .sort((a, b) => b.xp - a.xp);
 
-    if (gksChosen.length !== 2 || defsChosen.length !== 5 || midsChosen.length !== 5 || fwdsChosen.length !== 3) {
+    if (
+      gksChosen.length !== 2 ||
+      defsChosen.length !== 5 ||
+      midsChosen.length !== 5 ||
+      fwdsChosen.length !== 3
+    ) {
       return null;
     }
 
@@ -119,7 +149,7 @@ export function solveOptimalSquad(
     let bestFormScore = -Infinity;
     let bestFormStarters: Candidate[] = [];
     let bestFormBenchOutfield: Candidate[] = [];
-    let bestFormationStr = '3-5-2';
+    let bestFormationStr = "3-5-2";
 
     for (const form of LEGAL_FORMATIONS) {
       const formDefs = defsChosen.slice(0, form.def);
@@ -135,17 +165,36 @@ export function solveOptimalSquad(
       const sortedStarters = [...starters].sort((a, b) => b.xp - a.xp);
       const cap = sortedStarters[0];
 
-      const score = starters.reduce((s, p) => s + p.xp, 0) + cap.xp;
+      // Defensive Covariance Discount (Modern Portfolio Theory):
+      // Stacking 2+ defenders from the same team creates negative covariance in tough fixtures
+      // (1 conceded goal wipes out both clean sheets simultaneously).
+      let covarianceDiscount = 0;
+      const defTeamCounts = new Map<number, number>();
+      for (const d of formDefs) {
+        defTeamCounts.set(d.team, (defTeamCounts.get(d.team) || 0) + 1);
+      }
+      for (const count of defTeamCounts.values()) {
+        if (count >= 2) {
+          covarianceDiscount += (count - 1) * 0.35;
+        }
+      }
+
+      const score =
+        starters.reduce((s, p) => s + p.xp, 0) + cap.xp - covarianceDiscount;
 
       if (score > bestFormScore) {
         bestFormScore = score;
         bestFormStarters = starters;
-        bestFormBenchOutfield = [...benchDefs, ...benchMids, ...benchFwds].sort((a, b) => b.xp - a.xp);
+        bestFormBenchOutfield = [...benchDefs, ...benchMids, ...benchFwds].sort(
+          (a, b) => b.xp - a.xp,
+        );
         bestFormationStr = `${form.def}-${form.mid}-${form.fwd}`;
       }
     }
 
-    const sortedBestStarters = [...bestFormStarters].sort((a, b) => b.xp - a.xp);
+    const sortedBestStarters = [...bestFormStarters].sort(
+      (a, b) => b.xp - a.xp,
+    );
 
     return {
       totalScore: Math.round(bestFormScore * 10) / 10,
@@ -153,7 +202,7 @@ export function solveOptimalSquad(
       bench: [benchGk, ...bestFormBenchOutfield],
       captain: sortedBestStarters[0],
       viceCaptain: sortedBestStarters[1],
-      formation: bestFormationStr
+      formation: bestFormationStr,
     };
   };
 
@@ -180,7 +229,9 @@ export function solveOptimalSquad(
   const sortedFwds = [...candidateFwds].sort((a, b) => b.xp - a.xp);
 
   const premiumGks = sortedGks.slice(0, 4);
-  const enablerGks = [...candidateGks].sort((a, b) => a.cost - b.cost).slice(0, 4);
+  const enablerGks = [...candidateGks]
+    .sort((a, b) => a.cost - b.cost)
+    .slice(0, 4);
 
   const premiumMids = sortedMids.slice(0, 8);
   const premiumFwds = sortedFwds.slice(0, 6);
@@ -190,18 +241,27 @@ export function solveOptimalSquad(
     for (let topFwdCount = 2; topFwdCount <= 3; topFwdCount++) {
       for (let topDefCount = 3; topDefCount <= 4; topDefCount++) {
         const testMids = [...premiumMids.slice(0, topMidCount)];
-        const cheapMids = [...candidateMids].sort((a, b) => a.cost - b.cost).filter(m => !testMids.some(tm => tm.id === m.id));
+        const cheapMids = [...candidateMids]
+          .sort((a, b) => a.cost - b.cost)
+          .filter((m) => !testMids.some((tm) => tm.id === m.id));
         testMids.push(...cheapMids.slice(0, 5 - topMidCount));
 
         const testFwds = [...premiumFwds.slice(0, topFwdCount)];
-        const cheapFwds = [...candidateFwds].sort((a, b) => a.cost - b.cost).filter(f => !testFwds.some(tf => tf.id === f.id));
+        const cheapFwds = [...candidateFwds]
+          .sort((a, b) => a.cost - b.cost)
+          .filter((f) => !testFwds.some((tf) => tf.id === f.id));
         testFwds.push(...cheapFwds.slice(0, 3 - topFwdCount));
 
         const testDefs = [...premiumDefs.slice(0, topDefCount)];
-        const cheapDefs = [...candidateDefs].sort((a, b) => a.cost - b.cost).filter(d => !testDefs.some(td => td.id === d.id));
+        const cheapDefs = [...candidateDefs]
+          .sort((a, b) => a.cost - b.cost)
+          .filter((d) => !testDefs.some((td) => td.id === d.id));
         testDefs.push(...cheapDefs.slice(0, 5 - topDefCount));
 
-        const testGks = [premiumGks[0], enablerGks.find(g => g.id !== premiumGks[0]?.id) || enablerGks[0]].filter(Boolean);
+        const testGks = [
+          premiumGks[0],
+          enablerGks.find((g) => g.id !== premiumGks[0]?.id) || enablerGks[0],
+        ].filter(Boolean);
 
         const current15 = [...testGks, ...testDefs, ...testMids, ...testFwds];
         if (current15.length !== 15) continue;
@@ -213,7 +273,10 @@ export function solveOptimalSquad(
         const evalResult = evaluate15(current15);
         if (!evalResult) continue;
 
-        if (!bestSquadEval || evalResult.totalScore > bestSquadEval.totalScore) {
+        if (
+          !bestSquadEval ||
+          evalResult.totalScore > bestSquadEval.totalScore
+        ) {
           bestSquadEval = evalResult;
           bestSquadCandidates = current15;
           bestTotalCost = cost;
@@ -236,7 +299,12 @@ export function solveOptimalSquad(
 
       for (let i = 0; i < currentPool.length; i++) {
         const outPlayer = currentPool[i];
-        const samePosCandidates = candidates.filter(c => c.pos === outPlayer.pos && c.id !== outPlayer.id && !currentPool.some(p => p.id === c.id));
+        const samePosCandidates = candidates.filter(
+          (c) =>
+            c.pos === outPlayer.pos &&
+            c.id !== outPlayer.id &&
+            !currentPool.some((p) => p.id === c.id),
+        );
 
         for (const inPlayer of samePosCandidates) {
           const costDelta = inPlayer.cost - outPlayer.cost;
@@ -270,7 +338,7 @@ export function solveOptimalSquad(
       ...candidateGks.slice(0, 2),
       ...candidateDefs.slice(0, 5),
       ...candidateMids.slice(0, 5),
-      ...candidateFwds.slice(0, 3)
+      ...candidateFwds.slice(0, 3),
     ];
     bestSquadEval = evaluate15(default15);
     bestSquadCandidates = default15;
@@ -281,12 +349,17 @@ export function solveOptimalSquad(
 
   // Build the final ordered picks (Positions 1 to 15)
   const finalSquadPicks: SquadPick[] = [];
-  const startersGk = bestSquadEval.starters.filter(p => p.pos === 1);
-  const startersDef = bestSquadEval.starters.filter(p => p.pos === 2);
-  const startersMid = bestSquadEval.starters.filter(p => p.pos === 3);
-  const startersFwd = bestSquadEval.starters.filter(p => p.pos === 4);
+  const startersGk = bestSquadEval.starters.filter((p) => p.pos === 1);
+  const startersDef = bestSquadEval.starters.filter((p) => p.pos === 2);
+  const startersMid = bestSquadEval.starters.filter((p) => p.pos === 3);
+  const startersFwd = bestSquadEval.starters.filter((p) => p.pos === 4);
 
-  const orderedStarters = [...startersGk, ...startersDef, ...startersMid, ...startersFwd];
+  const orderedStarters = [
+    ...startersGk,
+    ...startersDef,
+    ...startersMid,
+    ...startersFwd,
+  ];
   const orderedBench = [...bestSquadEval.bench];
 
   orderedStarters.forEach((cand, idx) => {
@@ -299,7 +372,7 @@ export function solveOptimalSquad(
       is_vice_captain: isVc,
       multiplier: isCap ? 2 : 1,
       purchase_price: cand.cost,
-      selling_price: cand.cost
+      selling_price: cand.cost,
     });
   });
 
@@ -311,7 +384,7 @@ export function solveOptimalSquad(
       is_vice_captain: false,
       multiplier: 0,
       purchase_price: cand.cost,
-      selling_price: cand.cost
+      selling_price: cand.cost,
     });
   });
 
@@ -320,44 +393,46 @@ export function solveOptimalSquad(
   let transfersCount = 0;
 
   if (currentSquad && currentSquad.length === 15) {
-    const currentStarters = currentSquad.filter(p => p.position <= 11);
-    currentStarters.forEach(p => {
+    const currentStarters = currentSquad.filter((p) => p.position <= 11);
+    currentStarters.forEach((p) => {
       const xp = getHorizonXp(p.element);
       currentSquadXp += xp * (p.is_captain ? 2 : 1);
     });
     currentSquadXp = Math.round(currentSquadXp * 10) / 10;
 
-    const currentIds = new Set(currentSquad.map(s => s.element));
-    bestSquadCandidates.forEach(cand => {
+    const currentIds = new Set(currentSquad.map((s) => s.element));
+    bestSquadCandidates.forEach((cand) => {
       if (!currentIds.has(cand.id)) {
         transfersCount++;
       }
     });
   }
 
-  const xpGain = Math.round((bestSquadEval.totalScore - currentSquadXp) * 10) / 10;
+  const xpGain =
+    Math.round((bestSquadEval.totalScore - currentSquadXp) * 10) / 10;
 
   return {
     squad: finalSquadPicks,
     totalCost: bestTotalCost,
     remainingBank: Math.max(0, totalBudget - bestTotalCost),
     totalProjectedPoints: bestSquadEval.totalScore,
-    cumulativePoints: Math.round(bestSquadEval.totalScore * (horizon || 1) * 10) / 10,
+    cumulativePoints:
+      Math.round(bestSquadEval.totalScore * (horizon || 1) * 10) / 10,
     horizon: horizon || 1,
     captain: bestSquadEval.captain.player,
     viceCaptain: bestSquadEval.viceCaptain.player,
     formation: bestSquadEval.formation,
-    starters: orderedStarters.map(s => ({
+    starters: orderedStarters.map((s) => ({
       player: s.player,
       xp: s.xp,
       isCaptain: s.id === bestSquadEval!.captain.id,
-      isViceCaptain: s.id === bestSquadEval!.viceCaptain.id
+      isViceCaptain: s.id === bestSquadEval!.viceCaptain.id,
     })),
-    bench: orderedBench.map(b => ({
+    bench: orderedBench.map((b) => ({
       player: b.player,
-      xp: b.xp
+      xp: b.xp,
     })),
     xpGain,
-    transfersCount
+    transfersCount,
   };
 }

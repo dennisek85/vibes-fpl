@@ -1,6 +1,6 @@
-import React from 'react';
-import { SquadPick } from '@/types/fpl';
-import { PlayerCard } from './PlayerCard';
+import React from "react";
+import { SquadPick } from "@/types/fpl";
+import { PlayerCard } from "./PlayerCard";
 
 interface BenchBarProps {
   benchPicks: SquadPick[];
@@ -21,12 +21,17 @@ export const BenchBar: React.FC<BenchBarProps> = ({ benchPicks }) => {
 
       <div className="grid grid-cols-4 gap-1 sm:gap-4 md:gap-6 justify-items-center">
         {benchPicks.map((pick, idx) => {
-          const posLabel = idx === 0 ? 'GK' : `B${idx}`;
+          const posLabel = idx === 0 ? "GK" : `B${idx}`;
           return (
-            <div key={pick.element || idx} className="flex flex-col items-center w-full">
+            <div
+              key={pick.element || idx}
+              className="flex flex-col items-center w-full"
+            >
               <span className="text-[9px] sm:text-xs font-bold text-slate-400 mb-0.5 sm:mb-1 uppercase tracking-wide">
                 <span className="sm:hidden">{posLabel}</span>
-                <span className="hidden sm:inline">{idx === 0 ? 'GK' : `Bench ${idx}`}</span>
+                <span className="hidden sm:inline">
+                  {idx === 0 ? "GK" : `Bench ${idx}`}
+                </span>
               </span>
               <PlayerCard pick={pick} />
             </div>

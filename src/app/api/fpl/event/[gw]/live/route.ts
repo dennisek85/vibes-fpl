@@ -1,16 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 const cache: Record<number, { data: any; time: number }> = {};
 const CACHE_TTL = 60 * 1000; // 60 seconds (1 minute) for live match updates
 export async function GET(
   _req: NextRequest,
-  { params }: { params: Promise<{ gw: string }> }
+  { params }: { params: Promise<{ gw: string }> },
 ) {
   const { gw } = await params;
   const gwNum = parseInt(gw, 10);
 
   if (isNaN(gwNum) || gwNum < 1 || gwNum > 38) {
-    return NextResponse.json({ error: 'Invalid Gameweek' }, { status: 400 });
+    return NextResponse.json({ error: "Invalid Gameweek" }, { status: 400 });
   }
 
   const now = Date.now();
@@ -19,12 +19,16 @@ export async function GET(
   }
 
   try {
-    const res = await fetch(`https://fantasy.premierleague.com/api/event/${gwNum}/live/`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner/1.0',
+    const res = await fetch(
+      `https://fantasy.premierleague.com/api/event/${gwNum}/live/`,
+      {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner/1.0",
+        },
+        next: { revalidate: 60 },
       },
-      next: { revalidate: 60 },
-    });
+    );
     if (!res.ok) {
       return NextResponse.json({ elements: [] });
     }

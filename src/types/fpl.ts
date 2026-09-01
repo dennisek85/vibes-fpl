@@ -1,5 +1,5 @@
 export type PositionType = 1 | 2 | 3 | 4; // 1: GK, 2: DEF, 3: MID, 4: FWD
-export type PositionName = 'GK' | 'DEF' | 'MID' | 'FWD';
+export type PositionName = "GK" | "DEF" | "MID" | "FWD";
 
 export interface FPLPlayer {
   id: number;
@@ -15,7 +15,7 @@ export interface FPLPlayer {
   form: string;
   ep_this: string | null;
   ep_next: string | null;
-  status: 'a' | 'd' | 'i' | 's' | 'u';
+  status: "a" | "d" | "i" | "s" | "u";
   news: string;
   chance_of_playing_next_round: number | null;
   goals_scored: number;
@@ -48,7 +48,11 @@ export interface FPLPlayer {
   cost_change_start?: number;
   price_change_percent?: string;
   price_change_hourly_rate?: number;
-  price_change_projections?: Array<{ offset: number; projected_percent: string; likelihood: number }>;
+  price_change_projections?: Array<{
+    offset: number;
+    projected_percent: string;
+    likelihood: number;
+  }>;
   price_change_locked_until?: string | null;
   price_change_calibrating?: boolean;
   priceTelemetry?: {
@@ -129,7 +133,7 @@ export interface EntryPicksResponse {
     event_transfers_cost: number;
     points_on_bench: number;
   };
-  active_chip: 'wildcard' | 'freehit' | 'bboost' | '3xc' | null;
+  active_chip: "wildcard" | "freehit" | "bboost" | "3xc" | null;
 }
 
 export interface EntryHistoryResponse {
@@ -145,7 +149,7 @@ export interface EntryHistoryResponse {
     event_transfers_cost: number;
   }>;
   chips: Array<{
-    name: 'wildcard' | 'freehit' | 'bboost' | '3xc';
+    name: "wildcard" | "freehit" | "bboost" | "3xc";
     time: string;
     event: number;
   }>;
@@ -161,7 +165,7 @@ export interface EntrySummary {
   current_event: number;
 }
 
-export type ChipType = 'none' | 'wildcard' | 'freehit' | 'bboost' | '3xc';
+export type ChipType = "none" | "wildcard" | "freehit" | "bboost" | "3xc";
 
 export interface PlannedGameweek {
   gameweek: number;

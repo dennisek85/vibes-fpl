@@ -1,5 +1,11 @@
-import { FPLPlayer, FPLEvent, PlannedGameweek, SquadPick, EntrySummary } from '@/types/fpl';
-import { TeamHistoryEvent } from '@/store/types';
+import {
+  FPLPlayer,
+  FPLEvent,
+  PlannedGameweek,
+  SquadPick,
+  EntrySummary,
+} from "@/types/fpl";
+import { TeamHistoryEvent } from "@/store/types";
 
 export interface GameweekDriftPoint {
   gw: number;
@@ -74,10 +80,12 @@ export function calculateAiSeasonBacktest(
   players: FPLPlayer[],
   events: FPLEvent[],
   getPlayerGameweekXp: (elementId: number, gw: number) => number,
-  liveEventPoints: Record<number, Record<number, number>>
+  liveEventPoints: Record<number, Record<number, number>>,
 ): BacktestResult {
-  const completedEvents = events.filter(e => e.finished || e.is_current).sort((a, b) => a.id - b.id);
-  
+  const completedEvents = events
+    .filter((e) => e.finished || e.is_current)
+    .sort((a, b) => a.id - b.id);
+
   let actualCum = 0;
   let aiCum = 0;
   const driftTrajectory: GameweekDriftPoint[] = [];
@@ -104,8 +112,8 @@ export function calculateAiSeasonBacktest(
   for (const ev of completedEvents) {
     const gw = ev.id;
     const plan = gameweekPlans[gw];
-    const history = teamHistoryCurrent.find(h => h.event === gw);
-    
+    const history = teamHistoryCurrent.find((h) => h.event === gw);
+
     // 1. Calculate Actual Points for this Gameweek
     let actualGwPts = 0;
     if (history) {
@@ -126,16 +134,23 @@ export function calculateAiSeasonBacktest(
 
     // 2. Determine User Captain
     const userCapPick = plan?.squad?.find((p: SquadPick) => p.is_captain);
-    const userCapPlayer = userCapPick ? playerMap.get(userCapPick.element) || null : null;
-    const userCapRawPts = userCapPlayer ? getPlayerMatchPoints(userCapPlayer, gw) : 0;
+    const userCapPlayer = userCapPick
+      ? playerMap.get(userCapPick.element) || null
+      : null;
+    const userCapRawPts = userCapPlayer
+      ? getPlayerMatchPoints(userCapPlayer, gw)
+      : 0;
 
     // 3. Determine AI Top Captain for this GW
     let aiCapPlayer: FPLPlayer | null = null;
     let aiCapXp = -1;
 
-    const candidatePool = (plan?.squad && plan.squad.length > 0)
-      ? (plan.squad.map((p: SquadPick) => playerMap.get(p.element)).filter(Boolean) as FPLPlayer[])
-      : players;
+    const candidatePool =
+      plan?.squad && plan.squad.length > 0
+        ? (plan.squad
+            .map((p: SquadPick) => playerMap.get(p.element))
+            .filter(Boolean) as FPLPlayer[])
+        : players;
 
     candidatePool.forEach((p: FPLPlayer) => {
       const xp = getPlayerGameweekXp(p.id, gw);
@@ -145,25 +160,31 @@ export function calculateAiSeasonBacktest(
       }
     });
 
-    const aiCapRawPts = aiCapPlayer ? getPlayerMatchPoints(aiCapPlayer as FPLPlayer, gw) : 0;
-    const capDelta = (aiCapRawPts * 2) - (userCapRawPts * 2);
+    const aiCapRawPts = aiCapPlayer
+      ? getPlayerMatchPoints(aiCapPlayer as FPLPlayer, gw)
+      : 0;
+    const capDelta = aiCapRawPts * 2 - userCapRawPts * 2;
     totalCaptaincyDelta += capDelta;
 
     if (userCapPlayer || aiCapPlayer) {
       captaincyComparisons.push({
         gw,
-        userCaptain: userCapPlayer ? {
-          player: userCapPlayer,
-          actualPoints: userCapRawPts,
-          doubledPoints: userCapRawPts * 2
-        } : null,
-        aiCaptain: aiCapPlayer ? {
-          player: aiCapPlayer,
-          actualPoints: aiCapRawPts,
-          doubledPoints: aiCapRawPts * 2,
-          projectedXp: Math.round(aiCapXp * 10) / 10
-        } : null,
-        delta: capDelta
+        userCaptain: userCapPlayer
+          ? {
+              player: userCapPlayer,
+              actualPoints: userCapRawPts,
+              doubledPoints: userCapRawPts * 2,
+            }
+          : null,
+        aiCaptain: aiCapPlayer
+          ? {
+              player: aiCapPlayer,
+              actualPoints: aiCapRawPts,
+              doubledPoints: aiCapRawPts * 2,
+              projectedXp: Math.round(aiCapXp * 10) / 10,
+            }
+          : null,
+        delta: capDelta,
       });
     }
 
@@ -171,20 +192,25 @@ export function calculateAiSeasonBacktest(
     if (plan && plan.transfersIn.length > 0 && plan.transfersOut.length > 0) {
       const pIn = playerMap.get(plan.transfersIn[0]);
       const pOut = playerMap.get(plan.transfersOut[0]);
-      
+
       if (pIn && pOut) {
         const inPts = getPlayerMatchPoints(pIn, gw);
         const outPts = getPlayerMatchPoints(pOut, gw);
         const userNet = inPts - outPts;
 
         // Simulate AI #1 Transfer candidate (highest xP replacement in same position within budget)
-        const posPlayers = players.filter(p => p.element_type === pOut.element_type && p.id !== pOut.id);
+        const posPlayers = players.filter(
+          (p) => p.element_type === pOut.element_type && p.id !== pOut.id,
+        );
         let bestAiIn = pIn;
         let bestAiXp = getPlayerGameweekXp(pIn.id, gw);
 
         posPlayers.forEach((cand: FPLPlayer) => {
           const candXp = getPlayerGameweekXp(cand.id, gw);
-          if (candXp > bestAiXp && cand.now_cost <= pOut.now_cost + (plan.calculatedBank || 0)) {
+          if (
+            candXp > bestAiXp &&
+            cand.now_cost <= pOut.now_cost + (plan.calculatedBank || 0)
+          ) {
             bestAiXp = candXp;
             bestAiIn = cand;
           }
@@ -199,13 +225,18 @@ export function calculateAiSeasonBacktest(
           gw,
           userTransfer: { playerOut: pOut, playerIn: pIn, netPoints: userNet },
           aiTransfer: { playerOut: pOut, playerIn: bestAiIn, netPoints: aiNet },
-          swing
+          swing,
         });
       }
     }
 
     // 5. Simulate AI Co-Pilot Gameweek Score
-    const aiGwScore = Math.max(0, actualGwPts + Math.max(0, capDelta) + (transferSwings.find(t => t.gw === gw)?.swing || 0));
+    const aiGwScore = Math.max(
+      0,
+      actualGwPts +
+        Math.max(0, capDelta) +
+        (transferSwings.find((t) => t.gw === gw)?.swing || 0),
+    );
     aiCum += aiGwScore;
 
     driftTrajectory.push({
@@ -214,7 +245,7 @@ export function calculateAiSeasonBacktest(
       actualCumulative: actualCum,
       aiPoints: aiGwScore,
       aiCumulative: aiCum,
-      alpha: aiCum - actualCum
+      alpha: aiCum - actualCum,
     });
 
     // 6. Accumulate Stat Attribution from candidate starters
@@ -240,41 +271,56 @@ export function calculateAiSeasonBacktest(
 
   const netAlpha = Math.max(0, aiCum - actualCum);
   const actualRank = teamSummary?.summary_overall_rank || 450000;
-  
+
   // Model rank curve: each 1 alpha point improves overall rank logarithmically
-  const rankImprovementFactor = Math.min(0.85, (netAlpha * 0.018));
-  const estimatedRank = Math.max(1, Math.round(actualRank * (1 - rankImprovementFactor)));
+  const rankImprovementFactor = Math.min(0.85, netAlpha * 0.018);
+  const estimatedRank = Math.max(
+    1,
+    Math.round(actualRank * (1 - rankImprovementFactor)),
+  );
 
   // Calculate percentage splits for the 4 pillars
-  const totalAttributed = Math.max(1, csPoints + goalPoints + assistPoints + bonusPoints);
+  const totalAttributed = Math.max(
+    1,
+    csPoints + goalPoints + assistPoints + bonusPoints,
+  );
 
   const attribution: AttributionBreakdown = {
     cleanSheets: {
       points: Math.round(csPoints / 3),
-      label: 'Clean Sheet Equity',
-      percentage: Math.min(100, Math.round((csPoints / totalAttributed) * 100))
+      label: "Clean Sheet Equity",
+      percentage: Math.min(100, Math.round((csPoints / totalAttributed) * 100)),
     },
     goals: {
       points: Math.round(goalPoints / 3),
       count: goalCount,
-      label: 'Goal Threat Conversion',
-      percentage: Math.min(100, Math.round((goalPoints / totalAttributed) * 100))
+      label: "Goal Threat Conversion",
+      percentage: Math.min(
+        100,
+        Math.round((goalPoints / totalAttributed) * 100),
+      ),
     },
     assists: {
       points: Math.round(assistPoints / 3),
       count: assistCount,
-      label: 'Creativity & Assist Return',
-      percentage: Math.min(100, Math.round((assistPoints / totalAttributed) * 100))
+      label: "Creativity & Assist Return",
+      percentage: Math.min(
+        100,
+        Math.round((assistPoints / totalAttributed) * 100),
+      ),
     },
     bonus: {
       points: Math.round(bonusPoints / 2),
-      label: 'BPS Magnetism',
-      percentage: Math.min(100, Math.round((bonusPoints / totalAttributed) * 100))
+      label: "BPS Magnetism",
+      percentage: Math.min(
+        100,
+        Math.round((bonusPoints / totalAttributed) * 100),
+      ),
     },
     teamValueGain: {
       million: 0.8,
-      label: 'Price Radar Team Value'
-    }
+      label: "Price Radar Team Value",
+    },
   };
 
   return {
@@ -288,6 +334,6 @@ export function calculateAiSeasonBacktest(
     totalCaptaincyDelta,
     transferSwings,
     totalTransferSwing,
-    attribution
+    attribution,
   };
 }

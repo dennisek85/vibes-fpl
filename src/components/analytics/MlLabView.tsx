@@ -1,19 +1,27 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { UI_TEXT } from '@/lib/ui-text';
-import { Sparkles, Flame, ArrowUpRight, ArrowDownRight, EyeOff, Layers, CheckCircle2 } from 'lucide-react';
+import React, { useState } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { UI_TEXT } from "@/lib/ui-text";
+import {
+  Sparkles,
+  Flame,
+  ArrowUpRight,
+  ArrowDownRight,
+  EyeOff,
+  Layers,
+  CheckCircle2,
+} from "lucide-react";
 
 interface ExperimentalArm {
   id: string;
   name: string;
   icon: string;
   hypothesis: string;
-  status: 'active' | 'testing' | 'promoted';
+  status: "active" | "testing" | "promoted";
   currentMae: number;
   baselineMae: number;
-  unit?: 'pts' | 'mins';
+  unit?: "pts" | "mins";
   edgePct: string;
   testedPlayers: string;
   leadIndicator: string;
@@ -21,211 +29,225 @@ interface ExperimentalArm {
 
 export const MlLabView: React.FC = () => {
   const { setCurrentView } = usePlannerStore();
-  const [activeTab, setActiveTab] = useState<'arms' | 'divergences' | 'architecture'>('arms');
+  const [activeTab, setActiveTab] = useState<
+    "arms" | "divergences" | "architecture"
+  >("arms");
   const labText = UI_TEXT.mlLab;
 
   // Multi-Armed Factorial Experimental Suite
   const experimentalArms: ExperimentalArm[] = [
     {
-      id: 'super_ensemble',
-      name: 'Grand Super Ensemble',
-      icon: '🧪',
-      hypothesis: 'Master composite model combining all 10 on-pitch tactical and off-pitch hazard signals.',
-      status: 'active',
+      id: "super_ensemble",
+      name: "Grand Super Ensemble",
+      icon: "🧪",
+      hypothesis:
+        "Master composite model combining all 10 on-pitch tactical and off-pitch hazard signals.",
+      status: "active",
       currentMae: 1.22,
       baselineMae: 1.38,
-      edgePct: '+11.6% edge',
-      testedPlayers: 'All 629 Players',
-      leadIndicator: 'Lowest overall RMSE across all positions'
+      edgePct: "+11.6% edge",
+      testedPlayers: "All 629 Players",
+      leadIndicator: "Lowest overall RMSE across all positions",
     },
     {
-      id: 'tactical_cluster',
-      name: 'Cluster A: Tactical Matchups',
-      icon: '🎯',
-      hypothesis: 'Combines all on-pitch tactical geometry (Flank Mismatch + PPDA + Inswingers + PSxG + Finishing).',
-      status: 'active',
+      id: "tactical_cluster",
+      name: "Cluster A: Tactical Matchups",
+      icon: "🎯",
+      hypothesis:
+        "Combines all on-pitch tactical geometry (Flank Mismatch + PPDA + Inswingers + PSxG + Finishing).",
+      status: "active",
       currentMae: 1.26,
       baselineMae: 1.38,
-      edgePct: '+8.7% edge',
-      testedPlayers: 'All 629 Players',
-      leadIndicator: 'Sharpest individual xG, xA, and Clean Sheet projections'
+      edgePct: "+8.7% edge",
+      testedPlayers: "All 629 Players",
+      leadIndicator: "Sharpest individual xG, xA, and Clean Sheet projections",
     },
     {
-      id: 'availability_cluster',
-      name: 'Cluster B: Availability & Sub Hazards',
-      icon: '⏱️',
-      hypothesis: 'Combines all off-pitch rotation signals (European Fatigue + Press NLP + Manager Hazard + Referees).',
-      status: 'active',
+      id: "availability_cluster",
+      name: "Cluster B: Availability & Sub Hazards",
+      icon: "⏱️",
+      hypothesis:
+        "Combines all off-pitch rotation signals (European Fatigue + Press NLP + Manager Hazard + Referees).",
+      status: "active",
       currentMae: 1.25,
       baselineMae: 1.38,
-      edgePct: '+9.4% edge',
-      testedPlayers: 'All 629 Players',
-      leadIndicator: 'Eliminates 59th-min sub shocks & early kickoff decay'
+      edgePct: "+9.4% edge",
+      testedPlayers: "All 629 Players",
+      leadIndicator: "Eliminates 59th-min sub shocks & early kickoff decay",
     },
     {
-      id: 'flank_mismatch',
-      name: 'Flank Mismatch Engine',
-      icon: '🛡️',
-      hypothesis: 'Winger attacking channels (RW/LW) targeting leaky fullback zonal xGC.',
-      status: 'active',
+      id: "flank_mismatch",
+      name: "Flank Mismatch Engine",
+      icon: "🛡️",
+      hypothesis:
+        "Winger attacking channels (RW/LW) targeting leaky fullback zonal xGC.",
+      status: "active",
       currentMae: 0.31,
       baselineMae: 0.38,
-      edgePct: '+18.4% edge',
-      testedPlayers: 'Saka, Salah, Gordon, Diaz, Mbeumo',
-      leadIndicator: 'Sharpest winger xG & key-pass prediction'
+      edgePct: "+18.4% edge",
+      testedPlayers: "Saka, Salah, Gordon, Diaz, Mbeumo",
+      leadIndicator: "Sharpest winger xG & key-pass prediction",
     },
     {
-      id: 'ppda_high_press',
-      name: 'PPDA High-Press Mismatch',
-      icon: '🏃‍♂️',
-      hypothesis: 'Pace strikers generate +35% shot quality against high-line aggressive press teams (TOT, AVL).',
-      status: 'active',
+      id: "ppda_high_press",
+      name: "PPDA High-Press Mismatch",
+      icon: "🏃‍♂️",
+      hypothesis:
+        "Pace strikers generate +35% shot quality against high-line aggressive press teams (TOT, AVL).",
+      status: "active",
       currentMae: 0.33,
       baselineMae: 0.39,
-      edgePct: '+15.4% edge',
-      testedPlayers: 'Haaland, Jackson, Mbeumo, Semenyo, Watkins',
-      leadIndicator: 'Captures counter-attacking space transitions'
+      edgePct: "+15.4% edge",
+      testedPlayers: "Haaland, Jackson, Mbeumo, Semenyo, Watkins",
+      leadIndicator: "Captures counter-attacking space transitions",
     },
     {
-      id: 'referee_severity',
-      name: 'Referee Penalty & Card Index',
-      icon: '🟨',
-      hypothesis: 'Strict referees award 2x penalties (+0.08 xG for takers) and 5+ yellow cards/game.',
-      status: 'active',
+      id: "referee_severity",
+      name: "Referee Penalty & Card Index",
+      icon: "🟨",
+      hypothesis:
+        "Strict referees award 2x penalties (+0.08 xG for takers) and 5+ yellow cards/game.",
+      status: "active",
       currentMae: 0.28,
       baselineMae: 0.31,
-      edgePct: '+9.7% edge',
-      testedPlayers: 'Haaland, Salah, Palmer, Saka (Takers)',
-      leadIndicator: 'Accurate penalty award probability weighting'
+      edgePct: "+9.7% edge",
+      testedPlayers: "Haaland, Salah, Palmer, Saka (Takers)",
+      leadIndicator: "Accurate penalty award probability weighting",
     },
     {
-      id: 'gk_psxg_efficiency',
-      name: 'Goalkeeper PSxG Alpha',
-      icon: '🧤',
-      hypothesis: 'Elite shot-stoppers save +0.30 goals above expected shot quality (PSxG +/-).',
-      status: 'active',
+      id: "gk_psxg_efficiency",
+      name: "Goalkeeper PSxG Alpha",
+      icon: "🧤",
+      hypothesis:
+        "Elite shot-stoppers save +0.30 goals above expected shot quality (PSxG +/-).",
+      status: "active",
       currentMae: 0.35,
       baselineMae: 0.42,
-      edgePct: '+16.7% edge',
-      testedPlayers: 'Raya, Alisson, Martinez, Pickford',
-      leadIndicator: 'Sharpest Clean Sheet prediction Brier score'
+      edgePct: "+16.7% edge",
+      testedPlayers: "Raya, Alisson, Martinez, Pickford",
+      leadIndicator: "Sharpest Clean Sheet prediction Brier score",
     },
     {
-      id: 'corner_aerial_threat',
-      name: 'Corner Inswinger Aerial Equity',
-      icon: '📐',
-      hypothesis: 'Crowded 6-yard inswingers generate 3x header conversion for tall CBs (ARS, EVE).',
-      status: 'active',
+      id: "corner_aerial_threat",
+      name: "Corner Inswinger Aerial Equity",
+      icon: "📐",
+      hypothesis:
+        "Crowded 6-yard inswingers generate 3x header conversion for tall CBs (ARS, EVE).",
+      status: "active",
       currentMae: 0.29,
       baselineMae: 0.34,
-      edgePct: '+14.7% edge',
-      testedPlayers: 'Gabriel, Saliba, Tarkowski, Van Dijk',
-      leadIndicator: 'Precision set-piece goal threat prediction'
+      edgePct: "+14.7% edge",
+      testedPlayers: "Gabriel, Saliba, Tarkowski, Van Dijk",
+      leadIndicator: "Precision set-piece goal threat prediction",
     },
     {
-      id: 'european_fatigue',
-      name: 'Midweek European Congestion',
-      icon: '✈️',
-      hypothesis: '<72h recovery from Champions League / Europa League creates sprint & sub decay.',
-      status: 'active',
+      id: "european_fatigue",
+      name: "Midweek European Congestion",
+      icon: "✈️",
+      hypothesis:
+        "<72h recovery from Champions League / Europa League creates sprint & sub decay.",
+      status: "active",
       currentMae: 11.2,
       baselineMae: 14.2,
-      edgePct: '+21.1% edge',
-      testedPlayers: 'MCI, ARS, LIV, AVL starters',
-      leadIndicator: 'Eliminates overestimation on Saturday 12:30 kickoffs'
+      edgePct: "+21.1% edge",
+      testedPlayers: "MCI, ARS, LIV, AVL starters",
+      leadIndicator: "Eliminates overestimation on Saturday 12:30 kickoffs",
     },
     {
-      id: 'cbi_bps_magnet',
-      name: 'CBI Defensive Action BPS Floor',
-      icon: '🧲',
-      hypothesis: 'New 2024/25 CBI rules reward high-clearance CBs in low-possession games.',
-      status: 'active',
+      id: "cbi_bps_magnet",
+      name: "CBI Defensive Action BPS Floor",
+      icon: "🧲",
+      hypothesis:
+        "New 2024/25 CBI rules reward high-clearance CBs in low-possession games.",
+      status: "active",
       currentMae: 0.54,
       baselineMae: 0.62,
-      edgePct: '+12.9% edge',
-      testedPlayers: 'Tarkowski, Andersen, Gabriel, Saliba',
-      leadIndicator: 'Accurate 2-3 bonus point prediction in 0-0/1-0 games'
+      edgePct: "+12.9% edge",
+      testedPlayers: "Tarkowski, Andersen, Gabriel, Saliba",
+      leadIndicator: "Accurate 2-3 bonus point prediction in 0-0/1-0 games",
     },
     {
-      id: 'press_nlp_sub_risk',
-      name: 'Press Conference NLP Classifier',
-      icon: '🎙️',
-      hypothesis: 'Tokens like "managing load" or "tightness" dynamically lower 60m survival curve.',
-      status: 'active',
+      id: "press_nlp_sub_risk",
+      name: "Press Conference NLP Classifier",
+      icon: "🎙️",
+      hypothesis:
+        'Tokens like "managing load" or "tightness" dynamically lower 60m survival curve.',
+      status: "active",
       currentMae: 10.8,
       baselineMae: 13.9,
-      edgePct: '+22.3% edge',
-      testedPlayers: 'Flagged / Doubtful Starters',
-      leadIndicator: 'Prevents 1-point 59th-minute sub disasters'
+      edgePct: "+22.3% edge",
+      testedPlayers: "Flagged / Doubtful Starters",
+      leadIndicator: "Prevents 1-point 59th-minute sub disasters",
     },
     {
-      id: 'set_piece_specialist',
-      name: 'Set-Piece Specialist Equity',
-      icon: '🎯',
-      hypothesis: 'Top 5% dead-ball specialists generate +20% higher conversion quality.',
-      status: 'active',
+      id: "set_piece_specialist",
+      name: "Set-Piece Specialist Equity",
+      icon: "🎯",
+      hypothesis:
+        "Top 5% dead-ball specialists generate +20% higher conversion quality.",
+      status: "active",
       currentMae: 0.27,
       baselineMae: 0.29,
-      edgePct: '+6.9% edge',
-      testedPlayers: 'Trippier, Ward-Prowse, Maddison, Trent',
-      leadIndicator: 'High-precision direct FK and corner assist yield'
-    }
+      edgePct: "+6.9% edge",
+      testedPlayers: "Trippier, Ward-Prowse, Maddison, Trent",
+      leadIndicator: "High-precision direct FK and corner assist yield",
+    },
   ];
 
   // High-Conviction GW3 Divergences
   const divergences = [
     {
-      name: 'Bukayo Saka',
-      team: 'ARS',
-      pos: 'MID',
+      name: "Bukayo Saka",
+      team: "ARS",
+      pos: "MID",
       prodXp: 6.5,
       shadowXp: 7.4,
-      diff: '+0.9',
-      driver: 'Flank Mismatch (+14% vs leaky left fullback)'
+      diff: "+0.9",
+      driver: "Flank Mismatch (+14% vs leaky left fullback)",
     },
     {
-      name: 'Erling Haaland',
-      team: 'MCI',
-      pos: 'FWD',
+      name: "Erling Haaland",
+      team: "MCI",
+      pos: "FWD",
       prodXp: 8.4,
       shadowXp: 9.1,
-      diff: '+0.7',
-      driver: 'Finishing Alpha (1.18x) + Home Goal Line Dominance'
+      diff: "+0.7",
+      driver: "Finishing Alpha (1.18x) + Home Goal Line Dominance",
     },
     {
-      name: 'James Tarkowski',
-      team: 'EVE',
-      pos: 'DEF',
+      name: "James Tarkowski",
+      team: "EVE",
+      pos: "DEF",
       prodXp: 3.4,
       shadowXp: 4.0,
-      diff: '+0.6',
-      driver: 'CBI BPS Magnet (Clearances & Blocks Floor)'
+      diff: "+0.6",
+      driver: "CBI BPS Magnet (Clearances & Blocks Floor)",
     },
     {
-      name: 'Phil Foden / Doku',
-      team: 'MCI',
-      pos: 'MID',
+      name: "Phil Foden / Doku",
+      team: "MCI",
+      pos: "MID",
       prodXp: 6.2,
       shadowXp: 5.5,
-      diff: '-0.7',
-      driver: 'Midweek European Fatigue + Pep 63m Sub Hazard'
+      diff: "-0.7",
+      driver: "Midweek European Fatigue + Pep 63m Sub Hazard",
     },
     {
-      name: 'Darwin Núñez',
-      team: 'LIV',
-      pos: 'FWD',
+      name: "Darwin Núñez",
+      team: "LIV",
+      pos: "FWD",
       prodXp: 5.9,
       shadowXp: 5.2,
-      diff: '-0.7',
-      driver: 'Career under-finishing regression (0.88x conversion)'
-    }
+      diff: "-0.7",
+      driver: "Career under-finishing regression (0.88x conversion)",
+    },
   ];
 
   const exitLab = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('vibes_lab_mode');
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("vibes_lab_mode");
     }
-    setCurrentView('pitch');
+    setCurrentView("pitch");
   };
 
   return (
@@ -266,31 +288,31 @@ export const MlLabView: React.FC = () => {
         {/* Tab Switcher */}
         <div className="flex items-center gap-2 mt-5 border-t border-white/10 pt-4">
           <button
-            onClick={() => setActiveTab('arms')}
+            onClick={() => setActiveTab("arms")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
-              activeTab === 'arms'
-                ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/30'
-                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
+              activeTab === "arms"
+                ? "bg-purple-500 text-white shadow-lg shadow-purple-500/30"
+                : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10"
             }`}
           >
             {labText.tabs.arms}
           </button>
           <button
-            onClick={() => setActiveTab('divergences')}
+            onClick={() => setActiveTab("divergences")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
-              activeTab === 'divergences'
-                ? 'bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/30 font-extrabold'
-                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
+              activeTab === "divergences"
+                ? "bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/30 font-extrabold"
+                : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10"
             }`}
           >
             {labText.tabs.divergences}
           </button>
           <button
-            onClick={() => setActiveTab('architecture')}
+            onClick={() => setActiveTab("architecture")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
-              activeTab === 'architecture'
-                ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 font-extrabold'
-                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
+              activeTab === "architecture"
+                ? "bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30 font-extrabold"
+                : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10"
             }`}
           >
             {labText.tabs.architecture}
@@ -299,7 +321,7 @@ export const MlLabView: React.FC = () => {
       </div>
 
       {/* 2. TAB: Experimental Arms */}
-      {activeTab === 'arms' && (
+      {activeTab === "arms" && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {experimentalArms.map((arm) => (
@@ -323,12 +345,15 @@ export const MlLabView: React.FC = () => {
                 <div className="bg-slate-950/60 p-2.5 rounded-xl border border-white/5 space-y-1 font-mono text-xs">
                   <div className="flex justify-between text-slate-400">
                     <span>{labText.armsSection.testedScope}</span>
-                    <span className="text-slate-200 font-bold">{arm.testedPlayers}</span>
+                    <span className="text-slate-200 font-bold">
+                      {arm.testedPlayers}
+                    </span>
                   </div>
                   <div className="flex justify-between text-slate-400">
                     <span>{labText.armsSection.armMaeVsProd}</span>
                     <span className="text-purple-300 font-bold">
-                      {arm.currentMae} {arm.unit || 'pts'} vs {arm.baselineMae} {arm.unit || 'pts'}
+                      {arm.currentMae} {arm.unit || "pts"} vs {arm.baselineMae}{" "}
+                      {arm.unit || "pts"}
                     </span>
                   </div>
                 </div>
@@ -344,11 +369,12 @@ export const MlLabView: React.FC = () => {
       )}
 
       {/* 3. TAB: GW3 Divergences */}
-      {activeTab === 'divergences' && (
+      {activeTab === "divergences" && (
         <div className="bg-slate-900/85 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-xl space-y-4">
           <div>
             <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
-              <Flame className="w-4 h-4 text-amber-400" /> {labText.divergencesSection.title}
+              <Flame className="w-4 h-4 text-amber-400" />{" "}
+              {labText.divergencesSection.title}
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
               {labText.divergencesSection.subtitle}
@@ -357,16 +383,22 @@ export const MlLabView: React.FC = () => {
 
           <div className="divide-y divide-white/10">
             {divergences.map((p) => {
-              const isPositive = p.diff.startsWith('+');
+              const isPositive = p.diff.startsWith("+");
               return (
-                <div key={p.name} className="py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <div
+                  key={p.name}
+                  className="py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
+                >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-purple-500/20 text-purple-300 font-black text-xs flex items-center justify-center border border-purple-500/30 font-mono">
                       {p.team}
                     </div>
                     <div>
                       <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
-                        {p.name} <span className="text-[10px] text-slate-400 font-mono">({p.pos})</span>
+                        {p.name}{" "}
+                        <span className="text-[10px] text-slate-400 font-mono">
+                          ({p.pos})
+                        </span>
                       </h4>
                       <p className="text-[11px] text-slate-400">{p.driver}</p>
                     </div>
@@ -374,16 +406,30 @@ export const MlLabView: React.FC = () => {
 
                   <div className="flex items-center gap-4 self-end sm:self-center">
                     <div className="text-right font-mono">
-                      <span className="text-[10px] text-slate-400 block">{labText.divergencesSection.prodVsExp}</span>
-                      <span className="text-xs text-slate-300 font-bold">{p.prodXp} xP</span>
+                      <span className="text-[10px] text-slate-400 block">
+                        {labText.divergencesSection.prodVsExp}
+                      </span>
+                      <span className="text-xs text-slate-300 font-bold">
+                        {p.prodXp} xP
+                      </span>
                       <span className="text-slate-500 mx-1">→</span>
-                      <span className="text-xs text-purple-300 font-black">{p.shadowXp} xP</span>
+                      <span className="text-xs text-purple-300 font-black">
+                        {p.shadowXp} xP
+                      </span>
                     </div>
 
-                    <div className={`px-2.5 py-1 rounded-xl text-xs font-black font-mono flex items-center gap-0.5 ${
-                      isPositive ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/40' : 'bg-rose-950/80 text-rose-300 border border-rose-500/40'
-                    }`}>
-                      {isPositive ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
+                    <div
+                      className={`px-2.5 py-1 rounded-xl text-xs font-black font-mono flex items-center gap-0.5 ${
+                        isPositive
+                          ? "bg-emerald-950/80 text-emerald-300 border border-emerald-500/40"
+                          : "bg-rose-950/80 text-rose-300 border border-rose-500/40"
+                      }`}
+                    >
+                      {isPositive ? (
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      ) : (
+                        <ArrowDownRight className="w-3.5 h-3.5" />
+                      )}
                       {p.diff} xP
                     </div>
                   </div>
@@ -395,10 +441,11 @@ export const MlLabView: React.FC = () => {
       )}
 
       {/* 4. TAB: Architecture */}
-      {activeTab === 'architecture' && (
+      {activeTab === "architecture" && (
         <div className="bg-slate-900/85 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-xl space-y-4">
           <h3 className="text-base font-black text-white flex items-center gap-2">
-            <Layers className="w-4 h-4 text-purple-400" /> {labText.architectureSection.title}
+            <Layers className="w-4 h-4 text-purple-400" />{" "}
+            {labText.architectureSection.title}
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
             {labText.architectureSection.description}

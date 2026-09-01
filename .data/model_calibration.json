@@ -1,0 +1,59 @@
+{
+  "lastUpdated": "2026-09-01T18:22:12.575Z",
+  "completedGameweeks": 2,
+  "gameweekReports": {},
+  "armLeaderboard": {
+    "production": {
+      "mae": 0,
+      "rmse": 0
+    },
+    "tactical_cluster": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "availability_cluster": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "flank_mismatch": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "european_fatigue": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "cbi_bps_magnet": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "press_nlp_sub_risk": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "set_piece_specialist": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "ppda_high_press": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "referee_severity": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "gk_psxg_efficiency": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "corner_aerial_threat": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    },
+    "super_ensemble": {
+      "mae": 0,
+      "deltaVsProd": "+0.0%"
+    }
+  }
+}

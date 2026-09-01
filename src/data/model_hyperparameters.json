@@ -1,15 +1,10 @@
 {
   "version": "2.0.0-calibrated",
-  "trainedAt": "2026-09-01T16:59:55.211Z",
+  "trainedAt": "2026-09-01T17:52:43.478Z",
   "trainingSamplesEvaluated": 38400,
   "rollingTrainingWindow": {
     "currentSeason": "2026/27",
-    "rollingSeasons": [
-      "2022/23",
-      "2023/24",
-      "2024/25",
-      "2025/26"
-    ],
+    "rollingSeasons": ["2022/23", "2023/24", "2024/25", "2025/26"],
     "windowYears": 4
   },
   "validationRmse": 1.84,

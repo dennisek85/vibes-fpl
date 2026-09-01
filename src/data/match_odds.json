@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-31T11:51:09.683Z",
+  "lastUpdated": "2026-09-01T17:52:42.002Z",
   "season": "2026/27",
   "fixtures": {
     "gw3": [
@@ -248,16 +248,6 @@
         "awayGoals": 0.81
       },
       {
-        "homeTeamId": 13,
-        "awayTeamId": 8,
-        "homeTeam": "LEE",
-        "awayTeam": "CRY",
-        "homeCleanSheet": 0.16,
-        "awayCleanSheet": 0.35,
-        "homeGoals": 1.06,
-        "awayGoals": 1.82
-      },
-      {
         "homeTeamId": 17,
         "awayTeamId": 11,
         "homeTeam": "NEW",
@@ -286,6 +276,16 @@
         "awayCleanSheet": 0.3,
         "homeGoals": 1.19,
         "awayGoals": 1.62
+      },
+      {
+        "homeTeamId": 13,
+        "awayTeamId": 8,
+        "homeTeam": "LEE",
+        "awayTeam": "CRY",
+        "homeCleanSheet": 0.16,
+        "awayCleanSheet": 0.35,
+        "homeGoals": 1.06,
+        "awayGoals": 1.82
       },
       {
         "homeTeamId": 15,

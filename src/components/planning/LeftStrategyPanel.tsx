@@ -1,36 +1,63 @@
-import React, { useState } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { ChipType } from '@/types/fpl';
-import { 
-  Zap, 
-  Sparkles, 
-  Lightbulb, 
-  EyeOff, 
+import React, { useState } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { ChipType } from "@/types/fpl";
+import {
+  Zap,
+  Sparkles,
+  Lightbulb,
+  EyeOff,
   RotateCcw,
   Layers,
   Wand2,
   Edit3,
   Trash2,
   AlertCircle,
-  Gauge
-} from 'lucide-react';
-import { useSquadRating } from '@/hooks/useSquadRating';
+  Gauge,
+} from "lucide-react";
+import { useSquadRating } from "@/hooks/useSquadRating";
 
-const CHIPS: Array<{ id: ChipType; label: string; color: string; desc: string }> = [
-  { id: 'wildcard', label: 'WC', color: 'text-purple-300 border-purple-500/30', desc: 'Wildcard' },
-  { id: 'freehit', label: 'FH', color: 'text-amber-300 border-amber-500/30', desc: 'Free Hit' },
-  { id: 'bboost', label: 'BB', color: 'text-blue-300 border-blue-500/30', desc: 'Bench Boost' },
-  { id: '3xc', label: '3TC', color: 'text-rose-300 border-rose-500/30', desc: 'Triple Captain' },
+const CHIPS: Array<{
+  id: ChipType;
+  label: string;
+  color: string;
+  desc: string;
+}> = [
+  {
+    id: "wildcard",
+    label: "WC",
+    color: "text-purple-300 border-purple-500/30",
+    desc: "Wildcard",
+  },
+  {
+    id: "freehit",
+    label: "FH",
+    color: "text-amber-300 border-amber-500/30",
+    desc: "Free Hit",
+  },
+  {
+    id: "bboost",
+    label: "BB",
+    color: "text-blue-300 border-blue-500/30",
+    desc: "Bench Boost",
+  },
+  {
+    id: "3xc",
+    label: "3TC",
+    color: "text-rose-300 border-rose-500/30",
+    desc: "Triple Captain",
+  },
 ];
 
 interface LeftStrategyPanelProps {
   onOpenOverrides: () => void;
 }
 
-export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOverrides }) => {
-  const { 
-    selectedGameweek, 
-    gameweekPlans, 
+export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({
+  onOpenOverrides,
+}) => {
+  const {
+    selectedGameweek,
+    gameweekPlans,
     playedChips,
     setChip,
     fixtureHorizon,
@@ -49,7 +76,7 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
 
   const isLocked = isGameweekLocked(selectedGameweek);
   const activePlan = gameweekPlans[selectedGameweek];
-  const activeChip = activePlan?.chip || 'none';
+  const activeChip = activePlan?.chip || "none";
 
   const squadRating = useSquadRating();
 
@@ -85,36 +112,43 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
               Chips Strategy
             </span>
             <span className="text-xs text-emerald-400 font-mono font-black">
-              {activeChip !== 'none' ? `${activeChip.toUpperCase()}` : 'None'}
+              {activeChip !== "none" ? `${activeChip.toUpperCase()}` : "None"}
             </span>
           </div>
 
           {!isLocked && (
             <div className="grid grid-cols-4 gap-1.5 mb-2.5">
-              {CHIPS.map(chip => {
-                const playedInHistory = playedChips.find(c => c.name === chip.id);
+              {CHIPS.map((chip) => {
+                const playedInHistory = playedChips.find(
+                  (c) => c.name === chip.id,
+                );
                 const isUsed = !!playedInHistory;
                 const isCurrent = activeChip === chip.id;
                 const plannedGw = getChipPlannedGw(chip.id);
-                const isPlannedElsewhere = plannedGw !== null && plannedGw !== selectedGameweek;
+                const isPlannedElsewhere =
+                  plannedGw !== null && plannedGw !== selectedGameweek;
 
                 return (
                   <button
                     key={chip.id}
                     disabled={isUsed || isPlannedElsewhere}
-                    onClick={() => setChip(isCurrent ? 'none' : chip.id)}
+                    onClick={() => setChip(isCurrent ? "none" : chip.id)}
                     className={`py-2 rounded-xl border text-xs sm:text-sm font-black transition-all flex flex-col items-center justify-center ${
                       isCurrent
-                        ? 'bg-emerald-600 border-emerald-400 text-white shadow-md scale-102'
+                        ? "bg-emerald-600 border-emerald-400 text-white shadow-md scale-102"
                         : isUsed || isPlannedElsewhere
-                        ? 'bg-slate-950/40 border-white/5 text-slate-600 cursor-not-allowed'
-                        : 'bg-slate-950/80 border-white/10 text-slate-300 hover:border-emerald-500/50 hover:text-white'
+                          ? "bg-slate-950/40 border-white/5 text-slate-600 cursor-not-allowed"
+                          : "bg-slate-950/80 border-white/10 text-slate-300 hover:border-emerald-500/50 hover:text-white"
                     }`}
                     title={chip.desc}
                   >
                     <span>{chip.label}</span>
                     <span className="text-[9.5px] font-bold opacity-75">
-                      {isUsed ? 'Used' : isPlannedElsewhere ? `GW${plannedGw}` : chip.label}
+                      {isUsed
+                        ? "Used"
+                        : isPlannedElsewhere
+                          ? `GW${plannedGw}`
+                          : chip.label}
                     </span>
                   </button>
                 );
@@ -125,7 +159,9 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
 
         <button
           onClick={() => {
-            if (confirm(`Reset Gameweek ${selectedGameweek} plan to default?`)) {
+            if (
+              confirm(`Reset Gameweek ${selectedGameweek} plan to default?`)
+            ) {
               resetCurrentGameweek();
             }
           }}
@@ -162,13 +198,15 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
                   <Gauge className="w-3.5 h-3.5 text-emerald-400" />
                   Team Rating
                 </span>
-                <span className={`text-base font-black font-mono px-2 py-0.5 rounded-lg border ${
-                  squadRating.overallPercentage >= 85 
-                    ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' 
-                    : squadRating.overallPercentage >= 75 
-                    ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40' 
-                    : 'bg-amber-950/80 text-amber-300 border-amber-500/40'
-                }`}>
+                <span
+                  className={`text-base font-black font-mono px-2 py-0.5 rounded-lg border ${
+                    squadRating.overallPercentage >= 85
+                      ? "bg-emerald-950/80 text-emerald-300 border-emerald-500/40"
+                      : squadRating.overallPercentage >= 75
+                        ? "bg-cyan-950/80 text-cyan-300 border-cyan-500/40"
+                        : "bg-amber-950/80 text-amber-300 border-amber-500/40"
+                  }`}
+                >
                   {squadRating.overallPercentage}%
                 </span>
               </div>
@@ -176,20 +214,36 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
               {/* Clean Sub-percentages */}
               <div className="grid grid-cols-4 gap-1 text-center font-mono">
                 <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
-                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">DEF</span>
-                  <span className="text-xs font-black text-slate-200">{squadRating.defensePercentage}%</span>
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">
+                    DEF
+                  </span>
+                  <span className="text-xs font-black text-slate-200">
+                    {squadRating.defensePercentage}%
+                  </span>
                 </div>
                 <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
-                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">MID</span>
-                  <span className="text-xs font-black text-slate-200">{squadRating.midfieldPercentage}%</span>
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">
+                    MID
+                  </span>
+                  <span className="text-xs font-black text-slate-200">
+                    {squadRating.midfieldPercentage}%
+                  </span>
                 </div>
                 <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
-                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">FWD</span>
-                  <span className="text-xs font-black text-slate-200">{squadRating.forwardPercentage}%</span>
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">
+                    FWD
+                  </span>
+                  <span className="text-xs font-black text-slate-200">
+                    {squadRating.forwardPercentage}%
+                  </span>
                 </div>
                 <div className="bg-slate-900/90 py-1 px-0.5 rounded-lg border border-white/5">
-                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">CAP</span>
-                  <span className="text-xs font-black text-amber-300">{squadRating.captainPercentage}%</span>
+                  <span className="text-[9px] font-bold text-slate-400 uppercase block font-sans">
+                    CAP
+                  </span>
+                  <span className="text-xs font-black text-amber-300">
+                    {squadRating.captainPercentage}%
+                  </span>
                 </div>
               </div>
             </div>
@@ -205,7 +259,9 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
 
           {/* AI-Only: Strongest Team Solver Button */}
           <button
-            onClick={() => openScoutModal(undefined, undefined, undefined, 'optimal_squad')}
+            onClick={() =>
+              openScoutModal(undefined, undefined, undefined, "optimal_squad")
+            }
             className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-700 hover:brightness-110 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-950/80 transition active:scale-98 border border-emerald-400/40 animate-in fade-in"
             title="Compute the mathematically strongest 15-man squad within your exact budget"
           >
@@ -225,9 +281,9 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
                   key={hz}
                   onClick={() => setFixtureHorizon(hz as 1 | 3 | 5)}
                   className={`px-2.5 py-1 rounded-lg text-xs font-black transition ${
-                    fixtureHorizon === hz 
-                      ? 'bg-emerald-600 text-white shadow' 
-                      : 'text-slate-400 hover:text-white'
+                    fixtureHorizon === hz
+                      ? "bg-emerald-600 text-white shadow"
+                      : "text-slate-400 hover:text-white"
                   }`}
                 >
                   {hz}GW
@@ -252,13 +308,13 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({ onOpenOver
           onClick={handleAutoOptimize}
           className="w-full py-2.5 px-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-white/15 text-slate-200 hover:text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-98"
         >
-          <Wand2 className="w-4 h-4 text-amber-400" />
-          ⚡ Auto-Optimize Lineup
+          <Wand2 className="w-4 h-4 text-amber-400" />⚡ Auto-Optimize Lineup
         </button>
 
         {optResult && (
           <p className="text-xs text-emerald-400 font-black text-center py-0.5 animate-in fade-in leading-tight">
-            ✨ {optResult.formation} · {optResult.captainName} (C) · {optResult.totalProjectedPoints} xP
+            ✨ {optResult.formation} · {optResult.captainName} (C) ·{" "}
+            {optResult.totalProjectedPoints} xP
           </p>
         )}
 

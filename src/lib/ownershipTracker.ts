@@ -1,11 +1,11 @@
-import bundledEoData from '@/data/top10k_ownership.json';
+import bundledEoData from "@/data/top10k_ownership.json";
 
 export interface PlayerTop10kEo {
   playerId: number;
-  ownership: number;         // 0 to 100%
-  captaincy: number;         // 0 to 100%
-  effectiveOwnership: number;// Ownership + Captaincy (can exceed 100%)
-  tier: 'essential' | 'popular' | 'differential' | 'ultra_differential';
+  ownership: number; // 0 to 100%
+  captaincy: number; // 0 to 100%
+  effectiveOwnership: number; // Ownership + Captaincy (can exceed 100%)
+  tier: "essential" | "popular" | "differential" | "ultra_differential";
   riskLabel: string;
 }
 
@@ -33,4 +33,3 @@ export function getPlayerTop10kEo(playerId: number): PlayerTop10kEo | null {
   const data = readTop10kEoData();
   return data.players?.[`${playerId}`] || null;
 }
-

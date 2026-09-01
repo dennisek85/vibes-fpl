@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 let cachedFixtures: any = null;
 let lastFixturesFetch = 0;
@@ -10,9 +10,10 @@ export async function GET() {
   }
 
   try {
-    const res = await fetch('https://fantasy.premierleague.com/api/fixtures/', {
+    const res = await fetch("https://fantasy.premierleague.com/api/fixtures/", {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       },
       next: { revalidate: 7200 },
     });
@@ -26,8 +27,11 @@ export async function GET() {
 
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Error fetching FPL fixtures:', error);
+    console.error("Error fetching FPL fixtures:", error);
     if (cachedFixtures) return NextResponse.json(cachedFixtures);
-    return NextResponse.json({ error: 'Failed to fetch fixtures' }, { status: 502 });
+    return NextResponse.json(
+      { error: "Failed to fetch fixtures" },
+      { status: 502 },
+    );
   }
 }

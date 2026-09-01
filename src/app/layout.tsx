@@ -1,13 +1,14 @@
-import type { Metadata, Viewport } from 'next';
-import './globals.css';
+import type { Metadata, Viewport } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'FPL Hub - Squad & Multi-Gameweek Transfer Planner',
-  description: 'Interactive Fantasy Premier League Pitch & Multi-Gameweek Transfer Planner with 2026/27 rules, FDR, and budget customizer.',
+  title: "FPL Hub - Squad & Multi-Gameweek Transfer Planner",
+  description:
+    "Interactive Fantasy Premier League Pitch & Multi-Gameweek Transfer Planner with 2026/27 rules, FDR, and budget customizer.",
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,

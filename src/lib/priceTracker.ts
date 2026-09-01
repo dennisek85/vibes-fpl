@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
-import { FPLPlayer } from '@/types/fpl';
+import fs from "fs";
+import path from "path";
+import os from "os";
+import { FPLPlayer } from "@/types/fpl";
 
 export interface PlayerPriceBaseline {
   cost: number;
@@ -32,13 +32,18 @@ declare global {
 
 function getStorageFilePath(): string {
   if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
-    return path.join(os.tmpdir(), 'price_snapshots.json');
+    return path.join(os.tmpdir(), "price_snapshots.json");
   }
-  const bundledPath = path.join(process.cwd(), 'src', 'data', 'price_snapshots.json');
+  const bundledPath = path.join(
+    process.cwd(),
+    "src",
+    "data",
+    "price_snapshots.json",
+  );
   if (fs.existsSync(bundledPath)) {
     return bundledPath;
   }
-  return path.join(process.cwd(), '.data', 'price_snapshots.json');
+  return path.join(process.cwd(), ".data", "price_snapshots.json");
 }
 
 function getTodayUkDateString(): string {
@@ -48,9 +53,9 @@ function getTodayUkDateString(): string {
   const ukHour = (now.getUTCHours() + 1) % 24; // UTC+1 during BST (approx)
   if (ukHour < 2) {
     const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    return yesterday.toISOString().split('T')[0];
+    return yesterday.toISOString().split("T")[0];
   }
-  return now.toISOString().split('T')[0];
+  return now.toISOString().split("T")[0];
 }
 
 export function readPriceSnapshotData(): PriceSnapshotData {
@@ -61,13 +66,13 @@ export function readPriceSnapshotData(): PriceSnapshotData {
   const filePath = getStorageFilePath();
   try {
     if (fs.existsSync(filePath)) {
-      const raw = fs.readFileSync(filePath, 'utf-8');
+      const raw = fs.readFileSync(filePath, "utf-8");
       const parsed = JSON.parse(raw);
       globalThis.__priceSnapshotMemoryCache = parsed;
       return parsed;
     }
   } catch (e) {
-    console.warn('Error reading price snapshots file:', e);
+    console.warn("Error reading price snapshots file:", e);
   }
 
   const initial: PriceSnapshotData = {
@@ -89,9 +94,9 @@ export function savePriceSnapshotData(data: PriceSnapshotData): void {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
   } catch (e) {
-    console.warn('Error writing price snapshots file:', e);
+    console.warn("Error writing price snapshots file:", e);
   }
 }
 
@@ -103,7 +108,16 @@ export function savePriceSnapshotData(data: PriceSnapshotData): void {
  * 4. Returns calibrated daily deltas and hourly velocity for every player.
  */
 export function updateAndGetPriceTelemetry(elements: FPLPlayer[]): {
-  dailyDeltas: Record<number, { netToday: number; inToday: number; outToday: number; hourlyVelocity: number; isPriceLocked: boolean }>;
+  dailyDeltas: Record<
+    number,
+    {
+      netToday: number;
+      inToday: number;
+      outToday: number;
+      hourlyVelocity: number;
+      isPriceLocked: boolean;
+    }
+  >;
   observedThresholds: Record<string, number>;
 } {
   const snapshotData = readPriceSnapshotData();
@@ -115,7 +129,16 @@ export function updateAndGetPriceTelemetry(elements: FPLPlayer[]): {
     snapshotData.lastPriceChangeDate = currentUkDay;
   }
 
-  const dailyDeltas: Record<number, { netToday: number; inToday: number; outToday: number; hourlyVelocity: number; isPriceLocked: boolean }> = {};
+  const dailyDeltas: Record<
+    number,
+    {
+      netToday: number;
+      inToday: number;
+      outToday: number;
+      hourlyVelocity: number;
+      isPriceLocked: boolean;
+    }
+  > = {};
 
   for (const p of elements) {
     const id = p.id;
@@ -132,8 +155,11 @@ export function updateAndGetPriceTelemetry(elements: FPLPlayer[]): {
 
     if (hasPriceChanged) {
       // Log the observed threshold trigger
-      const deltaBeforeChange = (currentIn - (baseline.transfersIn || 0)) - (currentOut - (baseline.transfersOut || 0));
-      const key = `${currentCost > baseline.cost ? 'rise' : 'fall'}_${id}_${currentUkDay}`;
+      const deltaBeforeChange =
+        currentIn -
+        (baseline.transfersIn || 0) -
+        (currentOut - (baseline.transfersOut || 0));
+      const key = `${currentCost > baseline.cost ? "rise" : "fall"}_${id}_${currentUkDay}`;
       snapshotData.observedThresholds[key] = Math.abs(deltaBeforeChange);
 
       // Reset baseline to current transfer counter
@@ -187,17 +213,24 @@ export function updateAndGetPriceTelemetry(elements: FPLPlayer[]): {
     let hourlyVelocity = 0;
     if (history.length >= 2) {
       const oldestPoint = history[0];
-      const hoursDiff = Math.max(0.5, (nowMs - oldestPoint.time) / (1000 * 60 * 60));
-      const deltaTransfers = (inToday - outToday) - oldestPoint.net;
+      const hoursDiff = Math.max(
+        0.5,
+        (nowMs - oldestPoint.time) / (1000 * 60 * 60),
+      );
+      const deltaTransfers = inToday - outToday - oldestPoint.net;
       hourlyVelocity = Math.round((deltaTransfers / hoursDiff) * 10) / 10;
     } else {
       // Fallback: estimate based on hours since baseline
-      const hoursSinceBaseline = Math.max(1.0, (nowMs - baseline.timestamp) / (1000 * 60 * 60));
+      const hoursSinceBaseline = Math.max(
+        1.0,
+        (nowMs - baseline.timestamp) / (1000 * 60 * 60),
+      );
       hourlyVelocity = Math.round((netToday / hoursSinceBaseline) * 10) / 10;
     }
 
     // FPL Price Lock: players who changed price today are frozen for 24-48h
-    const isPriceLocked = baseline.lastCostChangeDate === currentUkDay || p.status === 'u';
+    const isPriceLocked =
+      baseline.lastCostChangeDate === currentUkDay || p.status === "u";
 
     dailyDeltas[id] = {
       netToday,

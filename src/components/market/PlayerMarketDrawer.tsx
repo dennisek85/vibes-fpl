@@ -1,22 +1,22 @@
-import React, { useMemo, useState } from 'react';
-import { usePlannerStore } from '@/store/usePlannerStore';
-import { KitIcon } from '@/components/ui/KitIcon';
-import { FdrFixtureCell } from '@/components/ui/FdrBadge';
-import { formatMoney } from '@/lib/fpl-rules';
-import { POSITION_MAP } from '@/lib/fpl-constants';
-import { FPLPlayer } from '@/types/fpl';
-import { 
-  X, 
-  Search, 
-  AlertTriangle, 
-  ArrowDownUp, 
-  ShoppingBag, 
-  Sparkles, 
+import React, { useMemo, useState } from "react";
+import { usePlannerStore } from "@/store/usePlannerStore";
+import { KitIcon } from "@/components/ui/KitIcon";
+import { FdrFixtureCell } from "@/components/ui/FdrBadge";
+import { formatMoney } from "@/lib/fpl-rules";
+import { POSITION_MAP } from "@/lib/fpl-constants";
+import { FPLPlayer } from "@/types/fpl";
+import {
+  X,
+  Search,
+  AlertTriangle,
+  ArrowDownUp,
+  ShoppingBag,
+  Sparkles,
   Zap,
   ArrowLeftRight,
   UserCheck,
-  RotateCcw
-} from 'lucide-react';
+  RotateCcw,
+} from "lucide-react";
 
 export const PlayerMarketDrawer: React.FC = () => {
   const {
@@ -43,25 +43,36 @@ export const PlayerMarketDrawer: React.FC = () => {
     getPlayerUpcomingFixtures,
     getPlayerGameweekXp,
     fixtureHorizon,
-    showAiPredictions
+    showAiPredictions,
   } = usePlannerStore();
 
-  const [pendingTargetPlayer, setPendingTargetPlayer] = useState<FPLPlayer | null>(null);
+  const [pendingTargetPlayer, setPendingTargetPlayer] =
+    useState<FPLPlayer | null>(null);
 
   const currentPlan = gameweekPlans[selectedGameweek];
-  const playerOut = selectedPlayerForTransfer ? playerMap.get(selectedPlayerForTransfer) : null;
+  const playerOut = selectedPlayerForTransfer
+    ? playerMap.get(selectedPlayerForTransfer)
+    : null;
   const currentBank = currentPlan ? currentPlan.calculatedBank : 0;
-  
-  const squadPicks = useMemo(() => currentPlan?.squad || [], [currentPlan?.squad]);
-  const squadIds = useMemo(() => new Set(squadPicks.map(p => p.element)), [squadPicks]);
+
+  const squadPicks = useMemo(
+    () => currentPlan?.squad || [],
+    [currentPlan?.squad],
+  );
+  const squadIds = useMemo(
+    () => new Set(squadPicks.map((p) => p.element)),
+    [squadPicks],
+  );
 
   const sellValue = playerOut ? playerOut.now_cost : 0;
-  const maxAffordablePrice = playerOut ? (currentBank + sellValue) : (currentBank + 155);
+  const maxAffordablePrice = playerOut
+    ? currentBank + sellValue
+    : currentBank + 155;
 
   // Count players per club in current squad
   const clubCounts = useMemo(() => {
     const counts: Record<number, number> = {};
-    squadPicks.forEach(p => {
+    squadPicks.forEach((p) => {
       const pl = playerMap.get(p.element);
       if (pl) {
         counts[pl.team] = (counts[pl.team] || 0) + 1;
@@ -74,15 +85,17 @@ export const PlayerMarketDrawer: React.FC = () => {
   const matchingSquadPlayers = useMemo(() => {
     if (!pendingTargetPlayer || !currentPlan) return [];
     return squadPicks
-      .map(pick => {
+      .map((pick) => {
         const pl = playerMap.get(pick.element);
-        if (!pl || pl.element_type !== pendingTargetPlayer.element_type) return null;
-        
+        if (!pl || pl.element_type !== pendingTargetPlayer.element_type)
+          return null;
+
         const sellingPrice = pl.now_cost;
-        const netBankTenths = currentBank + sellingPrice - pendingTargetPlayer.now_cost;
+        const netBankTenths =
+          currentBank + sellingPrice - pendingTargetPlayer.now_cost;
         const isAffordable = netBankTenths >= 0;
         const netBank = netBankTenths / 10.0;
-        
+
         // Club check
         const targetTeam = pendingTargetPlayer.team;
         const currentClubCount = clubCounts[targetTeam] || 0;
@@ -94,18 +107,25 @@ export const PlayerMarketDrawer: React.FC = () => {
           sellingPrice,
           isAffordable: isAffordable && !wouldExceedClub,
           wouldExceedClub,
-          netBank
+          netBank,
         };
       })
       .filter(Boolean) as {
-        pick: any;
-        player: FPLPlayer;
-        sellingPrice: number;
-        isAffordable: boolean;
-        wouldExceedClub: boolean;
-        netBank: number;
-      }[];
-  }, [pendingTargetPlayer, currentPlan, squadPicks, playerMap, currentBank, clubCounts]);
+      pick: any;
+      player: FPLPlayer;
+      sellingPrice: number;
+      isAffordable: boolean;
+      wouldExceedClub: boolean;
+      netBank: number;
+    }[];
+  }, [
+    pendingTargetPlayer,
+    currentPlan,
+    squadPicks,
+    playerMap,
+    currentBank,
+    clubCounts,
+  ]);
 
   // Calculate Top 6 Smart Replacements (or Top 6 Transfers of the Week)
   const topRecommendations = useMemo(() => {
@@ -113,119 +133,160 @@ export const PlayerMarketDrawer: React.FC = () => {
 
     if (playerOut) {
       // 1. Replacements for a specific selected player
-      const candidates = players.filter(p => {
+      const candidates = players.filter((p) => {
         if (p.id === playerOut.id) return false;
         if (p.element_type !== playerOut.element_type) return false;
         if (squadIds.has(p.id)) return false;
         if (p.now_cost > maxAffordablePrice) return false;
 
         const currentClubCount = clubCounts[p.team] || 0;
-        const allowedMax = (p.team === playerOut.team) ? 3 : 2;
+        const allowedMax = p.team === playerOut.team ? 3 : 2;
         if (currentClubCount > allowedMax) return false;
 
         return true;
       });
 
-      return candidates.map(p => {
-        const xp1In = getPlayerGameweekXp(p.id, selectedGameweek);
-        const xp1Out = getPlayerGameweekXp(playerOut.id, selectedGameweek);
-        const gain1 = xp1In - xp1Out;
+      return candidates
+        .map((p) => {
+          const xp1In = getPlayerGameweekXp(p.id, selectedGameweek);
+          const xp1Out = getPlayerGameweekXp(playerOut.id, selectedGameweek);
+          const gain1 = xp1In - xp1Out;
 
-        let xp3In = 0;
-        let xp3Out = 0;
-        for (let gw = selectedGameweek; gw <= Math.min(38, selectedGameweek + 2); gw++) {
-          xp3In += getPlayerGameweekXp(p.id, gw);
-          xp3Out += getPlayerGameweekXp(playerOut.id, gw);
-        }
-        const gain3 = xp3In - xp3Out;
-        const remainingBank = (maxAffordablePrice - p.now_cost) / 10.0;
+          let xp3In = 0;
+          let xp3Out = 0;
+          for (
+            let gw = selectedGameweek;
+            gw <= Math.min(38, selectedGameweek + 2);
+            gw++
+          ) {
+            xp3In += getPlayerGameweekXp(p.id, gw);
+            xp3Out += getPlayerGameweekXp(playerOut.id, gw);
+          }
+          const gain3 = xp3In - xp3Out;
+          const remainingBank = (maxAffordablePrice - p.now_cost) / 10.0;
 
-        return {
-          player: p,
-          xp1: xp1In,
-          gain1,
-          xp3: xp3In,
-          gain3,
-          remainingBank,
-          score: showAiPredictions ? gain3 : (parseFloat(p.form) || 0)
-        };
-      }).sort((a, b) => b.score - a.score).slice(0, 6);
+          return {
+            player: p,
+            xp1: xp1In,
+            gain1,
+            xp3: xp3In,
+            gain3,
+            remainingBank,
+            score: showAiPredictions ? gain3 : parseFloat(p.form) || 0,
+          };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 6);
     } else {
       // 2. Top 6 Overall Transfers of the Week (No player preselected)
-      const candidates = players.filter(p => {
+      const candidates = players.filter((p) => {
         if (squadIds.has(p.id)) return false;
         const currentClubCount = clubCounts[p.team] || 0;
         if (currentClubCount >= 3) return false;
         return true;
       });
 
-      return candidates.map(p => {
-        let xp3 = 0;
-        for (let gw = selectedGameweek; gw <= Math.min(38, selectedGameweek + 2); gw++) {
-          xp3 += getPlayerGameweekXp(p.id, gw);
-        }
-        const xp1 = getPlayerGameweekXp(p.id, selectedGameweek);
-        const formNum = parseFloat(p.form) || 0;
+      return candidates
+        .map((p) => {
+          let xp3 = 0;
+          for (
+            let gw = selectedGameweek;
+            gw <= Math.min(38, selectedGameweek + 2);
+            gw++
+          ) {
+            xp3 += getPlayerGameweekXp(p.id, gw);
+          }
+          const xp1 = getPlayerGameweekXp(p.id, selectedGameweek);
+          const formNum = parseFloat(p.form) || 0;
 
-        return {
-          player: p,
-          xp1,
-          gain1: 0,
-          xp3,
-          gain3: 0,
-          remainingBank: 0,
-          score: showAiPredictions ? xp3 : formNum
-        };
-      }).sort((a, b) => b.score - a.score).slice(0, 6);
+          return {
+            player: p,
+            xp1,
+            gain1: 0,
+            xp3,
+            gain3: 0,
+            remainingBank: 0,
+            score: showAiPredictions ? xp3 : formNum,
+          };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 6);
     }
-  }, [playerOut, players, squadIds, maxAffordablePrice, clubCounts, selectedGameweek, getPlayerGameweekXp, showAiPredictions]);
+  }, [
+    playerOut,
+    players,
+    squadIds,
+    maxAffordablePrice,
+    clubCounts,
+    selectedGameweek,
+    getPlayerGameweekXp,
+    showAiPredictions,
+  ]);
 
   const filteredPlayers = useMemo(() => {
     if (!players.length) return [];
 
-    return players.filter(p => {
-      if (marketPosition !== null && p.element_type !== marketPosition) return false;
-      if (marketTeamId !== null && p.team !== marketTeamId) return false;
-      if (p.now_cost < marketMinPrice || p.now_cost > marketMaxPrice) return false;
-      if (playerOut && marketAffordableOnly && p.now_cost > maxAffordablePrice) return false;
+    return players
+      .filter((p) => {
+        if (marketPosition !== null && p.element_type !== marketPosition)
+          return false;
+        if (marketTeamId !== null && p.team !== marketTeamId) return false;
+        if (p.now_cost < marketMinPrice || p.now_cost > marketMaxPrice)
+          return false;
+        if (
+          playerOut &&
+          marketAffordableOnly &&
+          p.now_cost > maxAffordablePrice
+        )
+          return false;
 
-      if (marketSearch.trim()) {
-        const query = marketSearch.toLowerCase();
-        const team = teamMap.get(p.team);
-        const nameMatch = p.web_name.toLowerCase().includes(query) || 
-                          p.first_name.toLowerCase().includes(query) || 
-                          p.second_name.toLowerCase().includes(query);
-        const teamMatch = team?.name.toLowerCase().includes(query) || team?.short_name.toLowerCase().includes(query);
-        if (!nameMatch && !teamMatch) return false;
-      }
+        if (marketSearch.trim()) {
+          const query = marketSearch.toLowerCase();
+          const team = teamMap.get(p.team);
+          const nameMatch =
+            p.web_name.toLowerCase().includes(query) ||
+            p.first_name.toLowerCase().includes(query) ||
+            p.second_name.toLowerCase().includes(query);
+          const teamMatch =
+            team?.name.toLowerCase().includes(query) ||
+            team?.short_name.toLowerCase().includes(query);
+          if (!nameMatch && !teamMatch) return false;
+        }
 
-      return true;
-    }).sort((a, b) => {
-      if (marketSortBy === 'now_cost') return b.now_cost - a.now_cost;
-      if (marketSortBy === 'total_points') return b.total_points - a.total_points;
-      if (marketSortBy === 'form') return parseFloat(b.form) - parseFloat(a.form);
-      if (marketSortBy === 'selected_by_percent') return parseFloat(b.selected_by_percent) - parseFloat(a.selected_by_percent);
-      return 0;
-    });
+        return true;
+      })
+      .sort((a, b) => {
+        if (marketSortBy === "now_cost") return b.now_cost - a.now_cost;
+        if (marketSortBy === "total_points")
+          return b.total_points - a.total_points;
+        if (marketSortBy === "form")
+          return parseFloat(b.form) - parseFloat(a.form);
+        if (marketSortBy === "selected_by_percent")
+          return (
+            parseFloat(b.selected_by_percent) -
+            parseFloat(a.selected_by_percent)
+          );
+        return 0;
+      });
   }, [
-    players, 
-    marketPosition, 
-    marketTeamId, 
-    marketMinPrice, 
-    marketMaxPrice, 
-    marketAffordableOnly, 
-    marketSearch, 
-    marketSortBy, 
-    maxAffordablePrice, 
+    players,
+    marketPosition,
+    marketTeamId,
+    marketMinPrice,
+    marketMaxPrice,
+    marketAffordableOnly,
+    marketSearch,
+    marketSortBy,
+    maxAffordablePrice,
     playerOut,
-    teamMap
+    teamMap,
   ]);
 
   // Escape key listener to close drawer or dismiss pending replacement picker
   React.useEffect(() => {
     if (!isMarketOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         if (pendingTargetPlayer) {
           setPendingTargetPlayer(null);
         } else {
@@ -233,8 +294,8 @@ export const PlayerMarketDrawer: React.FC = () => {
         }
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMarketOpen, pendingTargetPlayer, closeTransferDrawer]);
 
   // Action Handler: when clicking Buy / Swap In
@@ -248,7 +309,10 @@ export const PlayerMarketDrawer: React.FC = () => {
     }
   };
 
-  const handleConfirmSwap = (squadPlayerId: number, targetPlayer: FPLPlayer) => {
+  const handleConfirmSwap = (
+    squadPlayerId: number,
+    targetPlayer: FPLPlayer,
+  ) => {
     executeTransfer(targetPlayer, squadPlayerId);
     setPendingTargetPlayer(null);
     closeTransferDrawer();
@@ -257,7 +321,7 @@ export const PlayerMarketDrawer: React.FC = () => {
   if (!isMarketOpen) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex justify-end bg-black/80 backdrop-blur-md transition-opacity cursor-pointer"
       onClick={() => {
         setPendingTargetPlayer(null);
@@ -265,7 +329,7 @@ export const PlayerMarketDrawer: React.FC = () => {
       }}
     >
       {/* Spacious Flyout Panel */}
-      <div 
+      <div
         className="relative w-full max-w-7xl h-full bg-slate-900 border-l border-white/15 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
@@ -281,49 +345,106 @@ export const PlayerMarketDrawer: React.FC = () => {
               {/* Target to Sell Squad Dropdown & Reset */}
               <div className="flex items-center gap-2 bg-slate-900 border border-white/15 px-3 py-1.5 rounded-xl shadow-inner">
                 <UserCheck className="w-4 h-4 text-emerald-400" />
-                <span className="text-xs font-bold text-slate-400">Target to Sell:</span>
+                <span className="text-xs font-bold text-slate-400">
+                  Target to Sell:
+                </span>
                 <select
-                  value={selectedPlayerForTransfer || ''}
+                  value={selectedPlayerForTransfer || ""}
                   onChange={(e) => {
-                    const val = e.target.value ? parseInt(e.target.value, 10) : null;
+                    const val = e.target.value
+                      ? parseInt(e.target.value, 10)
+                      : null;
                     const selectedPl = val ? playerMap.get(val) : null;
-                    usePlannerStore.setState({ 
+                    usePlannerStore.setState({
                       selectedPlayerForTransfer: val,
-                      marketPosition: selectedPl ? selectedPl.element_type : null
+                      marketPosition: selectedPl
+                        ? selectedPl.element_type
+                        : null,
                     });
                   }}
                   className="bg-transparent text-xs sm:text-sm font-black text-white focus:outline-none cursor-pointer pr-1"
                 >
-                  <option value="" className="bg-slate-950 text-slate-400">⚡ (General Scouting - Top of the Week)</option>
-                  <optgroup label="🧤 Goalkeepers" className="bg-slate-950 text-slate-200">
-                    {squadPicks.filter(p => playerMap.get(p.element)?.element_type === 1).map(p => {
-                      const pl = playerMap.get(p.element);
-                      return pl ? <option key={pl.id} value={pl.id}>{pl.web_name} ({formatMoney(pl.now_cost)})</option> : null;
-                    })}
+                  <option value="" className="bg-slate-950 text-slate-400">
+                    ⚡ (General Scouting - Top of the Week)
+                  </option>
+                  <optgroup
+                    label="🧤 Goalkeepers"
+                    className="bg-slate-950 text-slate-200"
+                  >
+                    {squadPicks
+                      .filter(
+                        (p) => playerMap.get(p.element)?.element_type === 1,
+                      )
+                      .map((p) => {
+                        const pl = playerMap.get(p.element);
+                        return pl ? (
+                          <option key={pl.id} value={pl.id}>
+                            {pl.web_name} ({formatMoney(pl.now_cost)})
+                          </option>
+                        ) : null;
+                      })}
                   </optgroup>
-                  <optgroup label="🛡️ Defenders" className="bg-slate-950 text-slate-200">
-                    {squadPicks.filter(p => playerMap.get(p.element)?.element_type === 2).map(p => {
-                      const pl = playerMap.get(p.element);
-                      return pl ? <option key={pl.id} value={pl.id}>{pl.web_name} ({formatMoney(pl.now_cost)})</option> : null;
-                    })}
+                  <optgroup
+                    label="🛡️ Defenders"
+                    className="bg-slate-950 text-slate-200"
+                  >
+                    {squadPicks
+                      .filter(
+                        (p) => playerMap.get(p.element)?.element_type === 2,
+                      )
+                      .map((p) => {
+                        const pl = playerMap.get(p.element);
+                        return pl ? (
+                          <option key={pl.id} value={pl.id}>
+                            {pl.web_name} ({formatMoney(pl.now_cost)})
+                          </option>
+                        ) : null;
+                      })}
                   </optgroup>
-                  <optgroup label="🎯 Midfielders" className="bg-slate-950 text-slate-200">
-                    {squadPicks.filter(p => playerMap.get(p.element)?.element_type === 3).map(p => {
-                      const pl = playerMap.get(p.element);
-                      return pl ? <option key={pl.id} value={pl.id}>{pl.web_name} ({formatMoney(pl.now_cost)})</option> : null;
-                    })}
+                  <optgroup
+                    label="🎯 Midfielders"
+                    className="bg-slate-950 text-slate-200"
+                  >
+                    {squadPicks
+                      .filter(
+                        (p) => playerMap.get(p.element)?.element_type === 3,
+                      )
+                      .map((p) => {
+                        const pl = playerMap.get(p.element);
+                        return pl ? (
+                          <option key={pl.id} value={pl.id}>
+                            {pl.web_name} ({formatMoney(pl.now_cost)})
+                          </option>
+                        ) : null;
+                      })}
                   </optgroup>
-                  <optgroup label="⚡ Forwards" className="bg-slate-950 text-slate-200">
-                    {squadPicks.filter(p => playerMap.get(p.element)?.element_type === 4).map(p => {
-                      const pl = playerMap.get(p.element);
-                      return pl ? <option key={pl.id} value={pl.id}>{pl.web_name} ({formatMoney(pl.now_cost)})</option> : null;
-                    })}
+                  <optgroup
+                    label="⚡ Forwards"
+                    className="bg-slate-950 text-slate-200"
+                  >
+                    {squadPicks
+                      .filter(
+                        (p) => playerMap.get(p.element)?.element_type === 4,
+                      )
+                      .map((p) => {
+                        const pl = playerMap.get(p.element);
+                        return pl ? (
+                          <option key={pl.id} value={pl.id}>
+                            {pl.web_name} ({formatMoney(pl.now_cost)})
+                          </option>
+                        ) : null;
+                      })}
                   </optgroup>
                 </select>
 
                 {playerOut && (
                   <button
-                    onClick={() => usePlannerStore.setState({ selectedPlayerForTransfer: null, marketPosition: null })}
+                    onClick={() =>
+                      usePlannerStore.setState({
+                        selectedPlayerForTransfer: null,
+                        marketPosition: null,
+                      })
+                    }
                     className="p-1 rounded-lg bg-slate-800 hover:bg-rose-950 hover:text-rose-300 text-slate-400 transition-colors ml-1"
                     title="Clear selection and return to General Scouting"
                   >
@@ -335,16 +456,36 @@ export const PlayerMarketDrawer: React.FC = () => {
 
             <p className="text-xs sm:text-base text-slate-400 mt-1.5 font-medium flex items-center gap-3 flex-wrap">
               {playerOut ? (
-                <span>Max Budget: <strong className="text-emerald-400 font-mono text-base sm:text-lg font-bold">{formatMoney(maxAffordablePrice)}</strong></span>
+                <span>
+                  Max Budget:{" "}
+                  <strong className="text-emerald-400 font-mono text-base sm:text-lg font-bold">
+                    {formatMoney(maxAffordablePrice)}
+                  </strong>
+                </span>
               ) : (
-                <span>Available Bank: <strong className="text-emerald-400 font-mono text-base sm:text-lg font-bold">{formatMoney(currentBank)}</strong></span>
+                <span>
+                  Available Bank:{" "}
+                  <strong className="text-emerald-400 font-mono text-base sm:text-lg font-bold">
+                    {formatMoney(currentBank)}
+                  </strong>
+                </span>
               )}
               <span className="text-slate-600">|</span>
-              <span>Current Bank: <strong className="text-slate-200 font-mono text-base font-bold">{formatMoney(currentBank)}</strong></span>
+              <span>
+                Current Bank:{" "}
+                <strong className="text-slate-200 font-mono text-base font-bold">
+                  {formatMoney(currentBank)}
+                </strong>
+              </span>
               {currentPlan && (
                 <>
                   <span className="text-slate-600">|</span>
-                  <span>Free Transfers: <strong className="text-amber-400 font-mono text-base font-bold">{currentPlan.availableTransfers}</strong></span>
+                  <span>
+                    Free Transfers:{" "}
+                    <strong className="text-amber-400 font-mono text-base font-bold">
+                      {currentPlan.availableTransfers}
+                    </strong>
+                  </span>
                 </>
               )}
             </p>
@@ -364,7 +505,6 @@ export const PlayerMarketDrawer: React.FC = () => {
 
         {/* 2. Main Content Area (Dual Column on Desktop / Tablet) */}
         <div className="flex-1 overflow-hidden flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-white/10">
-          
           {/* LEFT PANEL: Top 6 Recommendations / Transfers of the Week */}
           <div className="lg:w-[46%] xl:w-[44%] flex flex-col bg-slate-950/60 overflow-hidden flex-shrink-0">
             {/* Left Header */}
@@ -374,15 +514,19 @@ export const PlayerMarketDrawer: React.FC = () => {
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-black text-white uppercase tracking-wider">
-                  {playerOut 
-                    ? `Top 6 Replacements for ${playerOut.web_name}` 
-                    : 'Top 6 Transfers of the Week'}
+                  {playerOut
+                    ? `Top 6 Replacements for ${playerOut.web_name}`
+                    : "Top 6 Transfers of the Week"}
                 </h3>
               </div>
               <span className="text-xs font-bold text-emerald-400 bg-emerald-950/70 px-2.5 py-1 rounded-full border border-emerald-500/30">
-                {playerOut 
-                  ? (showAiPredictions ? 'Ranked by 3-GW xP' : 'Ranked by Form')
-                  : (showAiPredictions ? 'Top Projected 3-GW xP' : 'Top In-Form Players')}
+                {playerOut
+                  ? showAiPredictions
+                    ? "Ranked by 3-GW xP"
+                    : "Ranked by Form"
+                  : showAiPredictions
+                    ? "Top Projected 3-GW xP"
+                    : "Top In-Form Players"}
               </span>
             </div>
 
@@ -403,7 +547,12 @@ export const PlayerMarketDrawer: React.FC = () => {
                     {/* Top Info Row */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-3.5 min-w-0">
-                        <KitIcon teamCode={team?.code} teamShortName={team?.short_name} isGoalkeeper={isGK} className="w-12 h-12 flex-shrink-0" />
+                        <KitIcon
+                          teamCode={team?.code}
+                          teamShortName={team?.short_name}
+                          isGoalkeeper={isGK}
+                          className="w-12 h-12 flex-shrink-0"
+                        />
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="font-black text-base sm:text-lg text-white truncate">
@@ -414,11 +563,18 @@ export const PlayerMarketDrawer: React.FC = () => {
                             </span>
                           </div>
                           <div className="text-xs sm:text-sm text-slate-400 flex items-center gap-2 mt-1 font-medium">
-                            <span className="font-mono font-black text-emerald-400 text-sm sm:text-base">{formatMoney(p.now_cost)}</span>
+                            <span className="font-mono font-black text-emerald-400 text-sm sm:text-base">
+                              {formatMoney(p.now_cost)}
+                            </span>
                             {playerOut && (
                               <>
                                 <span>·</span>
-                                <span>Bank after: <strong className="text-slate-200">£{rec.remainingBank.toFixed(1)}m</strong></span>
+                                <span>
+                                  Bank after:{" "}
+                                  <strong className="text-slate-200">
+                                    £{rec.remainingBank.toFixed(1)}m
+                                  </strong>
+                                </span>
                               </>
                             )}
                           </div>
@@ -433,14 +589,19 @@ export const PlayerMarketDrawer: React.FC = () => {
                               <span className="text-xs sm:text-sm text-emerald-400 block font-black uppercase font-mono">
                                 {rec.xp3.toFixed(1)} xP
                               </span>
-                              <span className={`text-[11px] block font-bold font-mono ${
-                                rec.gain3 > 0 
-                                  ? 'text-emerald-400' 
-                                  : rec.gain3 === 0 
-                                  ? 'text-slate-400' 
-                                  : 'text-amber-400/90'
-                              }`}>
-                                {rec.gain3 > 0 ? `+${rec.gain3.toFixed(1)}` : rec.gain3.toFixed(1)} vs {playerOut.web_name}
+                              <span
+                                className={`text-[11px] block font-bold font-mono ${
+                                  rec.gain3 > 0
+                                    ? "text-emerald-400"
+                                    : rec.gain3 === 0
+                                      ? "text-slate-400"
+                                      : "text-amber-400/90"
+                                }`}
+                              >
+                                {rec.gain3 > 0
+                                  ? `+${rec.gain3.toFixed(1)}`
+                                  : rec.gain3.toFixed(1)}{" "}
+                                vs {playerOut.web_name}
                               </span>
                             </>
                           ) : (
@@ -448,7 +609,9 @@ export const PlayerMarketDrawer: React.FC = () => {
                               <span className="text-xs sm:text-sm text-emerald-400 block font-black uppercase font-mono">
                                 {rec.xp3.toFixed(1)} xP
                               </span>
-                              <span className="text-xs text-slate-400 block font-semibold">Next 3 GWs</span>
+                              <span className="text-xs text-slate-400 block font-semibold">
+                                Next 3 GWs
+                              </span>
                             </>
                           )
                         ) : (
@@ -456,7 +619,9 @@ export const PlayerMarketDrawer: React.FC = () => {
                             <span className="text-xs sm:text-sm text-amber-300 block font-black uppercase">
                               Form: {p.form}
                             </span>
-                            <span className="text-xs text-slate-400 block font-semibold">{p.total_points} Pts</span>
+                            <span className="text-xs text-slate-400 block font-semibold">
+                              {p.total_points} Pts
+                            </span>
                           </>
                         )}
                       </div>
@@ -466,7 +631,11 @@ export const PlayerMarketDrawer: React.FC = () => {
                     <div className="flex items-center justify-between gap-3 mt-3 pt-3 border-t border-white/10">
                       <div className="flex rounded-xl overflow-hidden border border-slate-700 divide-x divide-slate-700 shadow-md">
                         {fixtures.map((fix, fIdx) => (
-                          <FdrFixtureCell key={`${fix.event}-${fIdx}`} fixture={fix} totalCount={3} />
+                          <FdrFixtureCell
+                            key={`${fix.event}-${fIdx}`}
+                            fixture={fix}
+                            totalCount={3}
+                          />
                         ))}
                       </div>
 
@@ -475,7 +644,7 @@ export const PlayerMarketDrawer: React.FC = () => {
                         className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm shadow-lg flex items-center gap-1.5 active:scale-95 transition-all"
                       >
                         <Zap className="w-4 h-4" />
-                        <span>{playerOut ? 'Swap In' : 'Transfer In'}</span>
+                        <span>{playerOut ? "Swap In" : "Transfer In"}</span>
                       </button>
                     </div>
                   </div>
@@ -494,7 +663,6 @@ export const PlayerMarketDrawer: React.FC = () => {
           <div className="flex-1 flex flex-col overflow-hidden bg-slate-900">
             {/* Filter Controls Bar */}
             <div className="p-4 sm:p-5 bg-slate-950/95 border-b border-white/10 flex flex-col gap-3.5 flex-shrink-0">
-              
               {/* Position Tabs & Search */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 {/* Position Tabs */}
@@ -502,17 +670,21 @@ export const PlayerMarketDrawer: React.FC = () => {
                   <button
                     onClick={() => setMarketPosition(null)}
                     className={`flex-1 sm:flex-none px-3.5 py-1.5 text-xs sm:text-sm font-black rounded-lg transition-colors ${
-                      marketPosition === null ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
+                      marketPosition === null
+                        ? "bg-emerald-600 text-white shadow-md"
+                        : "text-slate-400 hover:text-white"
                     }`}
                   >
                     All
                   </button>
-                  {([1, 2, 3, 4] as const).map(pos => (
+                  {([1, 2, 3, 4] as const).map((pos) => (
                     <button
                       key={pos}
                       onClick={() => setMarketPosition(pos)}
                       className={`flex-1 sm:flex-none px-3.5 py-1.5 text-xs sm:text-sm font-black rounded-lg transition-colors ${
-                        marketPosition === pos ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
+                        marketPosition === pos
+                          ? "bg-emerald-600 text-white shadow-md"
+                          : "text-slate-400 hover:text-white"
                       }`}
                     >
                       {POSITION_MAP[pos].short}
@@ -545,7 +717,9 @@ export const PlayerMarketDrawer: React.FC = () => {
                     <option value="now_cost">Sort: Price (Highest)</option>
                     <option value="total_points">Sort: Total Points</option>
                     <option value="form">Sort: Form (Hot Streak)</option>
-                    <option value="selected_by_percent">Sort: Ownership %</option>
+                    <option value="selected_by_percent">
+                      Sort: Ownership %
+                    </option>
                   </select>
                 </div>
 
@@ -554,10 +728,14 @@ export const PlayerMarketDrawer: React.FC = () => {
                     <input
                       type="checkbox"
                       checked={marketAffordableOnly}
-                      onChange={(e) => setMarketAffordableOnly(e.target.checked)}
+                      onChange={(e) =>
+                        setMarketAffordableOnly(e.target.checked)
+                      }
                       className="rounded text-emerald-500 focus:ring-0 bg-slate-900 w-4 h-4"
                     />
-                    <span className="text-xs sm:text-sm font-bold text-slate-300">Affordable Only</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-300">
+                      Affordable Only
+                    </span>
                   </label>
                 )}
               </div>
@@ -571,7 +749,10 @@ export const PlayerMarketDrawer: React.FC = () => {
 
               {filteredPlayers.slice(0, 100).map((player) => {
                 const team = teamMap.get(player.team);
-                const fixtures = getPlayerUpcomingFixtures(player.id, fixtureHorizon);
+                const fixtures = getPlayerUpcomingFixtures(
+                  player.id,
+                  fixtureHorizon,
+                );
                 const isGK = player.element_type === 1;
 
                 return (
@@ -581,27 +762,46 @@ export const PlayerMarketDrawer: React.FC = () => {
                   >
                     {/* Left: Kit & Details */}
                     <div className="flex items-center gap-3.5 min-w-0">
-                      <KitIcon teamCode={team?.code} teamShortName={team?.short_name} isGoalkeeper={isGK} className="w-11 h-11 flex-shrink-0" />
+                      <KitIcon
+                        teamCode={team?.code}
+                        teamShortName={team?.short_name}
+                        isGoalkeeper={isGK}
+                        className="w-11 h-11 flex-shrink-0"
+                      />
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
                           <span className="font-black text-sm sm:text-base text-white truncate">
                             {player.web_name}
                           </span>
-                          {player.status !== 'a' && (
+                          {player.status !== "a" && (
                             <span className="bg-amber-500/20 text-amber-300 text-xs font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
                               <AlertTriangle className="w-3 h-3" />
-                              {player.chance_of_playing_next_round !== null ? `${player.chance_of_playing_next_round}%` : '!'}
+                              {player.chance_of_playing_next_round !== null
+                                ? `${player.chance_of_playing_next_round}%`
+                                : "!"}
                             </span>
                           )}
                         </div>
                         <div className="text-xs sm:text-sm text-slate-400 flex items-center gap-2 mt-0.5 font-medium">
-                          <span className="font-bold text-slate-300">{team?.short_name}</span>
+                          <span className="font-bold text-slate-300">
+                            {team?.short_name}
+                          </span>
                           <span>·</span>
                           <span>{POSITION_MAP[player.element_type].short}</span>
                           <span>·</span>
-                          <span>Pts: <strong className="text-slate-200">{player.total_points}</strong></span>
+                          <span>
+                            Pts:{" "}
+                            <strong className="text-slate-200">
+                              {player.total_points}
+                            </strong>
+                          </span>
                           <span>·</span>
-                          <span>Form: <strong className="text-slate-200">{player.form}</strong></span>
+                          <span>
+                            Form:{" "}
+                            <strong className="text-slate-200">
+                              {player.form}
+                            </strong>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -610,7 +810,11 @@ export const PlayerMarketDrawer: React.FC = () => {
                     <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
                       <div className="hidden sm:flex rounded-xl overflow-hidden border border-slate-700 divide-x divide-slate-700 shadow-sm min-w-[100px]">
                         {fixtures.map((fix, idx) => (
-                          <FdrFixtureCell key={`${fix.event}-${idx}`} fixture={fix} totalCount={fixtureHorizon} />
+                          <FdrFixtureCell
+                            key={`${fix.event}-${idx}`}
+                            fixture={fix}
+                            totalCount={fixtureHorizon}
+                          />
                         ))}
                       </div>
 
@@ -623,7 +827,7 @@ export const PlayerMarketDrawer: React.FC = () => {
                         className="px-4 py-2 rounded-xl font-black text-xs sm:text-sm shadow-md transition-all bg-emerald-600 hover:bg-emerald-500 text-white active:scale-95 flex items-center gap-1.5"
                       >
                         <Zap className="w-3.5 h-3.5" />
-                        <span>{playerOut ? 'Swap In' : 'Transfer In'}</span>
+                        <span>{playerOut ? "Swap In" : "Transfer In"}</span>
                       </button>
                     </div>
                   </div>
@@ -641,11 +845,11 @@ export const PlayerMarketDrawer: React.FC = () => {
 
         {/* 3. Replacement Selection Modal / Overlay (When picking who to sell in General Mode) */}
         {pendingTargetPlayer && (
-          <div 
+          <div
             className="absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200"
             onClick={() => setPendingTargetPlayer(null)}
           >
-            <div 
+            <div
               className="w-full max-w-2xl bg-slate-900 border border-emerald-500/40 rounded-3xl p-6 shadow-2xl shadow-emerald-950/80 flex flex-col gap-5 text-slate-100 animate-in zoom-in-95 duration-200"
               onClick={(e) => e.stopPropagation()}
             >
@@ -661,7 +865,15 @@ export const PlayerMarketDrawer: React.FC = () => {
                     </h3>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">
-                    Choose which <strong className="text-emerald-300">{POSITION_MAP[pendingTargetPlayer.element_type].name}</strong> in your squad to sell for <strong className="text-white">{pendingTargetPlayer.web_name}</strong> ({formatMoney(pendingTargetPlayer.now_cost)})
+                    Choose which{" "}
+                    <strong className="text-emerald-300">
+                      {POSITION_MAP[pendingTargetPlayer.element_type].name}
+                    </strong>{" "}
+                    in your squad to sell for{" "}
+                    <strong className="text-white">
+                      {pendingTargetPlayer.web_name}
+                    </strong>{" "}
+                    ({formatMoney(pendingTargetPlayer.now_cost)})
                   </p>
                 </div>
 
@@ -675,67 +887,100 @@ export const PlayerMarketDrawer: React.FC = () => {
 
               {/* Squad Players List */}
               <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
-                {matchingSquadPlayers.map(({ player, sellingPrice, isAffordable, wouldExceedClub, netBank }) => {
-                  const team = teamMap.get(player.team);
-                  const isGK = player.element_type === 1;
+                {matchingSquadPlayers.map(
+                  ({
+                    player,
+                    sellingPrice,
+                    isAffordable,
+                    wouldExceedClub,
+                    netBank,
+                  }) => {
+                    const team = teamMap.get(player.team);
+                    const isGK = player.element_type === 1;
 
-                  return (
-                    <div
-                      key={player.id}
-                      className={`p-3.5 sm:p-4 rounded-2xl border transition-all flex items-center justify-between gap-4 ${
-                        isAffordable 
-                          ? 'bg-slate-950/80 border-white/10 hover:border-emerald-500/50 hover:bg-slate-950' 
-                          : 'bg-slate-950/40 border-rose-500/20 opacity-70'
-                      }`}
-                    >
-                      {/* Left: Squad Player Details */}
-                      <div className="flex items-center gap-3.5 min-w-0">
-                        <KitIcon teamCode={team?.code} teamShortName={team?.short_name} isGoalkeeper={isGK} className="w-12 h-12 flex-shrink-0" />
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="font-black text-base sm:text-lg text-white truncate">
-                              {player.web_name}
-                            </span>
-                            <span className="text-xs font-mono font-bold text-slate-300 bg-slate-800 px-2 py-0.5 rounded-md border border-white/10">
-                              {team?.short_name}
-                            </span>
-                          </div>
-                          <div className="text-xs sm:text-sm text-slate-400 flex items-center gap-2 mt-1 font-medium">
-                            <span>Sell Value: <strong className="font-mono text-slate-200">{formatMoney(sellingPrice)}</strong></span>
-                            <span>·</span>
-                            <span>
-                              {isAffordable ? (
-                                <strong className="text-emerald-400">Bank after: £{netBank.toFixed(1)}m</strong>
-                              ) : wouldExceedClub ? (
-                                <strong className="text-rose-400">Exceeds 3 players from {teamMap.get(pendingTargetPlayer.team)?.short_name}</strong>
-                              ) : (
-                                <strong className="text-rose-400">Requires £{Math.abs(netBank).toFixed(1)}m more</strong>
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Right: Swap Action */}
-                      <button
-                        onClick={() => handleConfirmSwap(player.id, pendingTargetPlayer)}
-                        disabled={!isAffordable}
-                        className={`px-4 py-2.5 rounded-xl font-black text-xs sm:text-sm shadow-lg flex items-center gap-1.5 transition-all ${
+                    return (
+                      <div
+                        key={player.id}
+                        className={`p-3.5 sm:p-4 rounded-2xl border transition-all flex items-center justify-between gap-4 ${
                           isAffordable
-                            ? 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white active:scale-95'
-                            : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                            ? "bg-slate-950/80 border-white/10 hover:border-emerald-500/50 hover:bg-slate-950"
+                            : "bg-slate-950/40 border-rose-500/20 opacity-70"
                         }`}
                       >
-                        <Zap className="w-4 h-4" />
-                        <span>Swap Out</span>
-                      </button>
-                    </div>
-                  );
-                })}
+                        {/* Left: Squad Player Details */}
+                        <div className="flex items-center gap-3.5 min-w-0">
+                          <KitIcon
+                            teamCode={team?.code}
+                            teamShortName={team?.short_name}
+                            isGoalkeeper={isGK}
+                            className="w-12 h-12 flex-shrink-0"
+                          />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="font-black text-base sm:text-lg text-white truncate">
+                                {player.web_name}
+                              </span>
+                              <span className="text-xs font-mono font-bold text-slate-300 bg-slate-800 px-2 py-0.5 rounded-md border border-white/10">
+                                {team?.short_name}
+                              </span>
+                            </div>
+                            <div className="text-xs sm:text-sm text-slate-400 flex items-center gap-2 mt-1 font-medium">
+                              <span>
+                                Sell Value:{" "}
+                                <strong className="font-mono text-slate-200">
+                                  {formatMoney(sellingPrice)}
+                                </strong>
+                              </span>
+                              <span>·</span>
+                              <span>
+                                {isAffordable ? (
+                                  <strong className="text-emerald-400">
+                                    Bank after: £{netBank.toFixed(1)}m
+                                  </strong>
+                                ) : wouldExceedClub ? (
+                                  <strong className="text-rose-400">
+                                    Exceeds 3 players from{" "}
+                                    {
+                                      teamMap.get(pendingTargetPlayer.team)
+                                        ?.short_name
+                                    }
+                                  </strong>
+                                ) : (
+                                  <strong className="text-rose-400">
+                                    Requires £{Math.abs(netBank).toFixed(1)}m
+                                    more
+                                  </strong>
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right: Swap Action */}
+                        <button
+                          onClick={() =>
+                            handleConfirmSwap(player.id, pendingTargetPlayer)
+                          }
+                          disabled={!isAffordable}
+                          className={`px-4 py-2.5 rounded-xl font-black text-xs sm:text-sm shadow-lg flex items-center gap-1.5 transition-all ${
+                            isAffordable
+                              ? "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white active:scale-95"
+                              : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                          }`}
+                        >
+                          <Zap className="w-4 h-4" />
+                          <span>Swap Out</span>
+                        </button>
+                      </div>
+                    );
+                  },
+                )}
 
                 {matchingSquadPlayers.length === 0 && (
                   <div className="text-center py-8 text-slate-400 text-sm">
-                    No matching {POSITION_MAP[pendingTargetPlayer.element_type].name} found in your squad.
+                    No matching{" "}
+                    {POSITION_MAP[pendingTargetPlayer.element_type].name} found
+                    in your squad.
                   </div>
                 )}
               </div>
@@ -753,7 +998,6 @@ export const PlayerMarketDrawer: React.FC = () => {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );
