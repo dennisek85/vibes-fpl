@@ -11,9 +11,11 @@ export const UI_TEXT = {
     views: {
       pitch: 'Pitch',
       matrix: 'Stats Matrix',
+      rotation: 'Rotation Radar',
       analytics: 'AI Performance',
       pitchTooltip: 'Visual Pitch View',
       matrixTooltip: 'Player Projections & Metrics Matrix',
+      rotationTooltip: 'Pre-Deadline Lineup & Rotation Risk Radar',
       analyticsTooltip: 'AI Backtest, Season Alpha & Decision Analyzer',
     },
   },

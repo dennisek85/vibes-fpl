@@ -15,6 +15,7 @@ import { PinAuthModal } from '@/components/ui/PinAuthModal';
 import { AiScoutModal } from '@/components/modals/AiScoutModal';
 import { MobileMenuDrawer } from '@/components/modals/MobileMenuDrawer';
 import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
+import { LineupRiskRadar } from '@/components/planning/LineupRiskRadar';
 import { AiPerformanceView } from '@/components/analytics/AiPerformanceView';
 import { MlLabView } from '@/components/analytics/MlLabView';
 import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
@@ -35,6 +36,7 @@ import {
   LayoutGrid, 
   TableProperties, 
   TrendingUp,
+  AlertTriangle,
   Sparkles,
   Menu 
 } from 'lucide-react';
@@ -226,6 +228,19 @@ export default function PlannerPage() {
               >
                 <TableProperties className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span className="hidden md:inline">{UI_TEXT.app.views.matrix}</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentView('rotation')}
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
+                  currentView === 'rotation'
+                    ? 'bg-amber-500 text-slate-950 shadow-md font-extrabold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title={UI_TEXT.app.views.rotationTooltip}
+              >
+                <AlertTriangle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 group-hover:text-amber-300" />
+                <span className="hidden md:inline">{UI_TEXT.app.views.rotation}</span>
               </button>
 
               <button
@@ -446,6 +461,11 @@ export default function PlannerPage() {
         /* Player Projections & Metrics Matrix View */
         <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-2 animate-in fade-in duration-200">
           <PlayerMatrixView />
+        </div>
+      ) : currentView === 'rotation' ? (
+        /* Pre-Deadline Lineup & Rotation Risk Radar View */
+        <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-3 animate-in fade-in duration-200">
+          <LineupRiskRadar />
         </div>
       ) : currentView === 'lab' ? (
         /* Private Quantitative ML Lab & A/B Shootout View */

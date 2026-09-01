@@ -14,6 +14,7 @@ import {
   LayoutGrid, 
   TableProperties,
   TrendingUp,
+  AlertTriangle,
   X,
   Layers
 } from 'lucide-react';
@@ -156,7 +157,7 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
           {/* 2. Navigation & Views */}
           <div className="flex flex-col gap-1.5">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">Views</span>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
               <button
                 onClick={() => {
                   setCurrentView('pitch');
@@ -185,6 +186,21 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
               >
                 <TableProperties className="w-3 h-3" />
                 <span>Matrix</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setCurrentView('rotation');
+                  onClose();
+                }}
+                className={`flex items-center justify-center gap-1 p-2 rounded-xl border text-[11px] font-black transition ${
+                  currentView === 'rotation'
+                    ? 'bg-amber-500 border-amber-400 text-slate-950 shadow-md font-extrabold'
+                    : 'bg-slate-950 border-white/10 text-slate-300 hover:text-white'
+                }`}
+              >
+                <AlertTriangle className="w-3 h-3 text-amber-400" />
+                <span>Rotation</span>
               </button>
 
               <button

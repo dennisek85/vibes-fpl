@@ -54,8 +54,8 @@ export interface UiStateSlice {
   fixtureHorizon: 1 | 3 | 5;
   cardTheme: 'classic' | 'dark';
   setCardTheme: (theme: 'classic' | 'dark') => void;
-  currentView: 'pitch' | 'matrix' | 'analytics' | 'lab';
-  setCurrentView: (view: 'pitch' | 'matrix' | 'analytics' | 'lab') => void;
+  currentView: 'pitch' | 'matrix' | 'rotation' | 'analytics' | 'lab';
+  setCurrentView: (view: 'pitch' | 'matrix' | 'rotation' | 'analytics' | 'lab') => void;
 
   matrixSearch: string;
   matrixPosition: number | null;
