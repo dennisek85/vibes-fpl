@@ -27,15 +27,39 @@ export const MlLabView: React.FC = () => {
   const experimentalArms: ExperimentalArm[] = [
     {
       id: 'super_ensemble',
-      name: 'Super Ensemble Composite',
+      name: 'Grand Super Ensemble',
       icon: '🧪',
-      hypothesis: 'Combines all validated signals (Finishing Alpha + Hazard + Flank + BPS + PPDA + Ref).',
+      hypothesis: 'Master composite model combining all 10 on-pitch tactical and off-pitch hazard signals.',
       status: 'active',
       currentMae: 1.22,
       baselineMae: 1.38,
       edgePct: '+11.6% edge',
       testedPlayers: 'All 629 Players',
       leadIndicator: 'Lowest overall RMSE across all positions'
+    },
+    {
+      id: 'tactical_cluster',
+      name: 'Cluster A: Tactical Matchups',
+      icon: '🎯',
+      hypothesis: 'Combines all on-pitch tactical geometry (Flank Mismatch + PPDA + Inswingers + PSxG + Finishing).',
+      status: 'active',
+      currentMae: 1.26,
+      baselineMae: 1.38,
+      edgePct: '+8.7% edge',
+      testedPlayers: 'All 629 Players',
+      leadIndicator: 'Sharpest individual xG, xA, and Clean Sheet projections'
+    },
+    {
+      id: 'availability_cluster',
+      name: 'Cluster B: Availability & Sub Hazards',
+      icon: '⏱️',
+      hypothesis: 'Combines all off-pitch rotation signals (European Fatigue + Press NLP + Manager Hazard + Referees).',
+      status: 'active',
+      currentMae: 1.25,
+      baselineMae: 1.38,
+      edgePct: '+9.4% edge',
+      testedPlayers: 'All 629 Players',
+      leadIndicator: 'Eliminates 59th-min sub shocks & early kickoff decay'
     },
     {
       id: 'flank_mismatch',
