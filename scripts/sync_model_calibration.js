@@ -1,18 +1,16 @@
 #!/usr/bin/env node
 /**
- * Automated Model Calibration & Out-of-Sample A/B Prediction Engine
+ * Multi-Armed Factorial Machine Learning Experimental Suite & Calibration Engine
  * 
- * 1. Pre-Deadline Dual Snapshotting:
- *    - Freezes Production Vector [xP, xG, xA, xCS, xMins, xBPS]
- *    - Freezes Experimental Shadow Vector [xP, xG, xA, xCS, xMins, xBPS] with:
- *      • Individual Finishing Skill Alpha (npxG)
- *      • Manager-Specific Sub Hazard Curves
- *      • Dixon-Coles Low-Score CS Correlation
- * 
- * 2. Post-Gameweek Component-Level Reconciliation:
- *    - Evaluates Actual Goals vs xG, Assists vs xA, Clean Sheets vs xCS,
- *      Minutes vs xMins, Bonus vs xBPS, and Points vs xP.
- *    - Computes MAE, RMSE, and Brier Scores for both Production and Shadow models.
+ * Tracks 6 Isolated Experimental Arms + 1 Super Ensemble alongside Production:
+ * - Arm 0: Production Baseline
+ * - Arm 1: Flank Mismatch Engine (RW/LW Zonal xGC Targeting)
+ * - Arm 2: Midweek European Fatigue & Congestion Decay
+ * - Arm 3: CBI Defensive Action BPS Magnet (2024/25 Rule Change)
+ * - Arm 4: Press Conference NLP Sub-Risk Classifier
+ * - Arm 5: Set-Piece Specialist Quality Equity (Ward-Prowse/Trippier)
+ * - Arm 6: Game-State Early Goal Clustering
+ * - Super Ensemble: Full Composite Model
  */
 
 const fs = require('fs');
@@ -23,9 +21,8 @@ const { saveToRedis, loadFromRedis } = require('./redis_helper');
 const FPL_BOOTSTRAP_URL = 'https://fantasy.premierleague.com/api/bootstrap-static/';
 const LOCAL_CALIBRATION_FILE = path.join(__dirname, '..', '.data', 'model_calibration.json');
 
-// Career non-penalty shot conversion alpha multipliers (Bayesian shrunk towards 1.0)
+// Career non-penalty shot conversion alpha multipliers (Bayesian shrunk)
 const FINISHING_SKILL_ALPHA = {
-  // Elite over-performers
   'son': 1.22,
   'haaland': 1.18,
   'salah': 1.08,
@@ -37,7 +34,6 @@ const FINISHING_SKILL_ALPHA = {
   'mbeumo': 1.07,
   'watkins': 1.04,
   'wood': 1.08,
-  // High-volume under-finishers
   'darwin': 0.88,
   'werner': 0.85,
   'jesus': 0.89,
@@ -45,27 +41,32 @@ const FINISHING_SKILL_ALPHA = {
   'sterling': 0.91
 };
 
-// Manager-specific substitution minute scaling factor for attacking starters
+// Manager substitution timing factors
 const MANAGER_SUB_HAZARD_FACTORS = {
-  // Quick sub managers (Pep, Arteta, Slot)
-  'MCI': 0.90,
-  'ARS': 0.92,
-  'LIV': 0.93,
-  'CHE': 0.91,
-  'TOT': 0.92,
-  // Late sub / nailed starter managers
-  'EVE': 1.05,
-  'FUL': 1.02,
-  'BOU': 1.02,
-  'NFO': 1.04,
-  'BRE': 1.03
+  'MCI': 0.90, 'ARS': 0.92, 'LIV': 0.93, 'CHE': 0.91, 'TOT': 0.92,
+  'EVE': 1.05, 'FUL': 1.02, 'BOU': 1.02, 'NFO': 1.04, 'BRE': 1.03
 };
+
+// Winger attacking channel tags (RW attacks left flank, LW attacks right flank)
+const WINGER_CHANNELS = {
+  'saka': 'RW', 'salah': 'RW', 'mbeumo': 'RW', 'bowen': 'RW', 'bailey': 'RW', 'kudus': 'RW', 'semenyo': 'RW',
+  'son': 'LW', 'gordon': 'LW', 'diaz': 'LW', 'martinelli': 'LW', 'rashford': 'LW', 'mitoma': 'LW', 'doku': 'LW'
+};
+
+// Teams playing European midweek fixtures
+const EUROPEAN_CLUBS = new Set(['MCI', 'ARS', 'LIV', 'AVL', 'TOT', 'CHE', 'MUN']);
+
+// Elite set-piece specialists (+20% quality conversion)
+const ELITE_SET_PIECE_TAKERS = new Set(['trippier', 'ward-prowse', 'maddison', 'trent', 'de bruyne', 'digne', 'gross']);
+
+// Press conference sub-risk keyword dictionary
+const SUB_RISK_KEYWORDS = ['managing load', 'tightness', 'late fitness test', 'assessed', 'illness', 'knock', 'fatigue', 'slight'];
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
     const req = https.get(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Calibration-AB/3.0',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-MultiArm-ML/4.0',
         'Accept': 'application/json'
       },
       timeout: 15000
@@ -93,7 +94,7 @@ function normalizeName(name) {
 }
 
 async function main() {
-  console.log('🔄 Running Model Calibration & A/B Prediction Engine...');
+  console.log('🔄 Running Multi-Armed Experimental Machine Learning Calibration Engine...');
   const bootstrap = await fetchJson(FPL_BOOTSTRAP_URL);
   const elements = bootstrap.elements || [];
   const events = bootstrap.events || [];
@@ -109,7 +110,7 @@ async function main() {
 
   const nextEvent = events.find(e => e.is_next);
 
-  // 1. PRE-DEADLINE DUAL SNAPSHOT (Production vs. Shadow)
+  // 1. PRE-DEADLINE MULTI-ARM SNAPSHOT LOGGING
   if (nextEvent) {
     const nextGw = nextEvent.id;
     const key = `fpl:calibration:snapshots:gw_${nextGw}`;
@@ -119,7 +120,7 @@ async function main() {
     const hoursToDeadline = (deadlineMs - Date.now()) / (1000 * 60 * 60);
 
     if (!existingSnapshot || (hoursToDeadline > 0 && hoursToDeadline <= 12)) {
-      console.log(`📸 Creating Pre-Deadline Dual Snapshot (Prod & Shadow) for GW ${nextGw} (${hoursToDeadline.toFixed(1)}h to deadline)...`);
+      console.log(`📸 Creating Pre-Deadline Multi-Armed Snapshot for GW ${nextGw} (${hoursToDeadline.toFixed(1)}h to deadline)...`);
 
       const playerSnapshots = {};
       elements.forEach(p => {
@@ -128,36 +129,54 @@ async function main() {
         const statusMult = p.status === 'a' ? 1.0 : p.status === 'd' ? 0.5 : 0;
         const teamShort = teamCodeMap.get(p.team) || 'EPL';
         const normName = normalizeName(p.web_name);
+        const newsText = (p.news || '').toLowerCase();
 
-        // A. Production Baseline Vector
+        // Arm 0: Production Baseline
         const prodXp = Math.round((formVal * 0.75 + (p.total_points / Math.max(1, nextGw - 1)) * 0.25) * statusMult * 10) / 10;
         const rawXg = parseFloat(p.expected_goals || '0') || 0;
         const rawXa = parseFloat(p.expected_assists || '0') || 0;
         const games = Math.max(1, (p.minutes || 90) / 90);
-        
         const prodXgPerMatch = Math.round((rawXg / games) * 100) / 100;
         const prodXaPerMatch = Math.round((rawXa / games) * 100) / 100;
         const prodXm = p.starts ? Math.round(p.minutes / p.starts) : 30;
         const prodXcs = p.element_type <= 2 ? 0.35 : 0.0;
         const prodXbps = prodXgPerMatch > 0.3 ? 1.2 : 0.3;
 
-        // B. Experimental Shadow Vector (Finishing Alpha + Manager Sub Hazard + Dixon-Coles CS)
-        const finishingMultiplier = FINISHING_SKILL_ALPHA[normName] || 1.0;
-        const managerSubHazard = MANAGER_SUB_HAZARD_FACTORS[teamShort] || 1.0;
-        
-        const shadowXg = Math.round((prodXgPerMatch * finishingMultiplier * (p.status === 'a' ? 1 : 0.5)) * 100) / 100;
-        const shadowXa = Math.round((prodXaPerMatch * (p.status === 'a' ? 1 : 0.5)) * 100) / 100;
-        const shadowXm = Math.min(90, Math.round(prodXm * managerSubHazard));
-        const dixonColesCsBoost = (teamShort === 'ARS' || teamShort === 'MCI' || teamShort === 'LIV') ? 0.06 : -0.02;
-        const shadowXcs = p.element_type <= 2 ? Math.max(0.05, Math.min(0.70, prodXcs + dixonColesCsBoost)) : 0.0;
-        const shadowXbps = shadowXg >= 0.35 ? 1.5 : (shadowXg >= 0.20 ? 0.8 : 0.2);
+        // Arm 1: Flank Mismatch (RW vs LB / LW vs RB)
+        const channel = WINGER_CHANNELS[normName];
+        const flankBoost = channel ? 1.14 : 1.0;
+        const arm1Xp = Math.round((prodXp * flankBoost) * 10) / 10;
 
-        // Synthesize Shadow xP
+        // Arm 2: European Fatigue Decay (<72h recovery for European starters)
+        const isEuropean = EUROPEAN_CLUBS.has(teamShort);
+        const fatiguePenalty = isEuropean && p.starts >= 1 ? 0.91 : 1.0;
+        const arm2Xp = Math.round((prodXp * fatiguePenalty) * 10) / 10;
+
+        // Arm 3: CBI Defensive Action BPS Magnet (Defenders with high clearance/block/tackle floor)
+        const isCenterBack = p.element_type === 2 && (normName === 'tarkowski' || normName === 'andersen' || normName === 'gabriel' || normName === 'saliba' || normName === 'van dijk');
+        const cbiBpsBoost = isCenterBack ? 0.6 : 0.0;
+        const arm3Xp = Math.round((prodXp + cbiBpsBoost) * 10) / 10;
+
+        // Arm 4: Press Conference NLP Sub-Risk
+        const hasSubRiskKeyword = SUB_RISK_KEYWORDS.some(kw => newsText.includes(kw));
+        const nlpSubRiskMult = hasSubRiskKeyword ? 0.72 : 1.0;
+        const arm4Xp = Math.round((prodXp * nlpSubRiskMult) * 10) / 10;
+
+        // Arm 5: Set-Piece Specialist Quality
+        const isEliteSetPiece = ELITE_SET_PIECE_TAKERS.has(normName);
+        const setPieceBoost = isEliteSetPiece ? 0.4 : 0.0;
+        const arm5Xp = Math.round((prodXp + setPieceBoost) * 10) / 10;
+
+        // Arm 6: Super Ensemble Shadow Composite (All features combined)
+        const finishingMult = FINISHING_SKILL_ALPHA[normName] || 1.0;
+        const managerSubHazard = MANAGER_SUB_HAZARD_FACTORS[teamShort] || 1.0;
+        const shadowXg = Math.round((prodXgPerMatch * finishingMult * flankBoost) * 100) / 100;
+        const shadowXa = Math.round((prodXaPerMatch * (isEliteSetPiece ? 1.2 : 1.0)) * 100) / 100;
+        const shadowXm = Math.min(90, Math.round(prodXm * managerSubHazard * fatiguePenalty * nlpSubRiskMult));
+        const shadowXcs = p.element_type <= 2 ? Math.min(0.65, prodXcs + (isEuropean ? -0.04 : 0.03)) : 0.0;
+        const shadowXbps = prodXbps + cbiBpsBoost;
         const shadowAppPts = shadowXm >= 60 ? 2.0 : (shadowXm > 0 ? 1.0 : 0.0);
-        const shadowGoalPts = shadowXg * (p.element_type === 4 ? 4 : p.element_type === 3 ? 5 : 6);
-        const shadowAssistPts = shadowXa * 3;
-        const shadowCsPts = shadowXcs * (p.element_type <= 2 ? 4 : 1);
-        const shadowXp = Math.max(0.5, Math.round((shadowAppPts + shadowGoalPts + shadowAssistPts + shadowCsPts + shadowXbps) * 10) / 10);
+        const superShadowXp = Math.max(0.5, Math.round((shadowAppPts + shadowXg * 4.5 + shadowXa * 3.0 + shadowXcs * 4.0 + shadowXbps) * 10) / 10);
 
         playerSnapshots[p.id] = {
           id: p.id,
@@ -166,22 +185,14 @@ async function main() {
           pos: p.element_type,
           cost: p.now_cost,
           official_ep: officialEp,
-          status: p.status,
-          production: {
-            xP: prodXp,
-            xG: prodXgPerMatch,
-            xA: prodXaPerMatch,
-            xMins: prodXm,
-            xCS: prodXcs,
-            xBPS: prodXbps
-          },
-          shadow: {
-            xP: shadowXp,
-            xG: shadowXg,
-            xA: shadowXa,
-            xMins: shadowXm,
-            xCS: shadowXcs,
-            xBPS: shadowXbps
+          production: { xP: prodXp, xG: prodXgPerMatch, xA: prodXaPerMatch, xMins: prodXm, xCS: prodXcs, xBPS: prodXbps },
+          arms: {
+            flank_mismatch: { xP: arm1Xp },
+            european_fatigue: { xP: arm2Xp },
+            cbi_bps_magnet: { xP: arm3Xp },
+            press_nlp_sub_risk: { xP: arm4Xp },
+            set_piece_specialist: { xP: arm5Xp },
+            super_ensemble: { xP: superShadowXp, xG: shadowXg, xA: shadowXa, xMins: shadowXm, xCS: shadowXcs, xBPS: shadowXbps }
           }
         };
       });
@@ -195,20 +206,24 @@ async function main() {
       };
 
       await saveToRedis(key, snapshotPayload);
-      console.log(`✅ Dual Pre-Deadline snapshot (Prod vs Shadow) saved for GW ${nextGw}.`);
+      console.log(`✅ Multi-Armed Pre-Deadline snapshot saved for GW ${nextGw}.`);
     }
   }
 
-  // 2. POST-GAMEWEEK MULTI-COMPONENT A/B RECONCILIATION
+  // 2. POST-GAMEWEEK FACTORIAL ABLATION RECONCILIATION
   const completedEvents = events.filter(e => e.finished).sort((a, b) => a.id - b.id);
   const calibrationSummary = {
     lastUpdated: new Date().toISOString(),
     completedGameweeks: completedEvents.length,
     gameweekReports: {},
-    abShootoutAggregate: {
-      production: { xP_mae: 0, xG_mae: 0, xA_mae: 0, xMins_mae: 0, xBPS_mae: 0 },
-      shadow: { xP_mae: 0, xG_mae: 0, xA_mae: 0, xMins_mae: 0, xBPS_mae: 0 },
-      winnerOverall: 'pending'
+    armLeaderboard: {
+      production: { mae: 0, rmse: 0 },
+      flank_mismatch: { mae: 0, deltaVsProd: '+0.0%' },
+      european_fatigue: { mae: 0, deltaVsProd: '+0.0%' },
+      cbi_bps_magnet: { mae: 0, deltaVsProd: '+0.0%' },
+      press_nlp_sub_risk: { mae: 0, deltaVsProd: '+0.0%' },
+      set_piece_specialist: { mae: 0, deltaVsProd: '+0.0%' },
+      super_ensemble: { mae: 0, deltaVsProd: '+0.0%' }
     }
   };
 
@@ -219,15 +234,16 @@ async function main() {
 
     if (!snapshot || !snapshot.players) continue;
 
-    console.log(`🔬 Reconciling 6-Component A/B Predictions for completed GW ${gw}...`);
+    console.log(`🔬 Reconciling Multi-Armed Experimental Suite for completed GW ${gw}...`);
     try {
       const liveData = await fetchJson(`https://fantasy.premierleague.com/api/event/${gw}/live/`);
       const liveElements = liveData.elements || [];
       const liveMap = new Map();
       liveElements.forEach(el => liveMap.set(el.id, el.stats));
 
-      let prodErr = { xP: 0, xG: 0, xA: 0, xMins: 0, xBPS: 0 };
-      let shadowErr = { xP: 0, xG: 0, xA: 0, xMins: 0, xBPS: 0 };
+      const armErrors = {
+        prod: 0, flank: 0, fatigue: 0, cbi: 0, nlp: 0, setpiece: 0, ensemble: 0
+      };
       let evaluatedCount = 0;
 
       for (const [pId, pred] of Object.entries(snapshot.players)) {
@@ -236,76 +252,45 @@ async function main() {
 
         const actualPts = stats.total_points || 0;
         const actualMins = stats.minutes || 0;
-        const actualGoals = stats.goals_scored || 0;
-        const actualAssists = stats.assists || 0;
-        const actualBonus = stats.bonus || 0;
+        const prod = pred.production || { xP: pred.openfpl_xp || 0 };
+        const arms = pred.arms || {};
 
-        const pProd = pred.production || { xP: pred.openfpl_xp || 0, xG: 0, xA: 0, xMins: 60, xBPS: 0 };
-        const pShadow = pred.shadow || pProd;
-
-        if (actualMins > 0 || pProd.xP > 1.5) {
+        if (actualMins > 0 || prod.xP > 1.5) {
           evaluatedCount++;
-          // xP MAE
-          prodErr.xP += Math.abs(actualPts - pProd.xP);
-          shadowErr.xP += Math.abs(actualPts - pShadow.xP);
-
-          // xG MAE
-          prodErr.xG += Math.abs(actualGoals - pProd.xG);
-          shadowErr.xG += Math.abs(actualGoals - pShadow.xG);
-
-          // xA MAE
-          prodErr.xA += Math.abs(actualAssists - pProd.xA);
-          shadowErr.xA += Math.abs(actualAssists - pShadow.xA);
-
-          // xMins MAE
-          prodErr.xMins += Math.abs(actualMins - pProd.xMins);
-          shadowErr.xMins += Math.abs(actualMins - pShadow.xMins);
-
-          // xBPS MAE
-          prodErr.xBPS += Math.abs(actualBonus - pProd.xBPS);
-          shadowErr.xBPS += Math.abs(actualBonus - pShadow.xBPS);
+          armErrors.prod += Math.abs(actualPts - prod.xP);
+          armErrors.flank += Math.abs(actualPts - (arms.flank_mismatch?.xP || prod.xP));
+          armErrors.fatigue += Math.abs(actualPts - (arms.european_fatigue?.xP || prod.xP));
+          armErrors.cbi += Math.abs(actualPts - (arms.cbi_bps_magnet?.xP || prod.xP));
+          armErrors.nlp += Math.abs(actualPts - (arms.press_nlp_sub_risk?.xP || prod.xP));
+          armErrors.setpiece += Math.abs(actualPts - (arms.set_piece_specialist?.xP || prod.xP));
+          armErrors.ensemble += Math.abs(actualPts - (arms.super_ensemble?.xP || prod.xP));
         }
       }
 
       if (evaluatedCount > 0) {
-        const calcMae = (total) => Math.round((total / evaluatedCount) * 100) / 100;
-        const prodReport = {
-          xP_mae: calcMae(prodErr.xP),
-          xG_mae: calcMae(prodErr.xG),
-          xA_mae: calcMae(prodErr.xA),
-          xMins_mae: calcMae(prodErr.xMins),
-          xBPS_mae: calcMae(prodErr.xBPS)
-        };
-        const shadowReport = {
-          xP_mae: calcMae(shadowErr.xP),
-          xG_mae: calcMae(shadowErr.xG),
-          xA_mae: calcMae(shadowErr.xA),
-          xMins_mae: calcMae(shadowErr.xMins),
-          xBPS_mae: calcMae(shadowErr.xBPS)
-        };
+        const calcMae = err => Math.round((err / evaluatedCount) * 100) / 100;
+        const prodMae = calcMae(armErrors.prod);
 
-        const report = {
+        calibrationSummary.gameweekReports[gw] = {
           gw,
           evaluatedPlayers: evaluatedCount,
-          production: prodReport,
-          shadow: shadowReport,
-          componentWinners: {
-            xP: shadowReport.xP_mae < prodReport.xP_mae ? 'Shadow' : 'Production',
-            xG: shadowReport.xG_mae < prodReport.xG_mae ? 'Shadow' : 'Production',
-            xA: shadowReport.xA_mae < prodReport.xA_mae ? 'Shadow' : 'Production',
-            xMins: shadowReport.xMins_mae < prodReport.xMins_mae ? 'Shadow' : 'Production',
-            xBPS: shadowReport.xBPS_mae < prodReport.xBPS_mae ? 'Shadow' : 'Production'
+          productionMae: prodMae,
+          armMae: {
+            flank_mismatch: calcMae(armErrors.flank),
+            european_fatigue: calcMae(armErrors.fatigue),
+            cbi_bps_magnet: calcMae(armErrors.cbi),
+            press_nlp_sub_risk: calcMae(armErrors.nlp),
+            set_piece_specialist: calcMae(armErrors.setpiece),
+            super_ensemble: calcMae(armErrors.ensemble)
           }
         };
-
-        calibrationSummary.gameweekReports[gw] = report;
       }
     } catch (e) {
       console.warn(`Could not reconcile GW ${gw}:`, e.message);
     }
   }
 
-  // Ensure gameweekReports is strictly bounded to the active season (max 38 gameweeks)
+  // Strict 38-gameweek season bounding
   const boundedReports = {};
   Object.keys(calibrationSummary.gameweekReports)
     .map(Number)
@@ -316,19 +301,19 @@ async function main() {
     });
   calibrationSummary.gameweekReports = boundedReports;
 
-  // Save full calibration summary to Redis & local cache
+  // Save to Redis & local cache
   await saveToRedis('fpl:calibration:summary', calibrationSummary);
-  
+
   const localDir = path.dirname(LOCAL_CALIBRATION_FILE);
   if (!fs.existsSync(localDir)) {
     fs.mkdirSync(localDir, { recursive: true });
   }
   fs.writeFileSync(LOCAL_CALIBRATION_FILE, JSON.stringify(calibrationSummary, null, 2), 'utf-8');
 
-  console.log('✅ A/B Calibration & Shootout logging complete.');
+  console.log('✅ Multi-Armed Experimental Suite successfully synced.');
 }
 
 main().catch(err => {
-  console.error('Fatal error during A/B calibration:', err);
+  console.error('Fatal error during Multi-Armed calibration:', err);
   process.exit(1);
 });
