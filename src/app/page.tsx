@@ -103,7 +103,6 @@ export default function PlannerPage() {
   const {
     totalProjectedXp,
     gameweekActualPoints,
-    totalSeasonPoints,
     squadFormSum,
     bank,
     availableFT,
@@ -364,13 +363,9 @@ export default function PlannerPage() {
                     <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-black text-cyan-400 font-mono">
                       {showAiPredictions ? `${totalProjectedXp} ${UI_TEXT.common.pointsShort}` : `${squadFormSum.toFixed(1)} ${UI_TEXT.common.avg}`}
                     </span>
-                    {gameweekActualPoints !== null ? (
+                    {isLocked && gameweekActualPoints !== null ? (
                       <span className="text-[10.5px] xl:text-[11.5px] font-bold text-emerald-400 font-mono">
                         {UI_TEXT.telemetry.actualScoreBadge(gameweekActualPoints)}
-                      </span>
-                    ) : totalSeasonPoints !== null ? (
-                      <span className="text-[10px] text-slate-400 font-mono hidden 2xl:inline">
-                        {UI_TEXT.telemetry.seasonTotalBadge(totalSeasonPoints)}
                       </span>
                     ) : showAiPredictions && squadRating ? (
                       <span className="text-[10px] text-slate-400 font-mono hidden 2xl:inline">

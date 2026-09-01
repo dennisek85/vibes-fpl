@@ -103,7 +103,7 @@ export interface UiStateSlice {
   setFixtureHorizon: (count: 1 | 3 | 5) => void;
   openTransferDrawer: (playerOutId?: number | null) => void;
   closeTransferDrawer: () => void;
-  selectSlotForSwap: (slot: number) => void;
+  selectSlotForSwap: (slot: number | null) => void;
 
   setMarketSearch: (query: string) => void;
   setMarketPosition: (pos: number | null) => void;

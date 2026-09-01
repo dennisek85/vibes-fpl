@@ -39,7 +39,6 @@ export const UI_TEXT = {
     noChipActive: 'No Chip Active',
     ratingBadge: (pct: number) => `${pct}% Rating`,
     actualScoreBadge: (pts: number) => `(Actual: ${pts} pts)`,
-    seasonTotalBadge: (pts: number) => `(Season Total: ${pts} pts)`,
     detailedRating: (d: number, m: number, f: number) => `(D:${d}% M:${m}% F:${f}%)`,
   },
   gameweekStepper: {

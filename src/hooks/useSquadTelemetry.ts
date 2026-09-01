@@ -7,7 +7,6 @@ import { ChipType } from '@/types/fpl';
 export interface SquadTelemetryResult {
   totalProjectedXp: number;
   gameweekActualPoints: number | null;
-  totalSeasonPoints: number | null;
   squadFormSum: number;
   squadValue: number;
   bank: number;
@@ -71,8 +70,6 @@ export function useSquadTelemetry(): SquadTelemetryResult {
     ? teamSummary.summary_overall_points
     : null;
 
-  const totalSeasonPoints = teamSummary?.summary_overall_points ?? null;
-
   const { totalProjectedXp, squadFormSum, squadValue } = useMemo(() => {
     let xpSum = 0;
     let formSum = 0;
@@ -95,17 +92,13 @@ export function useSquadTelemetry(): SquadTelemetryResult {
       }
 
       if (isStarting) {
-        let mult = 1;
-        if (pick.is_captain) {
-          mult = isTripleCaptain ? 3 : 2;
-        }
+        const mult = pick.is_captain ? (isTripleCaptain ? 3 : 2) : 1;
         xpSum += xp * mult;
         if (pl) formSum += parseFloat(pl.form) || 0;
       } else if (isBenchBoost) {
-        // Full bench boost: all 4 subs count 100%
         xpSum += xp;
+        if (pl) formSum += parseFloat(pl.form) || 0;
       } else {
-        // Auto-sub expected value (contingency if starter rests)
         const subWeight = pick.position === 12 ? 0.03 : pick.position === 13 ? 0.12 : pick.position === 14 ? 0.06 : 0.02;
         xpSum += xp * subWeight;
       }
@@ -123,7 +116,6 @@ export function useSquadTelemetry(): SquadTelemetryResult {
   return {
     totalProjectedXp,
     gameweekActualPoints,
-    totalSeasonPoints,
     squadFormSum,
     squadValue,
     bank,

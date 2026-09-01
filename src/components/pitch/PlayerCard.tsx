@@ -3,7 +3,7 @@ import { SquadPick } from '@/types/fpl';
 import { usePlannerStore } from '@/store/usePlannerStore';
 import { KitIcon } from '@/components/ui/KitIcon';
 import { FdrFixtureCell } from '@/components/ui/FdrBadge';
-import { formatMoney } from '@/lib/fpl-rules';
+import { formatMoney, canSwapSquadSlots } from '@/lib/fpl-rules';
 import { X, Crown, ArrowLeftRight, AlertTriangle, Trophy } from 'lucide-react';
 
 interface PlayerCardProps {
@@ -25,11 +25,14 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
     fixtureHorizon,
     cardTheme,
     selectedGameweek,
+    gameweekPlans,
     isGameweekLocked,
     openPlayerDetail
   } = usePlannerStore();
 
   const [showRoleMenu, setShowRoleMenu] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
   const roleMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -60,6 +63,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
 
   const isDoubtfulOrInjured = player.status !== 'a';
 
+  const currentSquad = gameweekPlans[selectedGameweek]?.squad || [];
+  const isAnotherSlotSelected = selectedSlotForSwap !== null && selectedSlotForSwap !== pick.position;
+  const isValidDropTarget = isAnotherSlotSelected && canSwapSquadSlots(selectedSlotForSwap, pick.position, currentSquad, playerMap).canSwap;
+  const isInvalidDropTarget = isAnotherSlotSelected && !isValidDropTarget;
+
   // Get actual official score if this is a locked/completed gameweek
   const rawActualPoints = getPlayerGameweekActualPoints(player.id, selectedGameweek);
   const actualPoints = rawActualPoints !== null ? rawActualPoints : 0;
@@ -67,7 +75,48 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
   const finalScore = actualPoints * mult;
 
   return (
-    <div className="relative flex flex-col items-center select-none group">
+    <div 
+      className="relative flex flex-col items-center select-none group"
+      draggable={!isLocked}
+      onDragStart={(e) => {
+        if (isLocked) return;
+        setIsDragging(true);
+        e.dataTransfer.setData('text/fpl-slot', String(pick.position));
+        e.dataTransfer.effectAllowed = 'move';
+        selectSlotForSwap(pick.position);
+      }}
+      onDragEnd={() => {
+        setIsDragging(false);
+        setIsDragOver(false);
+        selectSlotForSwap(null);
+      }}
+      onDragOver={(e) => {
+        if (isValidDropTarget) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+        }
+      }}
+      onDragEnter={(e) => {
+        if (isValidDropTarget) {
+          e.preventDefault();
+          setIsDragOver(true);
+        }
+      }}
+      onDragLeave={() => {
+        setIsDragOver(false);
+      }}
+      onDrop={(e) => {
+        e.preventDefault();
+        setIsDragOver(false);
+        const sourceSlot = parseInt(e.dataTransfer.getData('text/fpl-slot'), 10);
+        if (sourceSlot && sourceSlot !== pick.position) {
+          if (canSwapSquadSlots(sourceSlot, pick.position, currentSquad, playerMap).canSwap) {
+            selectSlotForSwap(pick.position);
+          }
+        }
+        selectSlotForSwap(null);
+      }}
+    >
       {/* Main Card Container */}
       <div
         onClick={() => {
@@ -80,9 +129,17 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
             ? 'bg-slate-900/90 backdrop-blur-md border border-white/20 text-white shadow-2xl shadow-slate-950/80' 
             : 'bg-white text-slate-900 border border-slate-200/90'
         } ${
-          isLocked ? 'cursor-default' : 'cursor-pointer'
+          isLocked ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'
         } ${
-          isTransferSelected
+          isDragging
+            ? 'opacity-30 scale-95 ring-2 ring-dashed ring-amber-400'
+            : isDragOver && isValidDropTarget
+            ? 'scale-105 ring-4 ring-emerald-400 shadow-2xl shadow-emerald-500/50 z-30'
+            : isValidDropTarget
+            ? 'ring-2 ring-emerald-400 bg-emerald-950/30 animate-pulse'
+            : isInvalidDropTarget
+            ? 'opacity-30 cursor-not-allowed'
+            : isTransferSelected
             ? 'ring-2 sm:ring-4 ring-emerald-500 scale-102 shadow-2xl'
             : isSwapSelected
             ? 'ring-2 sm:ring-4 ring-amber-400 animate-pulse scale-102 shadow-2xl'

@@ -106,7 +106,12 @@ export const createUiStateSlice: StateCreator<PlannerState, [], [], UiStateSlice
     set({ isMarketOpen: false, selectedPlayerForTransfer: null });
   },
 
-  selectSlotForSwap: (slot: number) => {
+  selectSlotForSwap: (slot: number | null) => {
+    if (slot === null) {
+      set({ selectedSlotForSwap: null });
+      return;
+    }
+
     const { selectedSlotForSwap, selectedGameweek, gameweekPlans, playerMap, isGameweekLocked } = get();
     if (isGameweekLocked(selectedGameweek)) return;
 
