@@ -296,5 +296,27 @@ def run_openfpl_pipeline():
     print(f"Successfully generated OpenFPL + Understat ML forecasts for {len(elements)} players ({understat_matched_count} Understat matched)!")
     print(f"Saved dataset to {OUTPUT_FILE}")
 
+    # Direct push to Upstash Redis (0 Git commits)
+    upstash_url = os.environ.get("UPSTASH_REDIS_REST_URL") or os.environ.get("KV_REST_API_URL")
+    upstash_token = os.environ.get("UPSTASH_REDIS_REST_TOKEN") or os.environ.get("KV_REST_API_TOKEN")
+
+    if upstash_url and upstash_token:
+        try:
+            url = upstash_url.rstrip('/') + '/set/fpl:openfpl_predictions'
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(result).encode('utf-8'),
+                headers={
+                    "Authorization": f"Bearer {upstash_token}",
+                    "Content-Type": "application/json"
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                if resp.status in (200, 201):
+                    print("✅ Successfully synced OpenFPL predictions to Upstash Redis.")
+        except Exception as e:
+            print(f"Note: Could not sync predictions to Redis: {e}")
+
 if __name__ == "__main__":
     run_openfpl_pipeline()

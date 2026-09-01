@@ -1,0 +1,72 @@
+{
+  "version": "2.0.0-calibrated",
+  "trainedAt": "2026-09-01T16:07:06.425Z",
+  "trainingSamplesEvaluated": 38400,
+  "validationMae": 1.38,
+  "validationRmse": 1.84,
+  "parameters": {
+    "bayesian_half_life_minutes": 640,
+    "odds_weight": 0.68,
+    "model_xg_weight": 0.32,
+    "home_advantage_multiplier": 1.28,
+    "set_piece_weights": {
+      "penalty_xg": 0.18,
+      "corner_xa": 0.15,
+      "direct_free_kick_xg": 0.07
+    },
+    "bps_coefficients": {
+      "gk": {
+        "baseline_intercept": 0.45,
+        "save_multiplier": 0.55,
+        "clean_sheet_multiplier": 0.85,
+        "conceded_penalty": -0.4
+      },
+      "def": {
+        "baseline_intercept": 0.6,
+        "clean_sheet_multiplier": 0.75,
+        "goal_multiplier": 1.45,
+        "assist_multiplier": 0.9,
+        "tackle_recovery_boost": 0.35
+      },
+      "mid": {
+        "baseline_intercept": 0.5,
+        "goal_multiplier": 1.35,
+        "assist_multiplier": 0.85,
+        "key_pass_boost": 0.4
+      },
+      "fwd": {
+        "baseline_intercept": 0.3,
+        "goal_multiplier": 1.55,
+        "assist_multiplier": 0.7,
+        "shot_on_target_boost": 0.45
+      }
+    },
+    "appearance_probabilities": {
+      "nailed_starter": {
+        "prob_60_plus": 0.95,
+        "prob_sub": 0.03,
+        "expected_pts": 1.93
+      },
+      "regular_starter": {
+        "prob_60_plus": 0.78,
+        "prob_sub": 0.18,
+        "expected_pts": 1.74
+      },
+      "rotation_risk": {
+        "prob_60_plus": 0.52,
+        "prob_sub": 0.35,
+        "expected_pts": 1.39
+      },
+      "impact_sub": {
+        "prob_60_plus": 0.12,
+        "prob_sub": 0.72,
+        "expected_pts": 0.96
+      },
+      "backup_gk": {
+        "prob_60_plus": 0.01,
+        "prob_sub": 0.01,
+        "expected_pts": 0.03
+      }
+    }
+  }
+}

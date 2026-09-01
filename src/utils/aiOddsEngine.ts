@@ -2,6 +2,7 @@ import { FPLPlayer } from '@/types/fpl';
 import { getMarketFixtureOdds, getMarketAnytimeGoalscorerProb } from '@/lib/oddsTracker';
 import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 import { getPlayerFormMomentum } from '@/lib/formTracker';
+import { getAdaptiveModelParameters } from './aiAdaptiveTuner';
 
 export interface MatchExpectancy {
   homeTeamId: number;
@@ -226,9 +227,11 @@ export function calculatePlayerOddsXp(
   // FPL Points: 60+ mins = 2 pts, 1-59 mins = 1 pt, 0 mins = 0 pts
   const appearancePts = (p60Mins * 2.0) + (pSub * 1.0);
 
+  const params = getAdaptiveModelParameters(gameweek || 1);
+
   // 2. Underlying Rate Metrics & Goal Share Allocation
   const shares = getPlayerInvolvementShare(pos, cost);
-  const sampleConfidence = minutesPlayed / (minutesPlayed + 720.0);
+  const sampleConfidence = minutesPlayed / (minutesPlayed + params.bayesianHalfLifeMinutes);
   const gamesPlayed = Math.max(1.0, minutesPlayed / 90.0);
 
   const rawXG = typeof player.expected_goals === 'number' ? player.expected_goals : parseFloat(`${player.expected_goals || 0}`) || 0;
@@ -263,8 +266,8 @@ export function calculatePlayerOddsXp(
   if (marketGoalProb !== null && marketGoalProb > 0) {
     // Bookmaker anytime goalscorer probability converted to expected goals λ = -ln(1 - P)
     const impliedMarketXg = -Math.log(Math.max(0.01, 1.0 - marketGoalProb)) * minsScale;
-    // Blend 65% market odds + 35% statistical model
-    matchXG = (impliedMarketXg * 0.65) + (matchXG * 0.35);
+    // Blend adaptive market odds + statistical model
+    matchXG = (impliedMarketXg * params.oddsWeight) + (matchXG * params.modelXgWeight);
   }
 
   // 6. Disciplinary Deductions (Yellow/Red Card Expectancy)
