@@ -13,7 +13,6 @@ import {
 import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 import { getPlayerTop10kEo } from '@/lib/ownershipTracker';
 import { getPlayerFormMomentum } from '@/lib/formTracker';
-import { evaluatePlayerRotationRisk } from '@/utils/aiLineupRiskEngine';
 import { UI_TEXT } from '@/lib/ui-text';
 import { CURRENT_PL_SEASON_BUCKET } from '@/lib/fpl-constants';
 
@@ -42,7 +41,8 @@ export const PlayerDetailModal: React.FC = () => {
     getPlayerUpcomingFixtures,
     getPlayerGameweekXp,
     openTransferDrawer,
-    showAiPredictions
+    showAiPredictions,
+    getPlayerLineupRisk
   } = usePlannerStore();
 
   const [loading, setLoading] = useState(false);
@@ -314,7 +314,7 @@ export const PlayerDetailModal: React.FC = () => {
 
         {/* 3. Lineup & Rotation Risk Intelligence Banner */}
         {(() => {
-          const risk = evaluatePlayerRotationRisk(player, team?.short_name);
+          const risk = getPlayerLineupRisk(player.id);
           const isAtRisk = risk.riskLevel !== 'safe';
 
           return (

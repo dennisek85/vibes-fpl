@@ -6,6 +6,7 @@ import { getActivePin } from '@/lib/auth';
 import { setCustomMatchOddsData } from '@/lib/oddsTracker';
 import { setCustomFormMomentumData } from '@/lib/formTracker';
 import { setCustomTop10kData } from '@/lib/ownershipTracker';
+import { evaluatePlayerRotationRisk, RotationRiskReport } from '@/utils/aiLineupRiskEngine';
 
 export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSlice> = (set, get) => ({
   isLoading: false,
@@ -19,12 +20,37 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
   playerMap: new Map(),
   teamMap: new Map(),
   aiProjectionsMap: new Map(),
+  lineupRiskMap: new Map(),
   liveEventPoints: {},
   nextGameweekId: 3,
 
   isGameweekLocked: (gameweek?: number) => {
     const gw = gameweek !== undefined ? gameweek : get().selectedGameweek;
     return gw < get().nextGameweekId;
+  },
+
+  getPlayerLineupRisk: (playerId: number): RotationRiskReport => {
+    const cached = get().lineupRiskMap.get(playerId);
+    if (cached) return cached;
+    const player = get().playerMap.get(playerId);
+    if (!player) {
+      return {
+        playerId,
+        playerName: 'Player',
+        teamShort: 'EPL',
+        startProbability: 100,
+        riskLevel: 'safe',
+        primaryReasonKey: 'defaultSafe',
+        humanReason: '',
+        officialNewsQuote: '',
+        isSubRisk: false,
+        expectedMinutes: 90
+      };
+    }
+    const teamShort = get().teamMap.get(player.team)?.short_name || 'EPL';
+    const evaluated = evaluatePlayerRotationRisk(player, teamShort);
+    get().lineupRiskMap.set(playerId, evaluated);
+    return evaluated;
   },
 
   fetchLivePointsForGameweek: async (gw: number, forceRefresh = false) => {
@@ -80,14 +106,17 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
         }
       }
 
-      const playerMap = new Map<number, FPLPlayer>();
-      for (const p of bootstrapData.elements || []) {
-        playerMap.set(p.id, p);
-      }
-
       const teamMap = new Map<number, FPLTeam>();
       for (const t of bootstrapData.teams || []) {
         teamMap.set(t.id, t);
+      }
+
+      const playerMap = new Map<number, FPLPlayer>();
+      const lineupRiskMap = new Map<number, RotationRiskReport>();
+      for (const p of bootstrapData.elements || []) {
+        playerMap.set(p.id, p);
+        const teamShort = teamMap.get(p.team)?.short_name || 'EPL';
+        lineupRiskMap.set(p.id, evaluatePlayerRotationRisk(p, teamShort));
       }
 
       const events: FPLEvent[] = bootstrapData.events || [];
@@ -102,6 +131,7 @@ export const createCoreDataSlice: StateCreator<PlannerState, [], [], CoreDataSli
         playerMap,
         teamMap,
         aiProjectionsMap,
+        lineupRiskMap,
         nextGameweekId: nextGwId,
         startGameweek: 1,
         selectedGameweek: nextGwId,

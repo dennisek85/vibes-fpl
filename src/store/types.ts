@@ -10,6 +10,7 @@ import {
   PlayerFixtureItem 
 } from '@/types/fpl';
 import { OptimizationResult } from '@/utils/aiOptimizer';
+import { RotationRiskReport } from '@/utils/aiLineupRiskEngine';
 
 export interface PlayedChipInfo {
   name: string;
@@ -39,12 +40,14 @@ export interface CoreDataSlice {
   playerMap: Map<number, FPLPlayer>;
   teamMap: Map<number, FPLTeam>;
   aiProjectionsMap: Map<string, number>;
+  lineupRiskMap: Map<number, RotationRiskReport>;
   liveEventPoints: Record<number, Record<number, number>>; // gw -> { elementId: points }
   nextGameweekId: number;
 
   initFPLData: () => Promise<void>;
   fetchLivePointsForGameweek: (gw: number, forceRefresh?: boolean) => Promise<void>;
   isGameweekLocked: (gameweek?: number) => boolean;
+  getPlayerLineupRisk: (playerId: number) => RotationRiskReport;
 }
 
 export interface UiStateSlice {

@@ -19,6 +19,7 @@ Official FPL API ──> Next.js Proxies (/api/fpl/*) ──> Zustand (usePlanne
 6. **Communication**: ALWAYS explain WHAT you are doing and WHY before executing changes or running commands.
 7. **Zero Unused Code**: Strictly eliminate all unused imports, destructured store variables, parameters, and dead code. Enforced by TypeScript (`noUnusedLocals`, `noUnusedParameters`) & ESLint (`@typescript-eslint/no-unused-vars`).
 8. **UI Text Centralization**: NEVER hardcode user-facing strings, descriptions, labels, or badges directly in UI components. ALWAYS define and import them from `src/lib/ui-text.ts` (`UI_TEXT`).
+9. **Single Source of Truth (Zero Duplicate Calculations)**: NEVER calculate the same metric, ML feature, or risk score independently in multiple places with divergent parameters. ALWAYS compute metrics once in `usePlannerStore` (or shared core utils) and have all UI components, modals, and solver algorithms read from that single canonical source of truth.
 
 ## 📚 Skills Catalog (On-Demand)
 - **ML & xP Engine**: [`.agents/skills/fpl-ml-engine/SKILL.md`](.agents/skills/fpl-ml-engine/SKILL.md) (`aiOddsEngine.ts`, `oddsTracker.ts`, `setPieces.ts`, `formTracker.ts`)

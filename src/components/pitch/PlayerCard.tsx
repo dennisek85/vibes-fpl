@@ -4,7 +4,6 @@ import { usePlannerStore } from '@/store/usePlannerStore';
 import { KitIcon } from '@/components/ui/KitIcon';
 import { FdrFixtureCell } from '@/components/ui/FdrBadge';
 import { formatMoney, canSwapSquadSlots } from '@/lib/fpl-rules';
-import { evaluatePlayerRotationRisk } from '@/utils/aiLineupRiskEngine';
 import { X, Crown, ArrowLeftRight, AlertTriangle, Trophy } from 'lucide-react';
 
 interface PlayerCardProps {
@@ -28,7 +27,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
     selectedGameweek,
     gameweekPlans,
     isGameweekLocked,
-    openPlayerDetail
+    openPlayerDetail,
+    getPlayerLineupRisk
   } = usePlannerStore();
 
   const [showRoleMenu, setShowRoleMenu] = useState(false);
@@ -61,7 +61,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
   const fixtures = getPlayerUpcomingFixtures(player.id, fixtureHorizon);
   const isGK = player.element_type === 1;
   const isDark = cardTheme === 'dark';
-  const rotationRisk = evaluatePlayerRotationRisk(player, team?.short_name);
+  const rotationRisk = getPlayerLineupRisk(player.id);
 
   const currentSquad = gameweekPlans[selectedGameweek]?.squad || [];
   const isAnotherSlotSelected = selectedSlotForSwap !== null && selectedSlotForSwap !== pick.position;

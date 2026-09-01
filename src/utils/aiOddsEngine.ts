@@ -2,6 +2,7 @@ import { FPLPlayer } from '@/types/fpl';
 import { getMarketFixtureOdds, getMarketAnytimeGoalscorerProb } from '@/lib/oddsTracker';
 import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 import { getPlayerFormMomentum } from '@/lib/formTracker';
+import { evaluatePlayerRotationRisk } from './aiLineupRiskEngine';
 import { getAdaptiveModelParameters } from './aiAdaptiveTuner';
 
 export interface MatchExpectancy {
@@ -222,6 +223,14 @@ export function calculatePlayerOddsXp(
       p60Mins = 0.10;
       pSub = 0.40;
     }
+  }
+
+  // Lineup & Rotation Risk Integration (Single Source of Truth)
+  const rotationRisk = evaluatePlayerRotationRisk(player, playerTeam?.short_name);
+  if (rotationRisk.startProbability < 90 || rotationRisk.isSubRisk) {
+    p60Mins = Math.min(p60Mins, rotationRisk.startProbability / 100);
+    pSub = rotationRisk.isSubRisk ? Math.max(pSub, 0.40) : pSub;
+    expectedMins = Math.min(expectedMins, rotationRisk.expectedMinutes);
   }
 
   // FPL Points: 60+ mins = 2 pts, 1-59 mins = 1 pt, 0 mins = 0 pts
