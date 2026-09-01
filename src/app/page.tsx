@@ -16,6 +16,7 @@ import { AiScoutModal } from '@/components/modals/AiScoutModal';
 import { MobileMenuDrawer } from '@/components/modals/MobileMenuDrawer';
 import { PlayerMatrixView } from '@/components/matrix/PlayerMatrixView';
 import { AiPerformanceView } from '@/components/analytics/AiPerformanceView';
+import { MlLabView } from '@/components/analytics/MlLabView';
 import { PlayerDetailModal } from '@/components/player/PlayerDetailModal';
 import { logoutPin, isPinVerified } from '@/lib/auth';
 import { formatMoney } from '@/lib/fpl-rules';
@@ -34,6 +35,7 @@ import {
   LayoutGrid, 
   TableProperties, 
   TrendingUp,
+  Sparkles,
   Menu 
 } from 'lucide-react';
 
@@ -60,11 +62,26 @@ export default function PlannerPage() {
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isLabUnlocked, setIsLabUnlocked] = useState(false);
 
   useEffect(() => {
     initFPLData();
     setIsAuthenticated(isPinVerified());
-  }, [initFPLData]);
+
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isLabParam = urlParams.get('lab') === '1' || urlParams.get('lab') === 'true' || urlParams.get('ml') === 'true';
+      const isStored = localStorage.getItem('vibes_lab_mode') === 'true';
+
+      if (isLabParam) {
+        localStorage.setItem('vibes_lab_mode', 'true');
+        setIsLabUnlocked(true);
+        setCurrentView('lab');
+      } else if (isStored) {
+        setIsLabUnlocked(true);
+      }
+    }
+  }, [initFPLData, setCurrentView]);
 
   // Smart in-view live match poller (every 60s when viewing an ongoing gameweek)
   useEffect(() => {
@@ -223,6 +240,21 @@ export default function PlannerPage() {
                 <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span className="hidden md:inline">{UI_TEXT.app.views.analytics}</span>
               </button>
+
+              {isLabUnlocked && (
+                <button
+                  onClick={() => setCurrentView('lab')}
+                  className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
+                    currentView === 'lab'
+                      ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/30'
+                      : 'text-purple-300/80 hover:text-purple-200 hover:bg-purple-950/40'
+                  }`}
+                  title="Private Quantitative ML Lab & A/B Shootout"
+                >
+                  <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
+                  <span className="hidden md:inline">ML Lab</span>
+                </button>
+              )}
             </div>
           </div>
 
@@ -414,6 +446,11 @@ export default function PlannerPage() {
         /* Player Projections & Metrics Matrix View */
         <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-2 animate-in fade-in duration-200">
           <PlayerMatrixView />
+        </div>
+      ) : currentView === 'lab' ? (
+        /* Private Quantitative ML Lab & A/B Shootout View */
+        <div className="w-full max-w-[99vw] flex justify-center px-2 sm:px-4 py-3 animate-in fade-in duration-200">
+          <MlLabView />
         </div>
       ) : (
         /* AI Performance & Backtesting View */

@@ -201,6 +201,23 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
                 <TrendingUp className="w-3 h-3" />
                 <span>AI Alpha</span>
               </button>
+
+              {typeof window !== 'undefined' && localStorage.getItem('vibes_lab_mode') === 'true' && (
+                <button
+                  onClick={() => {
+                    setCurrentView('lab');
+                    onClose();
+                  }}
+                  className={`flex items-center justify-center gap-1 p-2 rounded-xl border text-[11px] font-black transition col-span-3 ${
+                    currentView === 'lab'
+                      ? 'bg-gradient-to-r from-purple-600 to-cyan-600 border-purple-400 text-white shadow-md'
+                      : 'bg-slate-950 border-purple-500/30 text-purple-300 hover:text-white'
+                  }`}
+                >
+                  <Sparkles className="w-3 h-3 text-purple-400" />
+                  <span>🧪 Private ML Lab (A/B Shootout)</span>
+                </button>
+              )}
             </div>
           </div>
 
