@@ -312,6 +312,7 @@ export const MlLabView: React.FC = () => {
                     <span className="text-lg">{arm.icon}</span> {arm.name}
                   </span>
                   <span className="text-[11.5px] font-black bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 px-2.5 py-0.5 rounded-full font-mono tracking-tight shadow-sm">
+                    {arm.edgePct}
                   </span>
                 </div>
 
