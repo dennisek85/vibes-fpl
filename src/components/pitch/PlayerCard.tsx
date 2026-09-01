@@ -4,6 +4,7 @@ import { usePlannerStore } from '@/store/usePlannerStore';
 import { KitIcon } from '@/components/ui/KitIcon';
 import { FdrFixtureCell } from '@/components/ui/FdrBadge';
 import { formatMoney, canSwapSquadSlots } from '@/lib/fpl-rules';
+import { evaluatePlayerRotationRisk } from '@/utils/aiLineupRiskEngine';
 import { X, Crown, ArrowLeftRight, AlertTriangle, Trophy } from 'lucide-react';
 
 interface PlayerCardProps {
@@ -60,8 +61,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
   const fixtures = getPlayerUpcomingFixtures(player.id, fixtureHorizon);
   const isGK = player.element_type === 1;
   const isDark = cardTheme === 'dark';
-
-  const isDoubtfulOrInjured = player.status !== 'a';
+  const rotationRisk = evaluatePlayerRotationRisk(player, team?.short_name);
 
   const currentSquad = gameweekPlans[selectedGameweek]?.squad || [];
   const isAnotherSlotSelected = selectedSlotForSwap !== null && selectedSlotForSwap !== pick.position;
@@ -164,13 +164,17 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ pick }) => {
               V
             </div>
           )}
-          {!isLocked && isDoubtfulOrInjured && !pick.is_captain && !pick.is_vice_captain && (
+          {!isLocked && rotationRisk.riskLevel !== 'safe' && !pick.is_captain && !pick.is_vice_captain && (
             <span 
-              className="bg-amber-500 text-slate-950 text-[7.5px] sm:text-[10px] font-black px-1 sm:px-1.5 py-0.2 rounded-full flex items-center shadow"
-              title={player.news || 'Status alert'}
+              className={`text-[7.5px] sm:text-[10px] font-black px-1 sm:px-1.5 py-0.2 rounded-full flex items-center shadow border ${
+                rotationRisk.riskLevel === 'high' ? 'bg-rose-600 text-white border-rose-400' :
+                rotationRisk.riskLevel === 'fatigue' ? 'bg-purple-600 text-white border-purple-400' :
+                'bg-amber-500 text-slate-950 border-amber-300'
+              }`}
+              title={`${rotationRisk.startProbability}% Start Chance: ${rotationRisk.humanReason}`}
             >
-              <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5" />
-              {player.chance_of_playing_next_round !== null ? `${player.chance_of_playing_next_round}%` : '!'}
+              <AlertTriangle className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 shrink-0" />
+              {rotationRisk.startProbability}%
             </span>
           )}
         </div>

@@ -13,6 +13,8 @@ import {
 import { getPlayerSetPieceProfile } from '@/lib/setPieces';
 import { getPlayerTop10kEo } from '@/lib/ownershipTracker';
 import { getPlayerFormMomentum } from '@/lib/formTracker';
+import { evaluatePlayerRotationRisk } from '@/utils/aiLineupRiskEngine';
+import { UI_TEXT } from '@/lib/ui-text';
 import { CURRENT_PL_SEASON_BUCKET } from '@/lib/fpl-constants';
 
 // Client-side in-memory cache for instant 0ms player detail modal opening
@@ -310,7 +312,68 @@ export const PlayerDetailModal: React.FC = () => {
           );
         })()}
 
-        {/* 3. Middle Section: Recent Form & Next 5 Fixtures */}
+        {/* 3. Lineup & Rotation Risk Intelligence Banner */}
+        {(() => {
+          const risk = evaluatePlayerRotationRisk(player, team?.short_name);
+          const isAtRisk = risk.riskLevel !== 'safe';
+
+          return (
+            <div className={`px-5 sm:px-6 py-3.5 border-b border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
+              risk.riskLevel === 'high' ? 'bg-rose-950/70 border-rose-500/30' :
+              risk.riskLevel === 'medium' || risk.riskLevel === 'doubtful' ? 'bg-amber-950/70 border-amber-500/30' :
+              risk.riskLevel === 'fatigue' ? 'bg-purple-950/70 border-purple-500/30' :
+              'bg-slate-950/90'
+            }`}>
+              <div className="flex items-start gap-3">
+                <div className={`p-2 rounded-xl text-lg shrink-0 ${
+                  risk.riskLevel === 'high' ? 'bg-rose-500/20 text-rose-400' :
+                  risk.riskLevel === 'medium' || risk.riskLevel === 'doubtful' ? 'bg-amber-500/20 text-amber-400' :
+                  risk.riskLevel === 'fatigue' ? 'bg-purple-500/20 text-purple-400' :
+                  'bg-emerald-500/20 text-emerald-400'
+                }`}>
+                  {risk.riskLevel === 'high' ? '🚨' : risk.riskLevel === 'fatigue' ? '✈️' : isAtRisk ? '⚠️' : '✅'}
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs font-black uppercase tracking-wider text-slate-200">
+                      {UI_TEXT.rotationRisk.detailModal.sectionTitle}
+                    </span>
+                    <span className={`px-2.5 py-0.5 rounded-full font-black text-xs font-mono border ${
+                      risk.riskLevel === 'high' ? 'bg-rose-500/20 text-rose-300 border-rose-500/40' :
+                      risk.riskLevel === 'medium' || risk.riskLevel === 'doubtful' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
+                      risk.riskLevel === 'fatigue' ? 'bg-purple-500/20 text-purple-300 border-purple-500/40' :
+                      'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                    }`}>
+                      {UI_TEXT.rotationRisk.badges.startProbability(risk.startProbability)}
+                    </span>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-200 font-medium">
+                    {risk.humanReason}
+                  </p>
+
+                  {player.news && (
+                    <p className="text-[11px] text-slate-400 italic">
+                      &ldquo;{player.news}&rdquo;
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="self-end sm:self-center shrink-0 text-right font-mono">
+                <span className="text-[10px] text-slate-400 block uppercase tracking-wider">
+                  {UI_TEXT.rotationRisk.detailModal.estimatedMinutesLabel}
+                </span>
+                <span className="text-sm sm:text-base font-black text-white">
+                  ~{risk.expectedMinutes} mins
+                </span>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* 4. Middle Section: Recent Form & Next 5 Fixtures */}
         <div className="p-5 sm:p-6 border-b border-white/10 bg-slate-900/60 grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* Recent Matches */}
           <div className="flex flex-col gap-2.5">

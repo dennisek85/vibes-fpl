@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { usePlannerStore } from '@/store/usePlannerStore';
+import { UI_TEXT } from '@/lib/ui-text';
 import { Sparkles, Flame, ArrowUpRight, ArrowDownRight, EyeOff, Layers, CheckCircle2 } from 'lucide-react';
 
 interface ExperimentalArm {
@@ -20,6 +21,7 @@ interface ExperimentalArm {
 export const MlLabView: React.FC = () => {
   const { setCurrentView } = usePlannerStore();
   const [activeTab, setActiveTab] = useState<'arms' | 'divergences' | 'architecture'>('arms');
+  const labText = UI_TEXT.mlLab;
 
   // Multi-Armed Factorial Experimental Suite
   const experimentalArms: ExperimentalArm[] = [
@@ -211,17 +213,17 @@ export const MlLabView: React.FC = () => {
             <div className="flex items-center gap-2 mb-1.5">
               <span className="bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[10.5px] font-black uppercase px-2.5 py-0.5 rounded-full font-mono flex items-center gap-1.5">
                 <Sparkles className="w-3 h-3 text-purple-400" />
-                Factorial ML Laboratory
+                {labText.bannerTag}
               </span>
               <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10.5px] font-black px-2 py-0.5 rounded-full font-mono">
-                6 Active Experimental Arms
+                {labText.activeArmsBadge(experimentalArms.length)}
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2">
-              🧪 Multi-Armed Machine Learning Arena
+              🧪 {labText.title}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl">
-              Testing cutting-edge quantitative signals in <strong>isolated experimental arms</strong> alongside the Production baseline without risking live squad plans.
+              {labText.subtitle}
             </p>
           </div>
 
@@ -231,7 +233,7 @@ export const MlLabView: React.FC = () => {
               className="px-3 py-1.5 bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-white/15 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
               title="Lock and hide ML Lab"
             >
-              <EyeOff className="w-3.5 h-3.5" /> Exit Lab Mode
+              <EyeOff className="w-3.5 h-3.5" /> {labText.exitLab}
             </button>
           </div>
         </div>
@@ -246,7 +248,7 @@ export const MlLabView: React.FC = () => {
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
             }`}
           >
-            🔬 6 Experimental Arms Leaderboard
+            {labText.tabs.arms}
           </button>
           <button
             onClick={() => setActiveTab('divergences')}
@@ -256,7 +258,7 @@ export const MlLabView: React.FC = () => {
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
             }`}
           >
-            ⚡ GW3 Key Disagreements
+            {labText.tabs.divergences}
           </button>
           <button
             onClick={() => setActiveTab('architecture')}
@@ -266,12 +268,12 @@ export const MlLabView: React.FC = () => {
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
             }`}
           >
-            🏛️ Factorial Design
+            {labText.tabs.architecture}
           </button>
         </div>
       </div>
 
-      {/* 2. TAB: 6 Experimental Arms */}
+      {/* 2. TAB: Experimental Arms */}
       {activeTab === 'arms' && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
@@ -295,11 +297,11 @@ export const MlLabView: React.FC = () => {
 
                 <div className="bg-slate-950/60 p-2.5 rounded-xl border border-white/5 space-y-1 font-mono text-xs">
                   <div className="flex justify-between text-slate-400">
-                    <span>Tested Scope:</span>
+                    <span>{labText.armsSection.testedScope}</span>
                     <span className="text-slate-200 font-bold">{arm.testedPlayers}</span>
                   </div>
                   <div className="flex justify-between text-slate-400">
-                    <span>Arm MAE vs Prod:</span>
+                    <span>{labText.armsSection.armMaeVsProd}</span>
                     <span className="text-purple-300 font-bold">{arm.currentMae} vs {arm.baselineMae}</span>
                   </div>
                 </div>
@@ -319,10 +321,10 @@ export const MlLabView: React.FC = () => {
         <div className="bg-slate-900/85 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-xl space-y-4">
           <div>
             <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
-              <Flame className="w-4 h-4 text-amber-400" /> Upcoming GW3 Key Model Disagreements
+              <Flame className="w-4 h-4 text-amber-400" /> {labText.divergencesSection.title}
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Players where the experimental arms diverge most significantly from the Production baseline:
+              {labText.divergencesSection.subtitle}
             </p>
           </div>
 
@@ -345,7 +347,7 @@ export const MlLabView: React.FC = () => {
 
                   <div className="flex items-center gap-4 self-end sm:self-center">
                     <div className="text-right font-mono">
-                      <span className="text-[10px] text-slate-400 block">Prod vs. Experimental</span>
+                      <span className="text-[10px] text-slate-400 block">{labText.divergencesSection.prodVsExp}</span>
                       <span className="text-xs text-slate-300 font-bold">{p.prodXp} xP</span>
                       <span className="text-slate-500 mx-1">→</span>
                       <span className="text-xs text-purple-300 font-black">{p.shadowXp} xP</span>
@@ -369,10 +371,10 @@ export const MlLabView: React.FC = () => {
       {activeTab === 'architecture' && (
         <div className="bg-slate-900/85 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-xl space-y-4">
           <h3 className="text-base font-black text-white flex items-center gap-2">
-            <Layers className="w-4 h-4 text-purple-400" /> Factorial Experimentation Methodology
+            <Layers className="w-4 h-4 text-purple-400" /> {labText.architectureSection.title}
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            In quantitative sports modeling, testing multiple variables inside a single black box leads to confounding errors. We isolate each hypothesis into its own independent mathematical arm ($Arm_1 \dots Arm_6$). Each week, we calculate out-of-sample MAE error deltas against actual match events to scientifically prove which signals add true predictive alpha.
+            {labText.architectureSection.description}
           </p>
         </div>
       )}

@@ -120,5 +120,60 @@ export const UI_TEXT = {
       teamValueDesc: 'Extra budget unlocked by beating overnight transfer market price changes',
     },
   },
+  mlLab: {
+    bannerTag: 'Factorial ML Laboratory',
+    activeArmsBadge: (count: number) => `${count} Active Experimental Arms`,
+    title: 'Multi-Armed Machine Learning Arena',
+    subtitle: 'Testing cutting-edge quantitative signals in isolated experimental arms alongside the Production baseline without risking live squad plans.',
+    exitLab: 'Exit Lab Mode',
+    tabs: {
+      arms: '🔬 Experimental Arms Leaderboard',
+      divergences: '⚡ Key Model Disagreements',
+      architecture: '🏛️ Factorial Design',
+    },
+    armsSection: {
+      testedScope: 'Tested Scope:',
+      armMaeVsProd: 'Arm MAE vs Prod:',
+    },
+    divergencesSection: {
+      title: 'Upcoming GW Key Model Disagreements',
+      subtitle: 'Players where the experimental arms diverge most significantly from the Production baseline:',
+      prodVsExp: 'Prod vs. Experimental',
+    },
+    architectureSection: {
+      title: 'Factorial Experimentation Methodology',
+      description: 'In quantitative sports modeling, testing multiple variables inside a single black box leads to confounding errors. We isolate each hypothesis into its own independent mathematical arm. Each week, we calculate out-of-sample MAE error deltas against actual match events to scientifically prove which signals add true predictive alpha.',
+    },
+  },
+  rotationRisk: {
+    title: 'Lineup & Rotation Risk Radar',
+    subtitle: 'Pre-deadline starting certainty, sub-risk analysis, and manager rotation hazard indicators.',
+    badges: {
+      highRisk: 'High Bench Risk',
+      mediumRisk: 'Rotation / Sub Risk',
+      doubtful: 'Injury Doubt',
+      fatigueRisk: 'European Fatigue',
+      safe: 'Nailed Starter',
+      startProbability: (pct: number) => `${pct}% Start Chance`,
+    },
+    detailModal: {
+      sectionTitle: 'Starting Certainty & Rotation Risk Analysis',
+      officialQuoteLabel: 'Official Press Conference Quote',
+      aiVerdictLabel: 'AI Algorithmic Verdict',
+      estimatedMinutesLabel: 'Expected Minutes on Pitch',
+    },
+    reasons: {
+      managingLoad: "Manager is managing player load; high risk of being rested or subbed at 60'.",
+      tightness: 'Muscle tightness reported in training; elevated risk of early substitution or benching.',
+      lateFitnessTest: 'Subject to a late pre-match fitness test; starting spot is unconfirmed.',
+      assessed: 'Undergoing medical assessment ahead of the weekend fixture.',
+      illness: 'Recovering from illness; stamina and match fitness being evaluated.',
+      knock: 'Suffered a minor knock in the previous match; being monitored by physios.',
+      europeanFatigue: 'Played 90 minutes in European competition midweek (<72h recovery turnaround).',
+      pepRoulette: 'High manager rotation volatility detected for this tactical position.',
+      defaultDoubtful: 'Flagged with questionable status in official FPL injury reports.',
+      defaultSafe: 'Nailed starting regular with optimal physical recovery and zero fitness flags.',
+    },
+  },
 } as const;
 
