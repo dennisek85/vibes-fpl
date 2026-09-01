@@ -38,3 +38,7 @@ GEMINI.md
 AGENTS.md
 README.md
 docs/
+
+# Generated local scrapers and ML data cache
+.data/
+src/data/openfpl_predictions.json
