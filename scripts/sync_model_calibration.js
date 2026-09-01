@@ -305,6 +305,17 @@ async function main() {
     }
   }
 
+  // Ensure gameweekReports is strictly bounded to the active season (max 38 gameweeks)
+  const boundedReports = {};
+  Object.keys(calibrationSummary.gameweekReports)
+    .map(Number)
+    .filter(gw => gw >= 1 && gw <= 38)
+    .sort((a, b) => a - b)
+    .forEach(gw => {
+      boundedReports[gw] = calibrationSummary.gameweekReports[gw];
+    });
+  calibrationSummary.gameweekReports = boundedReports;
+
   // Save full calibration summary to Redis & local cache
   await saveToRedis('fpl:calibration:summary', calibrationSummary);
   
