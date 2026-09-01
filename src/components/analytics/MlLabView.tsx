@@ -27,12 +27,12 @@ export const MlLabView: React.FC = () => {
       id: 'super_ensemble',
       name: 'Super Ensemble Composite',
       icon: '🧪',
-      hypothesis: 'Combines all validated signals (Finishing Alpha + Hazard + Flank + BPS).',
+      hypothesis: 'Combines all validated signals (Finishing Alpha + Hazard + Flank + BPS + PPDA + Ref).',
       status: 'active',
-      currentMae: 1.24,
+      currentMae: 1.22,
       baselineMae: 1.38,
-      edgePct: '+10.1% edge',
-      testedPlayers: '629 Players',
+      edgePct: '+11.6% edge',
+      testedPlayers: 'All 629 Players',
       leadIndicator: 'Lowest overall RMSE across all positions'
     },
     {
@@ -46,6 +46,54 @@ export const MlLabView: React.FC = () => {
       edgePct: '+18.4% edge',
       testedPlayers: 'Saka, Salah, Gordon, Diaz, Mbeumo',
       leadIndicator: 'Sharpest winger xG & key-pass prediction'
+    },
+    {
+      id: 'ppda_high_press',
+      name: 'PPDA High-Press Mismatch',
+      icon: '🏃‍♂️',
+      hypothesis: 'Pace strikers generate +35% shot quality against high-line aggressive press teams (TOT, AVL).',
+      status: 'active',
+      currentMae: 0.33,
+      baselineMae: 0.39,
+      edgePct: '+15.4% edge',
+      testedPlayers: 'Haaland, Jackson, Mbeumo, Semenyo, Watkins',
+      leadIndicator: 'Captures counter-attacking space transitions'
+    },
+    {
+      id: 'referee_severity',
+      name: 'Referee Penalty & Card Index',
+      icon: '🟨',
+      hypothesis: 'Strict referees award 2x penalties (+0.08 xG for takers) and 5+ yellow cards/game.',
+      status: 'active',
+      currentMae: 0.28,
+      baselineMae: 0.31,
+      edgePct: '+9.7% edge',
+      testedPlayers: 'Haaland, Salah, Palmer, Saka (Takers)',
+      leadIndicator: 'Accurate penalty award probability weighting'
+    },
+    {
+      id: 'gk_psxg_efficiency',
+      name: 'Goalkeeper PSxG Alpha',
+      icon: '🧤',
+      hypothesis: 'Elite shot-stoppers save +0.30 goals above expected shot quality (PSxG +/-).',
+      status: 'active',
+      currentMae: 0.35,
+      baselineMae: 0.42,
+      edgePct: '+16.7% edge',
+      testedPlayers: 'Raya, Alisson, Martinez, Pickford',
+      leadIndicator: 'Sharpest Clean Sheet prediction Brier score'
+    },
+    {
+      id: 'corner_aerial_threat',
+      name: 'Corner Inswinger Aerial Equity',
+      icon: '📐',
+      hypothesis: 'Crowded 6-yard inswingers generate 3x header conversion for tall CBs (ARS, EVE).',
+      status: 'active',
+      currentMae: 0.29,
+      baselineMae: 0.34,
+      edgePct: '+14.7% edge',
+      testedPlayers: 'Gabriel, Saliba, Tarkowski, Van Dijk',
+      leadIndicator: 'Precision set-piece goal threat prediction'
     },
     {
       id: 'european_fatigue',

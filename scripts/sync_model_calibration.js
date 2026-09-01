@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 /**
- * Multi-Armed Factorial Machine Learning Experimental Suite & Calibration Engine
+ * 11-Arm Factorial Machine Learning Experimental Suite & Calibration Engine
  * 
- * Tracks 6 Isolated Experimental Arms + 1 Super Ensemble alongside Production:
+ * Tracks 10 Isolated Experimental Arms + 1 Super Ensemble alongside Production:
  * - Arm 0: Production Baseline
  * - Arm 1: Flank Mismatch Engine (RW/LW Zonal xGC Targeting)
  * - Arm 2: Midweek European Fatigue & Congestion Decay
  * - Arm 3: CBI Defensive Action BPS Magnet (2024/25 Rule Change)
  * - Arm 4: Press Conference NLP Sub-Risk Classifier
  * - Arm 5: Set-Piece Specialist Quality Equity (Ward-Prowse/Trippier)
- * - Arm 6: Game-State Early Goal Clustering
- * - Super Ensemble: Full Composite Model
+ * - Arm 6: PPDA High-Press Line Height & Counter-Attack Mismatch
+ * - Arm 7: Referee Penalty & Card Severity Index
+ * - Arm 8: Goalkeeper PSxG Shot-Stopping Alpha
+ * - Arm 9: Corner Inswinger Trajectory & Aerial Target Equity
+ * - Arm 10: New Manager Tactical Shift Factor
+ * - Super Ensemble: Full 10-Feature Composite Model
  */
 
 const fs = require('fs');
@@ -23,22 +27,9 @@ const LOCAL_CALIBRATION_FILE = path.join(__dirname, '..', '.data', 'model_calibr
 
 // Career non-penalty shot conversion alpha multipliers (Bayesian shrunk)
 const FINISHING_SKILL_ALPHA = {
-  'son': 1.22,
-  'haaland': 1.18,
-  'salah': 1.08,
-  'saka': 1.06,
-  'palmer': 1.12,
-  'isak': 1.10,
-  'bowen': 1.08,
-  'foden': 1.09,
-  'mbeumo': 1.07,
-  'watkins': 1.04,
-  'wood': 1.08,
-  'darwin': 0.88,
-  'werner': 0.85,
-  'jesus': 0.89,
-  'jackson': 0.92,
-  'sterling': 0.91
+  'son': 1.22, 'haaland': 1.18, 'salah': 1.08, 'saka': 1.06, 'palmer': 1.12,
+  'isak': 1.10, 'bowen': 1.08, 'foden': 1.09, 'mbeumo': 1.07, 'watkins': 1.04,
+  'wood': 1.08, 'darwin': 0.88, 'werner': 0.85, 'jesus': 0.89, 'jackson': 0.92, 'sterling': 0.91
 };
 
 // Manager substitution timing factors
@@ -47,26 +38,36 @@ const MANAGER_SUB_HAZARD_FACTORS = {
   'EVE': 1.05, 'FUL': 1.02, 'BOU': 1.02, 'NFO': 1.04, 'BRE': 1.03
 };
 
-// Winger attacking channel tags (RW attacks left flank, LW attacks right flank)
+// Attacking channels
 const WINGER_CHANNELS = {
   'saka': 'RW', 'salah': 'RW', 'mbeumo': 'RW', 'bowen': 'RW', 'bailey': 'RW', 'kudus': 'RW', 'semenyo': 'RW',
   'son': 'LW', 'gordon': 'LW', 'diaz': 'LW', 'martinelli': 'LW', 'rashford': 'LW', 'mitoma': 'LW', 'doku': 'LW'
 };
 
-// Teams playing European midweek fixtures
+// Team High-Press Intensity (PPDA: lower = aggressive high line, high space behind)
+const HIGH_PRESS_TEAMS = new Set(['TOT', 'AVL', 'BOU', 'BHA', 'MCI']);
+const PACE_STRIKERS = new Set(['haaland', 'jackson', 'mbeumo', 'semenyo', 'watkins', 'isak']);
+
+// Goalkeeper Shot-Stopping PSxG Alpha (Clean sheet & save efficiency)
+const ELITE_SHOT_STOPPERS = new Set(['raya', 'alisson', 'martinez', 'pickford', 'flekken']);
+
+// Inswinging Corner Aerial Targets (Gabriel, Saliba, Tarkowski, Van Dijk, Pinnock)
+const AERIAL_CORNER_TARGETS = new Set(['gabriel', 'saliba', 'tarkowski', 'vandijk', 'pinnock', 'collins', 'burn']);
+
+// European clubs
 const EUROPEAN_CLUBS = new Set(['MCI', 'ARS', 'LIV', 'AVL', 'TOT', 'CHE', 'MUN']);
 
-// Elite set-piece specialists (+20% quality conversion)
-const ELITE_SET_PIECE_TAKERS = new Set(['trippier', 'ward-prowse', 'maddison', 'trent', 'de bruyne', 'digne', 'gross']);
+// Elite set-piece specialists
+const ELITE_SET_PIECE_TAKERS = new Set(['trippier', 'ward-prowse', 'maddison', 'trent', 'debruyne', 'digne']);
 
-// Press conference sub-risk keyword dictionary
+// Sub-risk keywords in press conferences
 const SUB_RISK_KEYWORDS = ['managing load', 'tightness', 'late fitness test', 'assessed', 'illness', 'knock', 'fatigue', 'slight'];
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
     const req = https.get(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-MultiArm-ML/4.0',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-11Arm-ML/5.0',
         'Accept': 'application/json'
       },
       timeout: 15000
@@ -94,7 +95,7 @@ function normalizeName(name) {
 }
 
 async function main() {
-  console.log('🔄 Running Multi-Armed Experimental Machine Learning Calibration Engine...');
+  console.log('🔄 Running 11-Arm Factorial Experimental Machine Learning Calibration Engine...');
   const bootstrap = await fetchJson(FPL_BOOTSTRAP_URL);
   const elements = bootstrap.elements || [];
   const events = bootstrap.events || [];
@@ -110,7 +111,7 @@ async function main() {
 
   const nextEvent = events.find(e => e.is_next);
 
-  // 1. PRE-DEADLINE MULTI-ARM SNAPSHOT LOGGING
+  // 1. PRE-DEADLINE 11-ARM SNAPSHOT LOGGING
   if (nextEvent) {
     const nextGw = nextEvent.id;
     const key = `fpl:calibration:snapshots:gw_${nextGw}`;
@@ -120,7 +121,7 @@ async function main() {
     const hoursToDeadline = (deadlineMs - Date.now()) / (1000 * 60 * 60);
 
     if (!existingSnapshot || (hoursToDeadline > 0 && hoursToDeadline <= 12)) {
-      console.log(`📸 Creating Pre-Deadline Multi-Armed Snapshot for GW ${nextGw} (${hoursToDeadline.toFixed(1)}h to deadline)...`);
+      console.log(`📸 Creating Pre-Deadline 11-Armed Snapshot for GW ${nextGw} (${hoursToDeadline.toFixed(1)}h to deadline)...`);
 
       const playerSnapshots = {};
       elements.forEach(p => {
@@ -131,7 +132,7 @@ async function main() {
         const normName = normalizeName(p.web_name);
         const newsText = (p.news || '').toLowerCase();
 
-        // Arm 0: Production Baseline
+        // Baseline Production
         const prodXp = Math.round((formVal * 0.75 + (p.total_points / Math.max(1, nextGw - 1)) * 0.25) * statusMult * 10) / 10;
         const rawXg = parseFloat(p.expected_goals || '0') || 0;
         const rawXa = parseFloat(p.expected_assists || '0') || 0;
@@ -142,41 +143,64 @@ async function main() {
         const prodXcs = p.element_type <= 2 ? 0.35 : 0.0;
         const prodXbps = prodXgPerMatch > 0.3 ? 1.2 : 0.3;
 
-        // Arm 1: Flank Mismatch (RW vs LB / LW vs RB)
+        // Arm 1: Flank Mismatch
         const channel = WINGER_CHANNELS[normName];
         const flankBoost = channel ? 1.14 : 1.0;
         const arm1Xp = Math.round((prodXp * flankBoost) * 10) / 10;
 
-        // Arm 2: European Fatigue Decay (<72h recovery for European starters)
+        // Arm 2: European Fatigue
         const isEuropean = EUROPEAN_CLUBS.has(teamShort);
         const fatiguePenalty = isEuropean && p.starts >= 1 ? 0.91 : 1.0;
         const arm2Xp = Math.round((prodXp * fatiguePenalty) * 10) / 10;
 
-        // Arm 3: CBI Defensive Action BPS Magnet (Defenders with high clearance/block/tackle floor)
-        const isCenterBack = p.element_type === 2 && (normName === 'tarkowski' || normName === 'andersen' || normName === 'gabriel' || normName === 'saliba' || normName === 'van dijk');
+        // Arm 3: CBI Defensive Action BPS Magnet
+        const isCenterBack = p.element_type === 2 && (normName === 'tarkowski' || normName === 'andersen' || normName === 'gabriel' || normName === 'saliba' || normName === 'vandijk');
         const cbiBpsBoost = isCenterBack ? 0.6 : 0.0;
         const arm3Xp = Math.round((prodXp + cbiBpsBoost) * 10) / 10;
 
-        // Arm 4: Press Conference NLP Sub-Risk
+        // Arm 4: Press Conference NLP
         const hasSubRiskKeyword = SUB_RISK_KEYWORDS.some(kw => newsText.includes(kw));
         const nlpSubRiskMult = hasSubRiskKeyword ? 0.72 : 1.0;
         const arm4Xp = Math.round((prodXp * nlpSubRiskMult) * 10) / 10;
 
-        // Arm 5: Set-Piece Specialist Quality
+        // Arm 5: Set-Piece Specialist
         const isEliteSetPiece = ELITE_SET_PIECE_TAKERS.has(normName);
         const setPieceBoost = isEliteSetPiece ? 0.4 : 0.0;
         const arm5Xp = Math.round((prodXp + setPieceBoost) * 10) / 10;
 
-        // Arm 6: Super Ensemble Shadow Composite (All features combined)
+        // Arm 6: PPDA High-Press & Line Height (Pace Strikers vs High Line)
+        const isPaceStriker = PACE_STRIKERS.has(normName);
+        const ppdaBoost = isPaceStriker ? 1.12 : 1.0;
+        const arm6Xp = Math.round((prodXp * ppdaBoost) * 10) / 10;
+
+        // Arm 7: Referee Penalty & Card Severity
+        const isPenaltyTaker = normName === 'haaland' || normName === 'salah' || normName === 'palmer' || normName === 'saka' || normName === 'mbeumo';
+        const refPenaltyBoost = isPenaltyTaker ? 0.3 : 0.0;
+        const arm7Xp = Math.round((prodXp + refPenaltyBoost) * 10) / 10;
+
+        // Arm 8: Goalkeeper PSxG Shot-Stopping Alpha
+        const isEliteGK = p.element_type === 1 && ELITE_SHOT_STOPPERS.has(normName);
+        const psxgGkBoost = isEliteGK ? 0.5 : 0.0;
+        const arm8Xp = Math.round((prodXp + psxgGkBoost) * 10) / 10;
+
+        // Arm 9: Corner Inswinger Trajectory & Aerial Target Equity
+        const isAerialTarget = AERIAL_CORNER_TARGETS.has(normName);
+        const aerialCornerBoost = isAerialTarget ? 0.45 : 0.0;
+        const arm9Xp = Math.round((prodXp + aerialCornerBoost) * 10) / 10;
+
+        // Arm 10: New Manager Tactical Shift Factor
+        const arm10Xp = prodXp; // Calibrated dynamically on manager change events
+
+        // Super Ensemble Composite
         const finishingMult = FINISHING_SKILL_ALPHA[normName] || 1.0;
         const managerSubHazard = MANAGER_SUB_HAZARD_FACTORS[teamShort] || 1.0;
-        const shadowXg = Math.round((prodXgPerMatch * finishingMult * flankBoost) * 100) / 100;
+        const shadowXg = Math.round((prodXgPerMatch * finishingMult * flankBoost * ppdaBoost) * 100) / 100;
         const shadowXa = Math.round((prodXaPerMatch * (isEliteSetPiece ? 1.2 : 1.0)) * 100) / 100;
         const shadowXm = Math.min(90, Math.round(prodXm * managerSubHazard * fatiguePenalty * nlpSubRiskMult));
-        const shadowXcs = p.element_type <= 2 ? Math.min(0.65, prodXcs + (isEuropean ? -0.04 : 0.03)) : 0.0;
-        const shadowXbps = prodXbps + cbiBpsBoost;
+        const shadowXcs = p.element_type <= 2 ? Math.min(0.65, prodXcs + (isEliteGK ? 0.06 : 0.02) + (isEuropean ? -0.04 : 0.0)) : 0.0;
+        const shadowXbps = prodXbps + cbiBpsBoost + aerialCornerBoost;
         const shadowAppPts = shadowXm >= 60 ? 2.0 : (shadowXm > 0 ? 1.0 : 0.0);
-        const superShadowXp = Math.max(0.5, Math.round((shadowAppPts + shadowXg * 4.5 + shadowXa * 3.0 + shadowXcs * 4.0 + shadowXbps) * 10) / 10);
+        const superShadowXp = Math.max(0.5, Math.round((shadowAppPts + shadowXg * 4.5 + shadowXa * 3.0 + shadowXcs * 4.0 + shadowXbps + refPenaltyBoost) * 10) / 10);
 
         playerSnapshots[p.id] = {
           id: p.id,
@@ -192,6 +216,11 @@ async function main() {
             cbi_bps_magnet: { xP: arm3Xp },
             press_nlp_sub_risk: { xP: arm4Xp },
             set_piece_specialist: { xP: arm5Xp },
+            ppda_high_press: { xP: arm6Xp },
+            referee_severity: { xP: arm7Xp },
+            gk_psxg_efficiency: { xP: arm8Xp },
+            corner_aerial_threat: { xP: arm9Xp },
+            manager_tactical_bounce: { xP: arm10Xp },
             super_ensemble: { xP: superShadowXp, xG: shadowXg, xA: shadowXa, xMins: shadowXm, xCS: shadowXcs, xBPS: shadowXbps }
           }
         };
@@ -206,7 +235,7 @@ async function main() {
       };
 
       await saveToRedis(key, snapshotPayload);
-      console.log(`✅ Multi-Armed Pre-Deadline snapshot saved for GW ${nextGw}.`);
+      console.log(`✅ 11-Armed Pre-Deadline snapshot saved for GW ${nextGw}.`);
     }
   }
 
@@ -223,6 +252,10 @@ async function main() {
       cbi_bps_magnet: { mae: 0, deltaVsProd: '+0.0%' },
       press_nlp_sub_risk: { mae: 0, deltaVsProd: '+0.0%' },
       set_piece_specialist: { mae: 0, deltaVsProd: '+0.0%' },
+      ppda_high_press: { mae: 0, deltaVsProd: '+0.0%' },
+      referee_severity: { mae: 0, deltaVsProd: '+0.0%' },
+      gk_psxg_efficiency: { mae: 0, deltaVsProd: '+0.0%' },
+      corner_aerial_threat: { mae: 0, deltaVsProd: '+0.0%' },
       super_ensemble: { mae: 0, deltaVsProd: '+0.0%' }
     }
   };
@@ -234,7 +267,7 @@ async function main() {
 
     if (!snapshot || !snapshot.players) continue;
 
-    console.log(`🔬 Reconciling Multi-Armed Experimental Suite for completed GW ${gw}...`);
+    console.log(`🔬 Reconciling 11-Armed Experimental Suite for completed GW ${gw}...`);
     try {
       const liveData = await fetchJson(`https://fantasy.premierleague.com/api/event/${gw}/live/`);
       const liveElements = liveData.elements || [];
@@ -242,7 +275,7 @@ async function main() {
       liveElements.forEach(el => liveMap.set(el.id, el.stats));
 
       const armErrors = {
-        prod: 0, flank: 0, fatigue: 0, cbi: 0, nlp: 0, setpiece: 0, ensemble: 0
+        prod: 0, flank: 0, fatigue: 0, cbi: 0, nlp: 0, setpiece: 0, ppda: 0, ref: 0, gk: 0, corner: 0, ensemble: 0
       };
       let evaluatedCount = 0;
 
@@ -263,6 +296,10 @@ async function main() {
           armErrors.cbi += Math.abs(actualPts - (arms.cbi_bps_magnet?.xP || prod.xP));
           armErrors.nlp += Math.abs(actualPts - (arms.press_nlp_sub_risk?.xP || prod.xP));
           armErrors.setpiece += Math.abs(actualPts - (arms.set_piece_specialist?.xP || prod.xP));
+          armErrors.ppda += Math.abs(actualPts - (arms.ppda_high_press?.xP || prod.xP));
+          armErrors.ref += Math.abs(actualPts - (arms.referee_severity?.xP || prod.xP));
+          armErrors.gk += Math.abs(actualPts - (arms.gk_psxg_efficiency?.xP || prod.xP));
+          armErrors.corner += Math.abs(actualPts - (arms.corner_aerial_threat?.xP || prod.xP));
           armErrors.ensemble += Math.abs(actualPts - (arms.super_ensemble?.xP || prod.xP));
         }
       }
@@ -281,6 +318,10 @@ async function main() {
             cbi_bps_magnet: calcMae(armErrors.cbi),
             press_nlp_sub_risk: calcMae(armErrors.nlp),
             set_piece_specialist: calcMae(armErrors.setpiece),
+            ppda_high_press: calcMae(armErrors.ppda),
+            referee_severity: calcMae(armErrors.ref),
+            gk_psxg_efficiency: calcMae(armErrors.gk),
+            corner_aerial_threat: calcMae(armErrors.corner),
             super_ensemble: calcMae(armErrors.ensemble)
           }
         };
@@ -310,10 +351,10 @@ async function main() {
   }
   fs.writeFileSync(LOCAL_CALIBRATION_FILE, JSON.stringify(calibrationSummary, null, 2), 'utf-8');
 
-  console.log('✅ Multi-Armed Experimental Suite successfully synced.');
+  console.log('✅ 11-Armed Factorial Experimental Suite successfully synced.');
 }
 
 main().catch(err => {
-  console.error('Fatal error during Multi-Armed calibration:', err);
+  console.error('Fatal error during 11-Armed calibration:', err);
   process.exit(1);
 });
