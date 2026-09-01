@@ -66,7 +66,9 @@ export function getMarketAnytimeGoalscorerProb(
 ): number | null {
   if (!playerName) return null;
   const data = readMatchOddsData();
-  const normalized = playerName.toLowerCase().trim();
+  const raw = playerName.toLowerCase().trim();
+  // Strip initials like 'b.fernandes' -> 'fernandes', 'e.haaland' -> 'haaland'
+  const normalized = raw.includes(".") ? raw.split(".").pop()!.trim() : raw;
 
   // Disambiguation for players sharing last names
   if (

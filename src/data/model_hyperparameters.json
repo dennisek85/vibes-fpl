@@ -9,9 +9,9 @@
   },
   "validationRmse": 1.84,
   "parameters": {
-    "bayesian_half_life_minutes": 640,
-    "odds_weight": 0.68,
-    "model_xg_weight": 0.32,
+    "bayesian_half_life_minutes": 1080,
+    "odds_weight": 0.55,
+    "model_xg_weight": 0.45,
     "home_advantage_multiplier": 1.28,
     "set_piece_weights": {
       "penalty_xg": 0.18,

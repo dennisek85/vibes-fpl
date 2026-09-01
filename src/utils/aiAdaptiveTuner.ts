@@ -29,8 +29,8 @@ export function getAdaptiveModelParameters(
   if (gameweek <= 4) {
     return {
       bayesianHalfLifeMinutes: base.bayesian_half_life_minutes,
-      oddsWeight: 0.72,
-      modelXgWeight: 0.28,
+      oddsWeight: 0.55,
+      modelXgWeight: 0.45,
       homeAdvantageMultiplier: base.home_advantage_multiplier,
       setPieceWeights: {
         penaltyXg: base.set_piece_weights.penalty_xg,

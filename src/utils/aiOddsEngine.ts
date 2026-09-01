@@ -174,8 +174,9 @@ function getPlayerInvolvementShare(
     // Forwards (Open-play non-penalty share)
     if (price >= 13.0) return { xgShare: 0.42, xaShare: 0.08, cardPen: 0.08 }; // Super-premium: Haaland
     if (price >= 8.5) return { xgShare: 0.28, xaShare: 0.12, cardPen: 0.1 }; // Isak, Watkins, Solanke
-    if (price >= 6.5) return { xgShare: 0.2, xaShare: 0.08, cardPen: 0.12 }; // Wood, Mateta, Welbeck
-    return { xgShare: 0.14, xaShare: 0.06, cardPen: 0.12 }; // Budget forwards
+    if (price >= 6.5) return { xgShare: 0.22, xaShare: 0.08, cardPen: 0.12 }; // Wood, Mateta, Welbeck
+    if (price >= 5.5) return { xgShare: 0.2, xaShare: 0.06, cardPen: 0.1 }; // Starting #9 focal strikers (Calvert-Lewin, Muniz, Armstrong, Strand Larsen)
+    return { xgShare: 0.12, xaShare: 0.05, cardPen: 0.12 }; // Budget bench forwards (£4.5m-£5.0m enablers)
   }
 
   if (pos === 3) {
@@ -184,7 +185,8 @@ function getPlayerInvolvementShare(
     if (price >= 9.5) return { xgShare: 0.18, xaShare: 0.2, cardPen: 0.08 }; // Wide playmakers (Palmer, Saka)
     if (price >= 8.0) return { xgShare: 0.12, xaShare: 0.22, cardPen: 0.14 }; // Central creators (Bruno Fernandes, Foden, Odegaard)
     if (price >= 6.5) return { xgShare: 0.1, xaShare: 0.14, cardPen: 0.12 }; // Mid-tier creators (Mitoma, Gordon, Eze)
-    return { xgShare: 0.05, xaShare: 0.08, cardPen: 0.18 }; // Budget / Defensive midfielders
+    if (price >= 5.5) return { xgShare: 0.08, xaShare: 0.12, cardPen: 0.12 }; // Starting attacking wingers / inverted forwards (Ndiaye, Minteh, Rogers)
+    return { xgShare: 0.04, xaShare: 0.06, cardPen: 0.16 }; // True defensive / bench midfielders (£4.5m-£5.0m DMs)
   }
 
   if (pos === 2) {
@@ -391,8 +393,8 @@ export function calculatePlayerOddsXp(
         impliedGoalsConceded * Math.exp(-impliedGoalsConceded),
     );
     goalsConcededPts = -probConcede2Plus * 1.0;
-    savePts = Math.min(2.5, Math.max(0.4, impliedGoalsConceded * 0.75));
-    bpsExpected = cleanSheetProb >= 0.4 ? 0.65 : savePts >= 1.5 ? 0.35 : 0.1;
+    savePts = Math.min(1.4, Math.max(0.4, 0.5 + impliedGoalsConceded * 0.25));
+    bpsExpected = cleanSheetProb >= 0.4 ? 0.65 : savePts >= 1.0 ? 0.25 : 0.1;
   } else if (pos === 2) {
     // DEF
     goalPts = matchXG * 6.0;

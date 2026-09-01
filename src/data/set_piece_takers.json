@@ -38,6 +38,12 @@
       "directFreeKicks": ["palmer", "enzo", "neto"],
       "indirectFreeKicks": ["palmer", "enzo"]
     },
+    "COV": {
+      "penalties": ["wright", "simms", "thomas-asante"],
+      "corners": ["torp", "rudoni", "dasilva"],
+      "directFreeKicks": ["torp", "rudoni"],
+      "indirectFreeKicks": ["torp", "rudoni"]
+    },
     "CRY": {
       "penalties": ["mateta", "eze", "sarr"],
       "corners": ["eze", "wharton", "mitchell"],
@@ -45,7 +51,7 @@
       "indirectFreeKicks": ["eze", "wharton"]
     },
     "EVE": {
-      "penalties": ["calvert-lewin", "beto", "mcneil"],
+      "penalties": ["ndiaye", "beto", "mcneil"],
       "corners": ["mcneil", "garner", "young"],
       "directFreeKicks": ["mcneil", "garner"],
       "indirectFreeKicks": ["mcneil", "garner"]
@@ -56,11 +62,23 @@
       "directFreeKicks": ["pereira", "wilson"],
       "indirectFreeKicks": ["pereira", "iwobi"]
     },
+    "HUL": {
+      "penalties": ["bedia", "gelhardt", "slater"],
+      "corners": ["millar", "puerta", "slater"],
+      "directFreeKicks": ["millar", "puerta"],
+      "indirectFreeKicks": ["millar", "puerta"]
+    },
     "IPS": {
       "penalties": ["delap", "chaplin", "szmodics"],
       "corners": ["leif davis", "davis", "morsy"],
       "directFreeKicks": ["leif davis", "davis"],
       "indirectFreeKicks": ["leif davis", "davis"]
+    },
+    "LEE": {
+      "penalties": ["calvert-lewin", "piroe", "gnonto"],
+      "corners": ["gnonto", "roberts"],
+      "directFreeKicks": ["gnonto", "piroe"],
+      "indirectFreeKicks": ["gnonto", "roberts"]
     },
     "LEI": {
       "penalties": ["vardy", "mavididi", "ayew"],
@@ -108,6 +126,12 @@
       "corners": ["smallbone", "downes", "walker-peters"],
       "directFreeKicks": ["smallbone", "armstrong"],
       "indirectFreeKicks": ["smallbone", "downes"]
+    },
+    "SUN": {
+      "penalties": ["isidor", "mayenda", "roberts"],
+      "corners": ["roberts", "rigg", "neil"],
+      "directFreeKicks": ["roberts", "rigg"],
+      "indirectFreeKicks": ["roberts", "neil"]
     },
     "TOT": {
       "penalties": ["son", "solanke", "richarlison", "maddison"],
