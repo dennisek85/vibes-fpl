@@ -13,6 +13,7 @@ interface ExperimentalArm {
   status: 'active' | 'testing' | 'promoted';
   currentMae: number;
   baselineMae: number;
+  unit?: 'pts' | 'mins';
   edgePct: string;
   testedPlayers: string;
   leadIndicator: string;
@@ -129,6 +130,7 @@ export const MlLabView: React.FC = () => {
       status: 'active',
       currentMae: 11.2,
       baselineMae: 14.2,
+      unit: 'mins',
       edgePct: '+21.1% edge',
       testedPlayers: 'MCI, ARS, LIV, AVL starters',
       leadIndicator: 'Eliminates overestimation on Saturday 12:30 kickoffs'
@@ -153,6 +155,7 @@ export const MlLabView: React.FC = () => {
       status: 'active',
       currentMae: 10.8,
       baselineMae: 13.9,
+      unit: 'mins',
       edgePct: '+22.3% edge',
       testedPlayers: 'Flagged / Doubtful Starters',
       leadIndicator: 'Prevents 1-point 59th-minute sub disasters'
@@ -310,7 +313,7 @@ export const MlLabView: React.FC = () => {
                   <span className="text-sm font-black text-white flex items-center gap-2">
                     <span className="text-lg">{arm.icon}</span> {arm.name}
                   </span>
-                  <span className="text-[10px] font-black bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono">
+                  <span className="text-[11.5px] font-black bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 px-2.5 py-0.5 rounded-full font-mono tracking-tight shadow-sm">
                     {arm.edgePct}
                   </span>
                 </div>
@@ -326,7 +329,9 @@ export const MlLabView: React.FC = () => {
                   </div>
                   <div className="flex justify-between text-slate-400">
                     <span>{labText.armsSection.armMaeVsProd}</span>
-                    <span className="text-purple-300 font-bold">{arm.currentMae} vs {arm.baselineMae}</span>
+                    <span className="text-purple-300 font-bold">
+                      {arm.currentMae} {arm.unit || 'pts'} vs {arm.baselineMae} {arm.unit || 'pts'}
+                    </span>
                   </div>
                 </div>
 
