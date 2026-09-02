@@ -29,6 +29,7 @@ export interface RotationRiskReport {
 export function evaluatePlayerRotationRisk(
   player: FPLPlayer,
   teamShortName: string = "EPL",
+  totalTeamMatches?: number,
 ): RotationRiskReport {
   const news = (player.news || "").trim();
   const lowerNews = news.toLowerCase();
@@ -71,47 +72,12 @@ export function evaluatePlayerRotationRisk(
     isSubRisk = true;
     reasonKey = "newSigning";
   }
-  // 3. Press Conference NLP Keyword Classification
+  // 3. Official Press Updates & Knocks
   else if (
-    lowerNews.includes("managing load") ||
-    lowerNews.includes("load management") ||
-    lowerNews.includes("minutes")
-  ) {
-    startProb = 60;
-    expectedMins = 58;
-    isSubRisk = true;
-    reasonKey = "managingLoad";
-  } else if (
-    lowerNews.includes("tightness") ||
-    lowerNews.includes("hamstring") ||
-    lowerNews.includes("groin")
-  ) {
-    startProb = 50;
-    expectedMins = 50;
-    isSubRisk = true;
-    reasonKey = "tightness";
-  } else if (
-    lowerNews.includes("late fitness test") ||
-    lowerNews.includes("late test") ||
-    lowerNews.includes("decision tomorrow")
-  ) {
-    startProb = 45;
-    expectedMins = 45;
-    reasonKey = "lateFitnessTest";
-  } else if (lowerNews.includes("assessed") || lowerNews.includes("check")) {
-    startProb = 65;
-    expectedMins = 60;
-    reasonKey = "assessed";
-  } else if (
-    lowerNews.includes("illness") ||
-    lowerNews.includes("sick") ||
-    lowerNews.includes("virus")
-  ) {
-    startProb = 60;
-    expectedMins = 60;
-    reasonKey = "illness";
-  } else if (
     lowerNews.includes("knock") ||
+    lowerNews.includes("cramp") ||
+    lowerNews.includes("tightness") ||
+    lowerNews.includes("managing load") ||
     lowerNews.includes("impact") ||
     lowerNews.includes("bruise")
   ) {
@@ -123,30 +89,52 @@ export function evaluatePlayerRotationRisk(
     expectedMins = 55;
     reasonKey = "defaultDoubtful";
   }
-  // 4. Empirical Minutes per Start & Starting Security (Single Source of Truth)
+  // 4. Empirical Start Rate & Sub Hazard Modeling (Decoupled Mathematical Architecture)
   else if (starts > 0) {
+    const completedMatches =
+      totalTeamMatches && totalTeamMatches > 0
+        ? totalTeamMatches
+        : Math.max(1, starts);
+    const startRate = starts / completedMatches;
     const minsPerStart = minutes / starts;
-    if (minsPerStart >= 70) {
-      // Nailed starter who plays full or near-full matches (e.g. Bruno Fernandes, Salah, Haaland)
+
+    // A. Starting Probability P(Start) based on Start Rate
+    if (startRate >= 0.75) {
+      // Confirmed first-choice regular starter (e.g. Brobbey, Bruno Fernandes, Salah, Haaland)
       startProb = 95;
+    } else if (startRate >= 0.4) {
+      // Rotational starter sharing matches
+      startProb = Math.round(startRate * 100);
+      reasonKey = "tacticalRotation";
+    } else {
+      // Sporadic starter / fringe backup
+      startProb = Math.max(25, Math.round(startRate * 100));
+      reasonKey = "tacticalRotation";
+    }
+
+    // B. Expected Minutes E[Mins | Start] and Sub Hazard (Independent of P(Start))
+    if (minsPerStart >= 75) {
+      // 90-minute ironman
       expectedMins = Math.min(90, Math.round(minsPerStart));
       isSubRisk = false;
-      reasonKey = "defaultSafe";
+      if (startProb >= 90) {
+        reasonKey = "defaultSafe";
+      }
     } else if (minsPerStart >= 55) {
-      // Regular starter who is frequently substituted around 60-70 minutes
-      startProb = 85;
+      // High-intensity regular routinely subbed at 60-70 minutes (e.g. Brobbey, pressing wingers)
       expectedMins = Math.round(minsPerStart);
       isSubRisk = true;
-      reasonKey = "managingLoad";
+      if (startProb >= 90) {
+        reasonKey = "managingLoad";
+      }
     } else {
-      // Frequent early hook or tactical rotation (<55 mins per start)
-      startProb = 65;
-      expectedMins = Math.round(minsPerStart);
+      // Early tactical hook (<55 mins per start)
+      expectedMins = Math.max(45, Math.round(minsPerStart));
       isSubRisk = true;
       reasonKey = "tacticalRotation";
     }
   } else if (minutes > 0) {
-    // Pure impact substitute (0 starts, minutes off the bench)
+    // Pure impact substitute (0 starts, appearances off the bench)
     startProb = 15;
     expectedMins = 25;
     isSubRisk = true;

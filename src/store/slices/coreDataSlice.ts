@@ -10,6 +10,10 @@ import {
   evaluatePlayerRotationRisk,
   RotationRiskReport,
 } from "@/utils/aiLineupRiskEngine";
+import {
+  generateGameweekAuditReport,
+  CANONICAL_BASELINES,
+} from "@/utils/aiCalibrationEngine";
 import { invalidateXpCache } from "./aiOptimizerSlice";
 
 export const createCoreDataSlice: StateCreator<
@@ -32,6 +36,41 @@ export const createCoreDataSlice: StateCreator<
   lineupRiskMap: new Map(),
   liveEventPoints: {},
   nextGameweekId: 3,
+  auditReports: [],
+  activeCalibrations: { ...CANONICAL_BASELINES },
+
+  approveAuditCalibration: (gw: number) => {
+    const reports = get().auditReports.map((r) => {
+      if (r.gw === gw) return { ...r, status: "applied" as const };
+      if (r.status === "applied") return { ...r, status: "archived" as const };
+      return r;
+    });
+    const targetReport = reports.find((r) => r.gw === gw);
+    const updatedCalibrations: Record<string, number> = {
+      ...get().activeCalibrations,
+    };
+    if (targetReport) {
+      for (const cal of targetReport.calibrations) {
+        if (cal.status === "passed") {
+          updatedCalibrations[cal.id] = cal.proposedValue;
+        }
+      }
+    }
+    set({ auditReports: reports, activeCalibrations: updatedCalibrations });
+    invalidateXpCache();
+  },
+
+  revertCalibrationToBaseline: () => {
+    const reports = get().auditReports.map((r) => ({
+      ...r,
+      status: (r.status === "applied" ? "staged" : r.status) as any,
+    }));
+    set({
+      auditReports: reports,
+      activeCalibrations: { ...CANONICAL_BASELINES },
+    });
+    invalidateXpCache();
+  },
 
   isGameweekLocked: (gameweek?: number) => {
     const gw = gameweek !== undefined ? gameweek : get().selectedGameweek;
@@ -57,7 +96,8 @@ export const createCoreDataSlice: StateCreator<
       };
     }
     const teamShort = get().teamMap.get(player.team)?.short_name || "EPL";
-    const evaluated = evaluatePlayerRotationRisk(player, teamShort);
+    const completedMatches = Math.max(1, get().events.filter((e) => e.finished).length);
+    const evaluated = evaluatePlayerRotationRisk(player, teamShort, completedMatches);
     get().lineupRiskMap.set(playerId, evaluated);
     return evaluated;
   },
@@ -171,20 +211,39 @@ export const createCoreDataSlice: StateCreator<
         teamMap.set(t.id, t);
       }
 
+      const events: FPLEvent[] = bootstrapData.events || [];
+      const completedMatches = Math.max(1, events.filter((e) => e.finished).length);
       const playerMap = new Map<number, FPLPlayer>();
       const lineupRiskMap = new Map<number, RotationRiskReport>();
       for (const p of bootstrapData.elements || []) {
         playerMap.set(p.id, p);
         const teamShort = teamMap.get(p.team)?.short_name || "EPL";
-        lineupRiskMap.set(p.id, evaluatePlayerRotationRisk(p, teamShort));
+        lineupRiskMap.set(p.id, evaluatePlayerRotationRisk(p, teamShort, completedMatches));
       }
-
-      const events: FPLEvent[] = bootstrapData.events || [];
       const nextEvent =
         events.find((e) => e.is_next) ||
         events.find((e) => e.is_current) ||
         events[0];
       const nextGwId = nextEvent ? nextEvent.id : 3;
+
+      // Generate audit reports for completed gameweeks if not yet populated
+      let currentReports = get().auditReports || [];
+      if (currentReports.length === 0) {
+        const finishedEvents = events.filter((e) => e.finished);
+        const reportGws = finishedEvents.length > 0 ? finishedEvents.map((e) => e.id) : [2, 1];
+        currentReports = reportGws
+          .map((gwId) =>
+            generateGameweekAuditReport(
+              gwId,
+              bootstrapData.elements || [],
+              events,
+              get().liveEventPoints[gwId] || {},
+              (id, g) => (get().getPlayerGameweekXp ? get().getPlayerGameweekXp(id, g) : 3.5),
+              teamMap
+            )
+          )
+          .sort((a, b) => b.gw - a.gw); // Latest report always on top!
+      }
 
       set({
         players: bootstrapData.elements || [],
@@ -198,6 +257,7 @@ export const createCoreDataSlice: StateCreator<
         nextGameweekId: nextGwId,
         startGameweek: 1,
         selectedGameweek: nextGwId,
+        auditReports: currentReports,
       });
 
       invalidateXpCache();

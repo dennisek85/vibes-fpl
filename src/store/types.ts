@@ -44,6 +44,11 @@ export interface CoreDataSlice {
   liveEventPoints: Record<number, Record<number, number>>; // gw -> { elementId: points }
   nextGameweekId: number;
 
+  auditReports: import("@/utils/aiCalibrationEngine").GameweekAuditReport[];
+  activeCalibrations: Record<string, number>;
+  approveAuditCalibration: (gw: number) => void;
+  revertCalibrationToBaseline: () => void;
+
   initFPLData: () => Promise<void>;
   fetchLivePointsForGameweek: (
     gw: number,

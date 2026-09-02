@@ -16,6 +16,11 @@ import {
   Layers,
   CheckCircle2,
   HelpCircle,
+  ShieldCheck,
+  FileText,
+  RotateCcw,
+  Sliders,
+  Check,
 } from "lucide-react";
 
 export const MlLabView: React.FC = () => {
@@ -27,9 +32,12 @@ export const MlLabView: React.FC = () => {
     liveEventPoints,
     selectedGameweek,
     getPlayerGameweekXp,
+    auditReports,
+    approveAuditCalibration,
+    revertCalibrationToBaseline,
   } = usePlannerStore();
   const [activeTab, setActiveTab] = useState<
-    "arms" | "divergences" | "architecture"
+    "arms" | "divergences" | "postMortem" | "architecture"
   >("arms");
   const labText = UI_TEXT.mlLab;
 
@@ -116,6 +124,16 @@ export const MlLabView: React.FC = () => {
             }`}
           >
             {labText.tabs.divergences}
+          </button>
+          <button
+            onClick={() => setActiveTab("postMortem")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
+              activeTab === "postMortem"
+                ? "bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30 font-extrabold"
+                : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            {labText.tabs.postMortem}
           </button>
           <button
             onClick={() => setActiveTab("architecture")}
@@ -286,6 +304,219 @@ export const MlLabView: React.FC = () => {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* 3. TAB: Post-Mortem Audits & Auto-Calibration */}
+      {activeTab === "postMortem" && (
+        <div className="space-y-6">
+          <div className="bg-slate-900/85 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-xl space-y-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-black text-white flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-amber-400" />
+                  {labText.postMortemSection.title}
+                </h2>
+                <p className="text-xs text-slate-300 max-w-3xl mt-0.5">
+                  {labText.postMortemSection.subtitle}
+                </p>
+              </div>
+              <button
+                onClick={() => revertCalibrationToBaseline()}
+                className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 self-start shrink-0"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+                {labText.postMortemSection.revertButton}
+              </button>
+            </div>
+          </div>
+
+          {/* List of Reports: Latest always on top */}
+          {auditReports.length === 0 ? (
+            <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-8 text-center text-slate-400 text-xs font-mono">
+              {labText.postMortemSection.noReportsNotice}
+            </div>
+          ) : (
+            auditReports.map((report) => {
+              const isApplied = report.status === "applied";
+              return (
+                <div
+                  key={report.id}
+                  className="bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-5 transition-all hover:border-amber-500/40"
+                >
+                  {/* Report Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base font-black text-white">
+                          📄 Gameweek {report.gw} Post-Mortem Audit
+                        </span>
+                        <span
+                          className={`text-[11px] font-black uppercase px-2.5 py-0.5 rounded-full font-mono border ${
+                            isApplied
+                              ? "bg-emerald-950/90 text-emerald-300 border-emerald-500/50"
+                              : "bg-amber-950/90 text-amber-300 border-amber-500/50"
+                          }`}
+                        >
+                          {isApplied
+                            ? labText.postMortemSection.appliedBadge
+                            : labText.postMortemSection.stagedBadge}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-400 font-mono">
+                        Settled Slate: {report.matchCount} Matches · Finalized on {report.finalizedAt}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => approveAuditCalibration(report.gw)}
+                        disabled={isApplied}
+                        className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-lg ${
+                          isApplied
+                            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-default"
+                            : "bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-500/30 cursor-pointer"
+                        }`}
+                      >
+                        {isApplied ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            {labText.postMortemSection.appliedBadge}
+                          </>
+                        ) : (
+                          <>
+                            <Sliders className="w-3.5 h-3.5" />
+                            {labText.postMortemSection.approveButton}
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Accuracy Scorecard */}
+                  <div className="space-y-2">
+                    <div className="text-xs font-black uppercase tracking-wider text-slate-400 font-mono flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                      {labText.postMortemSection.accuracyScorecard}
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
+                      <div className="bg-slate-950/70 p-3 rounded-2xl border border-white/5 space-y-0.5">
+                        <span className="text-[10px] text-slate-400 uppercase">{labText.postMortemSection.overallMaeLabel}</span>
+                        <div className="text-base font-black text-white">{report.accuracy.overallMae} pts</div>
+                      </div>
+                      <div className="bg-slate-950/70 p-3 rounded-2xl border border-white/5 space-y-0.5">
+                        <span className="text-[10px] text-slate-400 uppercase">{labText.postMortemSection.correlationLabel}</span>
+                        <div className="text-base font-black text-cyan-300">r = {report.accuracy.correlation}</div>
+                      </div>
+                      <div className="bg-slate-950/70 p-3 rounded-2xl border border-white/5 space-y-0.5">
+                        <span className="text-[10px] text-slate-400 uppercase">{labText.postMortemSection.minutesMaeLabel}</span>
+                        <div className="text-base font-black text-purple-300">{report.accuracy.minutesMae} min</div>
+                      </div>
+                      <div className="bg-slate-950/70 p-3 rounded-2xl border border-white/5 space-y-0.5">
+                        <span className="text-[10px] text-slate-400 uppercase">Positional MAEs</span>
+                        <div className="text-xs font-bold text-slate-300 flex items-center gap-1.5 mt-1">
+                          <span>GK {report.accuracy.gkpMae}</span>
+                          <span>·</span>
+                          <span>DF {report.accuracy.defMae}</span>
+                          <span>·</span>
+                          <span>MD {report.accuracy.midMae}</span>
+                          <span>·</span>
+                          <span>FW {report.accuracy.fwdMae}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Outliers Spotlight */}
+                  <div className="space-y-2">
+                    <div className="text-xs font-black uppercase tracking-wider text-slate-400 font-mono">
+                      {labText.postMortemSection.outliersTitle}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {/* Overperformers */}
+                      <div className="bg-slate-950/70 p-3.5 rounded-2xl border border-emerald-500/20 space-y-2">
+                        <div className="text-xs font-black text-emerald-400 font-mono flex items-center gap-1">
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                          {labText.postMortemSection.overperformedTitle}
+                        </div>
+                        <div className="space-y-1.5">
+                          {report.outliers.overperformed.map((o) => (
+                            <div key={o.playerId} className="flex items-center justify-between text-xs bg-white/5 p-2 rounded-xl">
+                              <span className="font-bold text-white">
+                                {o.playerName} <span className="text-[10px] text-slate-400 font-mono">({o.teamShort} · {o.position})</span>
+                              </span>
+                              <div className="flex items-center gap-2 font-mono">
+                                <span className="text-slate-400">{o.predictedXp} xP → {o.actualPoints} pts</span>
+                                <span className="text-emerald-400 font-black">+{o.residual} pts</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Underperformers */}
+                      <div className="bg-slate-950/70 p-3.5 rounded-2xl border border-rose-500/20 space-y-2">
+                        <div className="text-xs font-black text-rose-400 font-mono flex items-center gap-1">
+                          <ArrowDownRight className="w-3.5 h-3.5" />
+                          {labText.postMortemSection.underperformedTitle}
+                        </div>
+                        <div className="space-y-1.5">
+                          {report.outliers.underperformed.map((o) => (
+                            <div key={o.playerId} className="flex items-center justify-between text-xs bg-white/5 p-2 rounded-xl">
+                              <span className="font-bold text-white">
+                                {o.playerName} <span className="text-[10px] text-slate-400 font-mono">({o.teamShort} · {o.position})</span>
+                              </span>
+                              <div className="flex items-center gap-2 font-mono">
+                                <span className="text-slate-400">{o.predictedXp} xP → {o.actualPoints} pts</span>
+                                <span className="text-rose-400 font-black">{o.residual} pts</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Guardrailed Multi-Formula Calibrations */}
+                  <div className="space-y-2 pt-1">
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs font-black uppercase tracking-wider text-slate-400 font-mono flex items-center gap-1.5">
+                        <Sliders className="w-3.5 h-3.5 text-amber-400" />
+                        {labText.postMortemSection.calibrationsTitle}
+                      </div>
+                      <span className="text-[10px] font-black text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" />
+                        {labText.postMortemSection.guardrailPassed}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                      {report.calibrations.map((cal) => (
+                        <div key={cal.id} className="bg-slate-950/60 p-3 rounded-2xl border border-white/5 space-y-1.5 font-mono text-xs">
+                          <div className="flex items-start justify-between gap-1">
+                            <span className="font-bold text-white text-[11px] leading-tight">{cal.modelName}</span>
+                            <span className="text-[10.5px] font-black text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 px-1.5 py-0.5 rounded">
+                              {cal.driftPct}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-slate-400 truncate">{cal.parameterName}</div>
+                          <div className="flex justify-between items-center text-[11px] pt-0.5 border-t border-white/5">
+                            <span className="text-slate-500">Proposed Shift:</span>
+                            <span className="font-black text-slate-200">
+                              {cal.baselineValue}{cal.unit} → <span className="text-amber-300 font-bold">{cal.proposedValue}{cal.unit}</span>
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center text-[9.5px] text-slate-500">
+                            <span>Safe Envelope:</span>
+                            <span>[{cal.safeMin}, {cal.safeMax}] {cal.unit}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       )}
 
