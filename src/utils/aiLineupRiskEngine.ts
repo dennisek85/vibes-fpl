@@ -22,23 +22,9 @@ export interface RotationRiskReport {
   expectedMinutes: number;
 }
 
-// Teams competing in European competitions (Champions League / Europa League)
-const EUROPEAN_CLUBS = new Set([
-  "MCI",
-  "ARS",
-  "LIV",
-  "AVL",
-  "TOT",
-  "CHE",
-  "MUN",
-]);
-
-// Managers with aggressive in-game early sub / rotation profiles
-const HIGH_ROTATION_MANAGERS = new Set(["MCI", "CHE", "ARS", "BHA"]);
-
 /**
  * Evaluates starting probability and maps technical press conference tokens
- * to human-readable explanations from UI_TEXT.
+ * and empirical start consistency to human-readable explanations from UI_TEXT.
  */
 export function evaluatePlayerRotationRisk(
   player: FPLPlayer,
@@ -57,13 +43,35 @@ export function evaluatePlayerRotationRisk(
   let isSubRisk = false;
   let expectedMins = 82;
 
+  const starts =
+    typeof player.starts === "number"
+      ? player.starts
+      : parseInt(`${player.starts || 0}`, 10) || 0;
+  const minutes =
+    typeof player.minutes === "number"
+      ? player.minutes
+      : parseFloat(`${player.minutes || 0}`) || 0;
+
   // 1. Definite Absences
   if (status === "i" || status === "u" || chance === 0) {
     startProb = 0;
     expectedMins = 0;
     reasonKey = "defaultDoubtful";
   }
-  // 2. Press Conference NLP Keyword Classification
+  // 2. New Signing Adaptation Hazard (The Ndiaye / Deadline Transfer Signal)
+  else if (
+    lowerNews.includes("joined") ||
+    lowerNews.includes("transfer") ||
+    lowerNews.includes("signed") ||
+    lowerNews.includes("clearance") ||
+    lowerNews.includes("loan")
+  ) {
+    startProb = 30; // ~30% starting probability during immediate adaptation period
+    expectedMins = 25; // Impact substitute expectation
+    isSubRisk = true;
+    reasonKey = "newSigning";
+  }
+  // 3. Press Conference NLP Keyword Classification
   else if (
     lowerNews.includes("managing load") ||
     lowerNews.includes("load management") ||
@@ -115,20 +123,30 @@ export function evaluatePlayerRotationRisk(
     expectedMins = 55;
     reasonKey = "defaultDoubtful";
   }
-  // 3. Midweek European Fatigue Decay
-  else if (
-    EUROPEAN_CLUBS.has(teamShortName) &&
-    (player.minutes || 0) > 180 &&
-    player.element_type >= 3
-  ) {
-    if (HIGH_ROTATION_MANAGERS.has(teamShortName)) {
-      startProb = 78;
-      expectedMins = 64;
-      isSubRisk = true;
-      reasonKey = "pepRoulette";
-    } else {
+  // 4. Empirical Starts-to-Appearance Consistency Ratio (Pure Organic Math)
+  else {
+    // Estimate total appearances: starts + substitute appearances
+    const subAppearances =
+      starts > 0
+        ? Math.max(0, Math.round((minutes - starts * 70) / 25))
+        : Math.max(0, Math.round(minutes / 25));
+    const totalAppearances = starts + subAppearances;
+
+    if (totalAppearances >= 3) {
+      const consistencyRatio = starts / totalAppearances;
+      // If a player has low start consistency (<65%), scale start certainty organically
+      if (consistencyRatio < 0.65) {
+        startProb = Math.max(25, Math.round(consistencyRatio * 100));
+        expectedMins = Math.round(
+          55 * consistencyRatio + 25 * (1 - consistencyRatio),
+        );
+        isSubRisk = true;
+        reasonKey = "tacticalRotation";
+      }
+    } else if (minutes > 240 && player.element_type >= 3) {
+      // 5. Heavy Workload / Turnaround Fatigue
       startProb = 85;
-      expectedMins = 72;
+      expectedMins = 70;
       isSubRisk = true;
       reasonKey = "europeanFatigue";
     }

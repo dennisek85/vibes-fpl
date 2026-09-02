@@ -231,7 +231,7 @@ export const MlLabView: React.FC = () => {
       prodXp: 6.2,
       shadowXp: 5.5,
       diff: "-0.7",
-      driver: "Midweek European Fatigue + Pep 63m Sub Hazard",
+      driver: "Midweek Match Fatigue + 60m Tactical Sub Hazard",
     },
     {
       name: "Darwin Núñez",

@@ -20,38 +20,7 @@ export interface MatchExpectancy {
 
 const LEAGUE_AVG_GOALS_PER_MATCH = 1.38;
 
-// Primary Premier League penalty takers registry
-const PRIMARY_PENALTY_TAKERS = new Set([
-  "haaland",
-  "salah",
-  "palmer",
-  "saka",
-  "isak",
-  "fernandes",
-  "mbeumo",
-  "wood",
-  "solanke",
-  "cunha",
-  "mateta",
-  "armstrong",
-  "delap",
-  "schade",
-  "paquetá",
-  "kudus",
-  "bowen",
-  "vardy",
-  "watkins",
-  "son",
-  "toney",
-]);
 
-export function isDesignatedPenaltyTaker(player: FPLPlayer): boolean {
-  if (!player) return false;
-  const name = (player.web_name || player.second_name || "")
-    .toLowerCase()
-    .trim();
-  return PRIMARY_PENALTY_TAKERS.has(name);
-}
 
 /**
  * Normalizes granular team attack & defense ratings from official FPL team objects.

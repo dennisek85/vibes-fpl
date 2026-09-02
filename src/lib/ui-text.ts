@@ -231,9 +231,11 @@ export const UI_TEXT = {
       knock:
         "Suffered a minor knock in the previous match; being monitored by physios.",
       europeanFatigue:
-        "Played 90 minutes in European competition midweek (<72h recovery turnaround).",
-      pepRoulette:
-        "High manager rotation volatility detected for this tactical position.",
+        "High minutes workload across short turnaround (<72h recovery).",
+      tacticalRotation:
+        "Player experiences frequent tactical benching or rotational substitution based on empirical start rates.",
+      newSigning:
+        "Recent transfer adapting to team tactical system; elevated bench / substitute risk.",
       defaultDoubtful:
         "Flagged with questionable status in official FPL injury reports.",
       defaultSafe:
