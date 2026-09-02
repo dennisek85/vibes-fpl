@@ -123,32 +123,44 @@ export function evaluatePlayerRotationRisk(
     expectedMins = 55;
     reasonKey = "defaultDoubtful";
   }
-  // 4. Empirical Starts-to-Appearance Consistency Ratio (Pure Organic Math)
-  else {
-    // Estimate total appearances: starts + substitute appearances
-    const subAppearances =
-      starts > 0
-        ? Math.max(0, Math.round((minutes - starts * 70) / 25))
-        : Math.max(0, Math.round(minutes / 25));
-    const totalAppearances = starts + subAppearances;
-
-    if (totalAppearances >= 3) {
-      const consistencyRatio = starts / totalAppearances;
-      // If a player has low start consistency (<65%), scale start certainty organically
-      if (consistencyRatio < 0.65) {
-        startProb = Math.max(25, Math.round(consistencyRatio * 100));
-        expectedMins = Math.round(
-          55 * consistencyRatio + 25 * (1 - consistencyRatio),
-        );
-        isSubRisk = true;
-        reasonKey = "tacticalRotation";
-      }
-    } else if (minutes > 240 && player.element_type >= 3) {
-      // 5. Heavy Workload / Turnaround Fatigue
+  // 4. Empirical Minutes per Start & Starting Security (Single Source of Truth)
+  else if (starts > 0) {
+    const minsPerStart = minutes / starts;
+    if (minsPerStart >= 70) {
+      // Nailed starter who plays full or near-full matches (e.g. Bruno Fernandes, Salah, Haaland)
+      startProb = 95;
+      expectedMins = Math.min(90, Math.round(minsPerStart));
+      isSubRisk = false;
+      reasonKey = "defaultSafe";
+    } else if (minsPerStart >= 55) {
+      // Regular starter who is frequently substituted around 60-70 minutes
       startProb = 85;
-      expectedMins = 70;
+      expectedMins = Math.round(minsPerStart);
       isSubRisk = true;
-      reasonKey = "europeanFatigue";
+      reasonKey = "managingLoad";
+    } else {
+      // Frequent early hook or tactical rotation (<55 mins per start)
+      startProb = 65;
+      expectedMins = Math.round(minsPerStart);
+      isSubRisk = true;
+      reasonKey = "tacticalRotation";
+    }
+  } else if (minutes > 0) {
+    // Pure impact substitute (0 starts, minutes off the bench)
+    startProb = 15;
+    expectedMins = 25;
+    isSubRisk = true;
+    reasonKey = "tacticalRotation";
+  } else {
+    // Unproven / 0 minutes this season
+    if (player.element_type === 1) {
+      startProb = 0;
+      expectedMins = 0;
+      reasonKey = "defaultDoubtful";
+    } else {
+      startProb = 10;
+      expectedMins = 15;
+      reasonKey = "defaultDoubtful";
     }
   }
 

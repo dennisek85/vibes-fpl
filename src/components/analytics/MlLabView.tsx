@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { usePlannerStore } from "@/store/usePlannerStore";
 import { UI_TEXT } from "@/lib/ui-text";
+import {
+  evaluateExperimentalArms,
+  calculateUpcomingDivergences,
+} from "@/utils/aiExperimentalEngine";
 import {
   Sparkles,
   Flame,
@@ -14,235 +18,40 @@ import {
   HelpCircle,
 } from "lucide-react";
 
-interface ExperimentalArm {
-  id: string;
-  name: string;
-  icon: string;
-  hypothesis: string;
-  status: "active" | "testing" | "promoted";
-  currentMae: number;
-  baselineMae: number;
-  unit?: "pts" | "mins";
-  edgePct: string;
-  testedPlayers: string;
-  leadIndicator: string;
-}
-
 export const MlLabView: React.FC = () => {
-  const { setCurrentView } = usePlannerStore();
+  const {
+    setCurrentView,
+    players,
+    events,
+    teams,
+    liveEventPoints,
+    selectedGameweek,
+    getPlayerGameweekXp,
+  } = usePlannerStore();
   const [activeTab, setActiveTab] = useState<
     "arms" | "divergences" | "architecture"
   >("arms");
   const labText = UI_TEXT.mlLab;
 
-  // Multi-Armed Factorial Experimental Suite
-  const experimentalArms: ExperimentalArm[] = [
-    {
-      id: "super_ensemble",
-      name: "Grand Super Ensemble",
-      icon: "🧪",
-      hypothesis:
-        "Master composite model combining all 10 on-pitch tactical and off-pitch hazard signals.",
-      status: "active",
-      currentMae: 1.22,
-      baselineMae: 1.38,
-      edgePct: "+11.6% edge",
-      testedPlayers: "All 629 Players",
-      leadIndicator: "Lowest overall RMSE across all positions",
-    },
-    {
-      id: "tactical_cluster",
-      name: "Cluster A: Tactical Matchups",
-      icon: "🎯",
-      hypothesis:
-        "Combines all on-pitch tactical geometry (Flank Mismatch + PPDA + Inswingers + PSxG + Finishing).",
-      status: "active",
-      currentMae: 1.26,
-      baselineMae: 1.38,
-      edgePct: "+8.7% edge",
-      testedPlayers: "All 629 Players",
-      leadIndicator: "Sharpest individual xG, xA, and Clean Sheet projections",
-    },
-    {
-      id: "availability_cluster",
-      name: "Cluster B: Availability & Sub Hazards",
-      icon: "⏱️",
-      hypothesis:
-        "Combines all off-pitch rotation signals (European Fatigue + Press NLP + Manager Hazard + Referees).",
-      status: "active",
-      currentMae: 1.25,
-      baselineMae: 1.38,
-      edgePct: "+9.4% edge",
-      testedPlayers: "All 629 Players",
-      leadIndicator: "Eliminates 59th-min sub shocks & early kickoff decay",
-    },
-    {
-      id: "flank_mismatch",
-      name: "Flank Mismatch Engine",
-      icon: "🛡️",
-      hypothesis:
-        "Winger attacking channels (RW/LW) targeting leaky fullback zonal xGC.",
-      status: "active",
-      currentMae: 0.31,
-      baselineMae: 0.38,
-      edgePct: "+18.4% edge",
-      testedPlayers: "Saka, Salah, Gordon, Diaz, Mbeumo",
-      leadIndicator: "Sharpest winger xG & key-pass prediction",
-    },
-    {
-      id: "ppda_high_press",
-      name: "PPDA High-Press Mismatch",
-      icon: "🏃‍♂️",
-      hypothesis:
-        "Pace strikers generate +35% shot quality against high-line aggressive press teams (TOT, AVL).",
-      status: "active",
-      currentMae: 0.33,
-      baselineMae: 0.39,
-      edgePct: "+15.4% edge",
-      testedPlayers: "Haaland, Jackson, Mbeumo, Semenyo, Watkins",
-      leadIndicator: "Captures counter-attacking space transitions",
-    },
-    {
-      id: "referee_severity",
-      name: "Referee Penalty & Card Index",
-      icon: "🟨",
-      hypothesis:
-        "Strict referees award 2x penalties (+0.08 xG for takers) and 5+ yellow cards/game.",
-      status: "active",
-      currentMae: 0.28,
-      baselineMae: 0.31,
-      edgePct: "+9.7% edge",
-      testedPlayers: "Haaland, Salah, Palmer, Saka (Takers)",
-      leadIndicator: "Accurate penalty award probability weighting",
-    },
-    {
-      id: "gk_psxg_efficiency",
-      name: "Goalkeeper PSxG Alpha",
-      icon: "🧤",
-      hypothesis:
-        "Elite shot-stoppers save +0.30 goals above expected shot quality (PSxG +/-).",
-      status: "active",
-      currentMae: 0.35,
-      baselineMae: 0.42,
-      edgePct: "+16.7% edge",
-      testedPlayers: "Raya, Alisson, Martinez, Pickford",
-      leadIndicator: "Sharpest Clean Sheet prediction Brier score",
-    },
-    {
-      id: "corner_aerial_threat",
-      name: "Corner Inswinger Aerial Equity",
-      icon: "📐",
-      hypothesis:
-        "Crowded 6-yard inswingers generate 3x header conversion for tall CBs (ARS, EVE).",
-      status: "active",
-      currentMae: 0.29,
-      baselineMae: 0.34,
-      edgePct: "+14.7% edge",
-      testedPlayers: "Gabriel, Saliba, Tarkowski, Van Dijk",
-      leadIndicator: "Precision set-piece goal threat prediction",
-    },
-    {
-      id: "european_fatigue",
-      name: "Midweek European Congestion",
-      icon: "✈️",
-      hypothesis:
-        "<72h recovery from Champions League / Europa League creates sprint & sub decay.",
-      status: "active",
-      currentMae: 11.2,
-      baselineMae: 14.2,
-      edgePct: "+21.1% edge",
-      testedPlayers: "MCI, ARS, LIV, AVL starters",
-      leadIndicator: "Eliminates overestimation on Saturday 12:30 kickoffs",
-    },
-    {
-      id: "cbi_bps_magnet",
-      name: "CBI Defensive Action BPS Floor",
-      icon: "🧲",
-      hypothesis:
-        "New 2024/25 CBI rules reward high-clearance CBs in low-possession games.",
-      status: "active",
-      currentMae: 0.54,
-      baselineMae: 0.62,
-      edgePct: "+12.9% edge",
-      testedPlayers: "Tarkowski, Andersen, Gabriel, Saliba",
-      leadIndicator: "Accurate 2-3 bonus point prediction in 0-0/1-0 games",
-    },
-    {
-      id: "press_nlp_sub_risk",
-      name: "Press Conference NLP Classifier",
-      icon: "🎙️",
-      hypothesis:
-        'Tokens like "managing load" or "tightness" dynamically lower 60m survival curve.',
-      status: "active",
-      currentMae: 10.8,
-      baselineMae: 13.9,
-      edgePct: "+22.3% edge",
-      testedPlayers: "Flagged / Doubtful Starters",
-      leadIndicator: "Prevents 1-point 59th-minute sub disasters",
-    },
-    {
-      id: "set_piece_specialist",
-      name: "Set-Piece Specialist Equity",
-      icon: "🎯",
-      hypothesis:
-        "Top 5% dead-ball specialists generate +20% higher conversion quality.",
-      status: "active",
-      currentMae: 0.27,
-      baselineMae: 0.29,
-      edgePct: "+6.9% edge",
-      testedPlayers: "Trippier, Ward-Prowse, Maddison, Trent",
-      leadIndicator: "High-precision direct FK and corner assist yield",
-    },
-  ];
+  // 1. Multi-Armed Factorial Experimental Suite (Dynamic Out-of-Sample Shootout)
+  const experimentalArms = useMemo(() => {
+    return evaluateExperimentalArms(
+      players,
+      events,
+      liveEventPoints,
+      getPlayerGameweekXp
+    );
+  }, [players, events, liveEventPoints, getPlayerGameweekXp]);
 
-  // High-Conviction GW3 Divergences
-  const divergences = [
-    {
-      name: "Bukayo Saka",
-      team: "ARS",
-      pos: "MID",
-      prodXp: 6.5,
-      shadowXp: 7.4,
-      diff: "+0.9",
-      driver: "Flank Mismatch (+14% vs leaky left fullback)",
-    },
-    {
-      name: "Erling Haaland",
-      team: "MCI",
-      pos: "FWD",
-      prodXp: 8.4,
-      shadowXp: 9.1,
-      diff: "+0.7",
-      driver: "Finishing Alpha (1.18x) + Home Goal Line Dominance",
-    },
-    {
-      name: "James Tarkowski",
-      team: "EVE",
-      pos: "DEF",
-      prodXp: 3.4,
-      shadowXp: 4.0,
-      diff: "+0.6",
-      driver: "CBI BPS Magnet (Clearances & Blocks Floor)",
-    },
-    {
-      name: "Phil Foden / Doku",
-      team: "MCI",
-      pos: "MID",
-      prodXp: 6.2,
-      shadowXp: 5.5,
-      diff: "-0.7",
-      driver: "Midweek Match Fatigue + 60m Tactical Sub Hazard",
-    },
-    {
-      name: "Darwin Núñez",
-      team: "LIV",
-      pos: "FWD",
-      prodXp: 5.9,
-      shadowXp: 5.2,
-      diff: "-0.7",
-      driver: "Career under-finishing regression (0.88x conversion)",
-    },
-  ];
+  // 2. High-Conviction Model Disagreements for Selected Gameweek (Dynamic prodXp vs shadowXp)
+  const divergences = useMemo(() => {
+    return calculateUpcomingDivergences(
+      players,
+      selectedGameweek,
+      getPlayerGameweekXp,
+      teams
+    );
+  }, [players, selectedGameweek, getPlayerGameweekXp, teams]);
 
   const exitLab = () => {
     if (typeof window !== "undefined") {
@@ -335,12 +144,24 @@ export const MlLabView: React.FC = () => {
                   <span className="text-sm font-black text-white flex items-center gap-2">
                     <span className="text-lg">{arm.icon}</span> {arm.name}
                   </span>
-                  <span
-                    className="text-[13.5px] font-black bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 px-3 py-0.5 rounded-full font-mono tracking-tight shadow-sm shrink-0 cursor-help"
-                    title={labText.tooltips.edge}
-                  >
-                    {arm.edgePct}
-                  </span>
+                  {(() => {
+                    const edgeVal = parseFloat(arm.edgePct.replace("% edge", "").trim());
+                    const isPositive = edgeVal >= 2.0;
+                    const isNeutral = edgeVal >= 0 && edgeVal < 2.0;
+                    const badgeClass = isPositive
+                      ? "bg-emerald-950/90 text-emerald-300 border-emerald-500/40"
+                      : isNeutral
+                      ? "bg-amber-950/90 text-amber-300 border-amber-500/40"
+                      : "bg-rose-950/90 text-rose-300 border-rose-500/40";
+                    return (
+                      <span
+                        className={`text-[13.5px] font-black border px-3 py-0.5 rounded-full font-mono tracking-tight shadow-sm shrink-0 cursor-help ${badgeClass}`}
+                        title={labText.tooltips.edge}
+                      >
+                        {arm.edgePct}
+                      </span>
+                    );
+                  })()}
                 </div>
 
                 <div
@@ -363,14 +184,17 @@ export const MlLabView: React.FC = () => {
                       {arm.testedPlayers}
                     </span>
                   </div>
+                  <div className="flex justify-between text-slate-500 text-[10px]">
+                    <span>Sample Power</span>
+                    <span className="text-purple-300/80 font-mono">Calibrating (GW1-2)</span>
+                  </div>
                   <div
                     className="flex justify-between text-slate-400 cursor-help"
                     title={labText.tooltips.mae}
                   >
                     <span>{labText.armsSection.armMaeVsProd}</span>
                     <span className="text-purple-300 font-bold">
-                      {arm.currentMae} {arm.unit || "pts"} vs {arm.baselineMae}{" "}
-                      {arm.unit || "pts"}
+                      {arm.currentMae} {arm.unit} vs {arm.baselineMae} {arm.unit}
                     </span>
                   </div>
                 </div>
