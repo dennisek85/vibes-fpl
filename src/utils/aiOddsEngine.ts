@@ -124,19 +124,23 @@ export function calculateMatchExpectancy(
   }
 
   // 2. Fallback to Poisson Mathematical Simulation
+  const params = getAdaptiveModelParameters(gameweek || 1);
+  const homeAdv = params.homeAdvantageMultiplier || 1.15;
+  const awayAdv = Math.max(0.8, 2.0 - homeAdv - 0.03); // Empirical away pitch ratio
+
   const homeAtt = parseAttackStrength(homeTeam, true);
   const awayDef = parseDefenceStrength(awayTeam, false);
   const awayAtt = parseAttackStrength(awayTeam, false);
   const homeDef = parseDefenceStrength(homeTeam, true);
 
-  // Implied Goals with Empirical Home Pitch Advantage (~+15% home attack, -12% away attack)
+  // Implied Goals with Empirical Pitch Advantage
   const homeImplied = Math.max(
     0.5,
-    Math.min(3.4, LEAGUE_AVG_GOALS_PER_MATCH * (homeAtt / awayDef) * 1.15),
+    Math.min(3.4, LEAGUE_AVG_GOALS_PER_MATCH * (homeAtt / awayDef) * homeAdv),
   );
   const awayImplied = Math.max(
     0.4,
-    Math.min(2.8, LEAGUE_AVG_GOALS_PER_MATCH * (awayAtt / homeDef) * 0.88),
+    Math.min(2.8, LEAGUE_AVG_GOALS_PER_MATCH * (awayAtt / homeDef) * awayAdv),
   );
 
   // Pure Poisson Clean Sheet Probabilities: P(0) = e^(-λ_conceded)
@@ -208,6 +212,30 @@ function getPlayerInvolvementShare(
  * 4. Disciplinary Deductions (Yellow/Red Card Expectancy)
  * 5. BPS Statistical Regression
  */
+/**
+ * Calculates expected FPL goals conceded penalty points for GK and DEF.
+ * FPL Rule: -1 point for every 2 goals conceded (at 2, 4, 6, 8 goals).
+ * Under Poisson distribution with mean λ: E[Deduction] = Σ_{k=1}^4 P(X >= 2k)
+ */
+function calculateExpectedGoalsConcededPenalty(lambdaConceded: number): number {
+  if (lambdaConceded <= 0) return 0;
+  const expNegLambda = Math.exp(-lambdaConceded);
+  let term = expNegLambda; // j = 0
+  let cdf = term;
+  let penalty = 0;
+
+  for (let j = 1; j <= 8; j++) {
+    term = (term * lambdaConceded) / j;
+    cdf += term;
+    if (j === 1 || j === 3 || j === 5 || j === 7) {
+      // P(X >= j + 1) = 1 - CDF(j)
+      penalty += Math.max(0, 1.0 - cdf);
+    }
+  }
+
+  return penalty;
+}
+
 export function calculatePlayerOddsXp(
   player: FPLPlayer,
   isHome: boolean,
@@ -242,7 +270,10 @@ export function calculatePlayerOddsXp(
     typeof player.minutes === "number"
       ? player.minutes
       : parseFloat(`${player.minutes || 0}`) || 0;
-  const starts = player.starts || (minutesPlayed > 0 ? 1 : 0);
+  const starts =
+    typeof player.starts === "number"
+      ? player.starts
+      : parseInt(`${player.starts || 0}`, 10) || 0;
 
   let p60Mins = 0.92; // Probability of playing 60+ minutes
   let pSub = 0.06; // Probability of playing 1-59 minutes
@@ -262,7 +293,7 @@ export function calculatePlayerOddsXp(
       pSub = 0.55;
     }
   } else if (minutesPlayed > 0) {
-    // Regular impact substitute
+    // Regular impact substitute (0 starts)
     expectedMins = 30.0;
     p60Mins = 0.15;
     pSub = 0.75;
@@ -311,14 +342,28 @@ export function calculatePlayerOddsXp(
       ? player.expected_assists
       : parseFloat(`${player.expected_assists || 0}`) || 0;
 
-  // Individual goal share blended with price-tier prior
+  // Set-Piece & Penalty Hierarchy Duty (Corners, Penalties, Direct/Indirect Free-Kicks)
+  const minsScale = expectedMins / 90.0;
+  const setPieces = getPlayerSetPieceProfile(player, playerTeam?.short_name);
+  const teamAttackScale = impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH;
+  const setPieceXG = setPieces.addedXg * teamAttackScale * minsScale;
+  const setPieceXA = setPieces.addedXa * teamAttackScale * minsScale;
+
+  // Deduct historical set-piece contribution to isolate pure open-play involvement
+  // (FPL API expected_goals/assists already include historical penalties, free kicks, and corners)
+  const historicalSetPieceXG = setPieces.addedXg * gamesPlayed;
+  const historicalSetPieceXA = setPieces.addedXa * gamesPlayed;
+  const openPlayRawXG = Math.max(0.0, rawXG - historicalSetPieceXG);
+  const openPlayRawXA = Math.max(0.0, rawXA - historicalSetPieceXA);
+
+  // Individual open-play goal share blended with price-tier prior
   const rawXgShare =
-    rawXG > 0
-      ? rawXG / gamesPlayed / LEAGUE_AVG_GOALS_PER_MATCH
+    openPlayRawXG > 0
+      ? openPlayRawXG / gamesPlayed / LEAGUE_AVG_GOALS_PER_MATCH
       : shares.xgShare;
   const rawXaShare =
-    rawXA > 0
-      ? rawXA / gamesPlayed / LEAGUE_AVG_GOALS_PER_MATCH
+    openPlayRawXA > 0
+      ? openPlayRawXA / gamesPlayed / LEAGUE_AVG_GOALS_PER_MATCH
       : shares.xaShare;
 
   const playerXgShare = Math.min(
@@ -339,39 +384,32 @@ export function calculatePlayerOddsXp(
   );
   const effectiveXaShare = Math.min(0.32, playerXaShare * momentumMult);
 
-  // 4. Set-Piece & Penalty Hierarchy Duty (Corners, Penalties, Direct/Indirect Free-Kicks)
-  const minsScale = expectedMins / 90.0;
-  const setPieces = getPlayerSetPieceProfile(player, playerTeam?.short_name);
-  const teamAttackScale = impliedGoalsScored / LEAGUE_AVG_GOALS_PER_MATCH;
-  const setPieceXG = setPieces.addedXg * teamAttackScale * minsScale;
-  const setPieceXA = setPieces.addedXa * teamAttackScale * minsScale;
-
-  // 5. Fixture-Adjusted Match xG and xA
-  let matchXG = Math.max(
+  // 4. Fixture-Adjusted Model xG and xA (Open Play + Single Set-Piece Allocation)
+  const modelMatchXG = Math.max(
     0.0,
     impliedGoalsScored * effectiveXgShare * minsScale + setPieceXG,
   );
-  let matchXA = Math.max(
+  const matchXA = Math.max(
     0.0,
     impliedGoalsScored * effectiveXaShare * minsScale + setPieceXA,
   );
 
-  // 6. Market Anytime Goalscorer Odds Integration (When Available for Outfield Players)
+  // 5. Market Anytime Goalscorer Odds Integration (When Available for Outfield Players)
+  // Bookmaker anytime goalscorer odds reflect total goal expectancy (open play + penalties + free kicks).
   const marketGoalProb =
     pos >= 2
       ? getMarketAnytimeGoalscorerProb(player.web_name, playerTeam?.short_name)
       : null;
+  let matchXG = modelMatchXG;
   if (marketGoalProb !== null && marketGoalProb > 0) {
-    // Bookmaker anytime goalscorer probability converted to expected goals λ = -ln(1 - P)
     const impliedMarketXg =
       -Math.log(Math.max(0.01, 1.0 - marketGoalProb)) * minsScale;
-    // Blend adaptive market odds + statistical model
     matchXG =
-      impliedMarketXg * params.oddsWeight + matchXG * params.modelXgWeight;
+      impliedMarketXg * params.oddsWeight + modelMatchXG * params.modelXgWeight;
   }
 
-  // 6. Disciplinary Deductions (Yellow/Red Card Expectancy)
-  const expectedCardPenalty = shares.cardPen;
+  // 6. Disciplinary Deductions (Yellow/Red Card Expectancy scaled by playing probability)
+  const expectedCardPenalty = shares.cardPen * (p60Mins + pSub);
 
   // 7. Position-Specific Scoring Breakdown
   let goalPts = 0;
@@ -381,31 +419,22 @@ export function calculatePlayerOddsXp(
   let savePts = 0;
   let bpsExpected = 0;
 
+  // Expected FPL goals conceded penalty under full Poisson series, scaled by minutes on pitch
+  const expectedConcededPenalty =
+    calculateExpectedGoalsConcededPenalty(impliedGoalsConceded) * p60Mins;
+
   if (pos === 1) {
     // GK
-    goalPts = matchXG * 10.0; // Rare GK goal
+    goalPts = matchXG * 6.0; // Official FPL GK Goal = 6 pts
     cleanSheetPts = cleanSheetProb * p60Mins * 4.0;
-    // Pure Poisson probability of conceding 2+ goals: P(X >= 2) = 1 - e^(-λ) - λ*e^(-λ)
-    const probConcede2Plus = Math.max(
-      0.0,
-      1.0 -
-        Math.exp(-impliedGoalsConceded) -
-        impliedGoalsConceded * Math.exp(-impliedGoalsConceded),
-    );
-    goalsConcededPts = -probConcede2Plus * 1.0;
+    goalsConcededPts = -expectedConcededPenalty;
     savePts = Math.min(1.4, Math.max(0.4, 0.5 + impliedGoalsConceded * 0.25));
     bpsExpected = cleanSheetProb >= 0.4 ? 0.65 : savePts >= 1.0 ? 0.25 : 0.1;
   } else if (pos === 2) {
     // DEF
     goalPts = matchXG * 6.0;
     cleanSheetPts = cleanSheetProb * p60Mins * 4.0;
-    const probConcede2Plus = Math.max(
-      0.0,
-      1.0 -
-        Math.exp(-impliedGoalsConceded) -
-        impliedGoalsConceded * Math.exp(-impliedGoalsConceded),
-    );
-    goalsConcededPts = -probConcede2Plus * 1.0;
+    goalsConcededPts = -expectedConcededPenalty;
     bpsExpected =
       cleanSheetProb >= 0.4
         ? 0.6 + Math.min(1.2, matchXG * 4.0 + matchXA * 2.0)

@@ -12,12 +12,34 @@ export interface PlayerSetPieceProfile {
   addedXa: number;
 }
 
-function normalizePlayerName(player: FPLPlayer): string {
-  if (!player) return "";
-  const web = (player.web_name || "").toLowerCase().trim();
-  const second = (player.second_name || "").toLowerCase().trim();
-  const first = (player.first_name || "").toLowerCase().trim();
-  return `${web} ${second} ${first}`;
+function cleanStr(s: string): string {
+  return (s || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+function matchesTaker(
+  taker: string,
+  webName: string,
+  secondName: string,
+  firstName: string,
+): boolean {
+  const t = cleanStr(taker);
+  const w = cleanStr(webName);
+  const s = cleanStr(secondName);
+  const f = cleanStr(firstName);
+  if (!t || (!w && !s)) return false;
+
+  // Exact match on web name, second name, or full name
+  if (t === w || t === s || `${f} ${s}`.trim() === t || `${w} ${s}`.trim() === t) {
+    return true;
+  }
+
+  // Token word-boundary check for names with at least 4 characters to avoid false positives (e.g. 'lee')
+  const tokens = [w, s, f].filter((tok) => tok.length >= 4);
+  return tokens.some((tok) => t === tok || t.split(" ").includes(tok));
 }
 
 export function getPlayerSetPieceProfile(
@@ -40,8 +62,9 @@ export function getPlayerSetPieceProfile(
   // Goalkeepers do not take outfield corners or direct free kicks
   const isGK = player.element_type === 1;
 
-  const normalized = normalizePlayerName(player);
-  const webName = (player.web_name || "").toLowerCase().trim();
+  const webName = player.web_name || "";
+  const secondName = player.second_name || "";
+  const firstName = player.first_name || "";
 
   // Search strictly within the player's team if available
   const teamsMap = setPieceData.teams as Record<
@@ -63,63 +86,69 @@ export function getPlayerSetPieceProfile(
   }
 
   for (const teamSet of relevantTeams) {
-    // 1. Penalties
+    // 1. Penalties (Team averages ~0.14 pens/match * 78% conversion = ~0.11 xG total)
     if (teamSet.penalties && teamSet.penalties.length > 0) {
-      if (
-        teamSet.penalties[0].includes(webName) ||
-        normalized.includes(teamSet.penalties[0])
-      ) {
+      if (matchesTaker(teamSet.penalties[0], webName, secondName, firstName)) {
         result.isPrimaryPenalty = true;
         result.roles.push("PEN 1st");
-        result.addedXg += 0.11; // Empirical 0.14 pens/match * 78% conversion
+        result.addedXg += 0.11; // Primary penalty taker
       } else if (
         teamSet.penalties
           .slice(1)
-          .some((p) => p.includes(webName) || normalized.includes(p))
+          .some((p) => matchesTaker(p, webName, secondName, firstName))
       ) {
         result.isSecondaryPenalty = true;
         result.roles.push("PEN 2nd");
-        result.addedXg += 0.03;
+        // Secondary taker only steps up if primary is off pitch (~10% conditional equity)
+        result.addedXg += 0.01;
       }
     }
 
     if (isGK) continue; // Goalkeepers do not take corners or free-kicks
 
-    // 2. Corners (Primary Crossers)
+    // 2. Corners (Total team corner expectancy ~0.13-0.15 xA per match)
     if (teamSet.corners && teamSet.corners.length > 0) {
-      if (
-        teamSet.corners
-          .slice(0, 2)
-          .some((c) => c.includes(webName) || normalized.includes(c))
-      ) {
+      if (matchesTaker(teamSet.corners[0], webName, secondName, firstName)) {
         result.isPrimaryCorner = true;
         result.roles.push("CORNER");
-        result.addedXa += 0.14; // ~+0.42 Expected Points from corner assists
+        result.addedXa += 0.09; // Primary corner crosser (~65% volume share)
+      } else if (
+        teamSet.corners.length > 1 &&
+        matchesTaker(teamSet.corners[1], webName, secondName, firstName)
+      ) {
+        result.isPrimaryCorner = true;
+        result.roles.push("CORNER 2nd");
+        result.addedXa += 0.04; // Secondary corner crosser (~30% volume share)
       }
     }
 
-    // 3. Direct Free-Kicks (Shooting)
+    // 3. Direct Free-Kicks (Shooting ~0.06 team xG/match)
     if (teamSet.directFreeKicks && teamSet.directFreeKicks.length > 0) {
-      if (
-        teamSet.directFreeKicks
-          .slice(0, 2)
-          .some((f) => f.includes(webName) || normalized.includes(f))
-      ) {
+      if (matchesTaker(teamSet.directFreeKicks[0], webName, secondName, firstName)) {
         result.isPrimaryDirectFk = true;
         result.roles.push("DIRECT FK");
-        result.addedXg += 0.06;
+        result.addedXg += 0.04;
+      } else if (
+        teamSet.directFreeKicks.length > 1 &&
+        matchesTaker(teamSet.directFreeKicks[1], webName, secondName, firstName)
+      ) {
+        result.roles.push("DIRECT FK 2nd");
+        result.addedXg += 0.02;
       }
     }
 
-    // 4. Indirect Free-Kicks (Crossing)
+    // 4. Indirect Free-Kicks (Crossing ~0.06 team xA/match)
     if (teamSet.indirectFreeKicks && teamSet.indirectFreeKicks.length > 0) {
-      if (
-        teamSet.indirectFreeKicks
-          .slice(0, 2)
-          .some((f) => f.includes(webName) || normalized.includes(f))
-      ) {
+      if (matchesTaker(teamSet.indirectFreeKicks[0], webName, secondName, firstName)) {
         result.isPrimaryIndirectFk = true;
-        result.addedXa += 0.06;
+        result.roles.push("INDIRECT FK");
+        result.addedXa += 0.04;
+      } else if (
+        teamSet.indirectFreeKicks.length > 1 &&
+        matchesTaker(teamSet.indirectFreeKicks[1], webName, secondName, firstName)
+      ) {
+        result.roles.push("INDIRECT FK 2nd");
+        result.addedXa += 0.02;
       }
     }
   }

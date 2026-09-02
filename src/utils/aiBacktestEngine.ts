@@ -163,7 +163,8 @@ export function calculateAiSeasonBacktest(
     const aiCapRawPts = aiCapPlayer
       ? getPlayerMatchPoints(aiCapPlayer as FPLPlayer, gw)
       : 0;
-    const capDelta = aiCapRawPts * 2 - userCapRawPts * 2;
+    // Net captaincy delta: 1x additional multiplier moving from user captain to AI captain
+    const capDelta = aiCapRawPts - userCapRawPts;
     totalCaptaincyDelta += capDelta;
 
     if (userCapPlayer || aiCapPlayer) {
@@ -188,54 +189,60 @@ export function calculateAiSeasonBacktest(
       });
     }
 
-    // 4. Calculate Transfer Swing
+    // 4. Calculate Transfer Swings across all planned transfers
+    let gwTransferSwing = 0;
     if (plan && plan.transfersIn.length > 0 && plan.transfersOut.length > 0) {
-      const pIn = playerMap.get(plan.transfersIn[0]);
-      const pOut = playerMap.get(plan.transfersOut[0]);
+      const numTransfers = Math.min(
+        plan.transfersIn.length,
+        plan.transfersOut.length,
+      );
+      for (let i = 0; i < numTransfers; i++) {
+        const pIn = playerMap.get(plan.transfersIn[i]);
+        const pOut = playerMap.get(plan.transfersOut[i]);
 
-      if (pIn && pOut) {
-        const inPts = getPlayerMatchPoints(pIn, gw);
-        const outPts = getPlayerMatchPoints(pOut, gw);
-        const userNet = inPts - outPts;
+        if (pIn && pOut) {
+          const inPts = getPlayerMatchPoints(pIn, gw);
+          const outPts = getPlayerMatchPoints(pOut, gw);
+          const userNet = inPts - outPts;
 
-        // Simulate AI #1 Transfer candidate (highest xP replacement in same position within budget)
-        const posPlayers = players.filter(
-          (p) => p.element_type === pOut.element_type && p.id !== pOut.id,
-        );
-        let bestAiIn = pIn;
-        let bestAiXp = getPlayerGameweekXp(pIn.id, gw);
+          // Simulate AI #1 Transfer candidate (highest xP replacement in same position within budget)
+          const posPlayers = players.filter(
+            (p) => p.element_type === pOut.element_type && p.id !== pOut.id,
+          );
+          let bestAiIn = pIn;
+          let bestAiXp = getPlayerGameweekXp(pIn.id, gw);
 
-        posPlayers.forEach((cand: FPLPlayer) => {
-          const candXp = getPlayerGameweekXp(cand.id, gw);
-          if (
-            candXp > bestAiXp &&
-            cand.now_cost <= pOut.now_cost + (plan.calculatedBank || 0)
-          ) {
-            bestAiXp = candXp;
-            bestAiIn = cand;
-          }
-        });
+          posPlayers.forEach((cand: FPLPlayer) => {
+            const candXp = getPlayerGameweekXp(cand.id, gw);
+            if (
+              candXp > bestAiXp &&
+              cand.now_cost <= pOut.now_cost + (plan.calculatedBank || 0)
+            ) {
+              bestAiXp = candXp;
+              bestAiIn = cand;
+            }
+          });
 
-        const aiInPts = getPlayerMatchPoints(bestAiIn, gw);
-        const aiNet = aiInPts - outPts;
-        const swing = aiNet - userNet;
-        totalTransferSwing += swing;
+          const aiInPts = getPlayerMatchPoints(bestAiIn, gw);
+          const aiNet = aiInPts - outPts;
+          const swing = aiNet - userNet;
+          gwTransferSwing += swing;
+          totalTransferSwing += swing;
 
-        transferSwings.push({
-          gw,
-          userTransfer: { playerOut: pOut, playerIn: pIn, netPoints: userNet },
-          aiTransfer: { playerOut: pOut, playerIn: bestAiIn, netPoints: aiNet },
-          swing,
-        });
+          transferSwings.push({
+            gw,
+            userTransfer: { playerOut: pOut, playerIn: pIn, netPoints: userNet },
+            aiTransfer: { playerOut: pOut, playerIn: bestAiIn, netPoints: aiNet },
+            swing,
+          });
+        }
       }
     }
 
-    // 5. Simulate AI Co-Pilot Gameweek Score
+    // 5. Simulate AI Co-Pilot Gameweek Score (Symmetric: preserves true upside & downside)
     const aiGwScore = Math.max(
       0,
-      actualGwPts +
-        Math.max(0, capDelta) +
-        (transferSwings.find((t) => t.gw === gw)?.swing || 0),
+      actualGwPts + capDelta + gwTransferSwing,
     );
     aiCum += aiGwScore;
 
@@ -250,51 +257,60 @@ export function calculateAiSeasonBacktest(
   }
 
   // 6. Stat Attribution from actual starting XI across completed Gameweeks (Single Source of Truth)
-  const uniqueStarterIds = new Set<number>();
+  // Track how many gameweeks each player actually started for the user to weight attribution proportionally
+  const starterAppearances = new Map<number, number>();
   completedEvents.forEach((ev) => {
     const plan = gameweekPlans[ev.id];
     if (plan?.squad && plan.squad.length > 0) {
       plan.squad.forEach((pick: SquadPick) => {
         if (pick.position <= 11) {
-          uniqueStarterIds.add(pick.element);
+          starterAppearances.set(
+            pick.element,
+            (starterAppearances.get(pick.element) || 0) + 1,
+          );
         }
       });
     }
   });
 
-  const activeStarters = (
-    uniqueStarterIds.size > 0
-      ? Array.from(uniqueStarterIds).map((id) => playerMap.get(id))
-      : players.slice(0, 15)
-  ).filter(Boolean) as FPLPlayer[];
+  const totalGwCount = completedEvents.length || 1;
+  starterAppearances.forEach((startsCount, elementId) => {
+    const p = playerMap.get(elementId);
+    if (!p) return;
 
-  activeStarters.forEach((p: FPLPlayer) => {
     const isDef = p.element_type === 1 || p.element_type === 2;
     const isMid = p.element_type === 3;
     const ptsPerGoal = isDef ? 6 : isMid ? 5 : 4;
 
+    // Weight career totals by fraction of active matches player actually started for this user
+    const playerEstimatedGames = Math.max(1, Math.ceil((p.minutes || 0) / 90) || totalGwCount);
+    const startShare = Math.min(1.0, startsCount / playerEstimatedGames);
+
     if (isDef && p.clean_sheets > 0) {
-      csPoints += p.clean_sheets * 4;
+      csPoints += Math.round(p.clean_sheets * 4 * startShare);
     }
     if (p.goals_scored > 0) {
-      goalPoints += p.goals_scored * ptsPerGoal;
-      goalCount += p.goals_scored;
+      const gPts = Math.round(p.goals_scored * ptsPerGoal * startShare);
+      goalPoints += gPts;
+      goalCount += Math.round(p.goals_scored * startShare);
     }
     if (p.assists > 0) {
-      assistPoints += p.assists * 3;
-      assistCount += p.assists;
+      const aPts = Math.round(p.assists * 3 * startShare);
+      assistPoints += aPts;
+      assistCount += Math.round(p.assists * startShare);
     }
-    bonusPoints += p.bonus || 0;
+    bonusPoints += Math.round((p.bonus || 0) * startShare);
   });
 
-  const netAlpha = Math.max(0, aiCum - actualCum);
+  const netAlpha = aiCum - actualCum;
   const actualRank = teamSummary?.summary_overall_rank || 450000;
 
-  // Model rank curve: each 1 alpha point improves overall rank logarithmically
-  const rankImprovementFactor = Math.min(0.85, netAlpha * 0.018);
+  // Non-linear density-aware rank estimation curve (higher elasticity in mid-table, flatter in top 10k)
+  const rankSensitivity = actualRank > 100000 ? 0.014 : actualRank > 10000 ? 0.008 : 0.003;
+  const rankShiftFactor = Math.max(-0.85, Math.min(0.85, netAlpha * rankSensitivity));
   const estimatedRank = Math.max(
     1,
-    Math.round(actualRank * (1 - rankImprovementFactor)),
+    Math.round(actualRank * (1 - rankShiftFactor)),
   );
 
   // Calculate dynamic team value gain

@@ -404,6 +404,11 @@ export function analyzeTransferHit(
     .filter(Boolean) as FPLPlayer[];
 
   if (squadPlayers.length === 15 && availableFT === 1) {
+    const teamCounts = new Map<number, number>();
+    for (const p of squadPlayers) {
+      teamCounts.set(p.team, (teamCounts.get(p.team) || 0) + 1);
+    }
+
     // Check top pairs
     const midFwds = squadPlayers.filter(
       (p) => p.element_type === 3 || p.element_type === 4,
@@ -458,6 +463,20 @@ export function analyzeTransferHit(
             if (in1.id === in2.id) continue;
             const combinedCost = (in1.now_cost + in2.now_cost) / 10.0;
             if (combinedCost > totalBudget + 0.001) continue;
+
+            // Validate Premier League 3-players-per-club quota
+            const team1Count =
+              (teamCounts.get(in1.team) || 0) -
+              (out1.team === in1.team ? 1 : 0) -
+              (out2.team === in1.team ? 1 : 0) +
+              1;
+            const team2Count =
+              (teamCounts.get(in2.team) || 0) -
+              (out1.team === in2.team ? 1 : 0) -
+              (out2.team === in2.team ? 1 : 0) +
+              (in1.team === in2.team ? 2 : 1);
+
+            if (team1Count > 3 || team2Count > 3) continue;
 
             const inTwoGw =
               getXp(in1.id, selectedGameweek) +

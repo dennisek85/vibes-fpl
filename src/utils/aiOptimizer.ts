@@ -104,9 +104,11 @@ export function optimizeLineup(
     const baseSum = starters.reduce((acc, p) => acc + p.xp, 0);
 
     // Defensive Covariance Discount (Modern Portfolio Theory):
+    // Includes both starting Goalkeeper and Defenders sharing the same club
     let covarianceDiscount = 0;
     const defClubCounts = new Map<number, number>();
-    for (const d of selectedDefs) {
+    const defensiveStarters = [startingGk, ...selectedDefs];
+    for (const d of defensiveStarters) {
       defClubCounts.set(
         d.player.team,
         (defClubCounts.get(d.player.team) || 0) + 1,
@@ -198,7 +200,7 @@ export function optimizeLineup(
 
   let prevCovarianceDiscount = 0;
   const prevDefClubCounts = new Map<number, number>();
-  for (const d of prevStarters.filter((p) => p.type === 2)) {
+  for (const d of prevStarters.filter((p) => p.type === 1 || p.type === 2)) {
     prevDefClubCounts.set(
       d.player.team,
       (prevDefClubCounts.get(d.player.team) || 0) + 1,
@@ -233,7 +235,8 @@ export function optimizeLineup(
 
 /**
  * Automatically sorts only the bench slots (12 to 15) in exact order of expected points,
- * ensuring the highest-scoring outfield player is at Bench 1 (slot 13) for optimal auto-sub activation.
+ * ensuring the highest-scoring outfield player is at Bench 1 (slot 13) for optimal auto-sub activation,
+ * while preserving formation legality (e.g. at least 3 defenders in starting lineup).
  */
 export function autoOrderBench(
   squad: SquadPick[],
@@ -259,6 +262,24 @@ export function autoOrderBench(
     return xpB - xpA;
   });
 
+  // Formation legality safeguard: If starters have exactly 3 defenders,
+  // ensure the best available bench defender is at Bench 1 (slot 13)
+  // so an auto-sub cannot violate the FPL minimum 3-defender rule.
+  const starterDefCount = starters.filter(
+    (p) => playerMap.get(p.element)?.element_type === 2,
+  ).length;
+
+  const orderedOutfield = [...sortedOutfield];
+  if (starterDefCount === 3) {
+    const firstDefIdx = orderedOutfield.findIndex(
+      (p) => playerMap.get(p.element)?.element_type === 2,
+    );
+    if (firstDefIdx > 0) {
+      const [bestDef] = orderedOutfield.splice(firstDefIdx, 1);
+      orderedOutfield.unshift(bestDef);
+    }
+  }
+
   const newSquad: SquadPick[] = [...starters];
 
   if (benchGk) {
@@ -271,7 +292,7 @@ export function autoOrderBench(
     });
   }
 
-  sortedOutfield.forEach((pick, idx) => {
+  orderedOutfield.forEach((pick, idx) => {
     newSquad.push({
       ...pick,
       position: 13 + idx,

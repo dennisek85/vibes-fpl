@@ -10,6 +10,7 @@ import {
   evaluatePlayerRotationRisk,
   RotationRiskReport,
 } from "@/utils/aiLineupRiskEngine";
+import { invalidateXpCache } from "./aiOptimizerSlice";
 
 export const createCoreDataSlice: StateCreator<
   PlannerState,
@@ -198,6 +199,8 @@ export const createCoreDataSlice: StateCreator<
         startGameweek: 1,
         selectedGameweek: nextGwId,
       });
+
+      invalidateXpCache();
 
       const savedPin = getActivePin();
       if (savedPin) {

@@ -8,6 +8,10 @@ import { recalculateMultiGameweekPlans } from "./gameweekPlanSlice";
 // Module-level calculation cache for O(1) instant xP lookups across the UI
 const xpCalculationCache = new Map<string, number>();
 
+export function invalidateXpCache(): void {
+  xpCalculationCache.clear();
+}
+
 export const createAiOptimizerSlice: StateCreator<
   PlannerState,
   [],
@@ -197,7 +201,7 @@ export const createAiOptimizerSlice: StateCreator<
   getPlayerGameweekXp: (playerId: number, gameweek: number): number => {
     const { aiProjectionsMap, playerMap, teamMap, fixtures } = get();
     const p = playerMap.get(playerId);
-    if (!p) return 3.0;
+    if (!p) return 0.0;
 
     // Check O(1) calculation cache
     const cacheKey = `${playerId}_${gameweek}_${p.now_cost}_${p.chance_of_playing_next_round}_${p.status}`;
@@ -211,36 +215,49 @@ export const createAiOptimizerSlice: StateCreator<
       return canonicalXp;
     }
 
-    // 2. Direct from Player Upcoming Fixtures
+    // 2. Direct from Player Upcoming Fixtures (aggregating multi-fixture DGW matches)
     const upcoming = get().getPlayerUpcomingFixtures(playerId, 10);
-    const match = upcoming.find((f) => f.event === gameweek);
-    if (match && match.xP !== undefined) {
-      xpCalculationCache.set(cacheKey, match.xP);
-      return match.xP;
+    const matches = upcoming.filter((f) => f.event === gameweek);
+    if (matches.length > 0 && matches.every((m) => m.xP !== undefined)) {
+      const dgwSum = matches.reduce((sum, m) => sum + (m.xP || 0), 0);
+      const roundedDgw = Math.round(dgwSum * 10) / 10;
+      xpCalculationCache.set(cacheKey, roundedDgw);
+      return roundedDgw;
     }
 
-    // 3. Fallback: calculate directly via canonical aiOddsEngine
+    // 3. Fallback: calculate directly via canonical aiOddsEngine across ALL fixtures in this gameweek
     const playerTeam = teamMap.get(p.team);
-    const fix = fixtures.find(
+    const gwFixes = fixtures.filter(
       (f) =>
         f.event === gameweek && (f.team_h === p.team || f.team_a === p.team),
     );
-    if (fix && playerTeam) {
-      const isHome = fix.team_h === p.team;
-      const oppTeam = teamMap.get(isHome ? fix.team_a : fix.team_h);
-      const val = calculatePlayerOddsXp(
-        p,
-        isHome,
-        playerTeam,
-        oppTeam,
-        undefined,
-        gameweek,
-      );
-      xpCalculationCache.set(cacheKey, val);
-      return val;
+
+    // If player's team has NO fixtures in this gameweek (Blank Gameweek / BGW), xP is strictly 0.0
+    if (gwFixes.length === 0) {
+      xpCalculationCache.set(cacheKey, 0.0);
+      return 0.0;
     }
 
-    const fallback = parseFloat(p.form) || 3.0;
+    if (playerTeam) {
+      let totalMatchXp = 0;
+      for (const fix of gwFixes) {
+        const isHome = fix.team_h === p.team;
+        const oppTeam = teamMap.get(isHome ? fix.team_a : fix.team_h);
+        totalMatchXp += calculatePlayerOddsXp(
+          p,
+          isHome,
+          playerTeam,
+          oppTeam,
+          undefined,
+          gameweek,
+        );
+      }
+      const finalVal = Math.round(totalMatchXp * 10) / 10;
+      xpCalculationCache.set(cacheKey, finalVal);
+      return finalVal;
+    }
+
+    const fallback = 0.0;
     xpCalculationCache.set(cacheKey, fallback);
     return fallback;
   },

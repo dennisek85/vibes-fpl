@@ -51,14 +51,24 @@ function calibratePercentile(
 function getCaptaincyEffectiveValue(player: FPLPlayer, baseXp: number): number {
   if (!player) return baseXp;
 
-  const xg = parseFloat(player.expected_goals || "0");
-  const threat = parseFloat(player.threat || "0");
+  const xg = parseFloat(`${player.expected_goals || "0"}`) || 0;
+  const threat = parseFloat(`${player.threat || "0"}`) || 0;
+  const mins = Math.max(
+    1,
+    typeof player.minutes === "number"
+      ? player.minutes
+      : parseFloat(`${player.minutes || 0}`) || 1,
+  );
   const pos = player.element_type;
+
+  const xgPer90 = xg / (mins / 90.0);
+  const threatPer90 = threat / (mins / 90.0);
 
   let multiGoalFactor = 0;
   if (pos === 4 || pos === 3) {
-    if (baseXp >= 6.5 || threat > 30 || xg > 1.5) {
-      multiGoalFactor = Math.min(0.28, (baseXp / 10.0) * 0.32);
+    // Only trigger explosive ceiling multiplier for truly elite goal threats (>=0.50 xG/90 or high match xP)
+    if (baseXp >= 6.8 || threatPer90 >= 55 || xgPer90 >= 0.5) {
+      multiGoalFactor = Math.min(0.2, (baseXp / 10.0) * 0.22);
     }
   }
 
@@ -199,9 +209,8 @@ export function calculateSquadRating(
     ? getCaptaincyEffectiveValue(yourCaptainPlayer, yourCapXp)
     : yourCapXp;
 
-  // Realistic Auto-Sub Bench Weighting + Bench Enabler Budget Efficiency Bonus
+  // Realistic Auto-Sub Bench Weighting
   let yourBenchXp = 0;
-  let benchEnablerSavings = 0;
 
   benchPicks.forEach((bPick, idx) => {
     const p = playerMap.get(bPick.element);
@@ -210,10 +219,6 @@ export function calculateSquadRating(
     const weight =
       idx === 0 ? 0.03 : idx === 1 ? 0.12 : idx === 2 ? 0.06 : 0.02;
     yourBenchXp += bXp * weight;
-
-    if (p.now_cost <= 45) {
-      benchEnablerSavings += 0.4;
-    }
   });
 
   // Vice-captain fallback probability contingency (+3.5% of VC xP)
@@ -227,7 +232,6 @@ export function calculateSquadRating(
       (yourStartersSum +
         effectiveCapValue +
         yourBenchXp +
-        benchEnablerSavings +
         viceCaptainContingency +
         ftEquity) *
         10,

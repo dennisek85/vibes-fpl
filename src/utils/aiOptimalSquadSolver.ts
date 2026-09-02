@@ -89,26 +89,38 @@ export function solveOptimalSquad(
   const fwds = candidates.filter((c) => c.pos === 4);
 
   // Group candidates into:
-  // Top tier (high xP) & Enabler tier (lowest cost with decent xP)
+  // 1. Top tier (high xP)
+  // 2. Enabler tier (lowest cost with decent xP)
+  // 3. Value tier (highest xP per £m ratio)
   const filterTopCandidates = (
     list: Candidate[],
     topCount: number,
     enablerCount: number,
+    valueCount: number = 8,
   ): Candidate[] => {
     const byXp = [...list].sort((a, b) => b.xp - a.xp).slice(0, topCount);
     const byCost = [...list]
       .sort((a, b) => a.cost - b.cost || b.xp - a.xp)
       .slice(0, enablerCount);
+    const byValue = [...list]
+      .sort(
+        (a, b) =>
+          b.xp / Math.max(4.0, b.cost / 10.0) -
+          a.xp / Math.max(4.0, a.cost / 10.0),
+      )
+      .slice(0, valueCount);
+
     const map = new Map<number, Candidate>();
     byXp.forEach((c) => map.set(c.id, c));
     byCost.forEach((c) => map.set(c.id, c));
+    byValue.forEach((c) => map.set(c.id, c));
     return Array.from(map.values());
   };
 
-  const candidateGks = filterTopCandidates(gks, 10, 6);
-  const candidateDefs = filterTopCandidates(defs, 20, 10);
-  const candidateMids = filterTopCandidates(mids, 24, 10);
-  const candidateFwds = filterTopCandidates(fwds, 16, 6);
+  const candidateGks = filterTopCandidates(gks, 10, 6, 6);
+  const candidateDefs = filterTopCandidates(defs, 22, 10, 10);
+  const candidateMids = filterTopCandidates(mids, 26, 10, 12);
+  const candidateFwds = filterTopCandidates(fwds, 16, 6, 8);
 
   // Quick evaluation of a 15-man squad selection
   const evaluate15 = (
@@ -166,11 +178,11 @@ export function solveOptimalSquad(
       const cap = sortedStarters[0];
 
       // Defensive Covariance Discount (Modern Portfolio Theory):
-      // Stacking 2+ defenders from the same team creates negative covariance in tough fixtures
-      // (1 conceded goal wipes out both clean sheets simultaneously).
+      // Includes starting GK and starting DEFs from the same team
       let covarianceDiscount = 0;
       const defTeamCounts = new Map<number, number>();
-      for (const d of formDefs) {
+      const defensiveStarters = [startingGk, ...formDefs];
+      for (const d of defensiveStarters) {
         defTeamCounts.set(d.team, (defTeamCounts.get(d.team) || 0) + 1);
       }
       for (const count of defTeamCounts.values()) {
@@ -237,49 +249,60 @@ export function solveOptimalSquad(
   const premiumFwds = sortedFwds.slice(0, 6);
   const premiumDefs = sortedDefs.slice(0, 8);
 
-  for (let topMidCount = 4; topMidCount <= 5; topMidCount++) {
-    for (let topFwdCount = 2; topFwdCount <= 3; topFwdCount++) {
-      for (let topDefCount = 3; topDefCount <= 4; topDefCount++) {
-        const testMids = [...premiumMids.slice(0, topMidCount)];
-        const cheapMids = [...candidateMids]
-          .sort((a, b) => a.cost - b.cost)
-          .filter((m) => !testMids.some((tm) => tm.id === m.id));
-        testMids.push(...cheapMids.slice(0, 5 - topMidCount));
+  // Generate GK pairing combinations (Premium + Enabler, Mid + Enabler, or Dual Budget)
+  const gkPairs: Candidate[][] = [];
+  if (premiumGks.length > 0 && enablerGks.length > 0) {
+    const e0 = enablerGks.find((g) => g.id !== premiumGks[0].id) || enablerGks[0];
+    gkPairs.push([premiumGks[0], e0]);
+    if (premiumGks.length > 1) {
+      const e1 = enablerGks.find((g) => g.id !== premiumGks[1].id) || enablerGks[0];
+      gkPairs.push([premiumGks[1], e1]);
+    }
+    if (enablerGks.length > 1) {
+      gkPairs.push([enablerGks[0], enablerGks[1]]);
+    }
+  }
 
-        const testFwds = [...premiumFwds.slice(0, topFwdCount)];
-        const cheapFwds = [...candidateFwds]
-          .sort((a, b) => a.cost - b.cost)
-          .filter((f) => !testFwds.some((tf) => tf.id === f.id));
-        testFwds.push(...cheapFwds.slice(0, 3 - topFwdCount));
+  for (const testGks of gkPairs) {
+    for (let topMidCount = 4; topMidCount <= 5; topMidCount++) {
+      for (let topFwdCount = 2; topFwdCount <= 3; topFwdCount++) {
+        for (let topDefCount = 3; topDefCount <= 4; topDefCount++) {
+          const testMids = [...premiumMids.slice(0, topMidCount)];
+          const cheapMids = [...candidateMids]
+            .sort((a, b) => a.cost - b.cost)
+            .filter((m) => !testMids.some((tm) => tm.id === m.id));
+          testMids.push(...cheapMids.slice(0, 5 - topMidCount));
 
-        const testDefs = [...premiumDefs.slice(0, topDefCount)];
-        const cheapDefs = [...candidateDefs]
-          .sort((a, b) => a.cost - b.cost)
-          .filter((d) => !testDefs.some((td) => td.id === d.id));
-        testDefs.push(...cheapDefs.slice(0, 5 - topDefCount));
+          const testFwds = [...premiumFwds.slice(0, topFwdCount)];
+          const cheapFwds = [...candidateFwds]
+            .sort((a, b) => a.cost - b.cost)
+            .filter((f) => !testFwds.some((tf) => tf.id === f.id));
+          testFwds.push(...cheapFwds.slice(0, 3 - topFwdCount));
 
-        const testGks = [
-          premiumGks[0],
-          enablerGks.find((g) => g.id !== premiumGks[0]?.id) || enablerGks[0],
-        ].filter(Boolean);
+          const testDefs = [...premiumDefs.slice(0, topDefCount)];
+          const cheapDefs = [...candidateDefs]
+            .sort((a, b) => a.cost - b.cost)
+            .filter((d) => !testDefs.some((td) => td.id === d.id));
+          testDefs.push(...cheapDefs.slice(0, 5 - topDefCount));
 
-        const current15 = [...testGks, ...testDefs, ...testMids, ...testFwds];
-        if (current15.length !== 15) continue;
-        if (!isClubLimitValid(current15)) continue;
+          const current15 = [...testGks, ...testDefs, ...testMids, ...testFwds];
+          if (current15.length !== 15) continue;
+          if (!isClubLimitValid(current15)) continue;
 
-        const cost = current15.reduce((sum, p) => sum + p.cost, 0);
-        if (cost > totalBudget) continue;
+          const cost = current15.reduce((sum, p) => sum + p.cost, 0);
+          if (cost > totalBudget) continue;
 
-        const evalResult = evaluate15(current15);
-        if (!evalResult) continue;
+          const evalResult = evaluate15(current15);
+          if (!evalResult) continue;
 
-        if (
-          !bestSquadEval ||
-          evalResult.totalScore > bestSquadEval.totalScore
-        ) {
-          bestSquadEval = evalResult;
-          bestSquadCandidates = current15;
-          bestTotalCost = cost;
+          if (
+            !bestSquadEval ||
+            evalResult.totalScore > bestSquadEval.totalScore
+          ) {
+            bestSquadEval = evalResult;
+            bestSquadCandidates = current15;
+            bestTotalCost = cost;
+          }
         }
       }
     }

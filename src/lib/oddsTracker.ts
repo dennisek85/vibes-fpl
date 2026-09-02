@@ -70,32 +70,28 @@ export function getMarketAnytimeGoalscorerProb(
   // Strip initials like 'b.fernandes' -> 'fernandes', 'e.haaland' -> 'haaland'
   const normalized = raw.includes(".") ? raw.split(".").pop()!.trim() : raw;
 
-  // Disambiguation for players sharing last names
+  // Disambiguation for players sharing last names (strictly require matching team)
   if (
     normalized === "palmer" &&
-    teamShortName &&
-    teamShortName.toUpperCase() !== "CHE"
+    (!teamShortName || teamShortName.toUpperCase() !== "CHE")
   ) {
     return null;
   }
   if (
     normalized === "johnson" &&
-    teamShortName &&
-    teamShortName.toUpperCase() !== "TOT"
+    (!teamShortName || teamShortName.toUpperCase() !== "TOT")
   ) {
     return null;
   }
   if (
     normalized === "fernandes" &&
-    teamShortName &&
-    teamShortName.toUpperCase() !== "MUN"
+    (!teamShortName || teamShortName.toUpperCase() !== "MUN")
   ) {
     return null;
   }
   if (
     normalized === "williams" &&
-    teamShortName &&
-    teamShortName.toUpperCase() !== "NFO"
+    (!teamShortName || teamShortName.toUpperCase() !== "NFO")
   ) {
     return null;
   }
