@@ -7,6 +7,8 @@ export interface OptimizationResult {
   viceCaptainName: string;
   captainXp: number;
   totalProjectedPoints: number;
+  previousProjectedPoints: number;
+  pointsGain: number;
   startersCount: {
     def: number;
     mid: number;
@@ -184,6 +186,34 @@ export function optimizeLineup(
     });
   });
 
+  // Compute previous squad baseline score before optimization
+  const prevStarters = enriched.filter((p) => p.pick.position <= 11);
+  const prevCap =
+    enriched.find((p) => p.pick.is_captain) ||
+    enriched.find((p) => p.pick.multiplier >= 2) ||
+    prevStarters[0];
+
+  const prevBaseSum = prevStarters.reduce((acc, p) => acc + p.xp, 0);
+  const prevCapXp = prevCap ? prevCap.xp : 0;
+
+  let prevCovarianceDiscount = 0;
+  const prevDefClubCounts = new Map<number, number>();
+  for (const d of prevStarters.filter((p) => p.type === 2)) {
+    prevDefClubCounts.set(
+      d.player.team,
+      (prevDefClubCounts.get(d.player.team) || 0) + 1,
+    );
+  }
+  for (const count of prevDefClubCounts.values()) {
+    if (count >= 2) {
+      prevCovarianceDiscount += (count - 1) * 0.35;
+    }
+  }
+
+  const prevTotal = prevBaseSum + prevCapXp - prevCovarianceDiscount;
+  const previousProjectedPoints = Number(prevTotal.toFixed(1));
+  const pointsGain = Math.max(0, Number((bestScore - prevTotal).toFixed(1)));
+
   return {
     optimizedSquad: finalSquadPicks,
     formation: `${bestFormation.def}-${bestFormation.mid}-${bestFormation.fwd}`,
@@ -191,6 +221,8 @@ export function optimizeLineup(
     viceCaptainName: viceCaptainPick.player.web_name,
     captainXp: captainPick.xp,
     totalProjectedPoints: Number(bestScore.toFixed(1)),
+    previousProjectedPoints,
+    pointsGain,
     startersCount: {
       def: bestFormation.def,
       mid: bestFormation.mid,

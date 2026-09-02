@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { usePlannerStore } from "@/store/usePlannerStore";
 import { ChipType } from "@/types/fpl";
+import { OptimizationResult } from "@/utils/aiOptimizer";
+import { UI_TEXT } from "@/lib/ui-text";
 import {
   Zap,
   Sparkles,
@@ -71,7 +73,7 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({
     openScoutModal,
   } = usePlannerStore();
 
-  const [optResult, setOptResult] = useState<any | null>(null);
+  const [optResult, setOptResult] = useState<OptimizationResult | null>(null);
   const [showResetAllConfirm, setShowResetAllConfirm] = useState(false);
 
   const isLocked = isGameweekLocked(selectedGameweek);
@@ -308,14 +310,27 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({
           onClick={handleAutoOptimize}
           className="w-full py-2.5 px-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-white/15 text-slate-200 hover:text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-98"
         >
-          <Wand2 className="w-4 h-4 text-amber-400" />⚡ Auto-Optimize Lineup
+          <Wand2 className="w-4 h-4 text-amber-400" />
+          {UI_TEXT.optimizer.autoOptimizeBtn}
         </button>
 
         {optResult && (
-          <p className="text-xs text-emerald-400 font-black text-center py-0.5 animate-in fade-in leading-tight">
-            ✨ {optResult.formation} · {optResult.captainName} (C) ·{" "}
-            {optResult.totalProjectedPoints} xP
-          </p>
+          <div className="flex flex-col items-center gap-1 py-0.5 animate-in fade-in">
+            <p className="text-xs text-emerald-400 font-black text-center leading-tight flex items-center gap-1.5 flex-wrap justify-center">
+              <span>✨ {optResult.formation} · {optResult.captainName} (C) · {optResult.totalProjectedPoints} xP</span>
+              <span
+                className={`px-1.5 py-0.5 rounded-md text-[10px] font-black border ${
+                  optResult.pointsGain > 0
+                    ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                    : "bg-cyan-500/20 text-cyan-300 border-cyan-500/40"
+                }`}
+              >
+                {optResult.pointsGain > 0
+                  ? UI_TEXT.optimizer.gainBadge(optResult.pointsGain)
+                  : UI_TEXT.optimizer.optimalBadge}
+              </span>
+            </p>
+          </div>
         )}
 
         <div className="pt-2 border-t border-white/10 flex flex-col gap-2">

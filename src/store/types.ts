@@ -49,6 +49,7 @@ export interface CoreDataSlice {
     gw: number,
     forceRefresh?: boolean,
   ) => Promise<void>;
+  fetchHistoricalPicksForGameweek: (gw: number) => Promise<void>;
   isGameweekLocked: (gameweek?: number) => boolean;
   getPlayerLineupRisk: (playerId: number) => RotationRiskReport;
 }

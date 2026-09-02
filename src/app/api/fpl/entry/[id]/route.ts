@@ -46,19 +46,41 @@ export async function GET(
       ? await historyRes.json()
       : { current: [], chips: [] };
 
-    // 3. Fetch latest picks
+    // 3. Fetch picks for all completed/current gameweeks in parallel
     let picksData: any = null;
-    for (let gw = currentEvent; gw >= 1; gw--) {
-      const picksRes = await fetch(
-        `https://fantasy.premierleague.com/api/entry/${teamId}/event/${gw}/picks/`,
-        {
-          headers: { "User-Agent": userAgent },
-          cache: "no-store",
-        },
-      );
-      if (picksRes.ok) {
-        picksData = await picksRes.json();
-        break;
+    const historyPicks: Record<number, any> = {};
+    const gwEventsToFetch: number[] = [];
+    for (let gw = 1; gw <= currentEvent; gw++) {
+      gwEventsToFetch.push(gw);
+    }
+
+    const fetchedPicksArray = await Promise.all(
+      gwEventsToFetch.map(async (gw) => {
+        try {
+          const res = await fetch(
+            `https://fantasy.premierleague.com/api/entry/${teamId}/event/${gw}/picks/`,
+            {
+              headers: { "User-Agent": userAgent },
+              cache: "no-store",
+            },
+          );
+          if (res.ok) {
+            const data = await res.json();
+            return { gw, data };
+          }
+        } catch {
+          // ignore individual failed fetch
+        }
+        return null;
+      }),
+    );
+
+    for (const item of fetchedPicksArray) {
+      if (item) {
+        historyPicks[item.gw] = item.data;
+        if (item.gw === currentEvent || !picksData) {
+          picksData = item.data;
+        }
       }
     }
 
@@ -78,6 +100,7 @@ export async function GET(
       entry: entryData,
       history: historyData,
       picks: picksData.picks,
+      history_picks: historyPicks,
       entry_history: picksData.entry_history,
       active_chip: picksData.active_chip,
       initialFreeTransfers,

@@ -145,6 +145,21 @@ export const UI_TEXT = {
         "Extra budget unlocked by beating overnight transfer market price changes",
     },
   },
+  optimizer: {
+    title: "Lineup Optimizer",
+    autoOptimizeBtn: "⚡ Auto-Optimize Lineup",
+    autoOptimize11AndC: "⚡ Auto-Optimize (11 & C)",
+    optimalBadge: "+0.0 xP (Optimal)",
+    gainBadge: (gain: number) => `+${gain.toFixed(1)} xP`,
+    bannerOptimal: (formation: string, capName: string, totalXp: number) =>
+      `✨ ${formation} · ${capName} (C) · ${totalXp} xP (+0.0 xP · Optimal)`,
+    bannerGained: (formation: string, capName: string, totalXp: number, gain: number) =>
+      `✨ ${formation} · ${capName} (C) · ${totalXp} xP (+${gain.toFixed(1)} xP)`,
+    pitchToastOptimal: (formation: string, totalXp: number) =>
+      `✨ Lineup already optimal (${formation} · ${totalXp} xP)`,
+    pitchToastGained: (formation: string, capName: string, totalXp: number, gain: number) =>
+      `✨ Optimized ${formation} · ${capName} (C) · ${totalXp} xP (+${gain.toFixed(1)} xP)`,
+  },
   mlLab: {
     bannerTag: "Factorial ML Laboratory",
     activeArmsBadge: (count: number) => `${count} Active Experimental Arms`,
@@ -160,6 +175,18 @@ export const UI_TEXT = {
     armsSection: {
       testedScope: "Tested Scope:",
       armMaeVsProd: "Arm MAE vs Prod:",
+    },
+    tooltips: {
+      mae: "Mean Absolute Error (MAE): Measures the average point or minute discrepancy against actual Premier League match outcomes. Lower values signify higher precision.",
+      baselineMae: "Production Baseline MAE: The historical error benchmark of our production model that this experimental arm is competing against.",
+      edge: "Predictive Edge / Alpha: Percentage reduction in prediction error relative to the baseline. Positive edge indicates superior accuracy.",
+      leadIndicator: "Primary Tactical Signal: The distinct feature or quantitative hazard isolated in this experimental arm.",
+      hypothesis: "Experimental Hypothesis: The quantitative theory tested against out-of-sample match events.",
+      testedScope: "Evaluation Scope: The sample group of players or fixtures tested to ensure statistically robust conclusions.",
+      divergence: "Model Divergence: Identifies where experimental signals diverge most from market odds to pinpoint high-alpha differential assets.",
+      superEnsemble: "Super Ensemble: Quantifies whether meta-stacking all 10 independent signals beats single-model predictions without overfitting.",
+      tacticalCluster: "Tactical Matchups: Concludes if pitch geometry, flank match-ups, and pressing intensity provide decisive edge in attacking returns.",
+      availabilityCluster: "Availability & Sub Hazards: Concludes if European fatigue and press conference NLP successfully eliminate 1-point substitution disasters.",
     },
     divergencesSection: {
       title: "Upcoming GW Key Model Disagreements",

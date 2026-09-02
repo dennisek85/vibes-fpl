@@ -75,6 +75,50 @@ export const createCoreDataSlice: StateCreator<
     }
   },
 
+  fetchHistoricalPicksForGameweek: async (gw: number) => {
+    const { teamSummary, gameweekPlans, playerMap, isGameweekLocked } = get();
+    if (!teamSummary?.id) return;
+    if (!isGameweekLocked(gw)) return;
+
+    try {
+      const res = await fetch(
+        `/api/fpl/entry/${teamSummary.id}/event/${gw}/picks`,
+      );
+      if (res.ok) {
+        const data = await res.json();
+        if (data.picks && data.picks.length > 0) {
+          const newSquad = data.picks.map((p: any) => ({
+            element: p.element,
+            position: p.position,
+            is_captain: p.is_captain,
+            is_vice_captain: p.is_vice_captain,
+            multiplier: p.multiplier,
+            purchase_price:
+              p.purchase_price ||
+              playerMap.get(p.element)?.now_cost ||
+              50,
+            selling_price:
+              p.selling_price ||
+              playerMap.get(p.element)?.now_cost ||
+              50,
+          }));
+
+          const updatedPlans = { ...gameweekPlans };
+          if (updatedPlans[gw]) {
+            updatedPlans[gw] = {
+              ...updatedPlans[gw],
+              squad: newSquad,
+              chip: data.active_chip || updatedPlans[gw].chip || "none",
+            };
+            set({ gameweekPlans: updatedPlans });
+          }
+        }
+      }
+    } catch (e) {
+      console.warn(`Error fetching historical picks for GW ${gw}:`, e);
+    }
+  },
+
   initFPLData: async () => {
     set({ isLoading: true, error: null });
     try {

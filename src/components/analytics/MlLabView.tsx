@@ -11,6 +11,7 @@ import {
   EyeOff,
   Layers,
   CheckCircle2,
+  HelpCircle,
 } from "lucide-react";
 
 interface ExperimentalArm {
@@ -328,28 +329,44 @@ export const MlLabView: React.FC = () => {
               <div
                 key={arm.id}
                 className="bg-slate-900/85 backdrop-blur-md border border-white/10 rounded-2xl p-4 space-y-3 hover:border-purple-500/40 transition-all shadow-lg group"
+                title={`${arm.name}: ${arm.hypothesis}`}
               >
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-black text-white flex items-center gap-2">
                     <span className="text-lg">{arm.icon}</span> {arm.name}
                   </span>
-                  <span className="text-[13.5px] font-black bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 px-3 py-0.5 rounded-full font-mono tracking-tight shadow-sm shrink-0">
+                  <span
+                    className="text-[13.5px] font-black bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 px-3 py-0.5 rounded-full font-mono tracking-tight shadow-sm shrink-0 cursor-help"
+                    title={labText.tooltips.edge}
+                  >
                     {arm.edgePct}
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-300 leading-tight">
-                  {arm.hypothesis}
-                </p>
+                <div
+                  className="flex items-start gap-1.5 cursor-help"
+                  title={labText.tooltips.hypothesis}
+                >
+                  <HelpCircle className="w-3.5 h-3.5 text-purple-400 shrink-0 mt-0.5" />
+                  <p className="text-xs text-slate-300 leading-tight">
+                    {arm.hypothesis}
+                  </p>
+                </div>
 
                 <div className="bg-slate-950/60 p-2.5 rounded-xl border border-white/5 space-y-1 font-mono text-xs">
-                  <div className="flex justify-between text-slate-400">
+                  <div
+                    className="flex justify-between text-slate-400 cursor-help"
+                    title={labText.tooltips.testedScope}
+                  >
                     <span>{labText.armsSection.testedScope}</span>
                     <span className="text-slate-200 font-bold">
                       {arm.testedPlayers}
                     </span>
                   </div>
-                  <div className="flex justify-between text-slate-400">
+                  <div
+                    className="flex justify-between text-slate-400 cursor-help"
+                    title={labText.tooltips.mae}
+                  >
                     <span>{labText.armsSection.armMaeVsProd}</span>
                     <span className="text-purple-300 font-bold">
                       {arm.currentMae} {arm.unit || "pts"} vs {arm.baselineMae}{" "}
@@ -358,7 +375,10 @@ export const MlLabView: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-mono">
+                <div
+                  className="flex items-center gap-1.5 text-[10px] text-slate-400 font-mono cursor-help"
+                  title={labText.tooltips.leadIndicator}
+                >
                   <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
                   <span className="truncate">{arm.leadIndicator}</span>
                 </div>
@@ -388,6 +408,7 @@ export const MlLabView: React.FC = () => {
                 <div
                   key={p.name}
                   className="py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
+                  title={`${p.name} (${p.team}): ${p.driver}`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-purple-500/20 text-purple-300 font-black text-xs flex items-center justify-center border border-purple-500/30 font-mono">
@@ -405,7 +426,10 @@ export const MlLabView: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-4 self-end sm:self-center">
-                    <div className="text-right font-mono">
+                    <div
+                      className="text-right font-mono cursor-help"
+                      title={labText.tooltips.divergence}
+                    >
                       <span className="text-[10px] text-slate-400 block">
                         {labText.divergencesSection.prodVsExp}
                       </span>
@@ -424,6 +448,7 @@ export const MlLabView: React.FC = () => {
                           ? "bg-emerald-950/80 text-emerald-300 border border-emerald-500/40"
                           : "bg-rose-950/80 text-rose-300 border border-rose-500/40"
                       }`}
+                      title={`${p.diff} xP divergence from baseline projection`}
                     >
                       {isPositive ? (
                         <ArrowUpRight className="w-3.5 h-3.5" />

@@ -30,6 +30,7 @@ export const AiPerformanceView: React.FC = () => {
     getPlayerGameweekXp,
     liveEventPoints,
     fetchLivePointsForGameweek,
+    fetchHistoricalPicksForGameweek,
     teamMap,
   } = usePlannerStore();
 
@@ -37,13 +38,14 @@ export const AiPerformanceView: React.FC = () => {
     "all" | "captaincy" | "transfers" | "attribution"
   >("all");
 
-  // Eagerly fetch real historical match points for all completed gameweeks to power backtest
+  // Eagerly fetch real historical match points and official picks for all completed gameweeks to power backtest
   React.useEffect(() => {
     const completedEvents = events.filter((e) => e.finished || e.is_current);
     completedEvents.forEach((ev) => {
       fetchLivePointsForGameweek(ev.id);
+      fetchHistoricalPicksForGameweek(ev.id);
     });
-  }, [events, fetchLivePointsForGameweek]);
+  }, [events, fetchLivePointsForGameweek, fetchHistoricalPicksForGameweek]);
 
   const backtest = useMemo(() => {
     return calculateAiSeasonBacktest(

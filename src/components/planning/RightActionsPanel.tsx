@@ -3,6 +3,8 @@ import { usePlannerStore } from "@/store/usePlannerStore";
 import { SquadPick } from "@/types/fpl";
 import { KitIcon } from "@/components/ui/KitIcon";
 import { formatMoney } from "@/lib/fpl-rules";
+import { OptimizationResult } from "@/utils/aiOptimizer";
+import { UI_TEXT } from "@/lib/ui-text";
 import { Wand2, Edit3, Trash2, AlertCircle, ShieldAlert } from "lucide-react";
 
 interface RightActionsPanelProps {
@@ -26,7 +28,7 @@ export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({
     isGameweekLocked,
   } = usePlannerStore();
 
-  const [optResult, setOptResult] = useState<any | null>(null);
+  const [optResult, setOptResult] = useState<OptimizationResult | null>(null);
   const [showResetAllConfirm, setShowResetAllConfirm] = useState(false);
   const isLocked = isGameweekLocked(selectedGameweek);
 
@@ -50,7 +52,7 @@ export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({
         <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
           <span className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
             <Wand2 className="w-3.5 h-3.5 text-cyan-400" />
-            Lineup Optimizer
+            {UI_TEXT.optimizer.title}
           </span>
           <span className="text-[10px] text-slate-400">OpenFPL ML</span>
         </div>
@@ -59,15 +61,27 @@ export const RightActionsPanel: React.FC<RightActionsPanelProps> = ({
           onClick={handleAutoOptimize}
           className="w-full py-2.5 px-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-white/15 text-slate-200 hover:text-white font-black text-xs flex items-center justify-center gap-1.5 transition active:scale-98"
         >
-          <Wand2 className="w-3.5 h-3.5 text-amber-400" />⚡ Auto-Optimize (11
-          &amp; C)
+          <Wand2 className="w-3.5 h-3.5 text-amber-400" />
+          {UI_TEXT.optimizer.autoOptimize11AndC}
         </button>
 
         {optResult && (
-          <p className="text-[10.5px] text-emerald-400 font-bold text-center py-0.5 animate-in fade-in leading-tight">
-            ✨ {optResult.formation} · {optResult.captainName} (C) ·{" "}
-            {optResult.totalProjectedPoints} xP
-          </p>
+          <div className="flex flex-col items-center gap-1 py-0.5 animate-in fade-in">
+            <p className="text-[10.5px] text-emerald-400 font-bold text-center leading-tight flex items-center gap-1.5 flex-wrap justify-center">
+              <span>✨ {optResult.formation} · {optResult.captainName} (C) · {optResult.totalProjectedPoints} xP</span>
+              <span
+                className={`px-1.5 py-0.2 rounded-md text-[9.5px] font-black border ${
+                  optResult.pointsGain > 0
+                    ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                    : "bg-cyan-500/20 text-cyan-300 border-cyan-500/40"
+                }`}
+              >
+                {optResult.pointsGain > 0
+                  ? UI_TEXT.optimizer.gainBadge(optResult.pointsGain)
+                  : UI_TEXT.optimizer.optimalBadge}
+              </span>
+            </p>
+          </div>
         )}
 
         <button

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { usePlannerStore } from "@/store/usePlannerStore";
 import { PlayerCard } from "./PlayerCard";
 import { SquadPick } from "@/types/fpl";
+import { UI_TEXT } from "@/lib/ui-text";
 import { CheckCircle2, Wand2, Loader2 } from "lucide-react";
 
 export const FootballPitch: React.FC = () => {
@@ -196,7 +197,17 @@ export const FootballPitch: React.FC = () => {
                 const res = optimizeSquadLineup(selectedGameweek);
                 if (res) {
                   setToastMessage(
-                    `✨ Optimized ${res.formation} · ${res.captainName} (C) · ${res.totalProjectedPoints} xP`,
+                    res.pointsGain > 0
+                      ? UI_TEXT.optimizer.pitchToastGained(
+                          res.formation,
+                          res.captainName,
+                          res.totalProjectedPoints,
+                          res.pointsGain,
+                        )
+                      : UI_TEXT.optimizer.pitchToastOptimal(
+                          res.formation,
+                          res.totalProjectedPoints,
+                        ),
                   );
                   setShowUnlockToast(true);
                   setTimeout(() => setShowUnlockToast(false), 4000);

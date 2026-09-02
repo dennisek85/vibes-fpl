@@ -305,9 +305,29 @@ export const createPersistenceSlice: StateCreator<
           chip: gwChip,
         });
 
+        // Use historical official squad picks if available for past gameweeks
+        let gwSquad = [...rollingSquad];
+        if (data.history_picks && data.history_picks[gw]?.picks) {
+          gwSquad = data.history_picks[gw].picks.map((p: any) => ({
+            element: p.element,
+            position: p.position,
+            is_captain: p.is_captain,
+            is_vice_captain: p.is_vice_captain,
+            multiplier: p.multiplier,
+            purchase_price:
+              p.purchase_price ||
+              get().playerMap.get(p.element)?.now_cost ||
+              50,
+            selling_price:
+              p.selling_price ||
+              get().playerMap.get(p.element)?.now_cost ||
+              50,
+          }));
+        }
+
         plans[gw] = {
           gameweek: gw,
-          squad: [...rollingSquad],
+          squad: gwSquad,
           transfersIn: [],
           transfersOut: [],
           chip: gwChip,
@@ -347,10 +367,22 @@ export const createPersistenceSlice: StateCreator<
     const { players, nextGameweekId } = get();
     if (!players.length) return;
 
-    const gks = players.filter((p) => p.element_type === 1).slice(0, 2);
-    const defs = players.filter((p) => p.element_type === 2).slice(0, 5);
-    const mids = players.filter((p) => p.element_type === 3).slice(0, 5);
-    const fwds = players.filter((p) => p.element_type === 4).slice(0, 3);
+    const gks = players
+      .filter((p) => p.element_type === 1)
+      .sort((a, b) => b.now_cost - a.now_cost)
+      .slice(0, 2);
+    const defs = players
+      .filter((p) => p.element_type === 2)
+      .sort((a, b) => b.now_cost - a.now_cost)
+      .slice(0, 5);
+    const mids = players
+      .filter((p) => p.element_type === 3)
+      .sort((a, b) => b.now_cost - a.now_cost)
+      .slice(0, 5);
+    const fwds = players
+      .filter((p) => p.element_type === 4)
+      .sort((a, b) => b.now_cost - a.now_cost)
+      .slice(0, 3);
 
     const squadElements = [
       gks[0],
