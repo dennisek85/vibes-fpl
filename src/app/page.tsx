@@ -175,13 +175,34 @@ export default function PlannerPage() {
       {/* Top Navigation Header with Centered Gameweek Stepper & View Switcher */}
       <header className="w-full bg-slate-950/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 px-2 sm:px-4 py-1.5 flex justify-center overflow-x-hidden">
         <div className="w-full max-w-[99vw] flex items-center justify-between gap-1 sm:gap-3">
-          {/* Left: Brand, View Switcher Hamburger & Team */}
+          {/* Left: Brand & View Switcher Hamburger */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-950/50 shrink-0">
               <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
 
-            {/* View Switcher Hamburger Menu next to Site Logo */}
+            {/* Brand Title */}
+            <div>
+              <div className="flex items-center gap-1">
+                <h1 className="text-xs sm:text-sm md:text-base font-extrabold text-white tracking-tight leading-tight">
+                  <span className="hidden sm:inline">FPL Squad </span>Planner
+                </h1>
+                <span className="hidden sm:inline text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-1 py-0.2 rounded border border-emerald-500/30">
+                  {UI_TEXT.app.season}
+                </span>
+              </div>
+              {teamSummary ? (
+                <p className="hidden sm:block text-[10.5px] text-slate-400 truncate max-w-[130px] sm:max-w-[200px] leading-tight">
+                  {teamSummary.name}
+                </p>
+              ) : (
+                <p className="hidden sm:block text-[10.5px] text-slate-400 leading-tight">
+                  {UI_TEXT.app.enterPinOrImport}
+                </p>
+              )}
+            </div>
+
+            {/* View Switcher Hamburger Menu next to Page Name */}
             <div className="relative" ref={viewMenuRef}>
               <button
                 onClick={() => setIsViewMenuOpen(!isViewMenuOpen)}
@@ -242,7 +263,9 @@ export default function PlannerPage() {
                       <LayoutGrid className="w-4 h-4 text-emerald-400" />
                       <span>{UI_TEXT.app.views.pitch}</span>
                     </div>
-                    {currentView === "pitch" && <Check className="w-3.5 h-3.5" />}
+                    {currentView === "pitch" && (
+                      <Check className="w-3.5 h-3.5" />
+                    )}
                   </button>
 
                   <button
@@ -260,7 +283,9 @@ export default function PlannerPage() {
                       <TableProperties className="w-4 h-4 text-emerald-400" />
                       <span>{UI_TEXT.app.views.matrix}</span>
                     </div>
-                    {currentView === "matrix" && <Check className="w-3.5 h-3.5" />}
+                    {currentView === "matrix" && (
+                      <Check className="w-3.5 h-3.5" />
+                    )}
                   </button>
 
                   <button
@@ -331,26 +356,6 @@ export default function PlannerPage() {
                     </button>
                   )}
                 </div>
-              )}
-            </div>
-
-            <div>
-              <div className="flex items-center gap-1">
-                <h1 className="text-xs sm:text-sm md:text-base font-extrabold text-white tracking-tight leading-tight">
-                  <span className="hidden sm:inline">FPL Squad </span>Planner
-                </h1>
-                <span className="hidden sm:inline text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-1 py-0.2 rounded border border-emerald-500/30">
-                  {UI_TEXT.app.season}
-                </span>
-              </div>
-              {teamSummary ? (
-                <p className="hidden sm:block text-[10.5px] text-slate-400 truncate max-w-[130px] sm:max-w-[200px] leading-tight">
-                  {teamSummary.name}
-                </p>
-              ) : (
-                <p className="hidden sm:block text-[10.5px] text-slate-400 leading-tight">
-                  {UI_TEXT.app.enterPinOrImport}
-                </p>
               )}
             </div>
           </div>
