@@ -173,8 +173,8 @@ export default function PlannerPage() {
       {!isAuthenticated && <PinAuthModal onSuccess={handleAuthSuccess} />}
 
       {/* Top Navigation Header with Centered Gameweek Stepper & View Switcher */}
-      <header className="w-full bg-slate-950/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 px-2 sm:px-4 py-1.5 flex justify-center overflow-x-hidden">
-        <div className="w-full max-w-[99vw] flex items-center justify-between gap-1 sm:gap-3">
+      <header className="w-full bg-slate-950/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50 px-2 sm:px-4 py-1.5 flex justify-center overflow-visible">
+        <div className="w-full max-w-[99vw] flex items-center justify-between gap-1 sm:gap-3 overflow-visible">
           {/* Left: Brand & View Switcher Hamburger */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-950/50 shrink-0">
@@ -243,7 +243,12 @@ export default function PlannerPage() {
 
               {/* Dropdown Menu Popover */}
               {isViewMenuOpen && (
-                <div className="absolute left-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-xl border border-white/15 rounded-2xl p-1.5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150 space-y-1">
+                <>
+                  <div
+                    className="fixed inset-0 z-[90] bg-transparent"
+                    onClick={() => setIsViewMenuOpen(false)}
+                  />
+                  <div className="absolute left-0 top-full mt-2 w-56 bg-slate-900/95 backdrop-blur-xl border border-white/15 rounded-2xl p-1.5 shadow-2xl z-[100] animate-in fade-in slide-in-from-top-2 duration-150 space-y-1">
                   <div className="px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-slate-400 font-mono border-b border-white/10">
                     Switch Workspace View
                   </div>
@@ -356,9 +361,10 @@ export default function PlannerPage() {
                     </button>
                   )}
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </div>
+        </div>
 
           {/* Center: Gameweek Arrow Stepper ONLY (Strictly Centered) */}
           <div className="flex-1 flex items-center justify-center">
