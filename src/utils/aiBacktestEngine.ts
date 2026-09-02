@@ -247,27 +247,45 @@ export function calculateAiSeasonBacktest(
       aiCumulative: aiCum,
       alpha: aiCum - actualCum,
     });
-
-    // 6. Accumulate Stat Attribution from candidate starters
-    candidatePool.slice(0, 11).forEach((p: FPLPlayer) => {
-      const isDef = p.element_type === 1 || p.element_type === 2;
-      const isMid = p.element_type === 3;
-
-      if (isDef && p.clean_sheets > 0) {
-        csPoints += p.clean_sheets * 4;
-      }
-      if (p.goals_scored > 0) {
-        const ptsPerGoal = isDef ? 6 : isMid ? 5 : 4;
-        goalPoints += p.goals_scored * ptsPerGoal;
-        goalCount += p.goals_scored;
-      }
-      if (p.assists > 0) {
-        assistPoints += p.assists * 3;
-        assistCount += p.assists;
-      }
-      bonusPoints += p.bps || 0;
-    });
   }
+
+  // 6. Stat Attribution from actual starting XI across completed Gameweeks (Single Source of Truth)
+  const uniqueStarterIds = new Set<number>();
+  completedEvents.forEach((ev) => {
+    const plan = gameweekPlans[ev.id];
+    if (plan?.squad && plan.squad.length > 0) {
+      plan.squad.forEach((pick: SquadPick) => {
+        if (pick.position <= 11) {
+          uniqueStarterIds.add(pick.element);
+        }
+      });
+    }
+  });
+
+  const activeStarters = (
+    uniqueStarterIds.size > 0
+      ? Array.from(uniqueStarterIds).map((id) => playerMap.get(id))
+      : players.slice(0, 15)
+  ).filter(Boolean) as FPLPlayer[];
+
+  activeStarters.forEach((p: FPLPlayer) => {
+    const isDef = p.element_type === 1 || p.element_type === 2;
+    const isMid = p.element_type === 3;
+    const ptsPerGoal = isDef ? 6 : isMid ? 5 : 4;
+
+    if (isDef && p.clean_sheets > 0) {
+      csPoints += p.clean_sheets * 4;
+    }
+    if (p.goals_scored > 0) {
+      goalPoints += p.goals_scored * ptsPerGoal;
+      goalCount += p.goals_scored;
+    }
+    if (p.assists > 0) {
+      assistPoints += p.assists * 3;
+      assistCount += p.assists;
+    }
+    bonusPoints += p.bonus || 0;
+  });
 
   const netAlpha = Math.max(0, aiCum - actualCum);
   const actualRank = teamSummary?.summary_overall_rank || 450000;
@@ -279,6 +297,19 @@ export function calculateAiSeasonBacktest(
     Math.round(actualRank * (1 - rankImprovementFactor)),
   );
 
+  // Calculate dynamic team value gain
+  const rawTeamValue = teamSummary?.last_deadline_value
+    ? teamSummary.last_deadline_value / 10
+    : 100.0;
+  const rawBank = teamSummary?.last_deadline_bank
+    ? teamSummary.last_deadline_bank / 10
+    : 0.0;
+  const totalValue = rawTeamValue + rawBank;
+  const dynamicTeamValueGain = Math.max(
+    0,
+    Number((totalValue - 100.0).toFixed(1)),
+  );
+
   // Calculate percentage splits for the 4 pillars
   const totalAttributed = Math.max(
     1,
@@ -287,12 +318,12 @@ export function calculateAiSeasonBacktest(
 
   const attribution: AttributionBreakdown = {
     cleanSheets: {
-      points: Math.round(csPoints / 3),
+      points: csPoints,
       label: "Clean Sheet Equity",
       percentage: Math.min(100, Math.round((csPoints / totalAttributed) * 100)),
     },
     goals: {
-      points: Math.round(goalPoints / 3),
+      points: goalPoints,
       count: goalCount,
       label: "Goal Threat Conversion",
       percentage: Math.min(
@@ -301,7 +332,7 @@ export function calculateAiSeasonBacktest(
       ),
     },
     assists: {
-      points: Math.round(assistPoints / 3),
+      points: assistPoints,
       count: assistCount,
       label: "Creativity & Assist Return",
       percentage: Math.min(
@@ -310,7 +341,7 @@ export function calculateAiSeasonBacktest(
       ),
     },
     bonus: {
-      points: Math.round(bonusPoints / 2),
+      points: bonusPoints,
       label: "BPS Magnetism",
       percentage: Math.min(
         100,
@@ -318,7 +349,7 @@ export function calculateAiSeasonBacktest(
       ),
     },
     teamValueGain: {
-      million: 0.8,
+      million: dynamicTeamValueGain,
       label: "Price Radar Team Value",
     },
   };

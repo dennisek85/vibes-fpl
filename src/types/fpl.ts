@@ -36,6 +36,7 @@ export interface FPLPlayer {
   influence?: string;
   ict_index?: string;
   bps?: number;
+  bonus?: number;
   goals_conceded?: number;
   yellow_cards?: number;
   red_cards?: number;
@@ -163,6 +164,8 @@ export interface EntrySummary {
   summary_overall_points: number;
   summary_overall_rank: number;
   current_event: number;
+  last_deadline_value?: number;
+  last_deadline_bank?: number;
 }
 
 export type ChipType = "none" | "wildcard" | "freehit" | "bboost" | "3xc";

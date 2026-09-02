@@ -231,16 +231,22 @@ export const AiPerformanceView: React.FC = () => {
                   <span className="text-sm font-bold text-slate-200 mt-0.5 block">
                     Actual:{" "}
                     <strong className="font-mono text-white">
-                      {pt.actualCumulative} pts
+                      {pt.actualPoints} pts
                     </strong>
+                    <span className="text-[11px] text-slate-400 font-mono font-normal ml-1">
+                      (Total: {pt.actualCumulative} pts)
+                    </span>
                   </span>
                 </div>
                 <div className="text-right">
                   <span className="text-sm font-black text-emerald-400 font-mono block">
-                    AI: {pt.aiCumulative} pts
+                    AI: {pt.aiPoints} pts
+                    <span className="text-[11px] text-emerald-300/70 font-mono font-normal ml-1">
+                      (Total: {pt.aiCumulative} pts)
+                    </span>
                   </span>
                   <span className="text-[11px] font-bold text-emerald-300 font-mono">
-                    +{pt.alpha} pts swing
+                    {pt.alpha >= 0 ? `+${pt.alpha}` : pt.alpha} pts swing
                   </span>
                 </div>
               </div>
