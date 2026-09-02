@@ -92,6 +92,8 @@ export interface UiStateSlice {
   ) => void;
   showAiPredictions: boolean;
   toggleAiPredictions: () => void;
+  lastSeenAuditGw: number;
+  markAuditReportAsSeen: (gw: number) => void;
 
   selectedPlayerForTransfer: number | null;
   selectedSlotForSwap: number | null;

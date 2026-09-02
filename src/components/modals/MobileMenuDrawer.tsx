@@ -60,6 +60,8 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
     openScoutModal,
     activePin,
     isSaving,
+    auditReports,
+    lastSeenAuditGw,
   } = usePlannerStore();
 
   const isLocked = isGameweekLocked(selectedGameweek);
@@ -75,6 +77,10 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
   };
 
   const squadRating = useSquadRating();
+
+  const hasUnreadAudit =
+    Boolean(auditReports && auditReports.length > 0) &&
+    auditReports[0].gw > lastSeenAuditGw;
 
   if (!isOpen) return null;
 
@@ -236,7 +242,7 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
                       setCurrentView("lab");
                       onClose();
                     }}
-                    className={`flex items-center justify-center gap-1 p-2 rounded-xl border text-[11px] font-black transition col-span-3 ${
+                    className={`relative flex items-center justify-center gap-1.5 p-2 rounded-xl border text-[11px] font-black transition col-span-3 ${
                       currentView === "lab"
                         ? "bg-gradient-to-r from-purple-600 to-cyan-600 border-purple-400 text-white shadow-md"
                         : "bg-slate-950 border-purple-500/30 text-purple-300 hover:text-white"
@@ -244,6 +250,12 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
                   >
                     <Sparkles className="w-3 h-3 text-purple-400" />
                     <span>🧪 Private ML Lab (A/B Shootout)</span>
+                    {hasUnreadAudit && (
+                      <span className="relative flex h-2 w-2 ml-1" title="New unread Post-Mortem audit report">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                      </span>
+                    )}
                   </button>
                 )}
             </div>

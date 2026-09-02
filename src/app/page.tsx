@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { usePlannerStore } from "@/store/usePlannerStore";
 import { FootballPitch } from "@/components/pitch/FootballPitch";
 import { BenchBar } from "@/components/pitch/BenchBar";
@@ -57,6 +57,8 @@ export default function PlannerPage() {
     isSaving,
     events,
     fetchLivePointsForGameweek,
+    auditReports,
+    lastSeenAuditGw,
   } = usePlannerStore();
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -140,6 +142,13 @@ export default function PlannerPage() {
     currentChip,
     squadRating,
   } = useSquadTelemetry();
+
+  const hasUnreadAudit = useMemo(() => {
+    return (
+      Boolean(auditReports && auditReports.length > 0) &&
+      auditReports[0].gw > lastSeenAuditGw
+    );
+  }, [auditReports, lastSeenAuditGw]);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col items-center">
@@ -298,7 +307,7 @@ export default function PlannerPage() {
               {isLabUnlocked && showAiPredictions && (
                 <button
                   onClick={() => setCurrentView("lab")}
-                  className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
+                  className={`relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${
                     currentView === "lab"
                       ? "bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg shadow-purple-500/30"
                       : "text-purple-300/80 hover:text-purple-200 hover:bg-purple-950/40"
@@ -307,6 +316,12 @@ export default function PlannerPage() {
                 >
                   <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
                   <span className="hidden md:inline">ML Lab</span>
+                  {hasUnreadAudit && (
+                    <span className="relative flex h-2 w-2 ml-0.5" title="New unread Post-Mortem audit report">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
+                  )}
                 </button>
               )}
             </div>

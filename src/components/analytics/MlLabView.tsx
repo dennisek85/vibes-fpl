@@ -36,17 +36,32 @@ export const MlLabView: React.FC = () => {
     approveAuditCalibration,
     revertCalibrationToBaseline,
     showAiPredictions,
+    lastSeenAuditGw,
+    markAuditReportAsSeen,
   } = usePlannerStore();
   const [activeTab, setActiveTab] = useState<
     "arms" | "divergences" | "postMortem" | "architecture"
   >("arms");
   const labText = UI_TEXT.mlLab;
 
+  const hasUnreadAudit = useMemo(() => {
+    return (
+      Boolean(auditReports && auditReports.length > 0) &&
+      auditReports[0].gw > lastSeenAuditGw
+    );
+  }, [auditReports, lastSeenAuditGw]);
+
   useEffect(() => {
     if (!showAiPredictions) {
       setCurrentView("pitch");
     }
   }, [showAiPredictions, setCurrentView]);
+
+  useEffect(() => {
+    if (activeTab === "postMortem" && auditReports.length > 0) {
+      markAuditReportAsSeen(auditReports[0].gw);
+    }
+  }, [activeTab, auditReports, markAuditReportAsSeen]);
 
   // 1. Multi-Armed Factorial Experimental Suite (Dynamic Out-of-Sample Shootout)
   const experimentalArms = useMemo(() => {
@@ -133,14 +148,19 @@ export const MlLabView: React.FC = () => {
             {labText.tabs.divergences}
           </button>
           <button
-            onClick={() => setActiveTab("postMortem")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
+            className={`relative flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
               activeTab === "postMortem"
                 ? "bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30 font-extrabold"
                 : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10"
             }`}
           >
-            {labText.tabs.postMortem}
+            <span>{labText.tabs.postMortem}</span>
+            {hasUnreadAudit && (
+              <span className="relative flex h-2 w-2" title="New unread Post-Mortem audit report">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+              </span>
+            )}
           </button>
           <button
             onClick={() => setActiveTab("architecture")}

@@ -64,6 +64,19 @@ export const createUiStateSlice: StateCreator<
     get().saveCurrentPlanToServer();
   },
 
+  lastSeenAuditGw:
+    typeof window !== "undefined"
+      ? parseInt(localStorage.getItem("vibes_last_seen_audit_gw") || "0", 10)
+      : 0,
+  markAuditReportAsSeen: (gw: number) => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("vibes_last_seen_audit_gw", String(gw));
+      } catch {}
+    }
+    set({ lastSeenAuditGw: gw });
+  },
+
   selectedPlayerForTransfer: null,
   selectedSlotForSwap: null,
   isMarketOpen: false,
