@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { usePlannerStore } from "@/store/usePlannerStore";
 import { UI_TEXT } from "@/lib/ui-text";
 import {
@@ -35,11 +35,18 @@ export const MlLabView: React.FC = () => {
     auditReports,
     approveAuditCalibration,
     revertCalibrationToBaseline,
+    showAiPredictions,
   } = usePlannerStore();
   const [activeTab, setActiveTab] = useState<
     "arms" | "divergences" | "postMortem" | "architecture"
   >("arms");
   const labText = UI_TEXT.mlLab;
+
+  useEffect(() => {
+    if (!showAiPredictions) {
+      setCurrentView("pitch");
+    }
+  }, [showAiPredictions, setCurrentView]);
 
   // 1. Multi-Armed Factorial Experimental Suite (Dynamic Out-of-Sample Shootout)
   const experimentalArms = useMemo(() => {

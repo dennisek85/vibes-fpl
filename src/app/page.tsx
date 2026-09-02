@@ -295,7 +295,7 @@ export default function PlannerPage() {
                 </span>
               </button>
 
-              {isLabUnlocked && (
+              {isLabUnlocked && showAiPredictions && (
                 <button
                   onClick={() => setCurrentView("lab")}
                   className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-black transition-all ${

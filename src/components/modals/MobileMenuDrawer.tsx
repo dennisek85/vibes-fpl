@@ -228,7 +228,8 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
                 <span>AI Alpha</span>
               </button>
 
-              {typeof window !== "undefined" &&
+              {showAiPredictions &&
+                typeof window !== "undefined" &&
                 localStorage.getItem("vibes_lab_mode") === "true" && (
                   <button
                     onClick={() => {
