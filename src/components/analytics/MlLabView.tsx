@@ -148,7 +148,13 @@ export const MlLabView: React.FC = () => {
             {labText.tabs.divergences}
           </button>
           <button
-            className={`relative flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
+            onClick={() => {
+              setActiveTab("postMortem");
+              if (auditReports && auditReports.length > 0) {
+                markAuditReportAsSeen(auditReports[0].gw);
+              }
+            }}
+            className={`relative flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeTab === "postMortem"
                 ? "bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30 font-extrabold"
                 : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10"
