@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { usePlannerStore } from "@/store/usePlannerStore";
 import { UI_TEXT } from "@/lib/ui-text";
+import { isMlLabAuthorized } from "@/lib/auth";
 import {
   evaluateExperimentalArms,
   calculateUpcomingDivergences,
@@ -38,6 +39,8 @@ export const MlLabView: React.FC = () => {
     showAiPredictions,
     lastSeenAuditGw,
     markAuditReportAsSeen,
+    teamSummary,
+    activePin,
   } = usePlannerStore();
   const [activeTab, setActiveTab] = useState<
     "arms" | "divergences" | "postMortem" | "architecture"
@@ -52,10 +55,10 @@ export const MlLabView: React.FC = () => {
   }, [auditReports, lastSeenAuditGw]);
 
   useEffect(() => {
-    if (!showAiPredictions) {
+    if (!showAiPredictions || !isMlLabAuthorized(teamSummary, activePin)) {
       setCurrentView("pitch");
     }
-  }, [showAiPredictions, setCurrentView]);
+  }, [showAiPredictions, teamSummary, activePin, setCurrentView]);
 
   useEffect(() => {
     if (activeTab === "postMortem" && auditReports.length > 0) {
@@ -84,9 +87,6 @@ export const MlLabView: React.FC = () => {
   }, [players, selectedGameweek, getPlayerGameweekXp, teams]);
 
   const exitLab = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("vibes_lab_mode");
-    }
     setCurrentView("pitch");
   };
 

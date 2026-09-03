@@ -19,7 +19,7 @@ import { LineupRiskRadar } from "@/components/planning/LineupRiskRadar";
 import { AiPerformanceView } from "@/components/analytics/AiPerformanceView";
 import { MlLabView } from "@/components/analytics/MlLabView";
 import { PlayerDetailModal } from "@/components/player/PlayerDetailModal";
-import { logoutPin, isPinVerified } from "@/lib/auth";
+import { logoutPin, isPinVerified, isMlLabAuthorized } from "@/lib/auth";
 import { formatMoney } from "@/lib/fpl-rules";
 import { useSquadTelemetry } from "@/hooks/useSquadTelemetry";
 import { UI_TEXT } from "@/lib/ui-text";
@@ -68,9 +68,13 @@ export default function PlannerPage() {
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isLabUnlocked, setIsLabUnlocked] = useState(false);
   const [isViewMenuOpen, setIsViewMenuOpen] = useState(false);
   const viewMenuRef = useRef<HTMLDivElement>(null);
+
+  // Strictly gate ML Lab access to authorized user: fpl_user_164332_3935
+  const isLabUnlocked = useMemo(() => {
+    return isMlLabAuthorized(teamSummary, activePin);
+  }, [teamSummary, activePin]);
 
   useEffect(() => {
     if (!isViewMenuOpen) return;
@@ -89,24 +93,14 @@ export default function PlannerPage() {
   useEffect(() => {
     initFPLData();
     setIsAuthenticated(isPinVerified());
+  }, [initFPLData]);
 
-    if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      const isLabParam =
-        urlParams.get("lab") === "1" ||
-        urlParams.get("lab") === "true" ||
-        urlParams.get("ml") === "true";
-      const isStored = localStorage.getItem("vibes_lab_mode") === "true";
-
-      if (isLabParam) {
-        localStorage.setItem("vibes_lab_mode", "true");
-        setIsLabUnlocked(true);
-        setCurrentView("lab");
-      } else if (isStored) {
-        setIsLabUnlocked(true);
-      }
+  // Guard: If current view is "lab" but user is unauthorized or AI predictions disabled, boot back to pitch
+  useEffect(() => {
+    if (currentView === "lab" && (!isLabUnlocked || !showAiPredictions)) {
+      setCurrentView("pitch");
     }
-  }, [initFPLData, setCurrentView]);
+  }, [currentView, isLabUnlocked, showAiPredictions, setCurrentView]);
 
   // Smart in-view live match poller (every 60s when viewing an ongoing gameweek)
   useEffect(() => {

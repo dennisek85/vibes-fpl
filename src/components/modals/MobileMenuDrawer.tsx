@@ -19,6 +19,7 @@ import {
   Layers,
 } from "lucide-react";
 import { useSquadRating } from "@/hooks/useSquadRating";
+import { isMlLabAuthorized } from "@/lib/auth";
 
 interface MobileMenuDrawerProps {
   isOpen: boolean;
@@ -58,6 +59,7 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
     setFixtureHorizon,
     showAiPredictions,
     openScoutModal,
+    teamSummary,
     activePin,
     isSaving,
     auditReports,
@@ -235,8 +237,7 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
               </button>
 
               {showAiPredictions &&
-                typeof window !== "undefined" &&
-                localStorage.getItem("vibes_lab_mode") === "true" && (
+                isMlLabAuthorized(teamSummary, activePin) && (
                   <button
                     onClick={() => {
                       setCurrentView("lab");
