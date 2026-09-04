@@ -5,7 +5,8 @@ const AUTHORIZED_LAB_USER_HASH =
   "8551223b27ce7a972fb4627e066d53e752816504b2cd9c3441ddf559c6cb07da";
 
 // Synchronous SHA-256 hashing utility (zero external dependencies)
-function sha256Sync(ascii: string): string {
+// Exported so all callers can hash PINs before sending over the network
+export function sha256Sync(ascii: string): string {
   function rightRotate(value: number, amount: number) {
     return (value >>> amount) | (value << (32 - amount));
   }

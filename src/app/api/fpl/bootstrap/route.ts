@@ -3,14 +3,33 @@ import { updateAndGetPriceTelemetry } from "@/lib/priceTracker";
 
 let cachedData: any = null;
 let lastFetchTime = 0;
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes in-memory cache for fast, warning-free delivery
+
+function getEffectiveCacheTtlMs(data: any): number {
+  if (!data?.events || !Array.isArray(data.events)) {
+    return 5 * 60 * 1000;
+  }
+  const nextEvent = data.events.find((e: any) => e.is_next);
+  if (nextEvent?.deadline_time) {
+    const deadlineMs = new Date(nextEvent.deadline_time).getTime();
+    const msUntilDeadline = deadlineMs - Date.now();
+    // Within 60 minutes of deadline: drop cache TTL to 30 seconds for live team & injury news
+    if (msUntilDeadline > 0 && msUntilDeadline <= 60 * 60 * 1000) {
+      return 30 * 1000;
+    }
+  }
+  return 5 * 60 * 1000;
+}
 
 export async function GET() {
   const now = Date.now();
-  if (cachedData && now - lastFetchTime < CACHE_TTL_MS) {
+  const effectiveTtl = getEffectiveCacheTtlMs(cachedData);
+  if (cachedData && now - lastFetchTime < effectiveTtl) {
+    const isNearDeadline = effectiveTtl <= 30 * 1000;
     return NextResponse.json(cachedData, {
       headers: {
-        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+        "Cache-Control": isNearDeadline
+          ? "public, s-maxage=30, stale-while-revalidate=60"
+          : "public, s-maxage=300, stale-while-revalidate=600",
       },
     });
   }
@@ -46,9 +65,12 @@ export async function GET() {
     cachedData = data;
     lastFetchTime = now;
 
+    const isNearDeadline = getEffectiveCacheTtlMs(data) <= 30 * 1000;
     return NextResponse.json(data, {
       headers: {
-        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+        "Cache-Control": isNearDeadline
+          ? "public, s-maxage=30, stale-while-revalidate=60"
+          : "public, s-maxage=300, stale-while-revalidate=600",
       },
     });
   } catch (error: any) {

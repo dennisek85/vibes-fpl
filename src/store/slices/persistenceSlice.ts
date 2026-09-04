@@ -6,7 +6,7 @@ import {
   PlayedChipInfo,
 } from "../types";
 import { SquadPick, PlannedGameweek, ChipType } from "@/types/fpl";
-import { saveActivePin } from "@/lib/auth";
+import { saveActivePin, sha256Sync } from "@/lib/auth";
 import { calculateGameweekFinancials } from "@/lib/fpl-rules";
 import { recalculateMultiGameweekPlans } from "./gameweekPlanSlice";
 
@@ -24,6 +24,9 @@ export const createPersistenceSlice: StateCreator<
   loadUserPlanByPin: async (pin: string, teamId?: number | null) => {
     set({ isLoading: true, activePin: pin });
     saveActivePin(pin);
+
+    // Hash PIN before it ever leaves the browser — raw PIN never travels over the network
+    const pinHash = sha256Sync(pin.trim());
 
     const applyPlanState = (p: any) => {
       const playedChips = p.playedChips || [];
@@ -101,20 +104,30 @@ export const createPersistenceSlice: StateCreator<
         isLoading: false,
       });
 
+      // Persist team ID so isMlLabAuthorized can verify on returning visits
+      if (typeof window !== "undefined" && p.teamSummary?.id) {
+        try {
+          localStorage.setItem("fpl_last_team_id", String(p.teamSummary.id));
+        } catch {}
+      }
+
       recalculateMultiGameweekPlans(get, set);
 
-      // Save locally as backup
+      // Save locally as backup (keyed by hash, not raw PIN)
       try {
         if (typeof window !== "undefined") {
-          localStorage.setItem("fpl_plan_" + pin, JSON.stringify(p));
+          localStorage.setItem("fpl_plan_" + pinHash, JSON.stringify(p));
         }
       } catch {}
     };
 
     try {
-      const res = await fetch(
-        `/api/user-plan?pin=${encodeURIComponent(pin)}${teamId ? `&teamId=${encodeURIComponent(teamId)}` : ""}`,
-      );
+      // POST with hashed PIN in JSON body — raw PIN never appears in URL or server logs
+      const res = await fetch("/api/user-plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pinHash, teamId: teamId ?? null, action: "load" }),
+      });
       if (res.ok) {
         const data = await res.json();
         if (data.exists && data.plan) {
@@ -154,7 +167,7 @@ export const createPersistenceSlice: StateCreator<
 
       // Fallback to local storage if server has no record (e.g. serverless cold start)
       if (typeof window !== "undefined") {
-        const cached = localStorage.getItem("fpl_plan_" + pin);
+        const cached = localStorage.getItem("fpl_plan_" + pinHash);
         if (cached) {
           const p = JSON.parse(cached);
           if (p && p.teamSummary) {
@@ -174,7 +187,7 @@ export const createPersistenceSlice: StateCreator<
       );
       try {
         if (typeof window !== "undefined") {
-          const cached = localStorage.getItem("fpl_plan_" + pin);
+          const cached = localStorage.getItem("fpl_plan_" + pinHash);
           if (cached) {
             const p = JSON.parse(cached);
             if (p && p.teamSummary) {
@@ -207,9 +220,10 @@ export const createPersistenceSlice: StateCreator<
     if (!activePin || !teamSummary) return;
 
     set({ isSaving: true });
+    const pinHash = sha256Sync(activePin.trim());
     try {
       const planPayload = {
-        pin: activePin,
+        pinHash,
         teamSummary,
         teamHistoryCurrent,
         playedChips,
@@ -226,7 +240,7 @@ export const createPersistenceSlice: StateCreator<
       try {
         if (typeof window !== "undefined") {
           localStorage.setItem(
-            "fpl_plan_" + activePin,
+            "fpl_plan_" + pinHash,
             JSON.stringify(planPayload),
           );
         }

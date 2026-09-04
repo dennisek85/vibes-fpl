@@ -131,6 +131,7 @@ export const createAiOptimizerSlice: StateCreator<
       selectedGameweek,
       fixtureHorizon,
       aiProjectionsMap,
+      activeCalibrations,
     } = get();
     const limit = count !== undefined ? count : fixtureHorizon;
     const player = playerMap.get(playerId);
@@ -179,6 +180,7 @@ export const createAiOptimizerSlice: StateCreator<
             oppTeam,
             epBase,
             gw,
+            activeCalibrations,
           );
         }
 
@@ -199,7 +201,7 @@ export const createAiOptimizerSlice: StateCreator<
   },
 
   getPlayerGameweekXp: (playerId: number, gameweek: number): number => {
-    const { aiProjectionsMap, playerMap, teamMap, fixtures } = get();
+    const { aiProjectionsMap, playerMap, teamMap, fixtures, activeCalibrations } = get();
     const p = playerMap.get(playerId);
     if (!p) return 0.0;
 
@@ -250,6 +252,7 @@ export const createAiOptimizerSlice: StateCreator<
           oppTeam,
           undefined,
           gameweek,
+          activeCalibrations,
         );
       }
       const finalVal = Math.round(totalMatchXp * 10) / 10;

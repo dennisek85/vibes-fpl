@@ -1,4 +1,5 @@
 import { FPLPlayer, FPLTeam, SquadPick } from "@/types/fpl";
+import { HIT_COST_POINTS } from "@/lib/fpl-constants";
 
 export interface TransferRecommendation {
   playerOut: FPLPlayer;
@@ -342,7 +343,7 @@ export function analyzeTransferHit(
 ): HitAnalysisResult {
   const transfersCount = transfersInIds.length;
   const extraTransfers = Math.max(0, transfersCount - availableFT);
-  const hitPenaltyPoints = extraTransfers * 4;
+  const hitPenaltyPoints = extraTransfers * HIT_COST_POINTS;
   const hasPlannedHit = hitPenaltyPoints > 0;
 
   let immediateGain = 0;
@@ -382,18 +383,18 @@ export function analyzeTransferHit(
   let verdictExplanation = `You have ${availableFT} Free Transfer(s) available and ${transfersCount} planned transfer(s). No point deduction incurred.`;
 
   if (hasPlannedHit) {
-    if (netTwoGwGain >= 2.0) {
+    if (netThreeGwGain >= 4.0) {
       verdict = "STRONG_YES";
-      verdictHeadline = `🟢 Highly Profitable Hit (+${netTwoGwGain} net pts)`;
-      verdictExplanation = `Your incoming transfers generate +${twoGwGain} xP over the next 2 gameweeks, easily covering the -${hitPenaltyPoints} pt penalty with a net profit of +${netTwoGwGain} pts!`;
-    } else if (netTwoGwGain >= 0.0) {
+      verdictHeadline = `🟢 Highly Profitable Hit (+${netThreeGwGain} net pts / 3-GW)`;
+      verdictExplanation = `Your incoming transfers generate +${threeGwGain} xP over the next 3 gameweeks, easily covering the -${hitPenaltyPoints} pt penalty with a net profit of +${netThreeGwGain} pts!`;
+    } else if (netThreeGwGain >= 0.0) {
       verdict = "MARGINAL";
-      verdictHeadline = `🟡 Marginal / 50-50 Call (+${netTwoGwGain} net pts)`;
-      verdictExplanation = `Your incoming transfers generate +${twoGwGain} xP over 2 gameweeks, which barely offsets the -${hitPenaltyPoints} pt hit. Consider holding or waiting for free transfers.`;
+      verdictHeadline = `🟡 Marginal / 50-50 Call (+${netThreeGwGain} net pts / 3-GW)`;
+      verdictExplanation = `Your incoming transfers generate +${threeGwGain} xP over 3 gameweeks, which barely offsets the -${hitPenaltyPoints} pt hit (+${netThreeGwGain} net pts). Consider holding or waiting for free transfers.`;
     } else {
       verdict = "AVOID_HIT";
-      verdictHeadline = `🔴 Avoid Taking Hit (${netTwoGwGain} net pts)`;
-      verdictExplanation = `The projected improvement (+${twoGwGain} xP) does not recover the -${hitPenaltyPoints} point penalty. We recommend rolling your transfer instead.`;
+      verdictHeadline = `🔴 Avoid Taking Hit (${netThreeGwGain} net pts / 3-GW)`;
+      verdictExplanation = `The projected 3-gameweek improvement (+${threeGwGain} xP) does not recover the -${hitPenaltyPoints} point penalty (${netThreeGwGain} net pts). We recommend rolling your transfer instead.`;
     }
   }
 
@@ -486,7 +487,7 @@ export function analyzeTransferHit(
 
             const twoGwPointDelta = Math.round((inTwoGw - outTwoGw) * 10) / 10;
             const netProfitAfterHit =
-              Math.round((twoGwPointDelta - 4.0) * 10) / 10;
+              Math.round((twoGwPointDelta - HIT_COST_POINTS) * 10) / 10;
 
             if (netProfitAfterHit >= 2.5) {
               const costDiff =

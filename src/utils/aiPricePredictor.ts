@@ -156,7 +156,7 @@ export function calculatePlayerPricePrediction(
     } else if (rawNetTransfers > 0) {
       const riseThreshold =
         Math.max(
-          25000,
+          18000,
           Math.min(125000, 210 * Math.pow(startingOwners, 0.42)),
         ) * eventResistance;
       thresholdUsed = riseThreshold;
@@ -206,7 +206,20 @@ export function calculatePlayerPricePrediction(
     }
 
     projectedTonightProgress = targetProgress;
-    const hourlyNet = Math.round(effectiveNet / 18.0);
+
+    // Dynamically calculate elapsed hours since the daily 01:30 UTC price change window
+    const nowUtc = new Date();
+    const priceChangeEpoch = new Date(nowUtc);
+    priceChangeEpoch.setUTCHours(1, 30, 0, 0);
+    let msSinceChange = nowUtc.getTime() - priceChangeEpoch.getTime();
+    if (msSinceChange < 0) {
+      msSinceChange += 24 * 3600 * 1000;
+    }
+    const elapsedHours = Math.max(
+      3.0,
+      Math.min(23.5, msSinceChange / (3600 * 1000)),
+    );
+    const hourlyNet = Math.round(effectiveNet / elapsedHours);
     const rawHourlyVelocity =
       thresholdUsed > 0 ? (hourlyNet / thresholdUsed) * 100 : 0;
     hourlyVelocity = Math.round(rawHourlyVelocity * 100) / 100;

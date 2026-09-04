@@ -18,7 +18,7 @@ export interface MatchExpectancy {
   isMarketOdds: boolean;
 }
 
-const LEAGUE_AVG_GOALS_PER_MATCH = 1.38;
+const LEAGUE_AVG_GOALS_PER_MATCH = 1.35;
 
 
 
@@ -212,6 +212,7 @@ export function calculatePlayerOddsXp(
   oppTeam: any,
   baseXp?: number,
   gameweek?: number,
+  calibrations?: Record<string, number>,
 ): number {
   if (!player || !playerTeam || !oppTeam) return baseXp || 3.5;
 
@@ -230,9 +231,13 @@ export function calculatePlayerOddsXp(
   const impliedGoalsConceded = isHome
     ? expectancy.awayImpliedGoals
     : expectancy.homeImpliedGoals;
-  const cleanSheetProb = isHome
+  const rawCleanSheetProb = isHome
     ? expectancy.homeCleanSheetProb
     : expectancy.awayCleanSheetProb;
+
+  // Apply calibration scaler for Poisson Clean Sheet if present
+  const csScaler = calibrations?.poisson_cs_scaler ?? 1.0;
+  const cleanSheetProb = Math.min(0.95, rawCleanSheetProb * csScaler);
 
   // 1. Pro FPL 60-Minute Appearance Step Function
   const minutesPlayed =
@@ -346,7 +351,8 @@ export function calculatePlayerOddsXp(
 
   // 3. Rolling Form Momentum Factor (Short-term velocity over last 3 & 5 matches)
   const momentum = getPlayerFormMomentum(player.id);
-  const momentumMult = momentum ? momentum.momentumMultiplier : 1.0;
+  const rawMomentumMult = momentum ? momentum.momentumMultiplier : 1.0;
+  const momentumMult = Math.max(0.88, Math.min(1.15, rawMomentumMult));
   const effectiveXgShare = Math.min(
     pos === 4 ? 0.65 : 0.48,
     playerXgShare * momentumMult,
@@ -367,7 +373,11 @@ export function calculatePlayerOddsXp(
   // Bookmaker anytime goalscorer odds reflect total goal expectancy (open play + penalties + free kicks).
   const marketGoalProb =
     pos >= 2
-      ? getMarketAnytimeGoalscorerProb(player.web_name, playerTeam?.short_name)
+      ? getMarketAnytimeGoalscorerProb(
+          player.web_name,
+          playerTeam?.short_name,
+          player.id,
+        )
       : null;
   let matchXG = modelMatchXG;
   if (marketGoalProb !== null && marketGoalProb > 0) {
@@ -386,7 +396,6 @@ export function calculatePlayerOddsXp(
   let cleanSheetPts = 0;
   let goalsConcededPts = 0;
   let savePts = 0;
-  let bpsExpected = 0;
 
   // Expected FPL goals conceded penalty under full Poisson series, scaled by minutes on pitch
   const expectedConcededPenalty =
@@ -398,33 +407,31 @@ export function calculatePlayerOddsXp(
     cleanSheetPts = cleanSheetProb * p60Mins * 4.0;
     goalsConcededPts = -expectedConcededPenalty;
     savePts = Math.min(1.4, Math.max(0.4, 0.5 + impliedGoalsConceded * 0.25));
-    bpsExpected = cleanSheetProb >= 0.4 ? 0.65 : savePts >= 1.0 ? 0.25 : 0.1;
   } else if (pos === 2) {
     // DEF
     goalPts = matchXG * 6.0;
     cleanSheetPts = cleanSheetProb * p60Mins * 4.0;
     goalsConcededPts = -expectedConcededPenalty;
-    bpsExpected =
-      cleanSheetProb >= 0.4
-        ? 0.6 + Math.min(1.2, matchXG * 4.0 + matchXA * 2.0)
-        : Math.min(0.8, matchXG * 4.0 + matchXA * 2.0);
   } else if (pos === 3) {
     // MID
     goalPts = matchXG * 5.0;
     cleanSheetPts = cleanSheetProb * p60Mins * 1.0;
-    bpsExpected = Math.min(
-      2.4,
-      Math.max(
-        0.15,
-        matchXG * 2.6 + matchXA * 1.4 + (cleanSheetProb >= 0.45 ? 0.3 : 0.0),
-      ),
-    );
   } else if (pos === 4) {
     // FWD
     goalPts = matchXG * 4.0;
     cleanSheetPts = 0.0;
-    bpsExpected = Math.min(2.6, Math.max(0.2, matchXG * 2.2 + matchXA * 0.8));
   }
+
+  // Canonical BPS Multi-Linear Regression (OpenFPL Specification):
+  // E[BPS] = β_pos + 1.30(xG) + 0.75(xA) + 0.45(P(CS))
+  // Position intercepts: GK=0.10, DEF=0.10, MID=0.15, FWD=0.20
+  const bpsScaler = calibrations?.bps_cbi_def_weight ?? 1.0;
+  const betaByPos: Record<number, number> = { 1: 0.1, 2: 0.1, 3: 0.15, 4: 0.2 };
+  const baseBeta = betaByPos[pos] ?? 0.1;
+  const csBonusBps = pos <= 3 ? 0.45 * cleanSheetProb : 0.0;
+  const rawBps =
+    (baseBeta + 1.3 * matchXG + 0.75 * matchXA + csBonusBps) * bpsScaler;
+  const bpsExpected = Math.min(3.0, Math.max(0.0, rawBps));
 
   // 8. Total Expected Points (xP) Sum
   const totalXp =

@@ -64,74 +64,91 @@ function writeLocalUserPlans(plans: Record<string, any>) {
   }
 }
 
-// Build unique storage key: fpl_user_{teamId}_{pin} or fpl_pin_{pin}
-function buildStorageKey(pin: string, teamId?: number | string | null): string {
-  const cleanPin = String(pin).trim();
-  if (teamId && String(teamId).trim()) {
-    return `fpl_user_${String(teamId).trim()}_${cleanPin}`;
-  }
-  return `fpl_pin_${cleanPin}`;
-}
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const pin = searchParams.get("pin");
-  const teamId = searchParams.get("teamId");
 
-  if (!pin || pin.trim().length < 4) {
-    return NextResponse.json(
-      { error: "PIN must be at least 4 digits" },
-      { status: 400 },
-    );
-  }
-
-  const cleanPin = pin.trim();
-  const storageKey = buildStorageKey(cleanPin, teamId);
-
-  // 1. Try Upstash Redis first
-  if (redisClient) {
-    try {
-      let redisPlan = await redisClient.get(storageKey);
-
-      // Fallback: If not found with teamId_pin, check legacy pin key
-      if (!redisPlan && teamId) {
-        redisPlan = await redisClient.get(`fpl_pin_${cleanPin}`);
-      }
-
-      if (redisPlan) {
-        const parsed =
-          typeof redisPlan === "string" ? JSON.parse(redisPlan) : redisPlan;
-        return NextResponse.json({ exists: true, plan: parsed });
-      } else {
-        return NextResponse.json(
-          { exists: false, message: "New workspace" },
-          { status: 200 },
-        );
-      }
-    } catch (redisErr) {
-      console.warn("Redis read failed, trying local fallback:", redisErr);
-    }
-  }
-
-  // 2. Fallback to local memory / temp storage
-  const allPlans = readLocalUserPlans();
-  const userPlan = allPlans[storageKey] || allPlans[cleanPin];
-
-  if (!userPlan) {
-    return NextResponse.json(
-      { exists: false, message: "New workspace" },
-      { status: 200 },
-    );
-  }
-
-  return NextResponse.json({ exists: true, plan: userPlan });
+export async function GET(_req: NextRequest) {
+  // GET is no longer used for loading plans (PINs now sent via POST body).
+  // Kept as a no-op to avoid 404s from any stale cached requests.
+  return NextResponse.json({ exists: false, message: "Use POST to load plans" }, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
+    // ── LOAD action: called by loadUserPlanByPin with hashed PIN ──────────────
+    if (body.action === "load") {
+      const { pinHash, teamId } = body;
+
+      if (!pinHash || String(pinHash).length < 10) {
+        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+      }
+
+      const hashKey = teamId
+        ? `fpl_user_hash_${String(teamId).trim()}_${pinHash}`
+        : `fpl_hash_${pinHash}`;
+
+      // 1. Try Redis with new hashed key; fall back to legacy plaintext key (one-time migration)
+      if (redisClient) {
+        try {
+          const redisPlan = await redisClient.get(hashKey);
+          if (redisPlan) {
+            const parsed =
+              typeof redisPlan === "string" ? JSON.parse(redisPlan) : redisPlan;
+            return NextResponse.json({ exists: true, plan: parsed });
+          }
+
+          // ── One-time migration: scan for old plaintext-keyed plan by teamId ──
+          if (teamId) {
+            const legacyPattern = `fpl_user_${String(teamId).trim()}_*`;
+            try {
+              const legacyKeys: string[] = await redisClient.keys(legacyPattern);
+              const oldKey = legacyKeys.find((k) => !k.startsWith("fpl_user_hash_"));
+              if (oldKey) {
+                const legacyPlan = await redisClient.get(oldKey);
+                if (legacyPlan) {
+                  const parsed =
+                    typeof legacyPlan === "string" ? JSON.parse(legacyPlan) : legacyPlan;
+                  await redisClient.set(hashKey, JSON.stringify(parsed)).catch(() => {});
+                  await redisClient.del(oldKey).catch(() => {});
+                  return NextResponse.json({ exists: true, plan: parsed });
+                }
+              }
+            } catch (scanErr) {
+              console.warn("Legacy Redis key migration scan failed:", scanErr);
+            }
+          }
+        } catch (redisErr) {
+          console.warn("Redis read failed, trying local fallback:", redisErr);
+        }
+      }
+
+      // 2. Fallback to local file storage with hashed key
+      const allPlans = readLocalUserPlans();
+      if (allPlans[hashKey]) {
+        return NextResponse.json({ exists: true, plan: allPlans[hashKey] });
+      }
+
+      // ── One-time migration for local file storage ─────────────────────────────
+      if (teamId) {
+        const legacyKeyPrefix = `fpl_user_${String(teamId).trim()}_`;
+        const legacyKey = Object.keys(allPlans).find(
+          (k) => k.startsWith(legacyKeyPrefix) && !k.startsWith("fpl_user_hash_")
+        );
+        if (legacyKey && allPlans[legacyKey]) {
+          const migratedPlan = allPlans[legacyKey];
+          allPlans[hashKey] = migratedPlan;
+          delete allPlans[legacyKey];
+          writeLocalUserPlans(allPlans);
+          return NextResponse.json({ exists: true, plan: migratedPlan });
+        }
+      }
+
+      return NextResponse.json({ exists: false, message: "New workspace" }, { status: 200 });
+    }
+
     const {
-      pin,
+      pinHash,
       teamSummary,
       teamHistoryCurrent,
       playedChips,
@@ -144,16 +161,16 @@ export async function POST(req: NextRequest) {
       gameweekPlans,
     } = body;
 
-    if (!pin || String(pin).trim().length < 4) {
-      return NextResponse.json({ error: "Invalid PIN" }, { status: 400 });
+    if (!pinHash || String(pinHash).length < 10) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const cleanPin = String(pin).trim();
     const teamId = teamSummary?.id || null;
-    const storageKey = buildStorageKey(cleanPin, teamId);
+    const hashKey = teamId
+      ? `fpl_user_hash_${String(teamId).trim()}_${pinHash}`
+      : `fpl_hash_${pinHash}`;
 
     const planData = {
-      pin: cleanPin,
       teamId,
       updatedAt: new Date().toISOString(),
       teamSummary,
@@ -168,19 +185,16 @@ export async function POST(req: NextRequest) {
       gameweekPlans: gameweekPlans || {},
     };
 
-    // 1. Save to Upstash Redis if available
     if (redisClient) {
       try {
-        await redisClient.set(storageKey, JSON.stringify(planData));
+        await redisClient.set(hashKey, JSON.stringify(planData));
       } catch (redisErr) {
         console.warn("Redis write failed:", redisErr);
       }
     }
 
-    // 2. Save to local storage cache
     const allPlans = readLocalUserPlans();
-    allPlans[storageKey] = planData;
-    allPlans[cleanPin] = planData; // Also keep pin mapping
+    allPlans[hashKey] = planData;
     writeLocalUserPlans(allPlans);
 
     return NextResponse.json({ success: true, updatedAt: planData.updatedAt });
@@ -188,7 +202,7 @@ export async function POST(req: NextRequest) {
     console.error("Error saving user plan:", error);
     return NextResponse.json(
       { error: "Failed to persist plan", details: error?.message },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

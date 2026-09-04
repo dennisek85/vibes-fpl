@@ -1,9 +1,28 @@
 import { NextResponse } from "next/server";
 import { calculatePlayerOddsXp } from "@/utils/aiOddsEngine";
+import { Redis } from "@upstash/redis";
+import { setCustomMatchOddsData } from "@/lib/oddsTracker";
+import { setCustomFormMomentumData } from "@/lib/formTracker";
 
 let cachedProjections: any = null;
 let cacheTime = 0;
 const CACHE_TTL_MS = 30 * 1000; // 30 seconds live cache
+
+function getRedisClient(): Redis | null {
+  try {
+    if (
+      (process.env.UPSTASH_REDIS_REST_URL &&
+        process.env.UPSTASH_REDIS_REST_TOKEN) ||
+      (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+    ) {
+      return Redis.fromEnv();
+    }
+  } catch (err) {
+    console.warn("Projections Redis init warning:", err);
+  }
+  return null;
+}
+
 export async function GET() {
   const now = Date.now();
   if (cachedProjections && now - cacheTime < CACHE_TTL_MS) {
@@ -11,6 +30,31 @@ export async function GET() {
   }
 
   try {
+    // 0. Hydrate live telemetry from Redis if available
+    const redis = getRedisClient();
+    if (redis) {
+      try {
+        const [redisOdds, redisMomentum] = await Promise.all([
+          redis.get("fpl:match_odds"),
+          redis.get("fpl:form_momentum"),
+        ]);
+        if (redisOdds) {
+          const parsedOdds =
+            typeof redisOdds === "string" ? JSON.parse(redisOdds) : redisOdds;
+          setCustomMatchOddsData(parsedOdds);
+        }
+        if (redisMomentum) {
+          const parsedMomentum =
+            typeof redisMomentum === "string"
+              ? JSON.parse(redisMomentum)
+              : redisMomentum;
+          setCustomFormMomentumData(parsedMomentum);
+        }
+      } catch (err) {
+        console.warn("Projections route Redis telemetry warning:", err);
+      }
+    }
+
     // 1. Fetch live official FPL bootstrap data and fixtures
     const [bootstrapRes, fixturesRes] = await Promise.all([
       fetch("https://fantasy.premierleague.com/api/bootstrap-static/", {
