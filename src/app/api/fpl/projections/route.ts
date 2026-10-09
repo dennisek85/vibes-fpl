@@ -88,6 +88,10 @@ export async function GET() {
       events.find((e: any) => e.is_current) ||
       events[0];
     const currentGw = nextEvent ? nextEvent.id : 3;
+    const completedMatches = Math.max(
+      1,
+      events.filter((e: any) => e.finished).length,
+    );
 
     // Team strength map
     const teamMap = new Map<number, any>();
@@ -148,6 +152,8 @@ export async function GET() {
             oppTeam,
             undefined,
             targetGw,
+            undefined,
+            completedMatches,
           );
           totalFixtureXp += calculatedMatchXp;
         }

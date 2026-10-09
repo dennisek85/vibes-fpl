@@ -213,6 +213,7 @@ export function calculatePlayerOddsXp(
   baseXp?: number,
   gameweek?: number,
   calibrations?: Record<string, number>,
+  totalCompletedMatches?: number,
 ): number {
   if (!player || !playerTeam || !oppTeam) return baseXp || 3.5;
 
@@ -289,6 +290,7 @@ export function calculatePlayerOddsXp(
   const rotationRisk = evaluatePlayerRotationRisk(
     player,
     playerTeam?.short_name,
+    totalCompletedMatches,
   );
   if (rotationRisk.startProbability < 90 || rotationRisk.isSubRisk) {
     p60Mins = Math.min(p60Mins, rotationRisk.startProbability / 100);

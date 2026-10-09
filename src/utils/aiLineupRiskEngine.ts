@@ -108,30 +108,42 @@ export function evaluatePlayerRotationRisk(
       reasonKey = "tacticalRotation";
     } else {
       // Sporadic starter / fringe backup
-      startProb = Math.max(25, Math.round(startRate * 100));
+      startProb = Math.max(5, Math.round(startRate * 100));
       reasonKey = "tacticalRotation";
     }
 
-    // B. Expected Minutes E[Mins | Start] and Sub Hazard (Independent of P(Start))
+    // B. Expected Minutes E[Mins | Start] and Sub Hazard
+    let minsIfStarting = 85;
     if (minsPerStart >= 75) {
       // 90-minute ironman
-      expectedMins = Math.min(90, Math.round(minsPerStart));
+      minsIfStarting = Math.min(90, Math.round(minsPerStart));
       isSubRisk = false;
       if (startProb >= 90) {
         reasonKey = "defaultSafe";
       }
     } else if (minsPerStart >= 55) {
       // High-intensity regular routinely subbed at 60-70 minutes (e.g. Brobbey, pressing wingers)
-      expectedMins = Math.round(minsPerStart);
+      minsIfStarting = Math.round(minsPerStart);
       isSubRisk = true;
       if (startProb >= 90) {
         reasonKey = "managingLoad";
       }
     } else {
       // Early tactical hook (<55 mins per start)
-      expectedMins = Math.max(45, Math.round(minsPerStart));
+      minsIfStarting = Math.max(45, Math.round(minsPerStart));
       isSubRisk = true;
       reasonKey = "tacticalRotation";
+    }
+
+    // Unconditional expected minutes: E[Mins] = P(Start) * minsIfStarting + P(Sub) * subMins
+    if (startProb >= 85) {
+      expectedMins = minsIfStarting;
+    } else {
+      const subProb = isSubRisk ? 0.35 : 0.15;
+      expectedMins = Math.max(
+        10,
+        Math.round((startProb / 100) * minsIfStarting + subProb * 20),
+      );
     }
   } else if (minutes > 0) {
     // Pure impact substitute (0 starts, appearances off the bench)

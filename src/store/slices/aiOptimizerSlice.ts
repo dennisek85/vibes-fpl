@@ -132,8 +132,10 @@ export const createAiOptimizerSlice: StateCreator<
       fixtureHorizon,
       aiProjectionsMap,
       activeCalibrations,
+      events,
     } = get();
     const limit = count !== undefined ? count : fixtureHorizon;
+    const completedMatches = Math.max(1, (events || []).filter((e) => e.finished).length);
     const player = playerMap.get(playerId);
     if (!player || !fixtures.length) return [];
 
@@ -181,6 +183,7 @@ export const createAiOptimizerSlice: StateCreator<
             epBase,
             gw,
             activeCalibrations,
+            completedMatches,
           );
         }
 
@@ -201,9 +204,10 @@ export const createAiOptimizerSlice: StateCreator<
   },
 
   getPlayerGameweekXp: (playerId: number, gameweek: number): number => {
-    const { aiProjectionsMap, playerMap, teamMap, fixtures, activeCalibrations } = get();
+    const { aiProjectionsMap, playerMap, teamMap, fixtures, activeCalibrations, events } = get();
     const p = playerMap.get(playerId);
     if (!p) return 0.0;
+    const completedMatches = Math.max(1, (events || []).filter((e) => e.finished).length);
 
     // Check O(1) calculation cache
     const cacheKey = `${playerId}_${gameweek}_${p.now_cost}_${p.chance_of_playing_next_round}_${p.status}`;
@@ -253,6 +257,7 @@ export const createAiOptimizerSlice: StateCreator<
           undefined,
           gameweek,
           activeCalibrations,
+          completedMatches,
         );
       }
       const finalVal = Math.round(totalMatchXp * 10) / 10;
