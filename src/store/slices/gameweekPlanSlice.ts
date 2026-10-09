@@ -46,9 +46,33 @@ export function recalculateMultiGameweekPlans(
 
   const newPlans: Record<number, PlannedGameweek> = {};
 
+  const nextGwId = get().nextGameweekId;
   for (let gw = 1; gw <= maxGw; gw++) {
     const existing = gameweekPlans[gw];
-    const squad = existing ? existing.squad : [...rollingSquad];
+    let squad: SquadPick[];
+
+    if (gw < nextGwId) {
+      // Historical locked gameweeks: keep their official locked squad
+      squad = existing?.squad?.length ? existing.squad : [...rollingSquad];
+    } else if (gw === nextGwId) {
+      // Current active gameweek:
+      // Keep existing.squad (user planned or imported). If empty, use baseImportedPicks.
+      squad = existing?.squad?.length
+        ? existing.squad
+        : (baseImportedPicks.length > 0 ? [...baseImportedPicks] : [...rollingSquad]);
+    } else {
+      // Future gameweeks (GW > nextGwId, e.g. GW7, GW8):
+      // If the user planned explicit transfers for this week, keep this week's squad.
+      // If NO transfers were planned for this week, roll forward from the previous week's squad!
+      const hasTransfers = existing && (
+        (existing.transfersIn && existing.transfersIn.length > 0) ||
+        (existing.transfersOut && existing.transfersOut.length > 0)
+      );
+      squad = hasTransfers && existing?.squad?.length
+        ? existing.squad
+        : [...rollingSquad];
+    }
+
     const chip = existing ? existing.chip : "none";
     const bankOverride = existing?.bankOverride;
     const ftOverride = existing?.freeTransfersOverride;
@@ -112,7 +136,7 @@ export const createGameweekPlanSlice: StateCreator<
   GameweekPlanSlice
 > = (set, get) => ({
   startGameweek: 1,
-  selectedGameweek: 3,
+  selectedGameweek: 1,
   gameweekPlans: {},
   baseImportedPicks: [],
   initialBank: 0,
@@ -122,6 +146,9 @@ export const createGameweekPlanSlice: StateCreator<
     const { gameweekPlans, nextGameweekId } = get();
     if (gw < nextGameweekId) {
       get().fetchLivePointsForGameweek(gw);
+      if (!gameweekPlans[gw] || !gameweekPlans[gw].squad || gameweekPlans[gw].squad.length === 0) {
+        get().fetchHistoricalPicksForGameweek(gw);
+      }
     }
 
     if (
@@ -129,10 +156,10 @@ export const createGameweekPlanSlice: StateCreator<
       !gameweekPlans[gw].squad ||
       gameweekPlans[gw].squad.length === 0
     ) {
-      const allPlansList = Object.values(gameweekPlans) as PlannedGameweek[];
       const baseSquad =
-        allPlansList.find((p) => p && p.squad && p.squad.length > 0)?.squad ||
-        [];
+        get().baseImportedPicks.length > 0
+          ? get().baseImportedPicks
+          : (gameweekPlans[nextGameweekId]?.squad || []);
       const updatedPlans = { ...gameweekPlans };
       updatedPlans[gw] = {
         gameweek: gw,
@@ -340,10 +367,21 @@ export const createGameweekPlanSlice: StateCreator<
       return false;
     }
 
+    const updatedTransfersIn = [
+      ...(currentPlan.transfersIn || []).filter((id) => id !== playerOut.id),
+      playerIn.id,
+    ];
+    const updatedTransfersOut = [
+      ...(currentPlan.transfersOut || []).filter((id) => id !== playerIn.id),
+      playerOut.id,
+    ];
+
     const updatedPlans = { ...gameweekPlans };
     updatedPlans[selectedGameweek] = {
       ...currentPlan,
       squad: newSquad,
+      transfersIn: updatedTransfersIn,
+      transfersOut: updatedTransfersOut,
     };
 
     set({

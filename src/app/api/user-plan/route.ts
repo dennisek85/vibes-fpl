@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import os from "os";
+import crypto from "crypto";
 import { Redis } from "@upstash/redis";
 
 let redisClient: Redis | null = null;
@@ -98,6 +99,18 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ exists: true, plan: parsed });
           }
 
+          // Check if any key with this pinHash exists in Redis
+          try {
+            const patternKeys: string[] = await redisClient.keys(`*_${pinHash}`);
+            if (patternKeys.length > 0) {
+              const p = await redisClient.get(patternKeys[0]);
+              if (p) {
+                const parsed = typeof p === "string" ? JSON.parse(p) : p;
+                return NextResponse.json({ exists: true, plan: parsed });
+              }
+            }
+          } catch {}
+
           // ── One-time migration: scan for old plaintext-keyed plan by teamId ──
           if (teamId) {
             const legacyPattern = `fpl_user_${String(teamId).trim()}_*`;
@@ -129,19 +142,37 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ exists: true, plan: allPlans[hashKey] });
       }
 
+      // Check if any key ends with the pinHash (e.g. fpl_user_hash_164332_${pinHash})
+      const matchingHashKey = Object.keys(allPlans).find((k) =>
+        k.endsWith(`_${pinHash}`) || k === pinHash
+      );
+      if (matchingHashKey && allPlans[matchingHashKey]) {
+        return NextResponse.json({ exists: true, plan: allPlans[matchingHashKey] });
+      }
+
       // ── One-time migration for local file storage ─────────────────────────────
+      let legacyKey: string | undefined;
       if (teamId) {
         const legacyKeyPrefix = `fpl_user_${String(teamId).trim()}_`;
-        const legacyKey = Object.keys(allPlans).find(
+        legacyKey = Object.keys(allPlans).find(
           (k) => k.startsWith(legacyKeyPrefix) && !k.startsWith("fpl_user_hash_")
         );
-        if (legacyKey && allPlans[legacyKey]) {
-          const migratedPlan = allPlans[legacyKey];
-          allPlans[hashKey] = migratedPlan;
-          delete allPlans[legacyKey];
-          writeLocalUserPlans(allPlans);
-          return NextResponse.json({ exists: true, plan: migratedPlan });
-        }
+      }
+      if (!legacyKey) {
+        legacyKey = Object.keys(allPlans).find((k) => {
+          if (k.length <= 16) {
+            const h = crypto.createHash("sha256").update(k.trim()).digest("hex");
+            return h === pinHash;
+          }
+          return false;
+        });
+      }
+      if (legacyKey && allPlans[legacyKey]) {
+        const migratedPlan = allPlans[legacyKey];
+        allPlans[hashKey] = migratedPlan;
+        delete allPlans[legacyKey];
+        writeLocalUserPlans(allPlans);
+        return NextResponse.json({ exists: true, plan: migratedPlan });
       }
 
       return NextResponse.json({ exists: false, message: "New workspace" }, { status: 200 });

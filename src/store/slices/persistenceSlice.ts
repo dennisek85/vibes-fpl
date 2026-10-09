@@ -33,11 +33,14 @@ export const createPersistenceSlice: StateCreator<
       const plans: Record<number, PlannedGameweek> = {
         ...(p.gameweekPlans || {}),
       };
+      const nextGwId = get().nextGameweekId;
       const allPlansList = Object.values(plans) as PlannedGameweek[];
       const baseSquad =
-        allPlansList.find(
-          (gwPlan) => gwPlan && gwPlan.squad && gwPlan.squad.length > 0,
-        )?.squad || [];
+        (p.baseImportedPicks && p.baseImportedPicks.length > 0)
+          ? p.baseImportedPicks
+          : (plans[nextGwId]?.squad ||
+             allPlansList.find((gwPlan) => gwPlan && gwPlan.squad && gwPlan.squad.length > 0)?.squad ||
+             []);
 
       if (baseSquad.length > 0) {
         for (let g = 1; g <= 38; g++) {
@@ -96,7 +99,10 @@ export const createPersistenceSlice: StateCreator<
         showAiPredictions: p.showAiPredictions || false,
         cardTheme: p.cardTheme || "dark",
         startGameweek: 1,
-        selectedGameweek: p.selectedGameweek || get().nextGameweekId,
+        selectedGameweek:
+          p.selectedGameweek && p.selectedGameweek >= get().nextGameweekId
+            ? p.selectedGameweek
+            : get().nextGameweekId,
         initialBank: p.initialBank || 0,
         initialFreeTransfers: p.initialFreeTransfers || 1,
         gameweekPlans: normalizedPlans,
@@ -121,6 +127,107 @@ export const createPersistenceSlice: StateCreator<
       } catch {}
     };
 
+    const refreshOfficialData = async (planToSync: any) => {
+            if (!planToSync.teamSummary?.id) return;
+            try {
+              const entryRes = await fetch(
+                `/api/fpl/entry/${planToSync.teamSummary.id}`,
+              );
+              if (entryRes.ok) {
+                const entryData = await entryRes.json();
+                if (entryData.history?.chips?.length) {
+                  planToSync.playedChips = entryData.history.chips.map((c: any) => ({
+                    name: c.name,
+                    event: c.event,
+                    time: c.time,
+                  }));
+                }
+                if (entryData.history?.current?.length) {
+                  planToSync.teamHistoryCurrent = entryData.history.current;
+                }
+                if (entryData.entry) {
+                  planToSync.teamSummary = entryData.entry;
+                }
+
+                if (!planToSync.gameweekPlans) {
+                  planToSync.gameweekPlans = {};
+                }
+
+                // 1. Sync official locked picks for past gameweeks (guarantees historical accuracy)
+                if (entryData.history_picks) {
+                  Object.keys(entryData.history_picks).forEach((gwStr) => {
+                    const gw = parseInt(gwStr, 10);
+                    const hp = entryData.history_picks[gw];
+                    if (hp && hp.picks && hp.picks.length > 0) {
+                      planToSync.gameweekPlans[gw] = {
+                        ...(planToSync.gameweekPlans[gw] || {
+                          gameweek: gw,
+                          transfersIn: [],
+                          transfersOut: [],
+                          chip: "none",
+                          calculatedBank: 0,
+                          availableTransfers: 1,
+                          transfersUsed: 0,
+                          transferCost: 0,
+                        }),
+                        gameweek: gw,
+                        squad: hp.picks,
+                        chip: hp.active_chip || planToSync.gameweekPlans[gw]?.chip || "none",
+                        calculatedBank: hp.entry_history?.bank !== undefined ? hp.entry_history.bank : (planToSync.gameweekPlans[gw]?.calculatedBank || 0),
+                        transfersUsed: hp.entry_history?.event_transfers !== undefined ? hp.entry_history.event_transfers : (planToSync.gameweekPlans[gw]?.transfersUsed || 0),
+                        transferCost: hp.entry_history?.event_transfers_cost !== undefined ? hp.entry_history.event_transfers_cost : (planToSync.gameweekPlans[gw]?.transferCost || 0),
+                      };
+                    }
+                  });
+                }
+
+                // 2. Sync latest active squad & financials if returned by official FPL
+                if (entryData.picks && entryData.picks.length > 0) {
+                  const nextGw = get().nextGameweekId;
+                  const currentGwPlan = planToSync.gameweekPlans?.[nextGw];
+                  const hasUserPlannedTransfers =
+                    currentGwPlan &&
+                    ((currentGwPlan.transfersIn && currentGwPlan.transfersIn.length > 0) ||
+                      (currentGwPlan.transfersOut && currentGwPlan.transfersOut.length > 0));
+
+                  planToSync.baseImportedPicks = entryData.picks;
+
+                  // If user has not planned any transfers on nextGw, ensure it reflects current official picks!
+                  // If the user DID plan transfers in Vibe FPL, preserve user's planned transfers!
+                  if (!hasUserPlannedTransfers && planToSync.gameweekPlans) {
+                    planToSync.gameweekPlans[nextGw] = {
+                      ...(planToSync.gameweekPlans[nextGw] || {
+                        gameweek: nextGw,
+                        transfersIn: [],
+                        transfersOut: [],
+                        chip: "none",
+                        calculatedBank: 0,
+                        availableTransfers: 1,
+                        transfersUsed: 0,
+                        transferCost: 0,
+                      }),
+                      gameweek: nextGw,
+                      squad: entryData.picks,
+                      chip: entryData.active_chip || planToSync.gameweekPlans[nextGw]?.chip || "none",
+                    };
+                  }
+
+                  if (entryData.entry_history?.bank !== undefined) {
+                    planToSync.initialBank = entryData.entry_history.bank;
+                  }
+                  if (entryData.initialFreeTransfers !== undefined) {
+                    planToSync.initialFreeTransfers = entryData.initialFreeTransfers;
+                  }
+                }
+              }
+            } catch (fetchErr) {
+              console.warn(
+                "Could not refresh official team state:",
+                fetchErr,
+              );
+            }
+          };
+
     try {
       // POST with hashed PIN in JSON body — raw PIN never appears in URL or server logs
       const res = await fetch("/api/user-plan", {
@@ -133,33 +240,7 @@ export const createPersistenceSlice: StateCreator<
         if (data.exists && data.plan) {
           const p = data.plan;
 
-          // Refresh official entry chips if available
-          if (p.teamSummary?.id) {
-            try {
-              const entryRes = await fetch(
-                `/api/fpl/entry/${p.teamSummary.id}`,
-              );
-              if (entryRes.ok) {
-                const entryData = await entryRes.json();
-                if (entryData.history?.chips?.length) {
-                  p.playedChips = entryData.history.chips.map((c: any) => ({
-                    name: c.name,
-                    event: c.event,
-                    time: c.time,
-                  }));
-                }
-                if (entryData.history?.current?.length) {
-                  p.teamHistoryCurrent = entryData.history.current;
-                }
-              }
-            } catch (fetchErr) {
-              console.warn(
-                "Could not refresh official chip history:",
-                fetchErr,
-              );
-            }
-          }
-
+          await refreshOfficialData(p);
           applyPlanState(p);
           return { exists: true, teamLoaded: true };
         }
@@ -171,6 +252,7 @@ export const createPersistenceSlice: StateCreator<
         if (cached) {
           const p = JSON.parse(cached);
           if (p && p.teamSummary) {
+            await refreshOfficialData(p);
             applyPlanState(p);
             get().saveCurrentPlanToServer();
             return { exists: true, teamLoaded: true };
@@ -191,6 +273,7 @@ export const createPersistenceSlice: StateCreator<
           if (cached) {
             const p = JSON.parse(cached);
             if (p && p.teamSummary) {
+              await refreshOfficialData(p);
               applyPlanState(p);
               get().saveCurrentPlanToServer();
               return { exists: true, teamLoaded: true };

@@ -35,7 +35,7 @@ export const createCoreDataSlice: StateCreator<
   aiProjectionsMap: new Map(),
   lineupRiskMap: new Map(),
   liveEventPoints: {},
-  nextGameweekId: 3,
+  nextGameweekId: 1,
   auditReports: [],
   activeCalibrations: { ...CANONICAL_BASELINES },
 
@@ -145,14 +145,22 @@ export const createCoreDataSlice: StateCreator<
           }));
 
           const updatedPlans = { ...gameweekPlans };
-          if (updatedPlans[gw]) {
-            updatedPlans[gw] = {
-              ...updatedPlans[gw],
-              squad: newSquad,
-              chip: data.active_chip || updatedPlans[gw].chip || "none",
-            };
-            set({ gameweekPlans: updatedPlans });
-          }
+          updatedPlans[gw] = {
+            ...(updatedPlans[gw] || {
+              gameweek: gw,
+              transfersIn: [],
+              transfersOut: [],
+              chip: "none",
+              calculatedBank: 0,
+              availableTransfers: 1,
+              transfersUsed: 0,
+              transferCost: 0,
+            }),
+            gameweek: gw,
+            squad: newSquad,
+            chip: data.active_chip || updatedPlans[gw]?.chip || "none",
+          };
+          set({ gameweekPlans: updatedPlans });
         }
       }
     } catch (e) {
@@ -224,7 +232,32 @@ export const createCoreDataSlice: StateCreator<
         events.find((e) => e.is_next) ||
         events.find((e) => e.is_current) ||
         events[0];
-      const nextGwId = nextEvent ? nextEvent.id : 3;
+      const nextGwId = nextEvent ? nextEvent.id : 1;
+
+      // Sync all live points for finished and current gameweeks upfront so switching GWs is instant
+      const finishedOrCurrentEvents = events.filter((e) => e.finished || e.is_current);
+      const finishedGwIds = finishedOrCurrentEvents.map((e) => e.id);
+      const livePointsResults = await Promise.all(
+        finishedGwIds.map(async (gwId) => {
+          try {
+            const res = await fetch(`/api/fpl/event/${gwId}/live`);
+            if (res.ok) {
+              const data = await res.json();
+              return { gwId, data };
+            }
+          } catch {}
+          return null;
+        })
+      );
+
+      const liveEventPointsMap: Record<number, Record<number, number>> = {
+        ...get().liveEventPoints,
+      };
+      for (const res of livePointsResults) {
+        if (res && res.data) {
+          liveEventPointsMap[res.gwId] = res.data;
+        }
+      }
 
       // Generate audit reports for completed gameweeks if not yet populated
       let currentReports = get().auditReports || [];
@@ -237,7 +270,7 @@ export const createCoreDataSlice: StateCreator<
               gwId,
               bootstrapData.elements || [],
               events,
-              get().liveEventPoints[gwId] || {},
+              liveEventPointsMap[gwId] || {},
               (id, g) => (get().getPlayerGameweekXp ? get().getPlayerGameweekXp(id, g) : 3.5),
               teamMap
             )
@@ -258,13 +291,19 @@ export const createCoreDataSlice: StateCreator<
         startGameweek: 1,
         selectedGameweek: nextGwId,
         auditReports: currentReports,
+        liveEventPoints: liveEventPointsMap,
       });
 
       invalidateXpCache();
 
       const savedPin = getActivePin();
       if (savedPin) {
-        await get().loadUserPlanByPin(savedPin);
+        let lastTeamId: number | null = null;
+        if (typeof window !== "undefined") {
+          const storedId = localStorage.getItem("fpl_last_team_id");
+          if (storedId) lastTeamId = Number(storedId);
+        }
+        await get().loadUserPlanByPin(savedPin, lastTeamId);
       } else {
         set({ isLoading: false });
       }
