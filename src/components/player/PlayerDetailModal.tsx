@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
+import Image from "next/image";
 import { usePlannerStore } from "@/store/usePlannerStore";
 import { KitIcon } from "@/components/ui/KitIcon";
 import { X, Calendar, History, ShoppingBag, Loader2 } from "lucide-react";
@@ -205,13 +206,17 @@ export const PlayerDetailModal: React.FC = () => {
           <div className="flex items-center gap-5 sm:gap-7 relative z-10">
             <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xl">
               {photoUrl && !imgError ? (
-                <img
-                  src={photoUrl}
-                  alt={player.web_name}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover object-top scale-110"
-                  onError={() => setImgError(true)}
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src={photoUrl}
+                    alt={player.web_name}
+                    fill
+                    unoptimized
+                    sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, 128px"
+                    className="object-cover object-top scale-110"
+                    onError={() => setImgError(true)}
+                  />
+                </div>
               ) : (
                 <KitIcon
                   teamCode={player.team_code}

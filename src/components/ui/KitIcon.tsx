@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { TEAM_STYLES } from "@/lib/fpl-constants";
 
 interface KitIconProps {
@@ -30,14 +31,17 @@ export const KitIcon: React.FC<KitIconProps> = ({
 
   if (cdnUrl && !imgError) {
     return (
-      <img
-        src={cdnUrl}
-        alt={`${teamShortName} kit`}
-        referrerPolicy="no-referrer"
-        className={`${className} object-contain drop-shadow-md select-none`}
-        loading="lazy"
-        onError={() => setImgError(true)}
-      />
+      <div className={`relative ${className} select-none`}>
+        <Image
+          src={cdnUrl}
+          alt={`${teamShortName} kit`}
+          fill
+          unoptimized
+          sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 112px"
+          className="object-contain drop-shadow-md"
+          onError={() => setImgError(true)}
+        />
+      </div>
     );
   }
 
