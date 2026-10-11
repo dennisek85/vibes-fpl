@@ -80,6 +80,8 @@ export interface FPLEvent {
   id: number;
   name: string;
   deadline_time: string;
+  average_entry_score?: number;
+  highest_score?: number;
   is_current: boolean;
   is_next: boolean;
   is_previous: boolean;
