@@ -115,6 +115,10 @@ export interface UiStateSlice {
   ) => void;
   closeScoutModal: () => void;
 
+  isAccuracyModalOpen: boolean;
+  openAccuracyModal: () => void;
+  closeAccuracyModal: () => void;
+
   marketSearch: string;
   marketPosition: number | null;
   marketTeamId: number | null;

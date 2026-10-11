@@ -259,25 +259,6 @@ export const createCoreDataSlice: StateCreator<
         }
       }
 
-      // Generate audit reports for completed gameweeks if not yet populated
-      let currentReports = get().auditReports || [];
-      if (currentReports.length === 0) {
-        const finishedEvents = events.filter((e) => e.finished);
-        const reportGws = finishedEvents.length > 0 ? finishedEvents.map((e) => e.id) : [2, 1];
-        currentReports = reportGws
-          .map((gwId) =>
-            generateGameweekAuditReport(
-              gwId,
-              bootstrapData.elements || [],
-              events,
-              liveEventPointsMap[gwId] || {},
-              (id, g) => (get().getPlayerGameweekXp ? get().getPlayerGameweekXp(id, g) : 3.5),
-              teamMap
-            )
-          )
-          .sort((a, b) => b.gw - a.gw); // Latest report always on top!
-      }
-
       set({
         players: bootstrapData.elements || [],
         teams: bootstrapData.teams || [],
@@ -290,8 +271,27 @@ export const createCoreDataSlice: StateCreator<
         nextGameweekId: nextGwId,
         startGameweek: 1,
         selectedGameweek: nextGwId,
-        auditReports: currentReports,
         liveEventPoints: liveEventPointsMap,
+      });
+
+      // Generate audit reports for completed gameweeks now that playerMap, fixtures, and projections are fully hydrated
+      const finishedEvents = events.filter((e) => e.finished);
+      const reportGws = finishedEvents.length > 0 ? finishedEvents.map((e) => e.id) : [2, 1];
+      const currentReports = reportGws
+        .map((gwId) =>
+          generateGameweekAuditReport(
+            gwId,
+            bootstrapData.elements || [],
+            events,
+            liveEventPointsMap[gwId] || {},
+            (id, g) => get().getPlayerGameweekXp(id, g),
+            teamMap
+          )
+        )
+        .sort((a, b) => b.gw - a.gw); // Latest report always on top!
+
+      set({
+        auditReports: currentReports,
       });
 
       invalidateXpCache();

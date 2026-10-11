@@ -272,4 +272,8 @@ export const createUiStateSlice: StateCreator<
       set({ marketSortBy: sortBy, marketSortOrder: "desc" });
     }
   },
+
+  isAccuracyModalOpen: false,
+  openAccuracyModal: () => set({ isAccuracyModalOpen: true }),
+  closeAccuracyModal: () => set({ isAccuracyModalOpen: false }),
 });
