@@ -9,6 +9,7 @@ import {
   calculateUpcomingDivergences,
   calculateKnowledgeConvergenceMetrics,
 } from "@/utils/aiExperimentalEngine";
+import { calculateSeasonAccuracySummary } from "@/utils/aiCalibrationEngine";
 import {
   Sparkles,
   Flame,
@@ -27,6 +28,8 @@ import {
   Activity,
   AlertTriangle,
   Zap,
+  Target,
+  Trophy,
 } from "lucide-react";
 
 export const MlLabView: React.FC = () => {
@@ -100,6 +103,11 @@ export const MlLabView: React.FC = () => {
       getPlayerGameweekXp
     );
   }, [players, events, liveEventPoints, getPlayerGameweekXp]);
+
+  // 4. Closed-Loop Season Accuracy Benchmarking
+  const seasonAccuracy = useMemo(() => {
+    return calculateSeasonAccuracySummary(auditReports);
+  }, [auditReports]);
 
   const exitLab = () => {
     setCurrentView("pitch");
@@ -389,6 +397,110 @@ export const MlLabView: React.FC = () => {
             </div>
           </div>
 
+          {/* Season Quantitative Industry Benchmark Scorecard */}
+          <div className="bg-gradient-to-r from-slate-900/95 via-purple-950/40 to-slate-900/95 border border-purple-500/30 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <Target className="w-5 h-5 text-purple-400" />
+                  {labText.postMortemSection.industryBenchmarkTitle}
+                </h3>
+                <p className="text-xs text-slate-300 font-mono mt-0.5">
+                  {labText.postMortemSection.industryBenchmarkSubtitle}
+                </p>
+              </div>
+              <span className="text-[11px] font-black uppercase px-2.5 py-1 rounded-full font-mono bg-purple-500/20 text-purple-300 border border-purple-500/40 self-start sm:self-auto">
+                {seasonAccuracy.totalFinishedGws} GWs Audited
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 font-mono">
+              {/* 1. Captain Return Rate */}
+              <div className="bg-slate-950/80 p-4 rounded-2xl border border-white/10 space-y-1.5 flex flex-col justify-between">
+                <div>
+                  <div className="text-[10px] text-slate-400 uppercase font-black tracking-wider">
+                    {labText.postMortemSection.captainBenchmarkLabel}
+                  </div>
+                  <div className="text-2xl font-black text-white mt-1">
+                    {seasonAccuracy.captainSuccessRatePct}%
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    {seasonAccuracy.captainReturnedCount}/{seasonAccuracy.captainPicksCount} GWs returned
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-400">{labText.postMortemSection.captainStandardBadge}</span>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${seasonAccuracy.captainSuccessRatePct >= 60 ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" : "bg-amber-500/20 text-amber-300 border-amber-500/40"}`}>
+                    {seasonAccuracy.captainSuccessRatePct >= 60 ? labText.postMortemSection.beatingBenchmarkBadge : labText.postMortemSection.onParBenchmarkBadge}
+                  </span>
+                </div>
+              </div>
+
+              {/* 2. High-Conviction Return Hit Rate */}
+              <div className="bg-slate-950/80 p-4 rounded-2xl border border-white/10 space-y-1.5 flex flex-col justify-between">
+                <div>
+                  <div className="text-[10px] text-slate-400 uppercase font-black tracking-wider">
+                    {labText.postMortemSection.highConvictionLabel}
+                  </div>
+                  <div className="text-2xl font-black text-cyan-300 mt-1">
+                    {seasonAccuracy.highConvictionHitRatePct}%
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    {seasonAccuracy.highConvictionReturnedCount}/{seasonAccuracy.highConvictionPicksCount} picks returned
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-400">{labText.postMortemSection.highConvictionStandardBadge}</span>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${seasonAccuracy.highConvictionHitRatePct >= 50 ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" : "bg-amber-500/20 text-amber-300 border-amber-500/40"}`}>
+                    {seasonAccuracy.highConvictionHitRatePct >= 50 ? labText.postMortemSection.beatingBenchmarkBadge : labText.postMortemSection.onParBenchmarkBadge}
+                  </span>
+                </div>
+              </div>
+
+              {/* 3. Alpha vs FPL GW Average */}
+              <div className="bg-slate-950/80 p-4 rounded-2xl border border-white/10 space-y-1.5 flex flex-col justify-between">
+                <div>
+                  <div className="text-[10px] text-slate-400 uppercase font-black tracking-wider">
+                    {labText.postMortemSection.alphaLabel}
+                  </div>
+                  <div className={`text-2xl font-black mt-1 ${seasonAccuracy.cumulativeAlphaPoints >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                    {seasonAccuracy.cumulativeAlphaPoints >= 0 ? "+" : ""}{seasonAccuracy.cumulativeAlphaPoints} pts
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    {seasonAccuracy.averageAlphaPerGw >= 0 ? "+" : ""}{seasonAccuracy.averageAlphaPerGw} pts/GW delta
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-400">{labText.postMortemSection.alphaStandardBadge}</span>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${seasonAccuracy.averageAlphaPerGw >= 6.0 ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" : "bg-amber-500/20 text-amber-300 border-amber-500/40"}`}>
+                    {seasonAccuracy.averageAlphaPerGw >= 6.0 ? labText.postMortemSection.beatingBenchmarkBadge : labText.postMortemSection.onParBenchmarkBadge}
+                  </span>
+                </div>
+              </div>
+
+              {/* 4. Starters MAE & Rank Correlation */}
+              <div className="bg-slate-950/80 p-4 rounded-2xl border border-white/10 space-y-1.5 flex flex-col justify-between">
+                <div>
+                  <div className="text-[10px] text-slate-400 uppercase font-black tracking-wider">
+                    {labText.postMortemSection.startersMaeLabel}
+                  </div>
+                  <div className="text-2xl font-black text-purple-300 mt-1">
+                    {seasonAccuracy.seasonStartersMae} pts
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    ρ = {seasonAccuracy.seasonSpearmanRho} rank correlation
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-400">{labText.postMortemSection.startersMaeStandardBadge}</span>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${seasonAccuracy.seasonStartersMae <= 2.5 ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" : "bg-amber-500/20 text-amber-300 border-amber-500/40"}`}>
+                    {seasonAccuracy.seasonStartersMae <= 2.5 ? labText.postMortemSection.beatingBenchmarkBadge : labText.postMortemSection.onParBenchmarkBadge}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* List of Reports: Latest always on top */}
           {auditReports.length === 0 ? (
             <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-8 text-center text-slate-400 text-xs font-mono">
@@ -450,6 +562,75 @@ export const MlLabView: React.FC = () => {
                       </button>
                     </div>
                   </div>
+
+                  {/* Quantitative Benchmark Row for this Gameweek */}
+                  {report.benchmark && (
+                    <div className="space-y-3 bg-purple-950/20 border border-purple-500/30 rounded-2xl p-4">
+                      <div className="text-xs font-black uppercase tracking-wider text-purple-300 font-mono flex items-center gap-1.5">
+                        <Trophy className="w-3.5 h-3.5 text-purple-400" />
+                        {labText.postMortemSection.industryBenchmarkTitle}
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                        {/* Captain */}
+                        <div className="bg-slate-950/80 p-3 rounded-xl border border-white/5 space-y-1">
+                          <span className="text-[10px] text-slate-400 uppercase block">{labText.postMortemSection.captainPickTitle}</span>
+                          <div className="font-bold text-white flex items-center justify-between">
+                            <span>{report.benchmark.captain.playerName} ({report.benchmark.captain.teamShort})</span>
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-black border ${report.benchmark.captain.returned ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" : "bg-rose-500/20 text-rose-300 border-rose-500/40"}`}>
+                              {report.benchmark.captain.returned ? labText.postMortemSection.captainReturnedBadge : labText.postMortemSection.captainBlankedBadge}
+                            </span>
+                          </div>
+                          <div className="text-slate-400 text-[11px]">
+                            {report.benchmark.captain.predictedXp} xP → <span className="text-white font-bold">{report.benchmark.captain.actualPoints} pts</span>
+                          </div>
+                        </div>
+
+                        {/* High Conviction */}
+                        <div className="bg-slate-950/80 p-3 rounded-xl border border-white/5 space-y-1">
+                          <span className="text-[10px] text-slate-400 uppercase block">{labText.postMortemSection.highConvictionPicksTitle}</span>
+                          <div className="font-bold text-cyan-300 text-sm">
+                            {report.benchmark.highConviction.hitRatePct}% Hit Rate
+                          </div>
+                          <div className="text-slate-400 text-[11px]">
+                            {report.benchmark.highConviction.returnedCount}/{report.benchmark.highConviction.totalCount} returned ≥5 pts
+                          </div>
+                        </div>
+
+                        {/* Optimal XI vs FPL Avg */}
+                        <div className="bg-slate-950/80 p-3 rounded-xl border border-white/5 space-y-1">
+                          <span className="text-[10px] text-slate-400 uppercase block">{labText.postMortemSection.optimalXiTitle}</span>
+                          <div className="font-bold text-emerald-400 text-sm flex items-center justify-between">
+                            <span>AI XI: {report.benchmark.alphaComparison.aiOptimalXiPoints} pts</span>
+                            <span className={`text-xs px-1.5 py-0.5 rounded-full border ${report.benchmark.alphaComparison.alphaDelta >= 0 ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" : "bg-rose-500/20 text-rose-300 border-rose-500/40"}`}>
+                              {report.benchmark.alphaComparison.alphaDelta >= 0 ? "+" : ""}{report.benchmark.alphaComparison.alphaDelta} pts
+                            </span>
+                          </div>
+                          <div className="text-slate-400 text-[11px]">
+                            FPL Avg: {report.benchmark.alphaComparison.officialAveragePoints} pts
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Calibration Tiers */}
+                      <div className="pt-2 border-t border-white/5 space-y-1.5">
+                        <span className="text-[10px] text-slate-400 uppercase font-mono block">
+                          {labText.postMortemSection.calibrationTiersTitle}
+                        </span>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px]">
+                          {report.benchmark.calibrationBins.map((bin) => (
+                            <div key={bin.binLabel} className="bg-slate-950/60 p-2 rounded-xl border border-white/5">
+                              <div className="text-slate-400 text-[10px] font-bold">{bin.binLabel}</div>
+                              <div className="text-white font-bold mt-0.5">
+                                {bin.meanPredictedXp} xP → <span className="text-cyan-300">{bin.meanActualPoints} pts</span>
+                              </div>
+                              <div className="text-[9.5px] text-slate-400">n = {bin.playerCount}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Accuracy Scorecard */}
                   <div className="space-y-2">

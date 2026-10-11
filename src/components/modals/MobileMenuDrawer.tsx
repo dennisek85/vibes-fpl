@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   X,
   Layers,
+  Target,
 } from "lucide-react";
 import { useSquadRating } from "@/hooks/useSquadRating";
 import { isMlLabAuthorized } from "@/lib/auth";
@@ -59,6 +60,7 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
     setFixtureHorizon,
     showAiPredictions,
     openScoutModal,
+    openAccuracyModal,
     teamSummary,
     activePin,
     isSaving,
@@ -264,6 +266,18 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
 
           {/* 3. Team Management Tools */}
           <div className="flex flex-col gap-1.5">
+            {/* AI Accuracy & Track Record Trigger */}
+            <button
+              onClick={() => {
+                openAccuracyModal();
+                onClose();
+              }}
+              className="flex items-center gap-2.5 p-2.5 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/40 text-left text-xs font-bold text-purple-200 transition"
+            >
+              <Target className="w-4 h-4 text-purple-400" />
+              <span>🎯 Model Accuracy &amp; Track Record</span>
+            </button>
+
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
               Management Tools
             </span>

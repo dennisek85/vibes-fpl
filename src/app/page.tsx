@@ -13,6 +13,7 @@ import { OverridesModal } from "@/components/ui/OverridesModal";
 import { SavePlanModal } from "@/components/ui/SavePlanModal";
 import { PinAuthModal } from "@/components/ui/PinAuthModal";
 import { AiScoutModal } from "@/components/modals/AiScoutModal";
+import { ModelAccuracyModal } from "@/components/modals/ModelAccuracyModal";
 import { MobileMenuDrawer } from "@/components/modals/MobileMenuDrawer";
 import { PlayerMatrixView } from "@/components/matrix/PlayerMatrixView";
 import { LineupRiskRadar } from "@/components/planning/LineupRiskRadar";
@@ -692,6 +693,7 @@ export default function PlannerPage() {
         onClose={() => setIsSaveModalOpen(false)}
       />
       <AiScoutModal />
+      <ModelAccuracyModal />
       <PlayerDetailModal />
       <MobileMenuDrawer
         isOpen={isMobileMenuOpen}

@@ -15,8 +15,10 @@ import {
   Trash2,
   AlertCircle,
   Gauge,
+  Target,
 } from "lucide-react";
 import { useSquadRating } from "@/hooks/useSquadRating";
+import { calculateSeasonAccuracySummary } from "@/utils/aiCalibrationEngine";
 
 const CHIPS: Array<{
   id: ChipType;
@@ -71,7 +73,13 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({
     toggleAiPredictions,
     optimizeSquadLineup,
     openScoutModal,
+    openAccuracyModal,
+    auditReports,
   } = usePlannerStore();
+
+  const seasonAccuracy = React.useMemo(() => {
+    return calculateSeasonAccuracySummary(auditReports || []);
+  }, [auditReports]);
 
   const [optResult, setOptResult] = useState<OptimizationResult | null>(null);
   const [showResetAllConfirm, setShowResetAllConfirm] = useState(false);
@@ -258,6 +266,26 @@ export const LeftStrategyPanel: React.FC<LeftStrategyPanelProps> = ({
             <Lightbulb className="w-4 h-4 text-amber-300" />
             Open AI Transfer Radar
           </button>
+
+          {/* AI Track Record & Accuracy Trigger */}
+          {auditReports && auditReports.length > 0 && (
+            <button
+              onClick={() => openAccuracyModal()}
+              className="w-full py-2 px-3 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/40 text-purple-200 font-bold text-xs flex items-center justify-between shadow-md transition active:scale-98 group"
+              title={UI_TEXT.accuracyModal.badgeTooltip}
+            >
+              <span className="flex items-center gap-1.5 font-mono text-[11.5px]">
+                <Target className="w-3.5 h-3.5 text-purple-400 group-hover:rotate-45 transition-transform" />
+                {UI_TEXT.accuracyModal.badge(
+                  seasonAccuracy.captainSuccessRatePct,
+                  seasonAccuracy.averageAlphaPerGw
+                )}
+              </span>
+              <span className="text-[10px] text-purple-300 font-sans font-bold underline decoration-purple-400/50">
+                Track Record
+              </span>
+            </button>
+          )}
 
           {/* AI-Only: Strongest Team Solver Button */}
           <button
