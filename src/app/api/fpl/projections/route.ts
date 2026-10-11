@@ -3,6 +3,10 @@ import { calculatePlayerOddsXp } from "@/utils/aiOddsEngine";
 import { Redis } from "@upstash/redis";
 import { setCustomMatchOddsData } from "@/lib/oddsTracker";
 import { setCustomFormMomentumData } from "@/lib/formTracker";
+import {
+  getCachedBootstrapData,
+  getCachedFixturesData,
+} from "@/lib/fplServerCache";
 
 let cachedProjections: any = null;
 let cacheTime = 0;
@@ -55,29 +59,14 @@ export async function GET() {
       }
     }
 
-    // 1. Fetch live official FPL bootstrap data and fixtures
-    const [bootstrapRes, fixturesRes] = await Promise.all([
-      fetch("https://fantasy.premierleague.com/api/bootstrap-static/", {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner-OpenFPL/2.0",
-        },
-        cache: "no-store",
-      }),
-      fetch("https://fantasy.premierleague.com/api/fixtures/", {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) FPL-Planner-OpenFPL/2.0",
-        },
-        next: { revalidate: 900 },
-      }),
+    // 1. Re-use server-side cached bootstrap data and fixtures
+    const [bootstrapData, fixturesData] = await Promise.all([
+      getCachedBootstrapData(),
+      getCachedFixturesData().catch(() => []),
     ]);
 
-    if (!bootstrapRes.ok)
+    if (!bootstrapData?.elements)
       throw new Error("Failed to fetch official FPL bootstrap");
-
-    const bootstrapData = await bootstrapRes.json();
-    const fixturesData = fixturesRes.ok ? await fixturesRes.json() : [];
 
     const elements: any[] = bootstrapData.elements || [];
     const teams: any[] = bootstrapData.teams || [];
